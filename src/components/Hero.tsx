@@ -1,8 +1,42 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Search, MapPin, Calendar, Users } from "lucide-react";
 import heroImage from "@/assets/hero-travel.jpg";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const [searchData, setSearchData] = useState({
+    destination: "",
+    date: "",
+    travelers: ""
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setSearchData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSearch = () => {
+    // Create search parameters
+    const searchParams = new URLSearchParams();
+    if (searchData.destination) searchParams.set('destination', searchData.destination);
+    if (searchData.date) searchParams.set('date', searchData.date);
+    if (searchData.travelers) searchParams.set('travelers', searchData.travelers);
+    
+    // Navigate to packages page with search parameters
+    navigate(`/packages?${searchParams.toString()}`);
+  };
+
+  const handleExplorePackages = () => {
+    navigate('/packages');
+  };
+
+  const handlePlanCustomTrip = () => {
+    navigate('/contact');
+  };
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -28,10 +62,19 @@ const Hero = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-scale-in">
-          <Button size="lg" className="bg-accent hover:bg-bright-blue text-white px-8 py-3 text-lg">
+          <Button 
+            size="lg" 
+            className="bg-accent hover:bg-bright-blue text-white px-8 py-3 text-lg"
+            onClick={handleExplorePackages}
+          >
             Explore Packages
           </Button>
-          <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg"
+            onClick={handlePlanCustomTrip}
+          >
             Plan Custom Trip
           </Button>
         </div>
@@ -44,6 +87,8 @@ const Hero = () => {
               <input
                 type="text"
                 placeholder="Where to?"
+                value={searchData.destination}
+                onChange={(e) => handleInputChange('destination', e.target.value)}
                 className="bg-transparent text-white placeholder-soft-blue outline-none flex-1"
               />
             </div>
@@ -51,22 +96,34 @@ const Hero = () => {
             <div className="flex items-center space-x-3 bg-white/20 rounded-lg p-3">
               <Calendar className="h-5 w-5 text-soft-blue" />
               <input
-                type="text"
+                type="date"
                 placeholder="When?"
+                value={searchData.date}
+                onChange={(e) => handleInputChange('date', e.target.value)}
                 className="bg-transparent text-white placeholder-soft-blue outline-none flex-1"
               />
             </div>
             
             <div className="flex items-center space-x-3 bg-white/20 rounded-lg p-3">
               <Users className="h-5 w-5 text-soft-blue" />
-              <input
-                type="text"
-                placeholder="Travelers"
-                className="bg-transparent text-white placeholder-soft-blue outline-none flex-1"
-              />
+              <select
+                value={searchData.travelers}
+                onChange={(e) => handleInputChange('travelers', e.target.value)}
+                className="bg-transparent text-white outline-none flex-1"
+              >
+                <option value="" className="text-gray-800">Travelers</option>
+                <option value="1" className="text-gray-800">1 Person</option>
+                <option value="2" className="text-gray-800">2 People</option>
+                <option value="3-5" className="text-gray-800">3-5 People</option>
+                <option value="6-10" className="text-gray-800">6-10 People</option>
+                <option value="10+" className="text-gray-800">10+ People</option>
+              </select>
             </div>
             
-            <Button className="bg-accent hover:bg-bright-blue text-white p-3">
+            <Button 
+              className="bg-accent hover:bg-bright-blue text-white p-3"
+              onClick={handleSearch}
+            >
               <Search className="h-5 w-5 mr-2" />
               Search
             </Button>
