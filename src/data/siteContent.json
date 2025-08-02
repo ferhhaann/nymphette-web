@@ -1,0 +1,88 @@
+{
+  "site": {
+    "name": "Nymphette Tours",
+    "tagline": "Creating unforgettable travel experiences",
+    "description": "Your trusted travel partner for over 25 years"
+  },
+  "hero": {
+    "title": "Discover Your Next",
+    "titleHighlight": "Adventure",
+    "subtitle": "Explore breathtaking destinations with our curated travel experiences. Create memories that last a lifetime.",
+    "primaryButton": "Explore Packages",
+    "secondaryButton": "Plan Custom Trip",
+    "searchPlaceholders": {
+      "destination": "Where to?",
+      "date": "When?",
+      "travelers": "Travelers"
+    },
+    "travelerOptions": [
+      { "value": "", "label": "Travelers" },
+      { "value": "1", "label": "1 Person" },
+      { "value": "2", "label": "2 People" },
+      { "value": "3-5", "label": "3-5 People" },
+      { "value": "6-10", "label": "6-10 People" },
+      { "value": "10+", "label": "10+ People" }
+    ],
+    "stats": [
+      { "number": "500+", "label": "Destinations" },
+      { "number": "50K+", "label": "Happy Travelers" }
+    ]
+  },
+  "navigation": [
+    { "name": "Home", "href": "/" },
+    { "name": "Packages", "href": "/packages" },
+    { "name": "Group Tours", "href": "/group-tours" },
+    { "name": "About Us", "href": "/about" },
+    { "name": "Blog", "href": "/blog" },
+    { "name": "Contact", "href": "/contact" }
+  ],
+  "whyChooseUs": {
+    "title": "Why Choose Nymphette Tours?",
+    "subtitle": "We don't just plan trips – we create life-changing experiences that connect you with the world's most incredible destinations and cultures.",
+    "features": [
+      {
+        "icon": "Globe",
+        "title": "500+ Destinations",
+        "description": "Explore breathtaking locations across all continents with our extensive network of trusted partners."
+      },
+      {
+        "icon": "Award",
+        "title": "25+ Years Experience",
+        "description": "Over two decades of crafting unforgettable travel experiences with industry expertise."
+      },
+      {
+        "icon": "Shield",
+        "title": "100% Safe & Secure",
+        "description": "Travel with confidence knowing your safety and security are our highest priorities."
+      },
+      {
+        "icon": "Headphones",
+        "title": "24/7 Support",
+        "description": "Round-the-clock assistance wherever you are in the world, ensuring peace of mind."
+      }
+    ],
+    "stats": [
+      { "number": "50,000+", "label": "Happy Travelers" },
+      { "number": "500+", "label": "Destinations" },
+      { "number": "98%", "label": "Satisfaction Rate" },
+      { "number": "25+", "label": "Years Experience" }
+    ]
+  },
+  "footer": {
+    "description": "Creating unforgettable travel experiences for over 25 years. Your journey to extraordinary destinations starts here.",
+    "quickLinks": ["Home", "Packages", "Group Tours", "About Us", "Blog", "Contact"],
+    "destinations": ["Maldives", "Europe", "Bali", "Thailand", "Dubai", "Japan"],
+    "contact": {
+      "phone": "+91 98765 43210",
+      "email": "info@nymphettetours.com",
+      "address": "123 Travel Street, Tourism District, Mumbai, India"
+    },
+    "newsletter": {
+      "title": "Stay Connected",
+      "subtitle": "Subscribe to Newsletter",
+      "placeholder": "Your email"
+    },
+    "legal": ["Privacy Policy", "Terms of Service", "Cookie Policy"],
+    "copyright": "© 2024 Nymphette Tours. All rights reserved."
+  }
+}

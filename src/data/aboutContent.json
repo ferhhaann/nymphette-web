@@ -1,0 +1,84 @@
+{
+  "aboutUs": {
+    "hero": {
+      "title": "About Nymphette Tours",
+      "subtitle": "Creating unforgettable travel experiences for over 25 years with passion, expertise, and dedication"
+    },
+    "values": [
+      {
+        "icon": "Target",
+        "title": "Our Mission",
+        "description": "To make travel accessible, enjoyable, and transformative for everyone, creating connections between cultures and unforgettable memories that last a lifetime."
+      },
+      {
+        "icon": "Eye",
+        "title": "Our Vision",
+        "description": "To be the world's most trusted travel partner, inspiring people to explore, discover, and connect with the beauty and diversity of our planet."
+      },
+      {
+        "icon": "Heart",
+        "title": "Our Values",
+        "description": "Excellence, integrity, safety, and customer satisfaction guide everything we do. We believe in sustainable tourism that benefits local communities."
+      }
+    ],
+    "story": {
+      "title": "Our Journey",
+      "paragraphs": [
+        "Founded in 1999 by travel enthusiast Rajesh Sharma, Nymphette Tours began as a small family business with a simple dream: to help people discover the world's most beautiful destinations.",
+        "What started as organizing local tours has grown into a comprehensive travel company serving thousands of travelers annually. Our commitment to personalized service, attention to detail, and creating meaningful travel experiences has remained unchanged.",
+        "Today, we're proud to be one of India's most trusted travel partners, offering everything from intimate honeymoon packages to large group adventures across six continents."
+      ]
+    },
+    "milestones": [
+      { "year": "1999", "event": "Founded Nymphette Tours with a vision to make travel accessible to everyone" },
+      { "year": "2005", "event": "Expanded to international destinations, serving 10+ countries" },
+      { "year": "2010", "event": "Launched group tour packages, connecting travelers worldwide" },
+      { "year": "2015", "event": "Reached 25,000+ satisfied customers milestone" },
+      { "year": "2020", "event": "Adapted to digital platforms, ensuring safe travel during challenges" },
+      { "year": "2024", "event": "Celebrating 25 years with 50,000+ happy travelers served" }
+    ],
+    "team": [
+      {
+        "name": "Rajesh Sharma",
+        "position": "Founder & CEO",
+        "experience": "25+ years",
+        "specialization": "International Travel Planning"
+      },
+      {
+        "name": "Priya Patel",
+        "position": "Head of Operations",
+        "experience": "15+ years",
+        "specialization": "Group Tours & Logistics"
+      },
+      {
+        "name": "Michael Johnson",
+        "position": "Travel Consultant",
+        "experience": "12+ years",
+        "specialization": "European Destinations"
+      },
+      {
+        "name": "Sarah Williams",
+        "position": "Customer Experience Manager",
+        "experience": "8+ years",
+        "specialization": "Customer Relations"
+      }
+    ],
+    "achievements": [
+      {
+        "icon": "Award",
+        "title": "Best Travel Agency 2023",
+        "description": "Awarded by India Travel Awards for excellence in customer service"
+      },
+      {
+        "icon": "Users",
+        "title": "50,000+ Happy Customers",
+        "description": "Successfully served over 50,000 travelers with memorable experiences"
+      },
+      {
+        "icon": "Globe",
+        "title": "500+ Destinations",
+        "description": "Covering major tourist destinations across all continents"
+      }
+    ]
+  }
+}
