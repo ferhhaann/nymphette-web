@@ -1,16 +1,23 @@
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import RegionPackages from "@/components/RegionPackages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Clock, Star, Users } from "lucide-react";
 import regionsImage from "@/assets/regions-world.jpg";
+import { packagesData } from "@/data/packagesData";
 
 const Packages = () => {
+  const [searchParams] = useSearchParams();
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+
   const regions = [
     {
       name: "Asia",
       countries: ["Thailand", "Japan", "Singapore", "Malaysia", "Indonesia", "Vietnam"],
-      packageCount: 45,
+      packageCount: (packagesData["Asia"] || []).length,
       startingPrice: "₹25,000",
       image: regionsImage,
       highlights: ["Cultural Tours", "Beach Resorts", "Adventure"]
@@ -18,7 +25,7 @@ const Packages = () => {
     {
       name: "Europe", 
       countries: ["France", "Italy", "Switzerland", "Germany", "Spain", "Greece"],
-      packageCount: 38,
+      packageCount: (packagesData["Europe"] || []).length,
       startingPrice: "₹85,000",
       image: regionsImage,
       highlights: ["Historic Sites", "Art & Culture", "Scenic Beauty"]
@@ -26,7 +33,7 @@ const Packages = () => {
     {
       name: "Africa",
       countries: ["Kenya", "Tanzania", "South Africa", "Morocco", "Egypt", "Botswana"],
-      packageCount: 22,
+      packageCount: (packagesData["Africa"] || []).length,
       startingPrice: "₹95,000", 
       image: regionsImage,
       highlights: ["Safari Adventures", "Wildlife", "Desert Tours"]
@@ -34,7 +41,7 @@ const Packages = () => {
     {
       name: "Americas",
       countries: ["USA", "Canada", "Brazil", "Argentina", "Peru", "Mexico"],
-      packageCount: 31,
+      packageCount: (packagesData["Americas"] || []).length,
       startingPrice: "₹75,000",
       image: regionsImage,
       highlights: ["City Tours", "Natural Wonders", "Cultural Heritage"]
@@ -42,7 +49,7 @@ const Packages = () => {
     {
       name: "Pacific Islands",
       countries: ["Maldives", "Fiji", "Tahiti", "Hawaii", "Mauritius", "Seychelles"],
-      packageCount: 18,
+      packageCount: (packagesData["Pacific Islands"] || []).length,
       startingPrice: "₹65,000",
       image: regionsImage,
       highlights: ["Beach Resorts", "Water Sports", "Luxury Stays"]
@@ -50,12 +57,41 @@ const Packages = () => {
     {
       name: "Middle East",
       countries: ["UAE", "Turkey", "Jordan", "Israel", "Qatar", "Oman"],
-      packageCount: 15,
+      packageCount: (packagesData["Middle East"] || []).length,
       startingPrice: "₹45,000",
       image: regionsImage,
       highlights: ["Luxury Tours", "Desert Safari", "Historic Sites"]
     }
   ];
+
+  const [filteredRegions, setFilteredRegions] = useState(regions);
+
+  // Get search parameters from URL (from hero search)
+  const searchDestination = searchParams.get('destination');
+  const searchDate = searchParams.get('date'); 
+  const searchTravelers = searchParams.get('travelers');
+
+  useEffect(() => {
+    // Filter regions based on search destination if provided
+    if (searchDestination) {
+      const filtered = regions.filter(region => 
+        region.countries.some(country => 
+          country.toLowerCase().includes(searchDestination.toLowerCase())
+        ) || region.name.toLowerCase().includes(searchDestination.toLowerCase())
+      );
+      setFilteredRegions(filtered);
+    } else {
+      setFilteredRegions(regions);
+    }
+  }, [searchDestination]);
+
+  const handleRegionClick = (regionName: string) => {
+    setSelectedRegion(regionName);
+  };
+
+  const handleBackToRegions = () => {
+    setSelectedRegion(null);
+  };
 
   const featuredPackages = [
     {
@@ -91,32 +127,62 @@ const Packages = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="pt-20 pb-16 bg-hero-gradient text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
-            Explore Our Travel Packages
-          </h1>
-          <p className="text-xl text-soft-blue max-w-3xl mx-auto animate-slide-up">
-            Discover amazing destinations across the globe with our carefully curated travel packages
-          </p>
+      {/* Conditional rendering based on selected region */}
+      {selectedRegion ? (
+        <div className="pt-20">
+          <RegionPackages region={selectedRegion} onBack={handleBackToRegions} />
         </div>
-      </section>
+      ) : (
+        <>
+          {/* Hero Section */}
+          <section className="pt-20 pb-16 bg-hero-gradient text-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
+                Explore Our Travel Packages
+              </h1>
+              <p className="text-xl text-soft-blue max-w-3xl mx-auto animate-slide-up">
+                Discover amazing destinations across the globe with our carefully curated travel packages
+              </p>
+              {/* Show search filters if any */}
+              {(searchDestination || searchDate || searchTravelers) && (
+                <div className="mt-6 bg-white/20 backdrop-blur-md rounded-xl p-4 max-w-2xl mx-auto">
+                  <p className="text-soft-blue mb-2">Search Results for:</p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {searchDestination && (
+                      <Badge className="bg-accent text-white">Destination: {searchDestination}</Badge>
+                    )}
+                    {searchDate && (
+                      <Badge className="bg-accent text-white">Date: {searchDate}</Badge>
+                    )}
+                    {searchTravelers && (
+                      <Badge className="bg-accent text-white">Travelers: {searchTravelers}</Badge>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
 
-      {/* Regions Grid */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-4">Choose Your Destination</h2>
-            <p className="text-xl text-muted-foreground">Explore packages organized by regions around the world</p>
-          </div>
+          {/* Regions Grid */}
+          <section className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-primary mb-4">Choose Your Destination</h2>
+                <p className="text-xl text-muted-foreground">
+                  {searchDestination ? 
+                    `Found ${filteredRegions.length} region${filteredRegions.length !== 1 ? 's' : ''} matching "${searchDestination}"` :
+                    "Explore packages organized by regions around the world"
+                  }
+                </p>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {regions.map((region, index) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredRegions.map((region, index) => (
               <Card 
                 key={region.name}
                 className="group overflow-hidden hover:shadow-travel transition-all duration-500 cursor-pointer animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
+                onClick={() => handleRegionClick(region.name)}
               >
                 <div className="relative overflow-hidden">
                   <img
@@ -162,57 +228,61 @@ const Packages = () => {
         </div>
       </section>
 
-      {/* Featured Packages */}
-      <section className="py-20 bg-pale-blue/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-4">Featured Packages</h2>
-            <p className="text-xl text-muted-foreground">Hand-picked travel experiences you shouldn't miss</p>
-          </div>
+      {/* Featured Packages - Only show if no search is active */}
+      {!searchDestination && (
+        <section className="py-20 bg-pale-blue/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-primary mb-4">Featured Packages</h2>
+              <p className="text-xl text-muted-foreground">Hand-picked travel experiences you shouldn't miss</p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredPackages.map((pkg, index) => (
-              <Card 
-                key={pkg.title}
-                className="group overflow-hidden hover:shadow-travel transition-all duration-500 animate-fade-in"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="relative overflow-hidden">
-                  <img
-                    src={pkg.image}
-                    alt={pkg.title}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-accent text-white">{pkg.region}</Badge>
-                  </div>
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">{pkg.rating}</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {featuredPackages.map((pkg, index) => (
+                <Card 
+                  key={pkg.title}
+                  className="group overflow-hidden hover:shadow-travel transition-all duration-500 animate-fade-in"
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={pkg.image}
+                      alt={pkg.title}
+                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-accent text-white">{pkg.region}</Badge>
+                    </div>
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm font-medium">{pkg.rating}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold text-primary mb-2">{pkg.title}</h3>
-                  <div className="flex items-center text-muted-foreground mb-2">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    <span>{pkg.destination}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <Clock className="h-4 w-4 mr-1" />
-                      {pkg.duration}
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold text-primary mb-2">{pkg.title}</h3>
+                    <div className="flex items-center text-muted-foreground mb-2">
+                      <MapPin className="h-4 w-4 mr-2" />
+                      <span>{pkg.destination}</span>
                     </div>
-                    <div className="text-2xl font-bold text-accent">{pkg.price}</div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Clock className="h-4 w-4 mr-1" />
+                        {pkg.duration}
+                      </div>
+                      <div className="text-2xl font-bold text-accent">{pkg.price}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+      </>
+      )}
 
       <Footer />
     </div>
