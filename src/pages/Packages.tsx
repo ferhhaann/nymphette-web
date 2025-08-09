@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionPackages from "@/components/RegionPackages";
+import EuropeCountries from "@/components/EuropeCountries";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Clock, Star, Users } from "lucide-react";
@@ -12,6 +13,7 @@ import { packagesData } from "@/data/packagesData";
 const Packages = () => {
   const [searchParams] = useSearchParams();
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [selectedEuropeCountry, setSelectedEuropeCountry] = useState<string | null>(null);
 
   const regions = [
     {
