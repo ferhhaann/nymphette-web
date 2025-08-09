@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionPackages from "@/components/RegionPackages";
@@ -11,6 +11,7 @@ import { packagesData } from "@/data/packagesData";
 
 const Packages = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
 
   const regions = [
@@ -86,7 +87,8 @@ const Packages = () => {
   }, [searchDestination]);
 
   const handleRegionClick = (regionName: string) => {
-    setSelectedRegion(regionName);
+    const slug = regionName.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/regions/${slug}`);
   };
 
   const handleBackToRegions = () => {
