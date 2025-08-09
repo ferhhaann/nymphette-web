@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionLanding from "@/components/regions/RegionLanding";
 import asiaData from "@/data/regions/asia.json";
+import asiaCountries from "@/data/regionCountries/asia.json";
 import type { TravelPackage } from "@/data/packagesData";
 import hero1 from "@/assets/hero-travel.jpg";
 import hero2 from "@/assets/destinations-collage.jpg";
@@ -20,6 +21,7 @@ const Asia: React.FC = () => {
         canonical="/regions/asia"
         data={packages}
         heroImages={[hero1, hero2, hero3]}
+        countryData={asiaCountries as any}
       />
       <Footer />
     </div>

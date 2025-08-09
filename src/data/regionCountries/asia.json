@@ -1,0 +1,82 @@
+[
+  {
+    "name": "India",
+    "speciality": "Diverse culture, heritage, Himalayas to beaches",
+    "famousPlaces": ["Taj Mahal", "Jaipur", "Kerala Backwaters", "Varanasi"],
+    "mustVisits": ["Golden Triangle (Delhi-Agra-Jaipur)", "Goa beaches", "Leh-Ladakh", "Ranthambore safari"],
+    "bestTime": "Oct - Mar (north), Nov - Feb (west), Sep - Mar (south)",
+    "culturalExperiences": ["Diwali festivities", "Ayurvedic wellness", "Ganga Aarti", "Rajasthani folk shows"]
+  },
+  {
+    "name": "Japan",
+    "speciality": "Tradition meets technology, pristine nature",
+    "famousPlaces": ["Tokyo", "Kyoto", "Mount Fuji", "Osaka"],
+    "mustVisits": ["Fushimi Inari", "Arashiyama", "Shibuya Crossing", "Himeji Castle"],
+    "bestTime": "Mar - May (sakura), Oct - Nov (autumn)",
+    "culturalExperiences": ["Tea ceremony", "Onsen bathing", "Sumo", "Kimono walk"]
+  },
+  {
+    "name": "Thailand",
+    "speciality": "Beaches, temples, cuisine",
+    "famousPlaces": ["Bangkok", "Phuket", "Chiang Mai", "Phi Phi"],
+    "mustVisits": ["Grand Palace", "Wat Pho", "Phi Phi snorkel", "Elephant sanctuary (ethical)"] ,
+    "bestTime": "Nov - Apr",
+    "culturalExperiences": ["Floating markets", "Thai cooking class", "Loi Krathong"]
+  },
+  {
+    "name": "Indonesia",
+    "speciality": "Island hopping, culture and volcanos",
+    "famousPlaces": ["Bali", "Komodo", "Borobudur", "Ubud"],
+    "mustVisits": ["Uluwatu Temple", "Nusa Penida", "Mount Bromo", "Rice terraces"],
+    "bestTime": "Apr - Oct",
+    "culturalExperiences": ["Balinese dance", "Purification ritual", "Coffee plantations"]
+  },
+  {
+    "name": "Vietnam",
+    "speciality": "Heritage, karst bays, cuisine",
+    "famousPlaces": ["Hanoi", "Ha Long Bay", "Hoi An", "Ho Chi Minh City"],
+    "mustVisits": ["Lan Ha cruise", "Cu Chi Tunnels", "Golden Bridge Da Nang"],
+    "bestTime": "Mar - Apr, Sep - Nov",
+    "culturalExperiences": ["Cyclo tour", "Cooking class", "Water puppetry"]
+  },
+  {
+    "name": "Singapore",
+    "speciality": "Futuristic city, family attractions",
+    "famousPlaces": ["Marina Bay Sands", "Gardens by the Bay", "Sentosa"],
+    "mustVisits": ["Supertree Grove", "SEA Aquarium", "Night Safari"],
+    "bestTime": "All year (Showers expected)",
+    "culturalExperiences": ["Hawker centres", "Peranakan heritage", "Chinatown walk"]
+  },
+  {
+    "name": "Malaysia",
+    "speciality": "Rainforests, islands, multicultural cities",
+    "famousPlaces": ["Kuala Lumpur", "Langkawi", "Penang", "Cameron Highlands"],
+    "mustVisits": ["Petronas Towers", "Street food Penang", "SkyBridge Langkawi"],
+    "bestTime": "Dec - Mar (east coast), Jun - Sep (west)",
+    "culturalExperiences": ["Batik workshop", "Heritage trail", "Night markets"]
+  },
+  {
+    "name": "South Korea",
+    "speciality": "K-culture, palaces, mountains",
+    "famousPlaces": ["Seoul", "Busan", "Jeju", "Gyeongju"],
+    "mustVisits": ["Gyeongbokgung", "Bukchon Hanok", "N Seoul Tower", "Gamcheon"],
+    "bestTime": "Apr - Jun, Sep - Nov",
+    "culturalExperiences": ["Hanbok rental", "Temple stay", "K-pop experiences"]
+  },
+  {
+    "name": "China",
+    "speciality": "Ancient wonders and mega cities",
+    "famousPlaces": ["Great Wall", "Beijing", "Shanghai", "Xi'an"],
+    "mustVisits": ["Terracotta Army", "Forbidden City", "The Bund"],
+    "bestTime": "Apr - May, Sep - Oct",
+    "culturalExperiences": ["Tea tasting", "Calligraphy", "Kung fu show"]
+  },
+  {
+    "name": "Sri Lanka",
+    "speciality": "Compact island: culture + wildlife + beaches",
+    "famousPlaces": ["Sigiriya", "Kandy", "Ella", "Galle"],
+    "mustVisits": ["Train to Ella", "Yala safari", "Tea country"],
+    "bestTime": "Dec - Mar (south/west), May - Sep (east)",
+    "culturalExperiences": ["Temple of the Tooth", "Stilt fishing", "Cooking demo"]
+  }
+]

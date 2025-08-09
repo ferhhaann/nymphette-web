@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionLanding from "@/components/regions/RegionLanding";
 import europeData from "@/data/regions/europe.json";
+import europeCountries from "@/data/regionCountries/europe.json";
 import type { TravelPackage } from "@/data/packagesData";
 import hero1 from "@/assets/europe/eiffel.jpg";
 import hero2 from "@/assets/europe/santorini.jpg";
@@ -20,6 +21,7 @@ const Europe: React.FC = () => {
         canonical="/regions/europe"
         data={packages}
         heroImages={[hero1, hero2, hero3]}
+        countryData={europeCountries as any}
       />
       <Footer />
     </div>

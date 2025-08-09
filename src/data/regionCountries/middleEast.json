@@ -1,0 +1,5 @@
+[
+  {"name":"United Arab Emirates","speciality":"Modern luxury and desert adventures","famousPlaces":["Dubai","Abu Dhabi","Al Ain"],"mustVisits":["Burj Khalifa","Desert safari","Louvre Abu Dhabi"],"bestTime":"Nov - Mar","culturalExperiences":["Bedouin camp","Dhow cruise","Date market"]},
+  {"name":"Jordan","speciality":"Ancient wonders and canyons","famousPlaces":["Petra","Wadi Rum","Dead Sea"],"mustVisits":["Treasury hike","Desert camp","Float in Dead Sea"],"bestTime":"Mar - May, Sep - Nov","culturalExperiences":["Bedouin tea","Zarb dinner","Souk walk"]},
+  {"name":"Israel","speciality":"Holy sites and Mediterranean coast","famousPlaces":["Jerusalem","Tel Aviv","Galilee"],"mustVisits":["Western Wall","Masada","Jaffa"],"bestTime":"Mar - May, Sep - Nov","culturalExperiences":["Shuk tasting","Kibbutz visit","Wine country"]}
+]
