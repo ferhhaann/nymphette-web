@@ -1,7 +1,0 @@
-[
-  {"name":"Kenya","speciality":"Big 5 safaris, Maasai culture","famousPlaces":["Masai Mara","Amboseli","Lake Nakuru"],"mustVisits":["Game drives","Balloon safari","Maasai village"],"bestTime":"Jul - Oct (Migration)","culturalExperiences":["Maasai dances","Boma dinner","Beadwork"]},
-  {"name":"South Africa","speciality":"Safari + Cape Town + Winelands","famousPlaces":["Kruger","Cape Town","Garden Route"],"mustVisits":["Table Mountain","Cape Point","Stellenbosch"],"bestTime":"Sep - Apr","culturalExperiences":["Township tour","Wine tasting","Braai"]},
-  {"name":"Tanzania","speciality":"Serengeti & Zanzibar","famousPlaces":["Serengeti","Ngorongoro","Zanzibar"],"mustVisits":["Great Migration","Stone Town","Mnemba snorkel"],"bestTime":"Jun - Oct","culturalExperiences":["Maasai boma","Spice tour","Swahili cooking"]},
-  {"name":"Egypt","speciality":"Pyramids & Nile","famousPlaces":["Giza","Luxor","Aswan"],"mustVisits":["Nile cruise","Karnak","Abu Simbel"],"bestTime":"Oct - Apr","culturalExperiences":["Feluca ride","Bazaar walk","Sound & Light"]},
-  {"name":"Morocco","speciality":"Medinas, desert and mountains","famousPlaces":["Marrakech","Fes","Sahara"],"mustVisits":["Jemaa el-Fnaa","Atlas Mountains","Merzouga dunes"],"bestTime":"Mar - May, Sep - Nov","culturalExperiences":["Hammam","Mint tea ceremony","Riad stay"]}
-]

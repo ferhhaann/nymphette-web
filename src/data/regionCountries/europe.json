@@ -1,6 +1,0 @@
-[
-  {"name":"France","speciality":"Romance, art and cuisine","famousPlaces":["Paris","French Riviera","Loire Valley"],"mustVisits":["Eiffel Tower","Louvre","Mont Saint‑Michel"],"bestTime":"Apr - Jun, Sep - Oct","culturalExperiences":["Wine & cheese","Seine cruise","Provence markets"]},
-  {"name":"Italy","speciality":"Art, history, dolce vita","famousPlaces":["Rome","Venice","Tuscany"],"mustVisits":["Colosseum","Vatican","Cinque Terre"],"bestTime":"Apr - Jun, Sep - Oct","culturalExperiences":["Cooking class","Vineyard tour","Gondola ride"]},
-  {"name":"Switzerland","speciality":"Alps and lakes","famousPlaces":["Zermatt","Interlaken","Lucerne"],"mustVisits":["Jungfraujoch","Glacier Express","Lake Geneva"],"bestTime":"Jun - Sep, Dec - Mar","culturalExperiences":["Cheese factory","Fondue dinner","Mountain trains"]},
-  {"name":"Greece","speciality":"Islands, history and beaches","famousPlaces":["Athens","Santorini","Mykonos"],"mustVisits":["Acropolis","Caldera sunset","Delphi"],"bestTime":"May - Oct","culturalExperiences":["Olive oil tasting","Greek dance","Island hopping"]}
-]

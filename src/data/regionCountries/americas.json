@@ -1,6 +1,0 @@
-[
-  {"name":"United States","speciality":"Iconic cities and national parks","famousPlaces":["New York","Grand Canyon","Yellowstone"],"mustVisits":["Times Square","Antelope Canyon","Golden Gate"],"bestTime":"Apr - Jun, Sep - Oct","culturalExperiences":["Broadway","NBA/NFL game","Jazz night"]},
-  {"name":"Canada","speciality":"Rockies, lakes and cities","famousPlaces":["Banff","Toronto","Vancouver"],"mustVisits":["Lake Louise","Niagara Falls","Capilano Bridge"],"bestTime":"Jun - Sep","culturalExperiences":["Indigenous art","Ice wine tasting","Hockey"]},
-  {"name":"Mexico","speciality":"Culture, cuisine, beaches","famousPlaces":["Cancun","Mexico City","Chichen Itza"],"mustVisits":["Cenotes","Teotihuacan","Tulum"],"bestTime":"Nov - Apr","culturalExperiences":["Day of the Dead","Lucha Libre","Cooking class"]},
-  {"name":"Peru","speciality":"Andes and Inca heritage","famousPlaces":["Machu Picchu","Cusco","Sacred Valley"],"mustVisits":["Rainbow Mountain","Lake Titicaca","Lima food"],"bestTime":"May - Sep","culturalExperiences":["Weaving villages","Andean music","Pisco tasting"]}
-]

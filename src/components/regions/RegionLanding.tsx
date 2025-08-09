@@ -29,7 +29,6 @@ import { Separator } from "@/components/ui/separator";
 import InquiryBookingForm from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
 import MapWidget from "./MapWidget";
-import CountryExplorer, { CountryInfo } from "./CountryExplorer";
 
 export interface RegionLandingProps {
   regionKey: string;
@@ -38,7 +37,6 @@ export interface RegionLandingProps {
   canonical: string;
   data: TravelPackage[];
   heroImages: string[];
-  countryData?: CountryInfo[];
 }
 
 const setMeta = (title: string, description: string, canonicalPath: string) => {
@@ -70,7 +68,7 @@ const toUSD = (pkg: TravelPackage): number => {
 
 const includesTag = (arr: string[], key: string) => arr.some(i => i.toLowerCase().includes(key));
 
-const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, description, canonical, data, heroImages, countryData }) => {
+const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, description, canonical, data, heroImages }) => {
   const [query, setQuery] = useState("");
   const [budgetMax, setBudgetMax] = useState<number>(6000);
   const [openFormFor, setOpenFormFor] = useState<TravelPackage | null>(null);
@@ -209,11 +207,6 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
           })}
         </div>
       </section>
-
-      {/* COUNTRY EXPLORER */}
-      {countryData && countryData.length > 0 && (
-        <CountryExplorer title="Country highlights" countries={countryData} />
-      )}
 
       {/* Sticky CTA */}
       <div className="fixed bottom-0 inset-x-0 bg-card/95 backdrop-blur border-t md:hidden z-40">
