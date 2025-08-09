@@ -9,11 +9,10 @@ import PackageItineraryComponent from "./PackageItinerary";
 interface RegionPackagesProps {
   region: string;
   onBack: () => void;
-  initialCountry?: string;
 }
 
-const RegionPackages = ({ region, onBack, initialCountry }: RegionPackagesProps) => {
-  const [selectedCountry, setSelectedCountry] = useState<string>(initialCountry ?? "all");
+const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
+  const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedPackage, setSelectedPackage] = useState<TravelPackage | null>(null);
   const [showItinerary, setShowItinerary] = useState(false);
