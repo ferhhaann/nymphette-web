@@ -75,30 +75,6 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
         </Badge>
       </div>
 
-      {/* Countries list */}
-      <section aria-labelledby="countries-heading" className="bg-white/60 rounded-2xl p-6 border border-border">
-        <h3 id="countries-heading" className="text-lg font-semibold text-primary mb-4">Countries in {region}</h3>
-        <div className="flex flex-wrap gap-3">
-          <Button
-            variant={selectedCountry === 'all' ? 'default' : 'outline'}
-            className={selectedCountry === 'all' ? 'bg-accent text-white' : 'border-accent text-accent hover:bg-accent hover:text-white'}
-            onClick={() => setSelectedCountry('all')}
-          >
-            All Countries
-          </Button>
-          {countries.filter(c => c !== 'all').map((country) => (
-            <Button
-              key={country}
-              variant={selectedCountry === country ? 'default' : 'outline'}
-              className={selectedCountry === country ? 'bg-accent text-white' : 'border-accent text-accent hover:bg-accent hover:text-white'}
-              onClick={() => setSelectedCountry(country)}
-            >
-              {country}
-            </Button>
-          ))}
-        </div>
-      </section>
-
       {/* Filters */}
       <div className="bg-pale-blue/30 rounded-2xl p-6">
         <div className="flex items-center space-x-4 mb-4">
