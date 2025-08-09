@@ -129,7 +129,7 @@ const Packages = () => {
       
       {/* Conditional rendering based on selected region */}
       {selectedRegion ? (
-        <div className="pt-20">
+        <div className="pt-20 mt-6 mb-12">
           <RegionPackages region={selectedRegion} onBack={handleBackToRegions} />
         </div>
       ) : (
