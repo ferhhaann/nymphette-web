@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ArrowLeft, Filter } from "lucide-react";
 import { TravelPackage, packagesData } from "@/data/packagesData";
 import PackageCard from "./PackageCard";
@@ -41,34 +39,6 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
     return acc;
   }, {} as Record<string, TravelPackage[]>);
 
-  // Utilities for pricing and country info
-  const parsePrice = (priceStr: string) => {
-    const num = Number(priceStr.replace(/[^0-9.]/g, ""));
-    return isNaN(num) ? Infinity : num;
-  };
-
-  type CountryInfo = {
-    name: string;
-    highlights: string[];
-    image: string | undefined;
-    minPriceLabel: string;
-    count: number;
-  };
-
-  const countryInfos: CountryInfo[] = Object.entries(packagesByCountry)
-    .map(([country, pkgs]) => {
-      const highlights = Array.from(new Set(pkgs.flatMap((p) => p.highlights))).slice(0, 3);
-      const minPkg = pkgs.reduce((min, p) => (parsePrice(p.price) < parsePrice(min.price) ? p : min), pkgs[0]);
-      return {
-        name: country,
-        highlights,
-        image: minPkg?.image,
-        minPriceLabel: minPkg?.price ?? "",
-        count: pkgs.length,
-      };
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
-
   const handleViewDetails = (packageId: string) => {
     const pkg = packages.find(p => p.id === packageId);
     if (pkg) {
@@ -104,52 +74,6 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
           {filteredPackages.length} Packages Found
         </Badge>
       </div>
-
-      {/* Countries in Region */}
-      <section aria-labelledby="countries-heading" className="space-y-4">
-        <h3 id="countries-heading" className="text-xl font-semibold text-primary">Countries in {region}</h3>
-        <TooltipProvider>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {countryInfos.map((c) => (
-              <Card
-                key={c.name}
-                className="overflow-hidden hover:shadow-lg transition-shadow hover-scale cursor-pointer"
-                onClick={() => setSelectedCountry(c.name)}
-                aria-label={`View packages in ${c.name}`}
-              >
-                <div className="relative h-40 w-full">
-                  <img
-                    src={c.image}
-                    alt={`${c.name} travel - ${region}`}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-background/10" />
-                  <div className="absolute bottom-3 left-3 right-3">
-                    <div className="flex items-center justify-between">
-                      <p className="text-lg font-semibold text-card-foreground">{c.name}</p>
-                      <Badge variant="secondary" className="backdrop-blur">{c.count} {c.count === 1 ? 'pkg' : 'pkgs'}</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1">From {c.minPriceLabel}</p>
-                  </div>
-                </div>
-                <CardContent className="pt-4">
-                  <div className="flex flex-wrap gap-2">
-                    {c.highlights.map((h) => (
-                      <Tooltip key={h}>
-                        <TooltipTrigger asChild>
-                          <Badge variant="outline" className="max-w-[140px] truncate">{h}</Badge>
-                        </TooltipTrigger>
-                        <TooltipContent>{h}</TooltipContent>
-                      </Tooltip>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TooltipProvider>
-      </section>
 
       {/* Filters */}
       <div className="bg-pale-blue/30 rounded-2xl p-6">
