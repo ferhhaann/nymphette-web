@@ -1,0 +1,29 @@
+[
+  {
+    "id": "afr-001",
+    "title": "Kenya Safari Adventure",
+    "country": "Kenya",
+    "region": "Africa",
+    "duration": "8 Days / 7 Nights",
+    "price": "₹95,000",
+    "rating": 4.9,
+    "reviews": 98,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Masai Mara", "Big Five Safari", "Maasai Village", "Great Migration"],
+    "inclusions": ["Flights", "Safari Lodges", "All Meals", "Game Drives", "Park Fees"],
+    "exclusions": ["Tips", "Drinks", "Personal Items", "Optional Activities"],
+    "category": "Wildlife & Adventure",
+    "bestTime": "Jul - Oct",
+    "groupSize": "2-12 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Nairobi",
+        "description": "Welcome to Kenya! Gateway to African safari.",
+        "activities": ["Airport pickup", "Hotel check-in", "City tour"],
+        "meals": ["Dinner"],
+        "accommodation": "Safari lodge"
+      }
+    ]
+  }
+]

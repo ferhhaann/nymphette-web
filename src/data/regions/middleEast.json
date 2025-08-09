@@ -1,0 +1,29 @@
+[
+  {
+    "id": "mid-001",
+    "title": "Dubai Luxury Experience",
+    "country": "UAE",
+    "region": "Middle East",
+    "duration": "5 Days / 4 Nights",
+    "price": "₹55,000",
+    "rating": 4.7,
+    "reviews": 198,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Burj Khalifa", "Desert Safari", "Dubai Mall", "Palm Jumeirah"],
+    "inclusions": ["Flights", "5-star Hotels", "Breakfast", "Desert Safari", "City Tour"],
+    "exclusions": ["Lunch & Dinner", "Shopping", "Optional Activities"],
+    "category": "Luxury & Modern",
+    "bestTime": "Nov - Mar",
+    "groupSize": "2-20 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Dubai",
+        "description": "Welcome to the city of gold!",
+        "activities": ["Airport pickup", "Hotel check-in", "Dubai Fountain show"],
+        "meals": ["Welcome dinner"],
+        "accommodation": "5-star hotel Downtown"
+      }
+    ]
+  }
+]

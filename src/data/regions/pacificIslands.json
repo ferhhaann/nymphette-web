@@ -1,0 +1,29 @@
+[
+  {
+    "id": "pac-001",
+    "title": "Maldives Water Villa Experience",
+    "country": "Maldives",
+    "region": "Pacific Islands",
+    "duration": "6 Days / 5 Nights",
+    "price": "₹85,000",
+    "rating": 4.9,
+    "reviews": 267,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Water Villa", "Snorkeling", "Sunset Cruise", "Spa Treatment"],
+    "inclusions": ["Seaplane Transfer", "Water Villa", "All Meals", "Activities", "Spa"],
+    "exclusions": ["Flights to Male", "Alcohol", "Personal Expenses"],
+    "category": "Luxury & Romance",
+    "bestTime": "Nov - Apr",
+    "groupSize": "2-8 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Paradise",
+        "description": "Welcome to your tropical paradise!",
+        "activities": ["Seaplane transfer", "Resort check-in", "Welcome cocktail"],
+        "meals": ["Lunch", "Dinner"],
+        "accommodation": "Overwater villa"
+      }
+    ]
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "eur-001",
+    "title": "Paris & Swiss Alps Magic",
+    "country": "France & Switzerland",
+    "region": "Europe",
+    "duration": "10 Days / 9 Nights",
+    "price": "₹1,45,000",
+    "rating": 4.8,
+    "reviews": 167,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Eiffel Tower", "Louvre Museum", "Jungfraujoch", "Lake Geneva"],
+    "inclusions": ["Flights", "Hotels", "Eurail Pass", "Breakfast", "City Tours"],
+    "exclusions": ["Meals", "Shopping", "Optional Excursions"],
+    "category": "Romance & Scenic",
+    "bestTime": "May - Sep",
+    "groupSize": "2-25 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Paris",
+        "description": "Bonjour Paris! The city of love awaits.",
+        "activities": ["Charles de Gaulle arrival", "Seine River cruise", "Eiffel Tower visit"],
+        "meals": ["Welcome dinner"],
+        "accommodation": "4-star hotel near Champs-Élysées"
+      }
+    ]
+  },
+  {
+    "id": "eur-002",
+    "title": "Italian Grand Tour",
+    "country": "Italy",
+    "region": "Europe",
+    "duration": "12 Days / 11 Nights",
+    "price": "₹1,35,000",
+    "rating": 4.7,
+    "reviews": 143,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Colosseum", "Vatican City", "Venice Canals", "Tuscany Vineyards"],
+    "inclusions": ["Flights", "Hotels", "Train Travel", "Breakfast", "Guided Tours"],
+    "exclusions": ["Lunch & Dinner", "Wine Tastings", "Shopping"],
+    "category": "Art & History",
+    "bestTime": "Apr - Jun, Sep - Oct",
+    "groupSize": "4-30 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Rome",
+        "description": "Welcome to the Eternal City!",
+        "activities": ["Airport transfer", "Colosseum tour", "Roman Forum"],
+        "meals": ["Dinner"],
+        "accommodation": "Historic hotel near Vatican"
+      }
+    ]
+  }
+]
