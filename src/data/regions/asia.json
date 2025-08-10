@@ -161,5 +161,40 @@
         "accommodation": "Resort in Seminyak"
       }
     ]
+  },
+  {
+    "id": "ind-001",
+    "title": "Golden Triangle Highlights",
+    "country": "India",
+    "countrySlug": "india",
+    "region": "Asia",
+    "duration": "6 Days / 5 Nights",
+    "price": "₹48,000",
+    "originalPrice": "₹55,000",
+    "rating": 4.7,
+    "reviews": 210,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Delhi", "Agra Taj Mahal", "Jaipur Amber Fort"],
+    "inclusions": ["Hotels", "Breakfast", "Transfers", "Sightseeing"],
+    "exclusions": ["Lunch & Dinner", "Personal Expenses", "Tips"],
+    "category": "Heritage & Culture",
+    "bestTime": "Oct - Mar",
+    "groupSize": "2-20 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrive Delhi",
+        "description": "Welcome to India; transfer to hotel.",
+        "activities": ["Airport pickup", "Hotel check-in"],
+        "meals": ["Dinner"]
+      },
+      {
+        "day": 2,
+        "title": "Delhi City Tour",
+        "description": "Explore Old & New Delhi highlights.",
+        "activities": ["Red Fort", "Qutub Minar", "India Gate"],
+        "meals": ["Breakfast"]
+      }
+    ]
   }
 ]
