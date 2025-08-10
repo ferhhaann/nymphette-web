@@ -204,11 +204,6 @@ const CountryDetail: React.FC = () => {
             style={{ backgroundImage: "radial-gradient(40rem 40rem at 120% -10%, hsl(var(--accent)/0.15), transparent)" }}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
-              <div className="absolute left-0 top-4 bottom-4 hidden md:flex">
-                <Badge variant="secondary" className="px-2" style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}>
-                  {pkgCount} packages
-                </Badge>
-              </div>
               <div className="grid lg:grid-cols-3 gap-6 items-start">
                 <div className="lg:col-span-2 space-y-3">
                   <h1 className="text-3xl sm:text-4xl font-bold text-primary">Explore {details.name} Tour Packages</h1>
