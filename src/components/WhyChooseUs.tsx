@@ -29,7 +29,7 @@ const WhyChooseUs = () => {
     <section className="py-20 bg-gradient-to-br from-primary-dark to-deep-blue text-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold font-geo mb-4">
             Why Choose Nymphette Tours?
           </h2>
           <p className="text-xl text-background/80 max-w-3xl mx-auto">

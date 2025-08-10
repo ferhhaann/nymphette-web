@@ -20,7 +20,6 @@ export default {
 				extend: {
 				fontFamily: {
 					'geo': ['"Geologica"', 'sans-serif'],
-					'playfair': ['"Playfair Display"', 'serif'],
 					'sans': ['"Geologica"', 'sans-serif'],
 				},
 				fontWeight: {
