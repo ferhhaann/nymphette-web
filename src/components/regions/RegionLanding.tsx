@@ -104,20 +104,20 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
           <CarouselContent>
             {heroImages.map((img, idx) => (
               <CarouselItem key={idx}>
-                <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh]">
-                  <img src={img} alt={`${title} hero ${idx+1}`} loading={idx===0?"eager":"lazy"} className="absolute inset-0 h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
-                  <div className="relative z-10 max-w-7xl mx-auto h-full flex items-end px-4 sm:px-6 lg:px-8 pb-8">
-                    <div className="space-y-3 sm:space-y-4">
-                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">{title}</h1>
-                      <p className="text-muted-foreground max-w-2xl">{description}</p>
-                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3 bg-card/90 backdrop-blur rounded-lg p-2 sm:p-3 shadow">
-                        <div className="col-span-2 sm:col-span-3"><Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search city, country or highlight" aria-label="Search"/></div>
-                        <div className="col-span-2 sm:col-span-1 bg-card rounded-lg p-2 border">
+                <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] m-2 sm:m-4 lg:m-6 rounded-lg overflow-hidden">
+                  <img src={img} alt={`${title} hero ${idx+1}`} loading={idx===0?"eager":"lazy"} className="absolute inset-0 h-full w-full object-cover rounded-lg" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg" />
+                  <div className="relative z-10 max-w-7xl mx-auto h-full flex items-end px-3 sm:px-6 lg:px-8 pb-4 sm:pb-8">
+                    <div className="space-y-2 sm:space-y-4">
+                      <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary">{title}</h1>
+                      <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">{description}</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-3 bg-card/90 backdrop-blur rounded-lg p-3 sm:p-4 shadow">
+                        <div className="col-span-1 sm:col-span-3 mb-2 sm:mb-0"><Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search city, country or highlight" aria-label="Search" className="text-sm sm:text-base"/></div>
+                        <div className="col-span-1 sm:col-span-1 bg-card rounded-lg p-2 border mb-2 sm:mb-0">
                           <div className="flex items-center justify-between text-xs mb-1"><span className="text-muted-foreground flex items-center gap-1"><CircleDollarSign className="size-3"/>Budget</span><span>${budgetMax}</span></div>
                           <Slider max={8000} min={500} step={100} value={[budgetMax]} onValueChange={(v)=>setBudgetMax(v[0])} />
                         </div>
-                        <Button className="col-span-2 sm:col-span-1" onClick={()=>setStickyOpen(true)}>Find Packages</Button>
+                        <Button className="col-span-1 sm:col-span-1 text-sm sm:text-base" onClick={()=>setStickyOpen(true)}>Find Packages</Button>
                       </div>
                     </div>
                   </div>
