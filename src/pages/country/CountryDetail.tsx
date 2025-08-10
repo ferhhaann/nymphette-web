@@ -31,6 +31,7 @@ import americasMerged from "@/data/regions/americas.data";
 import middleEastMerged from "@/data/regions/middleEast.data";
 import pacificIslandsMerged from "@/data/regions/pacificIslands.data";
 import type { UnifiedRegionData } from "@/data/regions/types";
+import CountryPlacesGallery from "@/components/regions/CountryPlacesGallery";
 
 // Unified region data (packages + country details)
 const pickRegionUnified = (region: string): UnifiedRegionData => {
@@ -330,6 +331,15 @@ const CountryDetail: React.FC = () => {
             </>
           )}
         </section>
+
+        {(Array.isArray(details.famousPlaces) && details.famousPlaces.length) || (Array.isArray(details.mustVisit) && details.mustVisit.length) ? (
+          <CountryPlacesGallery
+            countryName={details.name}
+            countrySlug={cslug}
+            famousPlaces={details.famousPlaces}
+            mustVisit={details.mustVisit}
+          />
+        ) : null}
 
         {/* Tour Packages Grid */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
