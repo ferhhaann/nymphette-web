@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import FeaturedPackages from "@/components/FeaturedPackages";
 import TopValues from "@/components/TopValues";
 import PromoBanner from "@/components/PromoBanner";
+import WhyChooseUs from "@/components/WhyChooseUs";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -13,6 +14,7 @@ const Index = () => {
       <TopValues />
       <FeaturedPackages />
       <PromoBanner />
+      <WhyChooseUs />
       <Footer />
     </div>
   );
