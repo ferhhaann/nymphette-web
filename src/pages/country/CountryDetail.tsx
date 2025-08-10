@@ -30,7 +30,7 @@ import africaData from "@/data/regions/africa.json";
 import americasData from "@/data/regions/americas.json";
 import middleEastData from "@/data/regions/middleEast.json";
 import pacificIslandsData from "@/data/regions/pacificIslands.json";
-import countryDetails from "@/data/countryDetails";
+import countryDetails from "@/data/countryDetails.json";
 
 // Icon map to avoid dynamic require in browser
 const iconMap = {
