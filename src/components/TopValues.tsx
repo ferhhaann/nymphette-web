@@ -1,8 +1,8 @@
-import { Airplane, CalendarCheck, BadgePercent, Map } from "lucide-react";
+import { Plane, CalendarCheck, BadgePercent, Map } from "lucide-react";
 
 const items = [
   {
-    icon: Airplane,
+    icon: Plane,
     title: "Airport pickup",
     desc: "Seamless transfers on arrival",
   },
