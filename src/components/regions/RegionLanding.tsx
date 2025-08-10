@@ -29,7 +29,7 @@ import { Separator } from "@/components/ui/separator";
 import InquiryBookingForm from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
 import MapWidget from "./MapWidget";
-import CountryList from "./CountryList";
+
 
 export interface RegionLandingProps {
   regionKey: string;
@@ -129,8 +129,6 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
           <CarouselNext />
         </Carousel>
       </section>
-
-      <CountryList regionKey={regionKey} data={data} />
 
       {/* PACKAGES GRID */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
