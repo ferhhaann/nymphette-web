@@ -101,5 +101,10 @@
         { "q": "Best time to visit?", "a": "Nov–Feb for most regions." }
       ]
     }
-  }
+  },
+  "europe": {},
+  "americas": {},
+  "africa": {},
+  "middle-east": {},
+  "pacific-islands": {}
 }
