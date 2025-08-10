@@ -45,8 +45,18 @@
     "bestSeason": "Mar–May & Oct–Nov",
     "languages": ["Japanese"],
     "speciality": "Blend of tradition and technology, impeccable service",
-    "famousPlaces": ["Kyoto Temples", "Mount Fuji", "Tokyo", "Hokkaido"],
-    "mustVisit": ["Arashiyama", "Nara", "Osaka Dotonbori", "Hakone"],
+    "famousPlaces": [
+      { "name": "Kyoto Temples", "image": "/places/japan/fushimi-inari-shrine.jpg" },
+      { "name": "Mount Fuji", "image": "/places/japan/mount-fuji.jpg" },
+      { "name": "Tokyo", "image": "/places/japan/tokyo.jpg" },
+      { "name": "Hokkaido" }
+    ],
+    "mustVisit": [
+      { "name": "Arashiyama", "image": "/places/japan/arashiyama-bamboo-grove.jpg" },
+      { "name": "Nara" },
+      { "name": "Osaka Dotonbori" },
+      { "name": "Hakone" }
+    ],
     "culture": "Deep traditions, tea ceremonies, shrines, and culinary excellence.",
     "essentialTips": [
       { "icon": "CreditCard", "title": "Cards", "note": "Cards accepted; carry cash for small shops." },

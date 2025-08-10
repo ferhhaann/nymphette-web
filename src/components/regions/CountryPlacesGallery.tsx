@@ -3,16 +3,18 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
+interface PlaceItem { name: string; image?: string }
+
 interface Props {
   countryName: string;
   countrySlug: string;
-  famousPlaces?: string[];
-  mustVisit?: string[];
+  famousPlaces?: Array<string | PlaceItem>;
+  mustVisit?: Array<string | PlaceItem>;
 }
 
 const slugify = (name: string) => name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
 
-const ImageStrip: React.FC<{ title: string; places: string[]; countryName: string; countrySlug: string }> = ({ title, places, countryName, countrySlug }) => {
+const ImageStrip: React.FC<{ title: string; places: Array<string | PlaceItem>; countryName: string; countrySlug: string }> = ({ title, places, countryName, countrySlug }) => {
   if (!places?.length) return null;
   return (
     <section className="mt-8" aria-label={title}>
@@ -20,25 +22,26 @@ const ImageStrip: React.FC<{ title: string; places: string[]; countryName: strin
       <Carousel>
         <CarouselContent>
           {places.map((place, idx) => {
-            const pslug = slugify(place);
-            const src = `/places/${countrySlug}/${pslug}.jpg`;
+            const item = typeof place === "string" ? { name: place } : place;
+            const pslug = slugify(item.name);
+            const src = item.image || `/places/${countrySlug}/${pslug}.jpg`;
             return (
               <CarouselItem key={idx} className="basis-full sm:basis-1/2 lg:basis-1/3">
                 <Card className="overflow-hidden">
                   <AspectRatio ratio={16 / 9}>
                     <img
                       src={src}
-                      alt={`${place} in ${countryName} - top attraction photo`}
+                      alt={`${item.name} in ${countryName} - top attraction photo`}
                       loading="lazy"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src = "/placeholder.svg";
-                        (e.currentTarget as HTMLImageElement).alt = `${place} in ${countryName} (image placeholder)`;
+                        (e.currentTarget as HTMLImageElement).alt = `${item.name} in ${countryName} (image placeholder)`;
                       }}
                     />
                   </AspectRatio>
                   <div className="p-3">
-                    <div className="font-medium">{place}</div>
+                    <div className="font-medium">{item.name}</div>
                     <p className="text-sm text-muted-foreground">{countryName}</p>
                   </div>
                 </Card>

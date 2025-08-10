@@ -7,8 +7,17 @@
     "bestSeason": "Jul–Oct (Great Migration), Jan–Mar",
     "languages": ["Swahili", "English"],
     "speciality": "Big Five safaris, Great Rift Valley, vibrant cultures",
-    "famousPlaces": ["Masai Mara", "Amboseli National Park", "Lake Nakuru", "Diani Beach"],
-    "mustVisit": ["Nairobi National Park", "Mount Kenya", "Maasai Village"],
+    "famousPlaces": [
+      { "name": "Masai Mara", "image": "/places/kenya/masai-mara.jpg" },
+      { "name": "Amboseli National Park", "image": "/places/kenya/amboseli-national-park.jpg" },
+      { "name": "Lake Nakuru", "image": "/places/kenya/lake-nakuru.jpg" },
+      { "name": "Diani Beach", "image": "/places/kenya/diani-beach.jpg" }
+    ],
+    "mustVisit": [
+      { "name": "Nairobi National Park", "image": "/places/kenya/nairobi-national-park.jpg" },
+      { "name": "Mount Kenya", "image": "/places/kenya/mount-kenya.jpg" },
+      { "name": "Maasai Village" }
+    ],
     "culture": "Home to diverse tribes including Maasai and Kikuyu; rich music, dance, and crafts.",
     "essentialTips": [
       { "icon": "ShieldCheck", "title": "Park Rules", "note": "Keep safe distances and follow ranger instructions." },

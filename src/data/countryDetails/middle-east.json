@@ -7,8 +7,17 @@
     "bestSeason": "Nov–Mar",
     "languages": ["Arabic", "English"],
     "speciality": "Futuristic cities, luxury shopping, desert adventures",
-    "famousPlaces": ["Burj Khalifa", "Palm Jumeirah", "Dubai Marina", "Sheikh Zayed Grand Mosque"],
-    "mustVisit": ["Desert Safari", "Louvre Abu Dhabi", "Dubai Creek"],
+    "famousPlaces": [
+      { "name": "Burj Khalifa", "image": "/places/uae/burj-khalifa.jpg" },
+      { "name": "Palm Jumeirah", "image": "/places/uae/palm-jumeirah.jpg" },
+      { "name": "Dubai Marina", "image": "/places/uae/dubai-marina.jpg" },
+      { "name": "Sheikh Zayed Grand Mosque", "image": "/places/uae/sheikh-zayed-grand-mosque.jpg" }
+    ],
+    "mustVisit": [
+      { "name": "Desert Safari", "image": "/places/uae/desert-safari.jpg" },
+      { "name": "Louvre Abu Dhabi", "image": "/places/uae/louvre-abu-dhabi.jpg" },
+      { "name": "Dubai Creek" }
+    ],
     "culture": "Blend of Emirati heritage and modern cosmopolitan lifestyle.",
     "essentialTips": [
       { "icon": "ShieldCheck", "title": "Dress Code", "note": "Dress modestly in public places and religious sites." },

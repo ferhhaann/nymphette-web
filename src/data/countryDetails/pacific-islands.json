@@ -7,8 +7,17 @@
     "bestSeason": "Nov–Apr (dry season)",
     "languages": ["Dhivehi", "English"],
     "speciality": "Overwater villas, pristine reefs, turquoise lagoons",
-    "famousPlaces": ["Overwater Villas", "Banana Reef", "Vaadhoo Island", "Hulhumale Beach"],
-    "mustVisit": ["Male City", "Sun Island", "Baa Atoll"],
+    "famousPlaces": [
+      { "name": "Overwater Villas", "image": "/places/maldives/overwater-villas.jpg" },
+      { "name": "Banana Reef", "image": "/places/maldives/banana-reef.jpg" },
+      { "name": "Vaadhoo Island", "image": "/places/maldives/vaadhoo-island.jpg" },
+      { "name": "Hulhumale Beach", "image": "/places/maldives/hulhumale-beach.jpg" }
+    ],
+    "mustVisit": [
+      { "name": "Male City", "image": "/places/maldives/male-city.jpg" },
+      { "name": "Sun Island", "image": "/places/maldives/sun-island.jpg" },
+      { "name": "Baa Atoll" }
+    ],
     "culture": "Island nation with strong Islamic traditions and seafaring heritage.",
     "essentialTips": [
       { "icon": "Info", "title": "Resort Transfers", "note": "Many islands require speedboat or seaplane transfers." },

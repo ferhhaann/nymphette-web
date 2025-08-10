@@ -7,8 +7,17 @@
     "bestSeason": "Apr–Oct (varies by region)",
     "languages": ["English"],
     "speciality": "Iconic cities, national parks, cultural diversity",
-    "famousPlaces": ["Statue of Liberty", "Times Square", "Grand Canyon", "Yellowstone"],
-    "mustVisit": ["New York City", "Washington DC", "Niagara Falls"],
+    "famousPlaces": [
+      { "name": "Statue of Liberty", "image": "/places/usa/statue-of-liberty.jpg" },
+      { "name": "Times Square", "image": "/places/usa/times-square.jpg" },
+      { "name": "Grand Canyon", "image": "/places/usa/grand-canyon.jpg" },
+      { "name": "Yellowstone", "image": "/places/usa/yellowstone.jpg" }
+    ],
+    "mustVisit": [
+      { "name": "New York City", "image": "/places/usa/times-square.jpg" },
+      { "name": "Washington DC", "image": "/places/usa/washington-dc.jpg" },
+      { "name": "Niagara Falls", "image": "/places/usa/niagara-falls.jpg" }
+    ],
     "culture": "A melting pot of cultures, cuisines, music, and arts.",
     "essentialTips": [
       { "icon": "CreditCard", "title": "Payments", "note": "Cards widely accepted; tipping is customary (15–20%)." },
