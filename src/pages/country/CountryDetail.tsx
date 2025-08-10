@@ -63,6 +63,7 @@ const iconMap = {
 
 // Helpers
 const deslug = (slug: string) => slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+const slugify = (name: string) => name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
 const pickRegionPackages = (region: string): TravelPackage[] => {
   switch (region) {
     case "asia": return asiaData as unknown as TravelPackage[];
@@ -98,10 +99,13 @@ const CountryDetail: React.FC = () => {
   const regionKey = (region || "").toLowerCase();
 
   const allRegionPackages = useMemo(() => pickRegionPackages(regionKey), [regionKey]);
-  const packages = useMemo(
-    () => allRegionPackages.filter((p) => p.country.toLowerCase() === countryName.toLowerCase()),
-    [allRegionPackages, countryName]
-  );
+  const packages = useMemo(() => {
+    const c = (country || "").toLowerCase();
+    return allRegionPackages.filter((p) => {
+      const slug = ((p as any).countrySlug as string) || slugify(p.country || "");
+      return slug.toLowerCase() === c;
+    });
+  }, [allRegionPackages, country]);
 
   const details = useMemo(() => {
     const regionMap = pickRegionCountryDetails(regionKey) as Record<string, any>;

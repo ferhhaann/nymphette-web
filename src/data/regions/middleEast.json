@@ -3,6 +3,7 @@
     "id": "mid-001",
     "title": "Dubai Luxury Experience",
     "country": "UAE",
+    "countrySlug": "uae",
     "region": "Middle East",
     "duration": "5 Days / 4 Nights",
     "price": "₹55,000",

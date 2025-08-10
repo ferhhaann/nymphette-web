@@ -19,14 +19,19 @@ const slugify = (name: string) =>
 
 const CountryList: React.FC<CountryListProps> = ({ regionKey, data }) => {
   const countries = useMemo(() => {
-    const counts = new Map<string, number>();
+    const map = new Map<string, { name: string; count: number }>();
     for (const p of data) {
-      const c = p.country?.trim();
-      if (!c) continue;
-      counts.set(c, (counts.get(c) || 0) + 1);
+      const name = p.country?.trim();
+      if (!name) continue;
+      const slug = (p.countrySlug && p.countrySlug.trim()) || slugify(name);
+      const curr = map.get(slug) || { name, count: 0 };
+      // Prefer the most readable name if there are variants
+      curr.name = curr.name.length >= name.length ? curr.name : name;
+      curr.count += 1;
+      map.set(slug, curr);
     }
-    return Array.from(counts.entries())
-      .map(([name, count]) => ({ name, count, slug: slugify(name) }))
+    return Array.from(map.entries())
+      .map(([slug, v]) => ({ slug, name: v.name, count: v.count }))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [data]);
 

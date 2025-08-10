@@ -3,6 +3,7 @@
     "id": "afr-001",
     "title": "Kenya Safari Adventure",
     "country": "Kenya",
+    "countrySlug": "kenya",
     "region": "Africa",
     "duration": "8 Days / 7 Nights",
     "price": "₹95,000",

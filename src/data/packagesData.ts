@@ -15,6 +15,8 @@ export interface TravelPackage {
   id: string;
   title: string;
   country: string;
+  // Canonical slug linking region packages to countryDetails (optional for legacy data)
+  countrySlug?: string;
   region: string;
   duration: string;
   price: string;
