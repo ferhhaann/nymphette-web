@@ -5,6 +5,21 @@ import { Card } from "@/components/ui/card";
 import { MapPinned } from "lucide-react";
 import type { TravelPackage } from "@/data/packagesData";
 
+import asiaDetails from "@/data/countryDetails/asia.json";
+import europeDetails from "@/data/countryDetails/europe.json";
+import africaDetails from "@/data/countryDetails/africa.json";
+import americasDetails from "@/data/countryDetails/americas.json";
+import middleEastDetails from "@/data/countryDetails/middle-east.json";
+import pacificIslandsDetails from "@/data/countryDetails/pacific-islands.json";
+
+const DETAILS_BY_REGION: Record<string, Record<string, any>> = {
+  asia: asiaDetails as Record<string, any>,
+  europe: europeDetails as Record<string, any>,
+  africa: africaDetails as Record<string, any>,
+  americas: americasDetails as Record<string, any>,
+  "middle-east": middleEastDetails as Record<string, any>,
+  "pacific-islands": pacificIslandsDetails as Record<string, any>,
+};
 interface CountryListProps {
   regionKey: string;
   data: TravelPackage[];
@@ -19,21 +34,22 @@ const slugify = (name: string) =>
 
 const CountryList: React.FC<CountryListProps> = ({ regionKey, data }) => {
   const countries = useMemo(() => {
-    const map = new Map<string, { name: string; count: number }>();
+    const details = DETAILS_BY_REGION[regionKey] || {};
+    // Build counts from current packages list (for badge), but presence is from details
+    const counts = new Map<string, number>();
     for (const p of data) {
-      const name = p.country?.trim();
-      if (!name) continue;
-      const slug = (p.countrySlug && p.countrySlug.trim()) || slugify(name);
-      const curr = map.get(slug) || { name, count: 0 };
-      // Prefer the most readable name if there are variants
-      curr.name = curr.name.length >= name.length ? curr.name : name;
-      curr.count += 1;
-      map.set(slug, curr);
+      const slug = (p.countrySlug && p.countrySlug.trim()) || slugify(p.country?.trim() || "");
+      if (!slug) continue;
+      counts.set(slug, (counts.get(slug) || 0) + 1);
     }
-    return Array.from(map.entries())
-      .map(([slug, v]) => ({ slug, name: v.name, count: v.count }))
+    return Object.entries(details)
+      .map(([slug, d]: [string, any]) => ({
+        slug,
+        name: (d && (d as any).name) || slug.replace(/-/g, " ").replace(/\b\w/g, (s) => s.toUpperCase()),
+        count: counts.get(slug) || 0,
+      }))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [data]);
+  }, [regionKey, data]);
 
   if (!countries.length) return null;
 
