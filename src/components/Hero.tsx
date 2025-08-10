@@ -38,45 +38,51 @@ const Hero = () => {
     navigate('/contact');
   };
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-16 sm:top-20 md:top-24 bg-cover bg-center bg-no-repeat rounded-2xl sm:rounded-3xl overflow-hidden"
-        style={{ backgroundImage: `url(${heroImage})` }}
-      >
-        <div className="absolute inset-0 bg-foreground/50"></div>
-      </div>
+    <div className="min-h-screen bg-background">
+      {/* Hero Image Section */}
+      <section className="relative flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="inset-x-3 sm:inset-x-6 md:inset-x-8 min-h-[70vh] sm:min-h-[80vh] bg-cover bg-center bg-no-repeat rounded-2xl sm:rounded-3xl overflow-hidden mx-3 sm:mx-6 md:mx-8 mt-16 sm:mt-20 md:mt-24"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        >
+          <div className="absolute inset-0 bg-foreground/50"></div>
+          
+          {/* Content overlaid on image */}
+          <div className="relative z-10 text-center text-background max-w-4xl mx-auto px-3 sm:px-6 md:px-4 py-8 sm:py-12 flex flex-col justify-center min-h-[70vh] sm:min-h-[80vh]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold font-sans tracking-tight mb-4 sm:mb-6 animate-fade-in leading-tight">
+              Discover your next adventure
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-background/90 animate-slide-up leading-relaxed px-2">
+              Explore breathtaking destinations with our curated travel experiences. Create memories that last a lifetime.
+            </p>
 
-      {/* Content */}
-      <div className="relative z-10 text-center text-background max-w-4xl mx-auto px-3 sm:px-6 md:px-4 py-8 sm:py-12">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold font-sans tracking-tight mb-4 sm:mb-6 animate-fade-in leading-tight">
-          Discover your next adventure
-        </h1>
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-background/90 animate-slide-up leading-relaxed px-2">
-          Explore breathtaking destinations with our curated travel experiences. Create memories that last a lifetime.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 animate-scale-in px-4 sm:px-0">
-          <Button 
-            size="lg" 
-            className="bg-foreground hover:bg-foreground/90 text-background px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto"
-            onClick={handleExplorePackages}
-          >
-            Start your journey
-          </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="border-2 border-background/40 text-background hover:bg-background hover:text-foreground px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto bg-background/10 backdrop-blur-sm"
-            onClick={handlePlanCustomTrip}
-          >
-            Book now
-          </Button>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-scale-in px-4 sm:px-0">
+              <Button 
+                size="lg" 
+                className="bg-foreground hover:bg-foreground/90 text-background px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto"
+                onClick={handleExplorePackages}
+              >
+                Start your journey
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-2 border-background/40 text-background hover:bg-background hover:text-foreground px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto bg-background/10 backdrop-blur-sm"
+                onClick={handlePlanCustomTrip}
+              >
+                Book now
+              </Button>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div className="bg-background/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-4xl mx-auto animate-slide-up">
+      {/* Search Section - Below Image */}
+      <section className="px-3 sm:px-6 md:px-8 -mt-8 relative z-20">
+        <div className="bg-background border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-4xl mx-auto animate-slide-up shadow-lg">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <div className="flex items-center space-x-3 bg-background/60 border border-border/20 rounded-lg p-3 sm:col-span-1">
+            <div className="flex items-center space-x-3 bg-muted/50 border border-border rounded-lg p-3 sm:col-span-1">
               <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-foreground flex-shrink-0" />
               <input
                 type="text"
@@ -87,7 +93,7 @@ const Hero = () => {
               />
             </div>
             
-            <div className="flex items-center space-x-3 bg-background/60 border border-border/20 rounded-lg p-3 sm:col-span-1">
+            <div className="flex items-center space-x-3 bg-muted/50 border border-border rounded-lg p-3 sm:col-span-1">
               <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-foreground flex-shrink-0" />
               <input
                 type="date"
@@ -98,7 +104,7 @@ const Hero = () => {
               />
             </div>
             
-            <div className="flex items-center space-x-3 bg-background/60 border border-border/20 rounded-lg p-3 sm:col-span-1">
+            <div className="flex items-center space-x-3 bg-muted/50 border border-border rounded-lg p-3 sm:col-span-1">
               <Users className="h-4 w-4 sm:h-5 sm:w-5 text-foreground flex-shrink-0" />
               <select
                 value={searchData.travelers}
@@ -123,7 +129,7 @@ const Hero = () => {
             </Button>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Floating Elements - Hidden on mobile, visible on larger screens */}
       <div className="hidden md:block absolute bottom-10 left-10 animate-float">
@@ -143,7 +149,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
