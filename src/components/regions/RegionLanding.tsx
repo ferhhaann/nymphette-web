@@ -99,7 +99,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
   return (
     <div className="min-h-screen bg-background">
       {/* HERO */}
-      <section className="relative">
+      <section className="relative mt-4 sm:mt-6 lg:mt-8">
         <Carousel>
           <CarouselContent>
             {heroImages.map((img, idx) => (
