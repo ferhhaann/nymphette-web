@@ -74,11 +74,15 @@ const CountryList: React.FC<CountryListProps> = ({ regionKey, data }) => {
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a country to explore" />
           </SelectTrigger>
-          <SelectContent className="bg-background z-50">
+          <SelectContent className="bg-background border z-50">
             {countries.map((c) => (
-              <SelectItem key={c.slug} value={c.slug}>
+              <SelectItem 
+                key={c.slug} 
+                value={c.slug}
+                className="hover:bg-accent/50 focus:bg-accent/50 data-[highlighted]:bg-accent/50"
+              >
                 <div className="flex items-center justify-between w-full">
-                  <span>{c.name}</span>
+                  <span className="text-foreground">{c.name}</span>
                   <Badge variant="outline" className="ml-2 text-xs">{c.count}</Badge>
                 </div>
               </SelectItem>
