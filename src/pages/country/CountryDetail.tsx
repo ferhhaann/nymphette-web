@@ -105,42 +105,23 @@ const CountryDetail: React.FC = () => {
 
   const details = useMemo(() => {
     const regionMap = pickRegionCountryDetails(regionKey) as Record<string, any>;
-    return (regionMap as any)[(country || "").toLowerCase()] || {
-      name: countryName,
-      currency: "Local Currency",
-      climate: "Varies by region",
-      bestSeason: "Peak season varies",
-      languages: ["English"],
-      speciality: `${countryName} offers diverse experiences across culture and nature.`,
-      famousPlaces: [],
-      mustVisit: [],
-      culture: `Discover the rich heritage, cuisine, and landscapes of ${countryName}.`,
-      essentialTips: [
-        { icon: "CreditCard", title: "Cards", note: "Cards accepted in cities; carry cash for small shops." },
-        { icon: "ShieldCheck", title: "Etiquette", note: "Be mindful of local customs and dress codes." },
-      ],
-      visitors: {
-        annual: 1000000,
-        gender: { male: 52, female: 48 },
-        purposes: [
-          { name: "Leisure", value: 55 },
-          { name: "Family", value: 20 },
-          { name: "Business", value: 15 },
-          { name: "Other", value: 10 },
-        ],
-        topOrigins: ["Global"],
-      },
-      faqs: [
-        { q: `When is the best time to visit ${countryName}?`, a: "Peak seasons vary by region; contact us for tailored advice." },
-      ],
-    };
+    const key = (country || "").toLowerCase();
+    const raw = (regionMap as any)[key];
+    return raw ? { ...raw, name: raw.name ?? countryName } : { name: countryName };
   }, [country, countryName, regionKey]);
 
   // SEO
   useEffect(() => {
-    const pageTitle = `${details.name} Tour Packages | ${details.bestSeason} • Travel Guide`;
+    const displayName = details.name || countryName;
+    const pageTitle = `${displayName} Tour Packages | ${details.bestSeason ? details.bestSeason + " • " : ""}Travel Guide`;
     document.title = pageTitle;
-    const desc = `Plan your ${details.name} trip: packages, best time (${details.bestSeason}), currency (${details.currency}), tips, FAQs and enquiry.`;
+
+    const descParts: string[] = [`Plan your ${displayName} trip: packages`];
+    if (details.bestSeason) descParts.push(`best time (${details.bestSeason})`);
+    if (details.currency) descParts.push(`currency (${details.currency})`);
+    descParts.push("tips, FAQs and enquiry.");
+    const desc = descParts.join(", ");
+
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
     meta.setAttribute("content", desc);
@@ -157,7 +138,7 @@ const CountryDetail: React.FC = () => {
       const el = document.createElement('script'); el.type = 'application/ld+json'; el.text = JSON.stringify(ld);
       document.head.appendChild(el); return () => { document.head.removeChild(el); };
     }
-  }, [country, details, regionKey]);
+  }, [country, details, regionKey, countryName]);
 
   // Enquiry form
   const [a, setA] = useState(3);
@@ -227,10 +208,18 @@ const CountryDetail: React.FC = () => {
                   <h1 className="text-3xl sm:text-4xl font-bold text-primary">Explore {details.name} Tour Packages</h1>
                   <p className="text-muted-foreground flex items-center gap-2"><Flag className="size-4" /> {details.speciality || `Discover ${details.name}'s highlights`}</p>
                   <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline" className="gap-1"><MapPin className="size-4" /> Capital: {details.capital || "—"}</Badge>
-                    <Badge variant="outline" className="gap-1"><HandCoins className="size-4" /> {details.currency}</Badge>
-                    <Badge variant="outline" className="gap-1"><Clock className="size-4" /> Best season: {details.bestSeason}</Badge>
-                    <Badge variant="outline" className="gap-1"><Globe2 className="size-4" /> {details.languages.join(", ")}</Badge>
+                    {details.capital && (
+                      <Badge variant="outline" className="gap-1"><MapPin className="size-4" /> Capital: {details.capital}</Badge>
+                    )}
+                    {details.currency && (
+                      <Badge variant="outline" className="gap-1"><HandCoins className="size-4" /> {details.currency}</Badge>
+                    )}
+                    {details.bestSeason && (
+                      <Badge variant="outline" className="gap-1"><Clock className="size-4" /> Best season: {details.bestSeason}</Badge>
+                    )}
+                    {Array.isArray(details.languages) && details.languages.length > 0 && (
+                      <Badge variant="outline" className="gap-1"><Globe2 className="size-4" /> {details.languages.join(", ")}</Badge>
+                    )}
                   </div>
                   <div className="flex gap-3 pt-2">
                     <Button onClick={() => document.getElementById("enquiry")?.scrollIntoView({ behavior: 'smooth' })}>Book Now</Button>
@@ -240,29 +229,39 @@ const CountryDetail: React.FC = () => {
                   </div>
                 </div>
 
-                <Card className="bg-card/80 backdrop-blur">
-                  <CardContent className="p-4 space-y-3">
-                    <div className="text-sm text-muted-foreground">Essential facts</div>
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div>
-                        <div className="text-muted-foreground">Currency</div>
-                        <div className="font-medium">{details.currency}</div>
+                {((details.currency) || (details.climate) || (details.bestSeason) || (Array.isArray(details.languages) && details.languages.length > 0)) && (
+                  <Card className="bg-card/80 backdrop-blur">
+                    <CardContent className="p-4 space-y-3">
+                      <div className="text-sm text-muted-foreground">Essential facts</div>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        {details.currency && (
+                          <div>
+                            <div className="text-muted-foreground">Currency</div>
+                            <div className="font-medium">{details.currency}</div>
+                          </div>
+                        )}
+                        {details.climate && (
+                          <div>
+                            <div className="text-muted-foreground">Climate</div>
+                            <div className="font-medium">{details.climate}</div>
+                          </div>
+                        )}
+                        {details.bestSeason && (
+                          <div>
+                            <div className="text-muted-foreground">Best Season</div>
+                            <div className="font-medium">{details.bestSeason}</div>
+                          </div>
+                        )}
+                        {Array.isArray(details.languages) && details.languages.length > 0 && (
+                          <div>
+                            <div className="text-muted-foreground">Languages</div>
+                            <div className="font-medium">{details.languages.join(', ')}</div>
+                          </div>
+                        )}
                       </div>
-                      <div>
-                        <div className="text-muted-foreground">Climate</div>
-                        <div className="font-medium">{details.climate}</div>
-                      </div>
-                      <div>
-                        <div className="text-muted-foreground">Best Season</div>
-                        <div className="font-medium">{details.bestSeason}</div>
-                      </div>
-                      <div>
-                        <div className="text-muted-foreground">Languages</div>
-                        <div className="font-medium">{details.languages.join(', ')}</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             </div>
           </div>
@@ -291,49 +290,60 @@ const CountryDetail: React.FC = () => {
           </section>
         ) : null}
 
-        {/* Visitor Statistics */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-          <h2 className="text-2xl font-semibold mb-4">Visitor Statistics</h2>
-          <div className="grid lg:grid-cols-3 gap-6">
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-2">Annual Visitors</div>
-              <div className="text-3xl font-bold">{details.visitors?.annual?.toLocaleString() || '—'}</div>
-              <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                <div className="flex items-center gap-2"><Users className="size-4" /> Male: {details.visitors?.gender.male}%</div>
-                <div className="flex items-center gap-2"><Users className="size-4" /> Female: {details.visitors?.gender.female}%</div>
-              </div>
-            </Card>
+        {(details as any).visitors ? (
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+            <h2 className="text-2xl font-semibold mb-4">Visitor Statistics</h2>
+            <div className="grid lg:grid-cols-3 gap-6">
+              <Card className="p-4">
+                <div className="text-sm text-muted-foreground mb-2">Annual Visitors</div>
+                <div className="text-3xl font-bold">{details.visitors?.annual?.toLocaleString?.() || '—'}</div>
+                <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                  {details.visitors?.gender?.male !== undefined && (
+                    <div className="flex items-center gap-2"><Users className="size-4" /> Male: {details.visitors.gender.male}%</div>
+                  )}
+                  {details.visitors?.gender?.female !== undefined && (
+                    <div className="flex items-center gap-2"><Users className="size-4" /> Female: {details.visitors.gender.female}%</div>
+                  )}
+                </div>
+              </Card>
 
-            <Card className="p-4 lg:col-span-2">
-              <div className="text-sm text-muted-foreground mb-2">Travel Purposes</div>
-              <PurposeChart />
-            </Card>
+              <Card className="p-4 lg:col-span-2">
+                <div className="text-sm text-muted-foreground mb-2">Travel Purposes</div>
+                <PurposeChart />
+              </Card>
 
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-2">Top Origins</div>
-              <ul className="space-y-2">
-                {(details.visitors?.topOrigins || []).map((o, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm"><MapPin className="size-4" /> {o}</li>
-                ))}
-              </ul>
-            </Card>
+              {details.visitors?.topOrigins?.length ? (
+                <Card className="p-4">
+                  <div className="text-sm text-muted-foreground mb-2">Top Origins</div>
+                  <ul className="space-y-2">
+                    {details.visitors.topOrigins.map((o, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm"><MapPin className="size-4" /> {o}</li>
+                    ))}
+                  </ul>
+                </Card>
+              ) : null}
 
-            <Card className="p-4 lg:col-span-2">
-              <div className="text-sm text-muted-foreground mb-2">Map Outline</div>
-              <div className="h-48 rounded-md border grid place-items-center text-muted-foreground bg-secondary/40">
-                <Map className="size-8" /> Map outline placeholder for {details.name}
-              </div>
-            </Card>
-          </div>
-        </section>
+              <Card className="p-4 lg:col-span-2">
+                <div className="text-sm text-muted-foreground mb-2">Map Outline</div>
+                <div className="h-48 rounded-md border grid place-items-center text-muted-foreground bg-secondary/40">
+                  <Map className="size-8" /> Map outline placeholder for {details.name}
+                </div>
+              </Card>
+            </div>
+          </section>
+        ) : null}
 
         {/* Informational Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
           <h2 className="text-2xl font-semibold">Everything You Need to Know About {details.name}</h2>
-          <p className="text-muted-foreground mt-2 max-w-3xl">{details.culture}</p>
-          <Button variant="link" className="mt-2 px-0" asChild>
-            <a href="#more-info" onClick={(e) => e.preventDefault()}>Read More</a>
-          </Button>
+          {details.culture && (
+            <>
+              <p className="text-muted-foreground mt-2 max-w-3xl">{details.culture}</p>
+              <Button variant="link" className="mt-2 px-0" asChild>
+                <a href="#more-info" onClick={(e) => e.preventDefault()}>Read More</a>
+              </Button>
+            </>
+          )}
         </section>
 
         {/* Tour Packages Grid */}

@@ -100,4 +100,37 @@
       { "q": "Best time to visit?", "a": "Nov–Feb for most regions." }
     ]
   }
+,
+  "indonesia": {
+    "name": "Indonesia",
+    "capital": "Jakarta",
+    "currency": "Indonesian Rupiah (IDR)",
+    "climate": "Tropical; dry and wet seasons",
+    "bestSeason": "Apr–Oct (dry season)",
+    "languages": ["Indonesian (Bahasa Indonesia)"],
+    "speciality": "Island nation with beaches, temples, volcanoes, and rich culture",
+    "famousPlaces": ["Bali", "Yogyakarta", "Komodo National Park", "Raja Ampat"],
+    "mustVisit": ["Ubud", "Borobudur", "Gili Islands", "Mount Bromo"],
+    "culture": "A diverse archipelago of 17,000+ islands blending traditions, arts, and cuisines.",
+    "essentialTips": [
+      { "icon": "CreditCard", "title": "Cards & Cash", "note": "Cards accepted in tourist areas; carry IDR cash for markets." },
+      { "icon": "ShieldCheck", "title": "Etiquette", "note": "Dress modestly at temples; be respectful of local customs." },
+      { "icon": "Landmark", "title": "Temple Visits", "note": "Sarongs may be required; rentals often available." }
+    ],
+    "visitors": {
+      "annual": 16000000,
+      "gender": { "male": 52, "female": 48 },
+      "purposes": [
+        { "name": "Leisure", "value": 62 },
+        { "name": "Family", "value": 18 },
+        { "name": "Business", "value": 12 },
+        { "name": "Other", "value": 8 }
+      ],
+      "topOrigins": ["Singapore", "Malaysia", "Australia", "China", "Japan"]
+    },
+    "faqs": [
+      { "q": "Best time to visit Indonesia?", "a": "Apr–Oct (dry season) is ideal for most islands; check local microclimates." },
+      { "q": "Do I need a visa?", "a": "Many nationalities can obtain a visa on arrival. Check the latest regulations." }
+    ]
+  }
 }
