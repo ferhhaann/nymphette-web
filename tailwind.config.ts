@@ -17,11 +17,18 @@ export default {
 				'2xl': '1400px'
 			}
 		},
-			extend: {
+				extend: {
 				fontFamily: {
 					'geo': ['"Geologica"', 'sans-serif'],
 					'playfair': ['"Playfair Display"', 'serif'],
 					'sans': ['"Geologica"', 'sans-serif'],
+				},
+				fontWeight: {
+					normal: '400',
+					medium: '500',
+					semibold: '500',
+					bold: '600',
+					extrabold: '700',
 				},
 				colors: {
 					border: 'hsl(var(--border))',
