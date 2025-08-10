@@ -24,29 +24,24 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
 } from "recharts";
 import type { TravelPackage } from "@/data/packagesData";
-import asiaData from "@/data/regions/asia.json";
-import europeData from "@/data/regions/europe.json";
-import africaData from "@/data/regions/africa.json";
-import americasData from "@/data/regions/americas.json";
-import middleEastData from "@/data/regions/middleEast.json";
-import pacificIslandsData from "@/data/regions/pacificIslands.json";
-import asiaCountryDetails from "@/data/countryDetails/asia.json";
-import europeCountryDetails from "@/data/countryDetails/europe.json";
-import africaCountryDetails from "@/data/countryDetails/africa.json";
-import americasCountryDetails from "@/data/countryDetails/americas.json";
-import middleEastCountryDetails from "@/data/countryDetails/middle-east.json";
-import pacificIslandsCountryDetails from "@/data/countryDetails/pacific-islands.json";
+import asiaMerged from "@/data/regions/asia.data";
+import europeMerged from "@/data/regions/europe.data";
+import africaMerged from "@/data/regions/africa.data";
+import americasMerged from "@/data/regions/americas.data";
+import middleEastMerged from "@/data/regions/middleEast.data";
+import pacificIslandsMerged from "@/data/regions/pacificIslands.data";
+import type { UnifiedRegionData } from "@/data/regions/types";
 
-// Country details per region
-const pickRegionCountryDetails = (region: string) => {
+// Unified region data (packages + country details)
+const pickRegionUnified = (region: string): UnifiedRegionData => {
   switch (region) {
-    case "asia": return asiaCountryDetails as any;
-    case "europe": return europeCountryDetails as any;
-    case "africa": return africaCountryDetails as any;
-    case "americas": return americasCountryDetails as any;
-    case "middle-east": return middleEastCountryDetails as any;
-    case "pacific-islands": return pacificIslandsCountryDetails as any;
-    default: return {} as any;
+    case "asia": return asiaMerged as UnifiedRegionData;
+    case "europe": return europeMerged as UnifiedRegionData;
+    case "africa": return africaMerged as UnifiedRegionData;
+    case "americas": return americasMerged as UnifiedRegionData;
+    case "middle-east": return middleEastMerged as UnifiedRegionData;
+    case "pacific-islands": return pacificIslandsMerged as UnifiedRegionData;
+    default: return { countries: {} };
   }
 };
 
@@ -64,17 +59,7 @@ const iconMap = {
 // Helpers
 const deslug = (slug: string) => slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 const slugify = (name: string) => name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
-const pickRegionPackages = (region: string): TravelPackage[] => {
-  switch (region) {
-    case "asia": return asiaData as unknown as TravelPackage[];
-    case "europe": return europeData as unknown as TravelPackage[];
-    case "africa": return africaData as unknown as TravelPackage[];
-    case "americas": return americasData as unknown as TravelPackage[];
-    case "middle-east": return middleEastData as unknown as TravelPackage[];
-    case "pacific-islands": return pacificIslandsData as unknown as TravelPackage[];
-    default: return [];
-  }
-};
+// (deprecated) pickRegionPackages removed in favor of pickRegionUnified
 
 const EnquirySchema = z.object({
   name: z.string().min(2),
@@ -98,21 +83,17 @@ const CountryDetail: React.FC = () => {
   const countryName = useMemo(() => deslug(country || ""), [country]);
   const regionKey = (region || "").toLowerCase();
 
-  const allRegionPackages = useMemo(() => pickRegionPackages(regionKey), [regionKey]);
+  const unified = useMemo(() => pickRegionUnified(regionKey), [regionKey]);
+  const cslug = useMemo(() => (country || "").toLowerCase(), [country]);
+
   const packages = useMemo(() => {
-    const c = (country || "").toLowerCase();
-    return allRegionPackages.filter((p) => {
-      const slug = ((p as any).countrySlug as string) || slugify(p.country || "");
-      return slug.toLowerCase() === c;
-    });
-  }, [allRegionPackages, country]);
+    return (unified.countries?.[cslug]?.packages || []) as TravelPackage[];
+  }, [unified, cslug]);
 
   const details = useMemo(() => {
-    const regionMap = pickRegionCountryDetails(regionKey) as Record<string, any>;
-    const key = (country || "").toLowerCase();
-    const raw = (regionMap as any)[key];
+    const raw = (unified.countries?.[cslug]?.details as any) || {};
     return raw ? { ...raw, name: raw.name ?? countryName } : { name: countryName };
-  }, [country, countryName, regionKey]);
+  }, [unified, cslug, countryName]);
 
   // SEO
   useEffect(() => {

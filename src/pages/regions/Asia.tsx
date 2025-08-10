@@ -2,14 +2,14 @@ import React, { useMemo } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionLanding from "@/components/regions/RegionLanding";
-import asiaData from "@/data/regions/asia.json";
+import asiaMerged from "@/data/regions/asia.data";
 import type { TravelPackage } from "@/data/packagesData";
 import hero1 from "@/assets/hero-travel.jpg";
 import hero2 from "@/assets/destinations-collage.jpg";
 import hero3 from "@/assets/regions-world.jpg";
 
 const Asia: React.FC = () => {
-  const packages: TravelPackage[] = useMemo(() => (asiaData as unknown as TravelPackage[]), []);
+  const packages: TravelPackage[] = useMemo(() => (Object.values((asiaMerged as any).countries || {}).flatMap((c: any) => c.packages) as TravelPackage[]), []);
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
