@@ -38,28 +38,28 @@ const Hero = () => {
     navigate('/contact');
   };
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div 
-        className="absolute inset-x-4 md:inset-x-8 bottom-4 md:bottom-8 top-20 md:top-24 bg-cover bg-center bg-no-repeat rounded-3xl overflow-hidden"
+        className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-16 sm:top-20 md:top-24 bg-cover bg-center bg-no-repeat rounded-2xl sm:rounded-3xl overflow-hidden"
         style={{ backgroundImage: `url(${heroImage})` }}
       >
         <div className="absolute inset-0 bg-foreground/50"></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center text-background max-w-4xl mx-auto px-4">
-        <h1 className="text-5xl md:text-7xl font-bold font-sans tracking-tight mb-6 animate-fade-in">
+      <div className="relative z-10 text-center text-background max-w-4xl mx-auto px-3 sm:px-6 md:px-4 py-8 sm:py-12">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold font-sans tracking-tight mb-4 sm:mb-6 animate-fade-in leading-tight">
           Discover your next adventure
         </h1>
-        <p className="text-xl md:text-2xl mb-8 text-muted-foreground animate-slide-up">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-background/90 animate-slide-up leading-relaxed px-2">
           Explore breathtaking destinations with our curated travel experiences. Create memories that last a lifetime.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-scale-in">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 animate-scale-in px-4 sm:px-0">
           <Button 
             size="lg" 
-            className="bg-foreground hover:bg-foreground/90 text-background px-8 py-3 text-lg"
+            className="bg-foreground hover:bg-foreground/90 text-background px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto"
             onClick={handleExplorePackages}
           >
             Start your journey
@@ -67,43 +67,43 @@ const Hero = () => {
           <Button 
             size="lg" 
             variant="outline" 
-            className="border-foreground/30 text-foreground hover:bg-foreground hover:text-background px-8 py-3 text-lg"
+            className="border-2 border-background/40 text-background hover:bg-background hover:text-foreground px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto bg-background/10 backdrop-blur-sm"
             onClick={handlePlanCustomTrip}
           >
             Book now
           </Button>
         </div>
 
-        <div className="bg-card/70 backdrop-blur-md rounded-2xl p-6 max-w-4xl mx-auto animate-slide-up">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="flex items-center space-x-3 bg-card/40 border border-border rounded-lg p-3">
-              <MapPin className="h-5 w-5 text-foreground" />
+        <div className="bg-background/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-4xl mx-auto animate-slide-up">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="flex items-center space-x-3 bg-background/60 border border-border/20 rounded-lg p-3 sm:col-span-1">
+              <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-foreground flex-shrink-0" />
               <input
                 type="text"
                 placeholder="Where to?"
                 value={searchData.destination}
                 onChange={(e) => handleInputChange('destination', e.target.value)}
-                className="bg-transparent text-foreground placeholder:text-muted-foreground outline-none flex-1"
+                className="bg-transparent text-foreground placeholder:text-muted-foreground outline-none flex-1 text-sm sm:text-base"
               />
             </div>
             
-            <div className="flex items-center space-x-3 bg-card/40 border border-border rounded-lg p-3">
-              <Calendar className="h-5 w-5 text-foreground" />
+            <div className="flex items-center space-x-3 bg-background/60 border border-border/20 rounded-lg p-3 sm:col-span-1">
+              <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-foreground flex-shrink-0" />
               <input
                 type="date"
                 placeholder="When?"
                 value={searchData.date}
                 onChange={(e) => handleInputChange('date', e.target.value)}
-                className="bg-transparent text-foreground placeholder:text-muted-foreground outline-none flex-1"
+                className="bg-transparent text-foreground placeholder:text-muted-foreground outline-none flex-1 text-sm sm:text-base"
               />
             </div>
             
-            <div className="flex items-center space-x-3 bg-card/40 border border-border rounded-lg p-3">
-              <Users className="h-5 w-5 text-foreground" />
+            <div className="flex items-center space-x-3 bg-background/60 border border-border/20 rounded-lg p-3 sm:col-span-1">
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-foreground flex-shrink-0" />
               <select
                 value={searchData.travelers}
                 onChange={(e) => handleInputChange('travelers', e.target.value)}
-                className="bg-transparent text-foreground outline-none flex-1"
+                className="bg-transparent text-foreground outline-none flex-1 text-sm sm:text-base"
               >
                 <option value="" className="text-foreground">Travelers</option>
                 <option value="1" className="text-foreground">1 Person</option>
@@ -115,31 +115,31 @@ const Hero = () => {
             </div>
             
             <Button 
-              className="bg-foreground hover:bg-foreground/90 text-background p-3"
+              className="bg-foreground hover:bg-foreground/90 text-background p-3 sm:col-span-1 w-full"
               onClick={handleSearch}
             >
-              <Search className="h-5 w-5 mr-2" />
-              Search
+              <Search className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              <span className="text-sm sm:text-base">Search</span>
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Floating Elements */}
-      <div className="absolute bottom-10 left-10 animate-float">
+      {/* Floating Elements - Hidden on mobile, visible on larger screens */}
+      <div className="hidden md:block absolute bottom-10 left-10 animate-float">
         <div className="bg-background/30 backdrop-blur-md rounded-full p-4">
-          <div className="text-center text-foreground">
+          <div className="text-center text-background">
             <div className="text-2xl font-bold">500+</div>
-            <div className="text-sm text-muted-foreground">Destinations</div>
+            <div className="text-sm text-background/80">Destinations</div>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-20 right-10 animate-float" style={{ animationDelay: '1s' }}>
+      <div className="hidden md:block absolute bottom-20 right-10 animate-float" style={{ animationDelay: '1s' }}>
         <div className="bg-background/30 backdrop-blur-md rounded-full p-4">
-          <div className="text-center text-foreground">
+          <div className="text-center text-background">
             <div className="text-2xl font-bold">50K+</div>
-            <div className="text-sm text-muted-foreground">Happy Travelers</div>
+            <div className="text-sm text-background/80">Happy Travelers</div>
           </div>
         </div>
       </div>
