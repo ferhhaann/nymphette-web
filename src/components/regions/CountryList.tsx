@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
 import { MapPinned } from "lucide-react";
 import type { TravelPackage } from "@/data/packagesData";
 
@@ -53,7 +53,7 @@ const CountryList: React.FC<CountryListProps> = ({ regionKey, data }) => {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [regionKey, data]);
 
-  const handleCountrySelect = (countrySlug: string) => {
+  const handleCountryClick = (countrySlug: string) => {
     navigate(`/regions/${regionKey}/country/${countrySlug}`);
   };
 
@@ -67,21 +67,27 @@ const CountryList: React.FC<CountryListProps> = ({ regionKey, data }) => {
           <MapPinned className="size-4" /> {countries.length} countries
         </Badge>
       </div>
-      <Select onValueChange={handleCountrySelect}>
-        <SelectTrigger className="w-full max-w-md">
-          <SelectValue placeholder="Select a country to explore" />
-        </SelectTrigger>
-        <SelectContent>
-          {countries.map((c) => (
-            <SelectItem key={c.slug} value={c.slug}>
-              <div className="flex items-center justify-between w-full">
-                <span>{c.name}</span>
-                <Badge variant="outline" className="ml-2 text-xs">{c.count}</Badge>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {countries.map((country) => (
+          <Card 
+            key={country.slug} 
+            className="cursor-pointer hover:shadow-md transition-shadow duration-200 hover:border-primary/50"
+            onClick={() => handleCountryClick(country.slug)}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <MapPinned className="size-4 text-muted-foreground" />
+                  <span className="font-medium text-sm">{country.name}</span>
+                </div>
+                <Badge variant="secondary" className="text-xs">
+                  {country.count}
+                </Badge>
               </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </section>
   );
 };
