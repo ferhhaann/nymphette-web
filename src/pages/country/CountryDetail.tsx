@@ -30,7 +30,25 @@ import africaData from "@/data/regions/africa.json";
 import americasData from "@/data/regions/americas.json";
 import middleEastData from "@/data/regions/middleEast.json";
 import pacificIslandsData from "@/data/regions/pacificIslands.json";
-import countryDetails from "@/data/countryDetails.json";
+import asiaCountryDetails from "@/data/countryDetails/asia.json";
+import europeCountryDetails from "@/data/countryDetails/europe.json";
+import africaCountryDetails from "@/data/countryDetails/africa.json";
+import americasCountryDetails from "@/data/countryDetails/americas.json";
+import middleEastCountryDetails from "@/data/countryDetails/middle-east.json";
+import pacificIslandsCountryDetails from "@/data/countryDetails/pacific-islands.json";
+
+// Country details per region
+const pickRegionCountryDetails = (region: string) => {
+  switch (region) {
+    case "asia": return asiaCountryDetails as any;
+    case "europe": return europeCountryDetails as any;
+    case "africa": return africaCountryDetails as any;
+    case "americas": return americasCountryDetails as any;
+    case "middle-east": return middleEastCountryDetails as any;
+    case "pacific-islands": return pacificIslandsCountryDetails as any;
+    default: return {} as any;
+  }
+};
 
 // Icon map to avoid dynamic require in browser
 const iconMap = {
@@ -86,7 +104,7 @@ const CountryDetail: React.FC = () => {
   );
 
   const details = useMemo(() => {
-    const regionMap = countryDetails[regionKey as keyof typeof countryDetails] || {};
+    const regionMap = pickRegionCountryDetails(regionKey) as Record<string, any>;
     return (regionMap as any)[(country || "").toLowerCase()] || {
       name: countryName,
       currency: "Local Currency",
