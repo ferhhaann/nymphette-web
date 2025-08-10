@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPinned } from "lucide-react";
 import type { TravelPackage } from "@/data/packagesData";
 
@@ -67,20 +68,40 @@ const CountryList: React.FC<CountryListProps> = ({ regionKey, data }) => {
           <MapPinned className="size-4" /> {countries.length} countries
         </Badge>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      {/* Mobile dropdown */}
+      <div className="block md:hidden">
+        <Select onValueChange={handleCountryClick}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a country to explore" />
+          </SelectTrigger>
+          <SelectContent className="bg-background z-50">
+            {countries.map((c) => (
+              <SelectItem key={c.slug} value={c.slug}>
+                <div className="flex items-center justify-between w-full">
+                  <span>{c.name}</span>
+                  <Badge variant="outline" className="ml-2 text-xs">{c.count}</Badge>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Desktop grid */}
+      <div className="hidden md:grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
         {countries.map((country) => (
           <Card 
             key={country.slug} 
             className="cursor-pointer hover:shadow-md transition-shadow duration-200 hover:border-primary/50"
             onClick={() => handleCountryClick(country.slug)}
           >
-            <CardContent className="p-4">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <MapPinned className="size-4 text-muted-foreground" />
-                  <span className="font-medium text-sm">{country.name}</span>
+                <div className="flex items-center gap-1.5">
+                  <MapPinned className="size-3 text-muted-foreground" />
+                  <span className="font-medium text-xs">{country.name}</span>
                 </div>
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
                   {country.count}
                 </Badge>
               </div>
