@@ -15,6 +15,7 @@ import Africa from "./pages/regions/Africa";
 import Americas from "./pages/regions/Americas";
 import PacificIslands from "./pages/regions/PacificIslands";
 import MiddleEast from "./pages/regions/MiddleEast";
+import CountryDetail from "./pages/country/CountryDetail";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/about" element={<AboutUs />} />
           <Route path="/blog" element={<Blog />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/regions/:region/country/:country" element={<CountryDetail />} />
           <Route path="/regions/asia" element={<Asia />} />
           <Route path="/regions/europe" element={<Europe />} />
           <Route path="/regions/africa" element={<Africa />} />

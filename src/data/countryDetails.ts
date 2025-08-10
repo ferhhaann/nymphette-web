@@ -1,0 +1,130 @@
+export interface CountryDetails {
+  name: string;
+  capital?: string;
+  currency: string;
+  climate: string;
+  bestSeason: string;
+  languages: string[];
+  speciality?: string;
+  famousPlaces?: string[];
+  mustVisit?: string[];
+  culture?: string;
+  essentialTips?: Array<{ icon: string; title: string; note: string }>;
+  visitors?: {
+    annual: number;
+    gender: { male: number; female: number };
+    purposes: Array<{ name: string; value: number }>;
+    topOrigins: string[];
+  };
+  faqs?: Array<{ q: string; a: string }>;
+}
+
+export type CountryDetailsMap = Record<string, Record<string, CountryDetails>>; // region -> countrySlug -> details
+
+const data: CountryDetailsMap = {
+  asia: {
+    india: {
+      name: "India",
+      capital: "New Delhi",
+      currency: "Indian Rupee (INR)",
+      climate: "Tropical to temperate; varies by region",
+      bestSeason: "Oct–Mar (winter/early spring)",
+      languages: ["Hindi", "English", "Regional languages"],
+      speciality: "Diverse culture, heritage sites, festivals, and cuisine",
+      famousPlaces: ["Taj Mahal", "Jaipur", "Kerala Backwaters", "Varanasi"],
+      mustVisit: ["Golden Triangle", "Goa Beaches", "Rajasthan Forts", "Himalayas"],
+      culture: "A tapestry of traditions, religions, and festivals with millennia of history and vibrant arts.",
+      essentialTips: [
+        { icon: "CreditCard", title: "Cards & ATMs", note: "Cards widely accepted in cities; cash for rural areas." },
+        { icon: "Banknote", title: "Cash", note: "Withdraw INR from ATMs; keep small notes for markets." },
+        { icon: "ShieldCheck", title: "Etiquette", note: "Dress modestly at religious sites; remove shoes when required." },
+        { icon: "Beer", title: "Age Laws", note: "Legal drinking age varies by state (18–25)." },
+      ],
+      visitors: {
+        annual: 17500000,
+        gender: { male: 55, female: 45 },
+        purposes: [
+          { name: "Leisure", value: 48 },
+          { name: "Family", value: 22 },
+          { name: "Business", value: 18 },
+          { name: "Spiritual", value: 12 },
+        ],
+        topOrigins: ["USA", "UK", "Bangladesh", "Sri Lanka", "Australia"],
+      },
+      faqs: [
+        { q: "How long does an Indian visa take?", a: "E‑Visas typically process within 3–7 working days; timings can vary." },
+        { q: "Best time to visit India?", a: "Oct–Mar is ideal for most regions; the Himalayas are best Apr–Jun." },
+        { q: "Recommended trip length?", a: "7–12 days for a highlight trip; 14+ days for broader coverage." },
+        { q: "Popular foods?", a: "Butter chicken, biryani, dosa, chaat, and regional specialties." },
+        { q: "Language?", a: "Hindi and English widely used; many regional languages." },
+        { q: "Currency & tipping?", a: "INR; tip 5–10% at restaurants, small tips for porters/driver." },
+        { q: "Religion & attractions?", a: "Hinduism, Islam, Christianity, Sikhism; Taj Mahal, Jaipur, Kerala, Varanasi." },
+      ],
+    },
+    japan: {
+      name: "Japan",
+      capital: "Tokyo",
+      currency: "Japanese Yen (JPY)",
+      climate: "Temperate with four distinct seasons",
+      bestSeason: "Mar–May & Oct–Nov",
+      languages: ["Japanese"],
+      speciality: "Blend of tradition and technology, impeccable service",
+      famousPlaces: ["Kyoto Temples", "Mount Fuji", "Tokyo", "Hokkaido"],
+      mustVisit: ["Arashiyama", "Nara", "Osaka Dotonbori", "Hakone"],
+      culture: "Deep traditions, tea ceremonies, shrines, and culinary excellence.",
+      essentialTips: [
+        { icon: "CreditCard", title: "Cards", note: "Cards accepted; carry cash for small shops." },
+        { icon: "Landmark", title: "Etiquette", note: "Queue politely; avoid loud calls on public transit." },
+        { icon: "Beer", title: "Drinking Age", note: "20 years." },
+      ],
+      visitors: {
+        annual: 31880000,
+        gender: { male: 52, female: 48 },
+        purposes: [
+          { name: "Leisure", value: 60 },
+          { name: "Family", value: 20 },
+          { name: "Business", value: 15 },
+          { name: "Other", value: 5 },
+        ],
+        topOrigins: ["China", "Korea", "Taiwan", "USA", "Hong Kong"],
+      },
+      faqs: [
+        { q: "Visa processing time?", a: "Typically 5–10 working days for many nationalities." },
+        { q: "Best time to visit?", a: "Spring and autumn for mild weather and scenery." },
+      ],
+    },
+    thailand: {
+      name: "Thailand",
+      capital: "Bangkok",
+      currency: "Thai Baht (THB)",
+      climate: "Tropical monsoon",
+      bestSeason: "Nov–Feb",
+      languages: ["Thai"],
+      speciality: "Beach escapes, temples, and warm hospitality",
+      famousPlaces: ["Phuket", "Chiang Mai", "Ayutthaya", "Krabi"],
+      mustVisit: ["Phi Phi Islands", "Grand Palace", "Railay Beach"],
+      culture: "Buddhist heritage, street food culture, island life.",
+      essentialTips: [
+        { icon: "CreditCard", title: "Cards & Cash", note: "ATMs common; many vendors prefer cash." },
+        { icon: "Smile", title: "Etiquette", note: "A friendly wai (greeting) goes a long way." },
+      ],
+      visitors: {
+        annual: 39400000,
+        gender: { male: 53, female: 47 },
+        purposes: [
+          { name: "Leisure", value: 65 },
+          { name: "Family", value: 15 },
+          { name: "Business", value: 10 },
+          { name: "Other", value: 10 },
+        ],
+        topOrigins: ["China", "Malaysia", "Russia", "Korea", "India"],
+      },
+      faqs: [
+        { q: "Do I need a visa?", a: "Many nationalities get visa-on-arrival; check latest rules." },
+        { q: "Best time to visit?", a: "Nov–Feb for most regions." },
+      ],
+    },
+  },
+};
+
+export default data;
