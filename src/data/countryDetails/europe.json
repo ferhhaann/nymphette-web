@@ -1,1 +1,126 @@
-{}
+{
+  "france": {
+    "name": "France",
+    "capital": "Paris",
+    "currency": "Euro (EUR)",
+    "climate": "Temperate; Mediterranean in the south",
+    "bestSeason": "Apr–Jun & Sep–Oct",
+    "languages": ["French"],
+    "speciality": "Art, fashion, wine, cuisine, and historic landmarks",
+    "famousPlaces": ["Eiffel Tower", "Louvre Museum", "Versailles", "Mont Saint-Michel"],
+    "mustVisit": ["Paris", "Provence", "French Riviera", "Loire Valley"],
+    "culture": "Elegant, romantic, and deeply rooted in art, history, and gastronomy.",
+    "essentialTips": [
+      { "icon": "CreditCard", "title": "Cards & Cash", "note": "Cards widely accepted; carry coins for small cafés." },
+      { "icon": "Landmark", "title": "Etiquette", "note": "Greet with 'Bonjour' before asking questions." }
+    ],
+    "visitors": {
+      "annual": 89000000,
+      "gender": { "male": 52, "female": 48 },
+      "purposes": [
+        { "name": "Leisure", "value": 65 },
+        { "name": "Business", "value": 15 },
+        { "name": "Family", "value": 15 },
+        { "name": "Other", "value": 5 }
+      ],
+      "topOrigins": ["UK", "Germany", "USA", "China", "Italy"]
+    },
+    "faqs": [
+      { "q": "Visa for France?", "a": "Schengen visa required for many; EU citizens exempt." },
+      { "q": "Best time to visit?", "a": "Spring and autumn for mild weather." }
+    ]
+  },
+  "italy": {
+    "name": "Italy",
+    "capital": "Rome",
+    "currency": "Euro (EUR)",
+    "climate": "Mediterranean; alpine in the north",
+    "bestSeason": "Apr–Jun & Sep–Oct",
+    "languages": ["Italian"],
+    "speciality": "Historic cities, art, fashion, cuisine",
+    "famousPlaces": ["Colosseum", "Venice Canals", "Leaning Tower of Pisa", "Florence Duomo"],
+    "mustVisit": ["Rome", "Venice", "Florence", "Amalfi Coast"],
+    "culture": "Passionate, artistic, and rich in Roman heritage.",
+    "essentialTips": [
+      { "icon": "CreditCard", "title": "Cards & Cash", "note": "Cards accepted; keep coins for gelato shops." },
+      { "icon": "Landmark", "title": "Etiquette", "note": "Dress modestly in churches; cover shoulders and knees." }
+    ],
+    "visitors": {
+      "annual": 62000000,
+      "gender": { "male": 51, "female": 49 },
+      "purposes": [
+        { "name": "Leisure", "value": 70 },
+        { "name": "Business", "value": 10 },
+        { "name": "Family", "value": 15 },
+        { "name": "Other", "value": 5 }
+      ],
+      "topOrigins": ["Germany", "France", "USA", "UK", "China"]
+    },
+    "faqs": [
+      { "q": "Visa for Italy?", "a": "Schengen visa required for many; EU citizens exempt." },
+      { "q": "Best time to visit?", "a": "Spring and autumn for pleasant temperatures." }
+    ]
+  },
+  "spain": {
+    "name": "Spain",
+    "capital": "Madrid",
+    "currency": "Euro (EUR)",
+    "climate": "Mediterranean; oceanic in the north",
+    "bestSeason": "Apr–Jun & Sep–Oct",
+    "languages": ["Spanish", "Catalan", "Basque", "Galician"],
+    "speciality": "Fiestas, beaches, historic cities, cuisine",
+    "famousPlaces": ["Sagrada Familia", "Alhambra", "Park Güell", "Plaza Mayor"],
+    "mustVisit": ["Barcelona", "Madrid", "Seville", "Valencia"],
+    "culture": "Vibrant, colorful, with a love for food, music, and dance.",
+    "essentialTips": [
+      { "icon": "CreditCard", "title": "Cards", "note": "Cards widely accepted; cash for small tapas bars." },
+      { "icon": "Landmark", "title": "Etiquette", "note": "Lunch is late (2–3 PM); dinner after 9 PM." }
+    ],
+    "visitors": {
+      "annual": 83000000,
+      "gender": { "male": 51, "female": 49 },
+      "purposes": [
+        { "name": "Leisure", "value": 68 },
+        { "name": "Business", "value": 12 },
+        { "name": "Family", "value": 15 },
+        { "name": "Other", "value": 5 }
+      ],
+      "topOrigins": ["UK", "Germany", "France", "Italy", "Netherlands"]
+    },
+    "faqs": [
+      { "q": "Visa for Spain?", "a": "Schengen visa required for many; EU citizens exempt." },
+      { "q": "Best time to visit?", "a": "Spring and autumn for mild weather." }
+    ]
+  },
+  "germany": {
+    "name": "Germany",
+    "capital": "Berlin",
+    "currency": "Euro (EUR)",
+    "climate": "Temperate; colder in the east and mountains",
+    "bestSeason": "May–Sep",
+    "languages": ["German"],
+    "speciality": "History, engineering, festivals, beer culture",
+    "famousPlaces": ["Brandenburg Gate", "Neuschwanstein Castle", "Cologne Cathedral", "Berlin Wall"],
+    "mustVisit": ["Berlin", "Munich", "Hamburg", "Black Forest"],
+    "culture": "Efficient, traditional, and rich in history and arts.",
+    "essentialTips": [
+      { "icon": "CreditCard", "title": "Cards", "note": "Cash still common; carry euros." },
+      { "icon": "Landmark", "title": "Etiquette", "note": "Be punctual; respect quiet hours." }
+    ],
+    "visitors": {
+      "annual": 39000000,
+      "gender": { "male": 52, "female": 48 },
+      "purposes": [
+        { "name": "Leisure", "value": 60 },
+        { "name": "Business", "value": 20 },
+        { "name": "Family", "value": 15 },
+        { "name": "Other", "value": 5 }
+      ],
+      "topOrigins": ["Netherlands", "Switzerland", "USA", "UK", "Austria"]
+    },
+    "faqs": [
+      { "q": "Visa for Germany?", "a": "Schengen visa required for many; EU citizens exempt." },
+      { "q": "Best time to visit?", "a": "May–Sep for festivals and outdoor activities." }
+    ]
+  }
+}
