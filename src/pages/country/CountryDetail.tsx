@@ -198,7 +198,7 @@ const CountryDetail: React.FC = () => {
 
       <main className="animate-fade-in">
         {/* Hero Section */}
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden mt-6">
           <div
             className="bg-gradient-to-br from-secondary to-background"
             style={{ backgroundImage: "radial-gradient(40rem 40rem at 120% -10%, hsl(var(--accent)/0.15), transparent)" }}
