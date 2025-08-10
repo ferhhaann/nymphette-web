@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import {
   MapPin, Info, Clock, CalendarIcon, CreditCard, Banknote, ShieldCheck, Beer, Landmark,
-  Users, Phone, Mail, Globe2, Flag, HandCoins, HeartHandshake, BookOpenText, Map,
+  Users, Phone, Mail, Globe2, Flag, HandCoins, HeartHandshake, BookOpenText, Map, Smile
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
@@ -31,6 +31,17 @@ import americasData from "@/data/regions/americas.json";
 import middleEastData from "@/data/regions/middleEast.json";
 import pacificIslandsData from "@/data/regions/pacificIslands.json";
 import countryDetails from "@/data/countryDetails";
+
+// Icon map to avoid dynamic require in browser
+const iconMap = {
+  CreditCard,
+  Banknote,
+  ShieldCheck,
+  Beer,
+  Landmark,
+  Smile,
+  Info,
+} as const;
 
 // Helpers
 const deslug = (slug: string) => slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -250,7 +261,7 @@ const CountryDetail: React.FC = () => {
             <h2 className="text-2xl font-semibold mb-4">Essential Tips</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {details.essentialTips.map((tip, idx) => {
-                const Icon = (require('lucide-react') as any)[tip.icon] || Info;
+                const Icon = (iconMap as any)[tip.icon as keyof typeof iconMap] || Info;
                 return (
                   <Card key={idx} className="p-4">
                     <div className="flex items-start gap-3">
