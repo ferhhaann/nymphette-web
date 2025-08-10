@@ -1,1 +1,32 @@
-{}
+{
+  "uae": {
+    "name": "United Arab Emirates",
+    "capital": "Abu Dhabi",
+    "currency": "UAE Dirham (AED)",
+    "climate": "Desert climate: very hot summers, mild winters",
+    "bestSeason": "Nov–Mar",
+    "languages": ["Arabic", "English"],
+    "speciality": "Futuristic cities, luxury shopping, desert adventures",
+    "famousPlaces": ["Burj Khalifa", "Palm Jumeirah", "Dubai Marina", "Sheikh Zayed Grand Mosque"],
+    "mustVisit": ["Desert Safari", "Louvre Abu Dhabi", "Dubai Creek"],
+    "culture": "Blend of Emirati heritage and modern cosmopolitan lifestyle.",
+    "essentialTips": [
+      { "icon": "ShieldCheck", "title": "Dress Code", "note": "Dress modestly in public places and religious sites." },
+      { "icon": "CreditCard", "title": "Payments", "note": "Cards widely accepted; some souks prefer cash." }
+    ],
+    "visitors": {
+      "annual": 22000000,
+      "gender": { "male": 56, "female": 44 },
+      "purposes": [
+        { "name": "Leisure", "value": 65 },
+        { "name": "Business", "value": 25 },
+        { "name": "Other", "value": 10 }
+      ],
+      "topOrigins": ["India", "Saudi Arabia", "UK", "Russia", "China"]
+    },
+    "faqs": [
+      { "q": "Alcohol rules?", "a": "Allowed in licensed venues; public intoxication is illegal." },
+      { "q": "Best time to visit?", "a": "Nov–Mar for pleasant weather." }
+    ]
+  }
+}

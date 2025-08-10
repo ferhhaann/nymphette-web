@@ -1,1 +1,32 @@
-{}
+{
+  "maldives": {
+    "name": "Maldives",
+    "capital": "Malé",
+    "currency": "Maldivian Rufiyaa (MVR)",
+    "climate": "Tropical; warm year-round with monsoon seasons",
+    "bestSeason": "Nov–Apr (dry season)",
+    "languages": ["Dhivehi", "English"],
+    "speciality": "Overwater villas, pristine reefs, turquoise lagoons",
+    "famousPlaces": ["Overwater Villas", "Banana Reef", "Vaadhoo Island", "Hulhumale Beach"],
+    "mustVisit": ["Male City", "Sun Island", "Baa Atoll"],
+    "culture": "Island nation with strong Islamic traditions and seafaring heritage.",
+    "essentialTips": [
+      { "icon": "Info", "title": "Resort Transfers", "note": "Many islands require speedboat or seaplane transfers." },
+      { "icon": "ShieldCheck", "title": "Dress Code", "note": "Modest dress in local islands; resorts are relaxed." }
+    ],
+    "visitors": {
+      "annual": 1900000,
+      "gender": { "male": 52, "female": 48 },
+      "purposes": [
+        { "name": "Leisure", "value": 80 },
+        { "name": "Honeymoon", "value": 15 },
+        { "name": "Other", "value": 5 }
+      ],
+      "topOrigins": ["India", "China", "Russia", "UK", "Germany"]
+    },
+    "faqs": [
+      { "q": "Alcohol rules?", "a": "Available in resorts; restricted on local islands." },
+      { "q": "Best time to visit?", "a": "Nov–Apr for calm seas and clear skies." }
+    ]
+  }
+}

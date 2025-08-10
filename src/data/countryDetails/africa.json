@@ -1,1 +1,32 @@
-{}
+{
+  "kenya": {
+    "name": "Kenya",
+    "capital": "Nairobi",
+    "currency": "Kenyan Shilling (KES)",
+    "climate": "Tropical coast, arid interior, temperate highlands",
+    "bestSeason": "Jul–Oct (Great Migration), Jan–Mar",
+    "languages": ["Swahili", "English"],
+    "speciality": "Big Five safaris, Great Rift Valley, vibrant cultures",
+    "famousPlaces": ["Masai Mara", "Amboseli National Park", "Lake Nakuru", "Diani Beach"],
+    "mustVisit": ["Nairobi National Park", "Mount Kenya", "Maasai Village"],
+    "culture": "Home to diverse tribes including Maasai and Kikuyu; rich music, dance, and crafts.",
+    "essentialTips": [
+      { "icon": "ShieldCheck", "title": "Park Rules", "note": "Keep safe distances and follow ranger instructions." },
+      { "icon": "CreditCard", "title": "Payments", "note": "Cards accepted in cities; carry cash on safari." }
+    ],
+    "visitors": {
+      "annual": 2100000,
+      "gender": { "male": 54, "female": 46 },
+      "purposes": [
+        { "name": "Leisure", "value": 70 },
+        { "name": "Safari", "value": 20 },
+        { "name": "Other", "value": 10 }
+      ],
+      "topOrigins": ["USA", "UK", "Germany", "China", "India"]
+    },
+    "faqs": [
+      { "q": "Do I need a yellow fever certificate?", "a": "Recommended when arriving from endemic regions; check latest rules." },
+      { "q": "Best time for migration?", "a": "July to October in the Masai Mara." }
+    ]
+  }
+}

@@ -1,1 +1,33 @@
-{}
+{
+  "usa": {
+    "name": "United States of America",
+    "capital": "Washington, D.C.",
+    "currency": "US Dollar (USD)",
+    "climate": "Varied: arctic to tropical, deserts to humid coasts",
+    "bestSeason": "Apr–Oct (varies by region)",
+    "languages": ["English"],
+    "speciality": "Iconic cities, national parks, cultural diversity",
+    "famousPlaces": ["Statue of Liberty", "Times Square", "Grand Canyon", "Yellowstone"],
+    "mustVisit": ["New York City", "Washington DC", "Niagara Falls"],
+    "culture": "A melting pot of cultures, cuisines, music, and arts.",
+    "essentialTips": [
+      { "icon": "CreditCard", "title": "Payments", "note": "Cards widely accepted; tipping is customary (15–20%)." },
+      { "icon": "Info", "title": "Distances", "note": "Cities can be far apart—plan flights or long drives." }
+    ],
+    "visitors": {
+      "annual": 79000000,
+      "gender": { "male": 52, "female": 48 },
+      "purposes": [
+        { "name": "Leisure", "value": 60 },
+        { "name": "Business", "value": 25 },
+        { "name": "Family", "value": 10 },
+        { "name": "Other", "value": 5 }
+      ],
+      "topOrigins": ["Canada", "Mexico", "UK", "Japan", "Germany"]
+    },
+    "faqs": [
+      { "q": "Do I need a visa?", "a": "Many travelers use ESTA (Visa Waiver Program); others need a B-2 visa." },
+      { "q": "Driving rules?", "a": "Speed limits vary by state; carry your license and insurance." }
+    ]
+  }
+}
