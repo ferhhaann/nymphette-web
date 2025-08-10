@@ -20,10 +20,10 @@ const FeaturedPackages = () => {
   }));
 
   return (
-    <section className="py-20 bg-pale-blue/30">
+    <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold font-playfair text-foreground mb-4">
             Featured Travel Packages
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -42,6 +42,7 @@ const FeaturedPackages = () => {
                 <img
                   src={pkg.image}
                   alt={pkg.title}
+                  loading="lazy"
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4">

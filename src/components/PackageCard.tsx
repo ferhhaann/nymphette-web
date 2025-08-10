@@ -16,6 +16,7 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
         <img
           src={pkg.image}
           alt={pkg.title}
+          loading="lazy"
           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute top-4 left-4">

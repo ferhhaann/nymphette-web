@@ -27,7 +27,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-primary/95 backdrop-blur-sm z-50 border-b border-soft-blue/20">
+    <nav className="fixed top-0 w-full bg-background/70 backdrop-blur-md z-50 border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -36,7 +36,7 @@ const Navigation = () => {
               <Plane className="h-6 w-6 text-white" />
             </div>
             <span 
-              className="text-white text-xl font-bold cursor-pointer hover:text-soft-blue transition-colors"
+              className="text-foreground text-xl font-bold font-playfair cursor-pointer hover:text-accent transition-colors"
               onClick={() => handleNavigation("/")}
             >
               Nymphette Tours
@@ -50,13 +50,13 @@ const Navigation = () => {
                 onClick={() => handleNavigation(item.href)}
                 className={`font-medium transition-all duration-300 relative ${
                   isActive(item.href)
-                    ? "text-soft-blue"
-                    : "text-white hover:text-soft-blue"
+                    ? "text-accent"
+                    : "text-foreground hover:text-accent"
                 }`}
               >
                 {item.name}
                 {isActive(item.href) && (
-                  <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-soft-blue rounded-full"></div>
+                  <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-accent rounded-full"></div>
                 )}
               </button>
             ))}
@@ -69,7 +69,7 @@ const Navigation = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white hover:text-soft-blue transition-colors"
+              className="text-foreground hover:text-accent transition-colors"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -78,7 +78,7 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden bg-primary-dark/95 backdrop-blur-sm border-t border-soft-blue/20">
+          <div className="md:hidden bg-background/95 backdrop-blur-sm border-t border-border">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navItems.map((item) => (
                 <button
@@ -86,8 +86,8 @@ const Navigation = () => {
                   onClick={() => handleNavigation(item.href)}
                   className={`block w-full text-left px-3 py-2 transition-colors duration-300 ${
                     isActive(item.href)
-                      ? "text-soft-blue bg-white/10 rounded-lg"
-                      : "text-white hover:text-soft-blue"
+                      ? "text-accent bg-card/20 rounded-lg"
+                      : "text-foreground hover:text-accent"
                   }`}
                 >
                   {item.name}

@@ -29,7 +29,7 @@ const WhyChooseUs = () => {
     <section className="py-20 bg-gradient-to-br from-primary-dark to-deep-blue text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4">
             Why Choose Nymphette Tours?
           </h2>
           <p className="text-xl text-soft-blue max-w-3xl mx-auto">
@@ -59,19 +59,19 @@ const WhyChooseUs = () => {
         <div className="mt-16 text-center">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="animate-scale-in" style={{ animationDelay: '600ms' }}>
-              <div className="text-4xl font-bold text-soft-blue mb-2">50,000+</div>
+              <div className="text-4xl font-bold text-accent mb-2">50,000+</div>
               <div className="text-white">Happy Travelers</div>
             </div>
             <div className="animate-scale-in" style={{ animationDelay: '700ms' }}>
-              <div className="text-4xl font-bold text-soft-blue mb-2">500+</div>
+              <div className="text-4xl font-bold text-accent mb-2">500+</div>
               <div className="text-white">Destinations</div>
             </div>
             <div className="animate-scale-in" style={{ animationDelay: '800ms' }}>
-              <div className="text-4xl font-bold text-soft-blue mb-2">98%</div>
+              <div className="text-4xl font-bold text-accent mb-2">98%</div>
               <div className="text-white">Satisfaction Rate</div>
             </div>
             <div className="animate-scale-in" style={{ animationDelay: '900ms' }}>
-              <div className="text-4xl font-bold text-soft-blue mb-2">25+</div>
+              <div className="text-4xl font-bold text-accent mb-2">25+</div>
               <div className="text-white">Years Experience</div>
             </div>
           </div>

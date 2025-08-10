@@ -8,52 +8,52 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Nymphette Tours Brand Colors */
-    --primary-dark: 209 100% 14%;      /* #001B48 */
-    --deep-blue: 201 94% 24%;          /* #02457A */
-    --bright-blue: 195 98% 43%;        /* #018ABE */
-    --soft-blue: 199 59% 71%;          /* #97CADB */
-    --pale-blue: 194 50% 89%;          /* #D6E8EE */
+    /* Nymphette Tours Brand Colors (Modern) */
+    --primary-dark: 230 27% 18%;       /* Deep Navy */
+    --deep-blue: 222 85% 55%;          /* Electric Blue */
+    --bright-blue: 190 90% 45%;        /* Ocean Teal */
+    --soft-blue: 200 30% 92%;          /* Mist Blue */
+    --pale-blue: 200 70% 97%;          /* Ice Blue */
     
     /* Semantic Design System */
     --background: 0 0% 100%;
-    --foreground: 209 100% 14%;
+    --foreground: 230 27% 18%;
     
     --card: 0 0% 100%;
-    --card-foreground: 209 100% 14%;
+    --card-foreground: 230 27% 18%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 209 100% 14%;
+    --popover-foreground: 230 27% 18%;
     
-    --primary: 209 100% 14%;
+    --primary: 222 85% 55%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 194 50% 89%;
-    --secondary-foreground: 209 100% 14%;
+    --secondary: 200 30% 92%;
+    --secondary-foreground: 230 27% 18%;
     
-    --muted: 194 50% 89%;
-    --muted-foreground: 201 94% 24%;
+    --muted: 200 30% 92%;
+    --muted-foreground: 230 10% 40%;
     
-    --accent: 195 98% 43%;
+    --accent: 14 90% 58%;              /* Sunset Coral */
     --accent-foreground: 0 0% 100%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 199 59% 85%;
-    --input: 199 59% 85%;
-    --ring: 195 98% 43%;
+    --border: 200 25% 88%;
+    --input: 200 25% 88%;
+    --ring: 190 90% 45%;
     
     --radius: 0.75rem;
     
     /* Travel-specific tokens */
-    --hero-gradient: linear-gradient(135deg, hsl(var(--primary-dark)), hsl(var(--deep-blue)));
-    --card-gradient: linear-gradient(145deg, hsl(var(--soft-blue) / 0.1), hsl(var(--pale-blue) / 0.3));
+    --hero-gradient: linear-gradient(135deg, hsl(var(--deep-blue)), hsl(var(--bright-blue)));
+    --card-gradient: linear-gradient(145deg, hsl(var(--soft-blue) / 0.5), hsl(var(--pale-blue) / 0.8));
     --ocean-gradient: linear-gradient(180deg, hsl(var(--bright-blue)), hsl(var(--deep-blue)));
     
     /* Shadows */
     --shadow-travel: 0 10px 40px -10px hsl(var(--deep-blue) / 0.3);
-    --shadow-card: 0 4px 20px -4px hsl(var(--soft-blue) / 0.4);
+    --shadow-card: 0 4px 20px -4px hsl(var(--soft-blue) / 0.5);
     
     /* Animation */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -104,6 +104,6 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
