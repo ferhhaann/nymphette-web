@@ -32,7 +32,7 @@ const SearchSection = () => {
   return (
     <section className="py-8 -mt-8 relative z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-background/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-4xl mx-auto shadow-lg border border-border/20">
+        <div className="bg-black backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-4xl mx-auto shadow-lg border border-border/20">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div className="flex items-center space-x-3 bg-background/60 border border-border/20 rounded-lg p-3 sm:col-span-1">
               <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-foreground flex-shrink-0" />
