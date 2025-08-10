@@ -112,12 +112,12 @@ const Blog = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="pt-20 pb-16 bg-hero-gradient text-white">
+      <section className="pt-24 pb-12 bg-secondary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
             Travel Stories & Guides
           </h1>
-          <p className="text-xl text-soft-blue max-w-3xl mx-auto animate-slide-up">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             Discover inspiring travel stories, expert tips, and insider guides to help you plan your next adventure
           </p>
         </div>
@@ -127,10 +127,10 @@ const Blog = () => {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-primary mb-4">Featured Story</h2>
+            <h2 className="text-3xl font-bold mb-4">Featured Story</h2>
           </div>
 
-          <Card className="overflow-hidden hover:shadow-travel transition-all duration-500 animate-fade-in">
+          <Card className="overflow-hidden hover:shadow-card-soft transition-all duration-300">
             <div className="lg:flex">
               <div className="lg:w-1/2 relative overflow-hidden">
                 <img
@@ -138,9 +138,9 @@ const Blog = () => {
                   alt={featuredPost.title}
                   className="w-full h-64 lg:h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-4 left-4">
-                  <Badge className="bg-accent text-white">{featuredPost.category}</Badge>
-                </div>
+              <div className="absolute top-4 left-4">
+                <Badge className="bg-foreground text-background">{featuredPost.category}</Badge>
+              </div>
               </div>
 
               <CardContent className="lg:w-1/2 p-8">
@@ -159,21 +159,21 @@ const Blog = () => {
                   </div>
                 </div>
 
-                <h3 className="text-3xl font-bold text-primary mb-4">{featuredPost.title}</h3>
-                <p className="text-muted-foreground text-lg leading-relaxed mb-6">{featuredPost.excerpt}</p>
+              <h3 className="text-3xl font-bold mb-4">{featuredPost.title}</h3>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-6">{featuredPost.excerpt}</p>
 
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {featuredPost.tags.map((tag, idx) => (
-                    <Badge key={idx} variant="outline" className="border-soft-blue text-deep-blue">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {featuredPost.tags.map((tag, idx) => (
+                  <Badge key={idx} variant="outline" className="border-border text-foreground">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
 
-                <Button className="bg-accent hover:bg-bright-blue text-white">
-                  Read Full Article
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </Button>
+              <Button className="bg-foreground hover:bg-foreground/90 text-background">
+                Read Full Article
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
               </CardContent>
             </div>
           </Card>
@@ -181,14 +181,14 @@ const Blog = () => {
       </section>
 
       {/* Categories Filter */}
-      <section className="py-8 bg-pale-blue/20">
+      <section className="py-8 bg-secondary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-4 justify-center">
-            {categories.map((category, index) => (
+          <div className="flex flex-wrap gap-3 justify-center">
+            {categories.map((category) => (
               <Button 
                 key={category}
                 variant="outline" 
-                className="border-accent text-accent hover:bg-accent hover:text-white"
+                className="border-foreground/30 text-foreground hover:bg-foreground hover:text-background"
               >
                 {category}
               </Button>
@@ -200,17 +200,16 @@ const Blog = () => {
       {/* Blog Posts Grid */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-4">Latest Articles</h2>
-            <p className="text-xl text-muted-foreground">Expert insights and travel inspiration</p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-2">Latest Articles</h2>
+            <p className="text-base text-muted-foreground">Expert insights and travel inspiration</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {blogPosts.map((post) => (
               <Card 
                 key={post.id}
-                className="group overflow-hidden hover:shadow-travel transition-all duration-500 cursor-pointer animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="group overflow-hidden hover:shadow-card-soft transition-all duration-200 cursor-pointer"
               >
                 <div className="relative overflow-hidden">
                   <img
@@ -218,9 +217,9 @@ const Blog = () => {
                     alt={post.title}
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-accent text-white">{post.category}</Badge>
-                  </div>
+                <div className="absolute top-4 left-4">
+                  <Badge className="bg-foreground text-background">{post.category}</Badge>
+                </div>
                 </div>
 
                 <CardContent className="p-6">
@@ -235,29 +234,29 @@ const Blog = () => {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
+                  <h3 className="text-xl font-bold mb-3 group-hover:opacity-80 transition-opacity">
                     {post.title}
                   </h3>
                   <p className="text-muted-foreground mb-4 leading-relaxed">{post.excerpt}</p>
 
                   <div className="flex flex-wrap gap-1 mb-4">
-                    {post.tags.slice(0, 2).map((tag, idx) => (
-                      <Badge key={idx} variant="outline" className="border-soft-blue text-deep-blue text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                    {post.tags.length > 2 && (
-                      <Badge variant="outline" className="border-soft-blue text-deep-blue text-xs">
-                        +{post.tags.length - 2}
-                      </Badge>
-                    )}
+                  {post.tags.slice(0, 2).map((tag, idx) => (
+                    <Badge key={idx} variant="outline" className="border-border text-foreground text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                  {post.tags.length > 2 && (
+                    <Badge variant="outline" className="border-border text-foreground text-xs">
+                      +{post.tags.length - 2}
+                    </Badge>
+                  )}
                   </div>
 
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
                       {formatDate(post.publishDate)}
                     </span>
-                    <Button variant="ghost" className="text-accent hover:bg-accent hover:text-white p-2">
+                    <Button variant="ghost" className="text-foreground hover:bg-foreground hover:text-background p-2">
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </div>
@@ -267,27 +266,26 @@ const Blog = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-white">
+            <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-background">
               Load More Articles
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Newsletter Signup */}
-      <section className="py-20 bg-hero-gradient text-white">
+      <section className="py-20 bg-secondary">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-4">Stay Updated</h2>
-          <p className="text-xl text-soft-blue mb-8">
+          <p className="text-lg text-muted-foreground mb-8">
             Subscribe to our newsletter for the latest travel tips, destination guides, and exclusive offers
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-soft-blue outline-none focus:border-soft-blue"
+              className="flex-1 px-4 py-3 rounded-lg bg-muted border border-border text-foreground placeholder-muted-foreground outline-none"
             />
-            <Button className="bg-accent hover:bg-bright-blue text-white px-8 py-3">
+            <Button className="bg-foreground hover:bg-foreground/90 text-background px-8 py-3">
               Subscribe
             </Button>
           </div>

@@ -11,7 +11,7 @@ interface PackageCardProps {
 
 const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
   return (
-    <Card className="group overflow-hidden hover:shadow-travel transition-all duration-500 animate-fade-in">
+    <Card className="group overflow-hidden hover:shadow-card-soft transition-all duration-300">
       <div className="relative overflow-hidden">
         <img
           src={pkg.image}
@@ -20,11 +20,11 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute top-4 left-4">
-          <Badge className="bg-accent text-white">{pkg.category}</Badge>
+          <Badge className="bg-foreground text-background">{pkg.category}</Badge>
         </div>
-        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+        <div className="absolute top-4 right-4 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1">
           <div className="flex items-center space-x-1">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+            <Star className="h-4 w-4" />
             <span className="text-sm font-medium">{pkg.rating}</span>
           </div>
         </div>
@@ -66,12 +66,12 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
 
         <div className="flex flex-wrap gap-2 mb-4">
           {pkg.highlights.slice(0, 3).map((highlight, idx) => (
-            <Badge key={idx} variant="outline" className="border-soft-blue text-deep-blue text-xs">
+            <Badge key={idx} variant="outline" className="border-border text-foreground text-xs">
               {highlight}
             </Badge>
           ))}
           {pkg.highlights.length > 3 && (
-            <Badge variant="outline" className="border-soft-blue text-deep-blue text-xs">
+            <Badge variant="outline" className="border-border text-foreground text-xs">
               +{pkg.highlights.length - 3} more
             </Badge>
           )}
@@ -91,12 +91,12 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
             variant="outline" 
             size="sm"
             onClick={() => onViewDetails(pkg.id)}
-            className="border-accent text-accent hover:bg-accent hover:text-white"
+            className="border-foreground text-foreground hover:bg-foreground hover:text-background"
           >
             <Eye className="h-4 w-4 mr-1" />
             View Details
           </Button>
-          <Button className="bg-accent hover:bg-bright-blue text-white">
+          <Button className="bg-foreground hover:bg-foreground/90 text-background">
             Book Now
           </Button>
         </div>

@@ -27,7 +27,7 @@ const PackageItineraryComponent = ({ itinerary, packageTitle, onClose }: Package
               <CardHeader className="bg-card-gradient">
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className="bg-accent text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+                    <div className="bg-foreground text-background rounded-full w-10 h-10 flex items-center justify-center font-bold">
                       {day.day}
                     </div>
                     <div>
@@ -49,7 +49,7 @@ const PackageItineraryComponent = ({ itinerary, packageTitle, onClose }: Package
                     <ul className="space-y-2">
                       {day.activities.map((activity, idx) => (
                         <li key={idx} className="flex items-start space-x-2">
-                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="w-2 h-2 bg-foreground rounded-full mt-2 flex-shrink-0"></div>
                           <span className="text-muted-foreground">{activity}</span>
                         </li>
                       ))}
@@ -95,7 +95,7 @@ const PackageItineraryComponent = ({ itinerary, packageTitle, onClose }: Package
             <Button variant="outline" onClick={onClose}>
               Close
             </Button>
-            <Button className="bg-accent hover:bg-bright-blue text-white">
+            <Button className="bg-foreground hover:bg-foreground/90 text-background">
               Book This Package
             </Button>
           </div>

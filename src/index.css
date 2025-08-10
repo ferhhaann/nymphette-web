@@ -8,52 +8,52 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Nymphette Tours Brand Colors (Modern) */
-    --primary-dark: 230 27% 18%;       /* Deep Navy */
-    --deep-blue: 222 85% 55%;          /* Electric Blue */
-    --bright-blue: 190 90% 45%;        /* Ocean Teal */
-    --soft-blue: 200 30% 92%;          /* Mist Blue */
-    --pale-blue: 200 70% 97%;          /* Ice Blue */
+    /* Minimalist Travel Brand (Monochrome) */
+    --primary-dark: 168 18% 10%;       /* ~#101E1B */
+    --deep-blue: 0 0% 10%;             /* Repurposed as neutral dark */
+    --bright-blue: 0 0% 10%;           /* Unified dark for buttons */
+    --soft-blue: 0 0% 96%;             /* Light gray surfaces */
+    --pale-blue: 0 0% 98%;             /* Very light gray */
     
     /* Semantic Design System */
     --background: 0 0% 100%;
-    --foreground: 230 27% 18%;
+    --foreground: 168 18% 10%;
     
     --card: 0 0% 100%;
-    --card-foreground: 230 27% 18%;
+    --card-foreground: 168 18% 10%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 230 27% 18%;
+    --popover-foreground: 168 18% 10%;
     
-    --primary: 222 85% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 168 18% 10%;            /* Dark interactive */
+    --primary-foreground: 0 0% 100%;    /* White text on dark */
     
-    --secondary: 200 30% 92%;
-    --secondary-foreground: 230 27% 18%;
+    --secondary: 0 0% 98%;             /* Pale gray blocks */
+    --secondary-foreground: 168 18% 10%;
     
-    --muted: 200 30% 92%;
-    --muted-foreground: 230 10% 40%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;       /* ~#666 */
     
-    --accent: 14 90% 58%;              /* Sunset Coral */
+    --accent: 168 18% 10%;              /* Use dark as accent */
     --accent-foreground: 0 0% 100%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 200 25% 88%;
-    --input: 200 25% 88%;
-    --ring: 190 90% 45%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 10%;
     
     --radius: 0.75rem;
     
-    /* Travel-specific tokens */
-    --hero-gradient: linear-gradient(135deg, hsl(var(--deep-blue)), hsl(var(--bright-blue)));
-    --card-gradient: linear-gradient(145deg, hsl(var(--soft-blue) / 0.5), hsl(var(--pale-blue) / 0.8));
-    --ocean-gradient: linear-gradient(180deg, hsl(var(--bright-blue)), hsl(var(--deep-blue)));
+    /* Visual tokens */
+    --hero-gradient: linear-gradient(180deg, hsl(var(--foreground) / 0.4), hsl(var(--foreground) / 0.6));
+    --card-gradient: linear-gradient(145deg, hsl(var(--secondary)), hsl(var(--pale-blue)));
+    --ocean-gradient: linear-gradient(180deg, hsl(var(--secondary)), hsl(var(--pale-blue)));
     
     /* Shadows */
-    --shadow-travel: 0 10px 40px -10px hsl(var(--deep-blue) / 0.3);
-    --shadow-card: 0 4px 20px -4px hsl(var(--soft-blue) / 0.5);
+    --shadow-travel: 0 10px 30px -12px hsl(var(--foreground) / 0.15);
+    --shadow-card: 0 6px 16px -6px hsl(var(--foreground) / 0.12);
     
     /* Animation */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

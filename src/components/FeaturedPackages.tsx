@@ -23,7 +23,7 @@ const FeaturedPackages = () => {
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold font-playfair text-foreground mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold font-sans text-foreground mb-4">
             Featured Travel Packages
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -35,7 +35,7 @@ const FeaturedPackages = () => {
           {packages.map((pkg, index) => (
             <Card 
               key={pkg.id}
-              className="group overflow-hidden bg-card-gradient hover:shadow-travel transition-all duration-500 border-0 animate-fade-in"
+              className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <div className="relative overflow-hidden">
@@ -46,13 +46,13 @@ const FeaturedPackages = () => {
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4">
-                  <Badge variant="secondary" className="bg-accent text-white">
+                  <Badge variant="secondary" className="bg-foreground text-background">
                     {pkg.category}
                   </Badge>
                 </div>
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+                <div className="absolute top-4 right-4 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1">
                   <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <Star className="h-4 w-4" />
                     <span className="text-sm font-medium">{pkg.rating}</span>
                   </div>
                 </div>
@@ -91,7 +91,7 @@ const FeaturedPackages = () => {
                   <span className="text-sm text-muted-foreground">Starting from</span>
                   <div className="text-2xl font-bold text-accent">{pkg.price}</div>
                 </div>
-                <Button className="bg-accent hover:bg-bright-blue text-white">
+                <Button className="bg-foreground hover:bg-foreground/90 text-background">
                   View Details
                 </Button>
               </CardFooter>
@@ -100,7 +100,7 @@ const FeaturedPackages = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button size="lg" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-white">
+          <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-background">
             Explore All Packages
           </Button>
         </div>

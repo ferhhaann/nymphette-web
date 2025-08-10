@@ -1,7 +1,8 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import FeaturedPackages from "@/components/FeaturedPackages";
-import WhyChooseUs from "@/components/WhyChooseUs";
+import TopValues from "@/components/TopValues";
+import PromoBanner from "@/components/PromoBanner";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -9,8 +10,9 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <Hero />
+      <TopValues />
       <FeaturedPackages />
-      <WhyChooseUs />
+      <PromoBanner />
       <Footer />
     </div>
   );

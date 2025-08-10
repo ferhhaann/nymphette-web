@@ -19,9 +19,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'jakarta': ['"Plus Jakarta Sans"', 'sans-serif'],
+				'geo': ['"Outfit"', 'sans-serif'],
 				'playfair': ['"Playfair Display"', 'serif'],
-				'sans': ['"Plus Jakarta Sans"', 'sans-serif'],
+				'sans': ['"Outfit"', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

@@ -32,11 +32,11 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="bg-accent p-2 rounded-lg">
-              <Plane className="h-6 w-6 text-white" />
+            <div className="bg-foreground p-2 rounded-lg">
+              <Plane className="h-6 w-6 text-background" />
             </div>
             <span 
-              className="text-foreground text-xl font-bold font-playfair cursor-pointer hover:text-accent transition-colors"
+              className="text-foreground text-xl font-bold font-sans cursor-pointer hover:opacity-80 transition-colors"
               onClick={() => handleNavigation("/")}
             >
               Nymphette Tours
@@ -56,11 +56,11 @@ const Navigation = () => {
               >
                 {item.name}
                 {isActive(item.href) && (
-                  <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-accent rounded-full"></div>
+                  <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-foreground rounded-full"></div>
                 )}
               </button>
             ))}
-            <Button variant="secondary" className="bg-accent hover:bg-bright-blue text-white">
+            <Button variant="secondary" className="bg-foreground hover:bg-foreground/90 text-background">
               Book Now
             </Button>
           </div>
@@ -84,17 +84,17 @@ const Navigation = () => {
                 <button
                   key={item.name}
                   onClick={() => handleNavigation(item.href)}
-                  className={`block w-full text-left px-3 py-2 transition-colors duration-300 ${
-                    isActive(item.href)
-                      ? "text-accent bg-card/20 rounded-lg"
-                      : "text-foreground hover:text-accent"
-                  }`}
-                >
-                  {item.name}
-                </button>
-              ))}
-              <div className="px-3 pt-2">
-                <Button variant="secondary" className="w-full bg-accent hover:bg-bright-blue text-white">
+                    className={`block w-full text-left px-3 py-2 transition-colors duration-300 ${
+                      isActive(item.href)
+                        ? "text-foreground bg-secondary rounded-lg"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {item.name}
+                  </button>
+                ))}
+                <div className="px-3 pt-2">
+                  <Button variant="secondary" className="w-full bg-foreground hover:bg-foreground/90 text-background">
                   Book Now
                 </Button>
               </div>
