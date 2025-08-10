@@ -136,6 +136,7 @@ const Blog = () => {
                 <img
                   src={featuredPost.image}
                   alt={featuredPost.title}
+                  loading="lazy"
                   className="w-full h-64 lg:h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
               <div className="absolute top-4 left-4">
@@ -212,11 +213,12 @@ const Blog = () => {
                 className="group overflow-hidden hover:shadow-card-soft transition-all duration-200 cursor-pointer"
               >
                 <div className="relative overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      loading="lazy"
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
                 <div className="absolute top-4 left-4">
                   <Badge className="bg-foreground text-background">{post.category}</Badge>
                 </div>

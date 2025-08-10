@@ -109,9 +109,9 @@ const GroupTours = () => {
 
   const getAvailabilityStatus = (available: number, total: number) => {
     const percentage = (available / total) * 100;
-    if (percentage > 50) return { status: 'Available', color: 'bg-green-500' };
-    if (percentage > 20) return { status: 'Limited', color: 'bg-yellow-500' };
-    return { status: 'Few Left', color: 'bg-red-500' };
+    if (percentage > 50) return { status: 'Available', color: 'bg-foreground' };
+    if (percentage > 20) return { status: 'Limited', color: 'bg-accent' };
+    return { status: 'Few Left', color: 'bg-destructive' };
   };
 
   return (
@@ -176,6 +176,7 @@ const GroupTours = () => {
                       <img
                         src={tour.image}
                         alt={tour.title}
+                        loading="lazy"
                         className="w-full h-64 md:h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute top-4 left-4">

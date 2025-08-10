@@ -151,7 +151,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
             return (
               <Card key={pkg.id} className="overflow-hidden animate-fade-in" style={{animationDelay:`${index*60}ms`}}>
                 <div className="relative h-48 overflow-hidden">
-                  <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover"/>
+                  <img src={pkg.image} alt={pkg.title} loading="lazy" className="w-full h-full object-cover"/>
                   <div className="absolute top-3 left-3 flex gap-2 flex-wrap">
                     <Badge variant="outline">{pkg.category}</Badge>
                     <Badge variant="secondary" className="gap-1"><CheckCircle2 className="size-4"/> All-inclusive</Badge>

@@ -137,12 +137,12 @@ const Packages = () => {
       ) : (
         <>
           {/* Hero Section */}
-          <section className="pt-20 pb-16 bg-hero-gradient text-white">
+          <section className="pt-20 pb-16 bg-hero-gradient text-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
                 Explore Our Travel Packages
               </h1>
-              <p className="text-xl text-soft-blue max-w-3xl mx-auto animate-slide-up">
+              <p className="text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
                 Discover amazing destinations across the globe with our carefully curated travel packages
               </p>
               {/* Show search filters if any */}
@@ -190,6 +190,7 @@ const Packages = () => {
                   <img
                     src={region.image}
                     alt={region.name}
+                    loading="lazy"
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-primary-dark/40 group-hover:bg-primary-dark/30 transition-colors"></div>
@@ -199,8 +200,8 @@ const Packages = () => {
                     </Badge>
                   </div>
                   <div className="absolute bottom-4 left-4">
-                    <h3 className="text-2xl font-bold text-white mb-2">{region.name}</h3>
-                    <div className="text-soft-blue text-sm">Starting from {region.startingPrice}</div>
+                    <h3 className="text-2xl font-bold text-background mb-2">{region.name}</h3>
+                    <div className="text-background/80 text-sm">Starting from {region.startingPrice}</div>
                   </div>
                 </div>
 
@@ -250,6 +251,7 @@ const Packages = () => {
                     <img
                       src={pkg.image}
                       alt={pkg.title}
+                      loading="lazy"
                       className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4">

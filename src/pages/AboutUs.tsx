@@ -73,11 +73,11 @@ const AboutUs = () => {
         >
           <div className="absolute inset-0 bg-primary-dark/70"></div>
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-background">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
             About Nymphette Tours
           </h1>
-          <p className="text-xl text-soft-blue max-w-3xl mx-auto animate-slide-up">
+          <p className="text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
             Creating unforgettable travel experiences for over 25 years with passion, expertise, and dedication
           </p>
         </div>
@@ -147,6 +147,7 @@ const AboutUs = () => {
               <img 
                 src={teamPhoto}
                 alt="Nymphette Tours Team"
+                loading="lazy"
                 className="rounded-2xl shadow-travel w-full"
               />
             </div>
