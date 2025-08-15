@@ -7,7 +7,6 @@ import { Calendar, MapPin, Users, Clock, Star } from "lucide-react";
 import regionsImage from "@/assets/regions-world.jpg";
 
 const GroupTours = () => {
-  // TODO: Replace with API call - const upcomingTours = await fetchUpcomingGroupTours();
   const upcomingTours = [
     {
       id: 1,

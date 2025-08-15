@@ -1,6 +1,5 @@
 import { Plane, CalendarCheck, BadgePercent, Map } from "lucide-react";
 
-// TODO: Replace with API call - const topValues = await fetchTopValues();
 const items = [
   {
     icon: Plane,

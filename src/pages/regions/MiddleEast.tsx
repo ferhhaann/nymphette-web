@@ -1,48 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionLanding from "@/components/regions/RegionLanding";
+import middleEastMerged from "@/data/regions/middleEast.data";
 import type { TravelPackage } from "@/data/packagesData";
 import hero1 from "@/assets/hero-travel.jpg";
 import hero2 from "@/assets/destinations-collage.jpg";
 import hero3 from "@/assets/regions-world.jpg";
 
-// TODO: Replace with API call
-const middleEastPackagesData: TravelPackage[] = [
-  {
-    "id": "mid-001",
-    "title": "Dubai Luxury Experience",
-    "country": "UAE",
-    "countrySlug": "uae",
-    "region": "Middle East",
-    "duration": "5 Days / 4 Nights",
-    "price": "₹55,000",
-    "rating": 4.7,
-    "reviews": 198,
-    "image": "/src/assets/regions-world.jpg",
-    "highlights": ["Burj Khalifa", "Desert Safari", "Dubai Mall", "Palm Jumeirah"],
-    "inclusions": ["Flights", "5-star Hotels", "Breakfast", "Desert Safari", "City Tour"],
-    "exclusions": ["Lunch & Dinner", "Shopping", "Optional Activities"],
-    "category": "Luxury & Modern",
-    "bestTime": "Nov - Mar",
-    "groupSize": "2-20 people",
-    "itinerary": [
-      {
-        "day": 1,
-        "title": "Arrival in Dubai",
-        "description": "Welcome to the city of gold!",
-        "activities": ["Airport pickup", "Hotel check-in", "Dubai Fountain show"],
-        "meals": ["Welcome dinner"],
-        "accommodation": "5-star hotel Downtown"
-      }
-    ]
-  }
-];
-
 const MiddleEast: React.FC = () => {
-  // TODO: Replace with API call - const packages = await fetchMiddleEastPackages();
-  const packages = middleEastPackagesData;
-  
+  const packages: TravelPackage[] = useMemo(() => (Object.values((middleEastMerged as any).countries || {}).flatMap((c: any) => c.packages) as TravelPackage[]), []);
   return (
     <div className="min-h-screen bg-background">
       <Navigation />

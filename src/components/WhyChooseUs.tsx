@@ -2,7 +2,6 @@ import { Shield, Award, Headphones, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const WhyChooseUs = () => {
-  // TODO: Replace with API call - const features = await fetchWhyChooseUsFeatures();
   const features = [
     {
       icon: Globe,

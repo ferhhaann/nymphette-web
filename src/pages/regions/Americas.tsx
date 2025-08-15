@@ -1,48 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionLanding from "@/components/regions/RegionLanding";
+import americasMerged from "@/data/regions/americas.data";
 import type { TravelPackage } from "@/data/packagesData";
 import hero1 from "@/assets/hero-travel.jpg";
 import hero2 from "@/assets/destinations-collage.jpg";
 import hero3 from "@/assets/regions-world.jpg";
 
-// TODO: Replace with API call
-const americasPackagesData: TravelPackage[] = [
-  {
-    "id": "ame-001",
-    "title": "USA East Coast Explorer",
-    "country": "USA",
-    "countrySlug": "usa",
-    "region": "Americas",
-    "duration": "12 Days / 11 Nights",
-    "price": "₹1,75,000",
-    "rating": 4.6,
-    "reviews": 145,
-    "image": "/src/assets/regions-world.jpg",
-    "highlights": ["Statue of Liberty", "Times Square", "White House", "Niagara Falls"],
-    "inclusions": ["Flights", "Hotels", "Internal Flights", "Breakfast", "City Tours"],
-    "exclusions": ["Meals", "Shopping", "Optional Tours", "Tips"],
-    "category": "Urban & Scenic",
-    "bestTime": "Apr - Oct",
-    "groupSize": "4-25 people",
-    "itinerary": [
-      {
-        "day": 1,
-        "title": "Arrival in New York",
-        "description": "Welcome to the Big Apple!",
-        "activities": ["JFK Airport arrival", "Times Square visit", "Broadway show"],
-        "meals": ["Welcome dinner"],
-        "accommodation": "Manhattan hotel"
-      }
-    ]
-  }
-];
-
 const Americas: React.FC = () => {
-  // TODO: Replace with API call - const packages = await fetchAmericasPackages();
-  const packages = americasPackagesData;
-  
+  const packages: TravelPackage[] = useMemo(() => (Object.values((americasMerged as any).countries || {}).flatMap((c: any) => c.packages) as TravelPackage[]), []);
   return (
     <div className="min-h-screen bg-background">
       <Navigation />

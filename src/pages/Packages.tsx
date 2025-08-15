@@ -14,12 +14,11 @@ const Packages = () => {
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
 
-  // TODO: Replace with API call - const regions = await fetchRegionsData();
   const regions = [
     {
       name: "Asia",
       countries: ["Thailand", "Japan", "Singapore", "Malaysia", "Indonesia", "Vietnam"],
-      packageCount: 15,
+      packageCount: (packagesData["Asia"] || []).length,
       startingPrice: "₹25,000",
       image: regionsImage,
       highlights: ["Cultural Tours", "Beach Resorts", "Adventure"]
@@ -27,7 +26,7 @@ const Packages = () => {
     {
       name: "Europe", 
       countries: ["France", "Italy", "Switzerland", "Germany", "Spain", "Greece"],
-      packageCount: 18,
+      packageCount: (packagesData["Europe"] || []).length,
       startingPrice: "₹85,000",
       image: regionsImage,
       highlights: ["Historic Sites", "Art & Culture", "Scenic Beauty"]
@@ -35,7 +34,7 @@ const Packages = () => {
     {
       name: "Africa",
       countries: ["Kenya", "Tanzania", "South Africa", "Morocco", "Egypt", "Botswana"],
-      packageCount: 12,
+      packageCount: (packagesData["Africa"] || []).length,
       startingPrice: "₹95,000", 
       image: regionsImage,
       highlights: ["Safari Adventures", "Wildlife", "Desert Tours"]
@@ -43,7 +42,7 @@ const Packages = () => {
     {
       name: "Americas",
       countries: ["USA", "Canada", "Brazil", "Argentina", "Peru", "Mexico"],
-      packageCount: 20,
+      packageCount: (packagesData["Americas"] || []).length,
       startingPrice: "₹75,000",
       image: regionsImage,
       highlights: ["City Tours", "Natural Wonders", "Cultural Heritage"]
@@ -51,7 +50,7 @@ const Packages = () => {
     {
       name: "Pacific Islands",
       countries: ["Maldives", "Fiji", "Tahiti", "Hawaii", "Mauritius", "Seychelles"],
-      packageCount: 8,
+      packageCount: (packagesData["Pacific Islands"] || []).length,
       startingPrice: "₹65,000",
       image: regionsImage,
       highlights: ["Beach Resorts", "Water Sports", "Luxury Stays"]
@@ -59,7 +58,7 @@ const Packages = () => {
     {
       name: "Middle East",
       countries: ["UAE", "Turkey", "Jordan", "Israel", "Qatar", "Oman"],
-      packageCount: 10,
+      packageCount: (packagesData["Middle East"] || []).length,
       startingPrice: "₹45,000",
       image: regionsImage,
       highlights: ["Luxury Tours", "Desert Safari", "Historic Sites"]
@@ -96,7 +95,6 @@ const Packages = () => {
     setSelectedRegion(null);
   };
 
-  // TODO: Replace with API call - const featuredPackages = await fetchFeaturedPackages();
   const featuredPackages = [
     {
       title: "Bali Paradise Escape",

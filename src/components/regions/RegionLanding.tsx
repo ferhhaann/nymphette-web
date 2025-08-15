@@ -99,14 +99,14 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
   return (
     <div className="min-h-screen bg-background">
       {/* HERO */}
-      <section className="relative mt-4 sm:mt-6 lg:mt-8">
+      <section className="relative">
         <Carousel>
           <CarouselContent>
             {heroImages.map((img, idx) => (
               <CarouselItem key={idx}>
-                <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] m-2 sm:m-4 lg:m-6 rounded-lg overflow-hidden">
-                  <img src={img} alt={`${title} hero ${idx+1}`} loading={idx===0?"eager":"lazy"} className="absolute inset-0 h-full w-full object-cover rounded-lg" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg" />
+                <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh]">
+                  <img src={img} alt={`${title} hero ${idx+1}`} loading={idx===0?"eager":"lazy"} className="absolute inset-0 h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
                   <div className="relative z-10 max-w-7xl mx-auto h-full flex items-end px-3 sm:px-6 lg:px-8 pb-4 sm:pb-8">
                     <div className="space-y-2 sm:space-y-4">
                       <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary">{title}</h1>

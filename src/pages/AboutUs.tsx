@@ -7,7 +7,6 @@ import teamPhoto from "@/assets/team-photo.jpg";
 import heroImage from "@/assets/hero-travel.jpg";
 
 const AboutUs = () => {
-  // TODO: Replace with API call - const milestones = await fetchCompanyMilestones();
   const milestones = [
     { year: "1999", event: "Founded Nymphette Tours with a vision to make travel accessible to everyone" },
     { year: "2005", event: "Expanded to international destinations, serving 10+ countries" },
@@ -17,7 +16,6 @@ const AboutUs = () => {
     { year: "2024", event: "Celebrating 25 years with 50,000+ happy travelers served" }
   ];
 
-  // TODO: Replace with API call - const teamMembers = await fetchTeamMembers();
   const teamMembers = [
     {
       name: "Rajesh Sharma",
@@ -45,7 +43,6 @@ const AboutUs = () => {
     }
   ];
 
-  // TODO: Replace with API call - const achievements = await fetchCompanyAchievements();
   const achievements = [
     {
       icon: Award,

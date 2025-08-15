@@ -1,48 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionLanding from "@/components/regions/RegionLanding";
+import pacificIslandsMerged from "@/data/regions/pacificIslands.data";
 import type { TravelPackage } from "@/data/packagesData";
 import hero1 from "@/assets/hero-travel.jpg";
 import hero2 from "@/assets/destinations-collage.jpg";
 import hero3 from "@/assets/regions-world.jpg";
 
-// TODO: Replace with API call
-const pacificIslandsPackagesData: TravelPackage[] = [
-  {
-    "id": "pac-001",
-    "title": "Maldives Water Villa Experience",
-    "country": "Maldives",
-    "countrySlug": "maldives",
-    "region": "Pacific Islands",
-    "duration": "6 Days / 5 Nights",
-    "price": "₹85,000",
-    "rating": 4.9,
-    "reviews": 267,
-    "image": "/src/assets/regions-world.jpg",
-    "highlights": ["Water Villa", "Snorkeling", "Sunset Cruise", "Spa Treatment"],
-    "inclusions": ["Seaplane Transfer", "Water Villa", "All Meals", "Activities", "Spa"],
-    "exclusions": ["Flights to Male", "Alcohol", "Personal Expenses"],
-    "category": "Luxury & Romance",
-    "bestTime": "Nov - Apr",
-    "groupSize": "2-8 people",
-    "itinerary": [
-      {
-        "day": 1,
-        "title": "Arrival in Paradise",
-        "description": "Welcome to your tropical paradise!",
-        "activities": ["Seaplane transfer", "Resort check-in", "Welcome cocktail"],
-        "meals": ["Lunch", "Dinner"],
-        "accommodation": "Overwater villa"
-      }
-    ]
-  }
-];
-
 const PacificIslands: React.FC = () => {
-  // TODO: Replace with API call - const packages = await fetchPacificIslandsPackages();
-  const packages = pacificIslandsPackagesData;
-  
+  const packages: TravelPackage[] = useMemo(() => (Object.values((pacificIslandsMerged as any).countries || {}).flatMap((c: any) => c.packages) as TravelPackage[]), []);
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
