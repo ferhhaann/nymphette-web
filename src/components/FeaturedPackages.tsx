@@ -3,10 +3,37 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock, Users, MapPin } from "lucide-react";
 import destinationsImage from "@/assets/destinations-collage.jpg";
-import packagesContent from "@/data/packagesContent.json";
 
 const FeaturedPackages = () => {
-  const packages = packagesContent.packages.featuredPackages.map((pkg, index) => ({
+  // TODO: Replace with API call - const packages = await fetchFeaturedPackages();
+  const featuredPackagesData = [
+    {
+      title: "European Grand Tour",
+      destination: "Paris, Rome, Swiss Alps",
+      duration: "12 Days / 11 Nights",
+      price: "₹1,25,000",
+      rating: 4.9,
+      region: "Europe"
+    },
+    {
+      title: "Bali Paradise Escape", 
+      destination: "Bali, Indonesia",
+      duration: "6 Days / 5 Nights",
+      price: "₹45,000",
+      rating: 4.7,
+      region: "Asia"
+    },
+    {
+      title: "Maldives Honeymoon Bliss",
+      destination: "Maldives",
+      duration: "7 Days / 6 Nights", 
+      price: "₹85,000",
+      rating: 4.9,
+      region: "Pacific Islands"
+    }
+  ];
+
+  const packages = featuredPackagesData.map((pkg, index) => ({
     id: index + 1,
     title: pkg.title,
     destination: pkg.destination,

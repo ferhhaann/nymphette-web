@@ -7,6 +7,7 @@ import { Calendar, User, Clock, ArrowRight } from "lucide-react";
 import regionsImage from "@/assets/regions-world.jpg";
 
 const Blog = () => {
+  // TODO: Replace with API call - const featuredPost = await fetchFeaturedBlogPost();
   const featuredPost = {
     id: 1,
     title: "The Ultimate Guide to Planning Your First European Adventure",
@@ -20,6 +21,7 @@ const Blog = () => {
     tags: ["Europe", "First Time", "Planning", "Budget Travel"]
   };
 
+  // TODO: Replace with API call - const blogPosts = await fetchBlogPosts();
   const blogPosts = [
     {
       id: 2,
@@ -89,6 +91,7 @@ const Blog = () => {
     }
   ];
 
+  // TODO: Replace with API call - const categories = await fetchBlogCategories();
   const categories = [
     "All Posts",
     "Travel Guides", 
