@@ -1,15 +1,148 @@
-import React, { useMemo } from "react";
+import React from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RegionLanding from "@/components/regions/RegionLanding";
-import asiaMerged from "@/data/regions/asia.data";
 import type { TravelPackage } from "@/data/packagesData";
 import hero1 from "@/assets/hero-travel.jpg";
 import hero2 from "@/assets/destinations-collage.jpg";
 import hero3 from "@/assets/regions-world.jpg";
 
+// TODO: Replace with API call
+const asiaPackagesData: TravelPackage[] = [
+  {
+    "id": "thai-001",
+    "title": "Bangkok & Phuket Paradise",
+    "country": "Thailand",
+    "countrySlug": "thailand",
+    "region": "Asia",
+    "duration": "7 Days / 6 Nights",
+    "price": "₹38,000",
+    "originalPrice": "₹45,000",
+    "rating": 4.7,
+    "reviews": 156,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Grand Palace", "Phi Phi Islands", "Thai Massage", "Street Food Tours"],
+    "inclusions": ["Flights", "Hotels", "Breakfast", "Airport Transfers", "Sightseeing"],
+    "exclusions": ["Lunch & Dinner", "Personal Expenses", "Tips", "Travel Insurance"],
+    "category": "Beach & Culture",
+    "bestTime": "Nov - Apr",
+    "groupSize": "2-15 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Bangkok",
+        "description": "Welcome to the Land of Smiles! Transfer to hotel and evening at leisure.",
+        "activities": ["Airport pickup", "Hotel check-in", "Welcome dinner"],
+        "meals": ["Dinner"],
+        "accommodation": "4-star hotel in Bangkok"
+      },
+      {
+        "day": 2,
+        "title": "Bangkok City Tour",
+        "description": "Explore Bangkok's iconic temples and royal palace.",
+        "activities": ["Grand Palace visit", "Wat Pho Temple", "Emerald Buddha", "Chao Phraya River cruise"],
+        "meals": ["Breakfast"]
+      },
+      {
+        "day": 3,
+        "title": "Bangkok to Phuket",
+        "description": "Fly to Phuket, the pearl of the Andaman Sea.",
+        "activities": ["Flight to Phuket", "Beach relaxation", "Sunset viewing"],
+        "meals": ["Breakfast"],
+        "accommodation": "Beach resort in Phuket"
+      },
+      {
+        "day": 4,
+        "title": "Phi Phi Islands Day Trip",
+        "description": "Explore the stunning Phi Phi Islands by speedboat.",
+        "activities": ["Maya Bay visit", "Snorkeling", "Viking Cave", "Monkey Beach"],
+        "meals": ["Breakfast", "Lunch"]
+      },
+      {
+        "day": 5,
+        "title": "Phuket Free Day",
+        "description": "Leisure day to explore Phuket at your own pace.",
+        "activities": ["Optional activities", "Beach time", "Shopping", "Thai massage"],
+        "meals": ["Breakfast"]
+      },
+      {
+        "day": 6,
+        "title": "Cultural Experience",
+        "description": "Experience authentic Thai culture and cuisine.",
+        "activities": ["Cooking class", "Local market visit", "Traditional dance show"],
+        "meals": ["Breakfast", "Lunch"]
+      },
+      {
+        "day": 7,
+        "title": "Departure",
+        "description": "Check out and transfer to airport for departure.",
+        "activities": ["Hotel check-out", "Airport transfer", "Departure"],
+        "meals": ["Breakfast"]
+      }
+    ]
+  },
+  {
+    "id": "jpn-001",
+    "title": "Tokyo & Kyoto Classic",
+    "country": "Japan",
+    "countrySlug": "japan",
+    "region": "Asia",
+    "duration": "9 Days / 8 Nights",
+    "price": "₹1,25,000",
+    "rating": 4.9,
+    "reviews": 234,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Tokyo Skytree", "Senso-ji Temple", "Mount Fuji", "Golden Pavilion"],
+    "inclusions": ["Flights", "Hotels", "JR Pass", "Breakfast", "Guided Tours"],
+    "exclusions": ["Lunch & Dinner", "Personal Shopping", "Tips"],
+    "category": "Culture & Modern",
+    "bestTime": "Mar - May, Sep - Nov",
+    "groupSize": "2-20 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Tokyo",
+        "description": "Welcome to Japan! Experience the bustling capital city.",
+        "activities": ["Narita Airport arrival", "Tokyo station transfer", "Shibuya crossing"],
+        "meals": ["Welcome dinner"],
+        "accommodation": "Modern hotel in Shinjuku"
+      }
+    ]
+  },
+  {
+    "id": "idn-001",
+    "title": "Bali Cultural Journey",
+    "country": "Indonesia",
+    "countrySlug": "indonesia",
+    "region": "Asia",
+    "duration": "6 Days / 5 Nights",
+    "price": "₹35,000",
+    "rating": 4.6,
+    "reviews": 178,
+    "image": "/src/assets/regions-world.jpg",
+    "highlights": ["Ubud Rice Terraces", "Temple Tours", "Traditional Villages", "Volcano Sunrise"],
+    "inclusions": ["Flights", "Hotels", "Breakfast", "Transfers", "Cultural Tours"],
+    "exclusions": ["Meals", "Personal Expenses", "Optional Activities"],
+    "category": "Cultural & Nature",
+    "bestTime": "Apr - Oct",
+    "groupSize": "2-16 people",
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Bali",
+        "description": "Welcome to the Island of Gods!",
+        "activities": ["Airport pickup", "Hotel check-in", "Sunset at Tanah Lot"],
+        "meals": ["Dinner"],
+        "accommodation": "Resort in Seminyak"
+      }
+    ]
+  }
+];
+
 const Asia: React.FC = () => {
-  const packages: TravelPackage[] = useMemo(() => (Object.values((asiaMerged as any).countries || {}).flatMap((c: any) => c.packages) as TravelPackage[]), []);
+  // TODO: Replace with API call - const packages = await fetchAsiaPackages();
+  const packages = asiaPackagesData;
+  
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
