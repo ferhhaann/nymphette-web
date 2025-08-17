@@ -26,7 +26,7 @@ const ImageSlideshow = ({ images, alt, className = "", width, height }: ImageSli
         setCurrentImageIndex((prevIndex) => 
           (prevIndex + 1) % images.length
         );
-      }, 1000); // Change image every 1 second
+      }, 2000); // Change image every 2 seconds
     }
 
     return () => {
