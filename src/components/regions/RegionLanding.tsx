@@ -24,12 +24,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Calendar, CheckCircle2, CircleDollarSign, MapPinned, ShieldCheck, Utensils, Users } from "lucide-react";
+import { Calendar, CheckCircle2, CircleDollarSign, MapPinned, ShieldCheck, Star, Utensils, Users } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import InquiryBookingForm from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
 import MapWidget from "./MapWidget";
 import CountryList from "./CountryList";
+import PackageDetailModal from "../PackageDetailModal";
 
 export interface RegionLandingProps {
   regionKey: string;
@@ -69,11 +70,36 @@ const toUSD = (pkg: TravelPackage): number => {
 
 const includesTag = (arr: string[], key: string) => arr.some(i => i.toLowerCase().includes(key));
 
+// Get individual images for each package based on country
+const getPackageImage = (countrySlug?: string, title?: string) => {
+  if (countrySlug === "thailand") return "/places/thailand/bangkok.jpg";
+  if (countrySlug === "japan") return "/places/japan/tokyo.jpg";
+  if (countrySlug === "indonesia") return "/places/indonesia/bali.jpg";
+  if (countrySlug === "china") return "/places/china/beijing.jpg";
+  if (countrySlug === "kazakhstan") return "/places/kazakhstan/almaty.jpg";
+  if (countrySlug === "malaysia") return "/places/malaysia/kuala-lumpur.jpg";
+  if (countrySlug === "philippines") return "/places/philippines/manila.jpg";
+  if (countrySlug === "south-korea") return "/places/south-korea/seoul.jpg";
+  if (countrySlug === "vietnam") return "/places/vietnam/ho-chi-minh.jpg";
+  if (countrySlug === "maldives") return "/places/maldives/male-city.jpg";
+  if (countrySlug === "uae") return "/places/uae/dubai-marina.jpg";
+  if (countrySlug === "usa") return "/places/usa/times-square.jpg";
+  if (countrySlug === "kenya") return "/places/kenya/masai-mara.jpg";
+  
+  // Fallback based on title keywords
+  if (title?.toLowerCase().includes("maldives")) return "/places/maldives/overwater-villas.jpg";
+  if (title?.toLowerCase().includes("dubai")) return "/places/uae/burj-khalifa.jpg";
+  if (title?.toLowerCase().includes("japan")) return "/places/japan/mount-fuji.jpg";
+  
+  return "/places/thailand/bangkok.jpg"; // Default fallback
+};
+
 const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, description, canonical, data, heroImages }) => {
   const [query, setQuery] = useState("");
   const [budgetMax, setBudgetMax] = useState<number>(6000);
   const [openFormFor, setOpenFormFor] = useState<TravelPackage | null>(null);
   const [stickyOpen, setStickyOpen] = useState(false);
+  const [selectedPackageForDetails, setSelectedPackageForDetails] = useState<TravelPackage | null>(null);
 
   useEffect(() => { setMeta(title, description, canonical); }, [title, description, canonical]);
 
@@ -142,69 +168,54 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((pkg, index)=>{
             const price = toUSD(pkg);
-            const allInc = [
-              includesTag(pkg.inclusions, 'hotel') || includesTag(pkg.inclusions, 'stay'),
-              includesTag(pkg.inclusions, 'transfer') || includesTag(pkg.inclusions, 'airport'),
-              includesTag(pkg.inclusions, 'sight') || includesTag(pkg.inclusions, 'tour'),
-              includesTag(pkg.inclusions, 'activity') || includesTag(pkg.inclusions, 'game drive')
-            ];
+            const packageImage = getPackageImage(pkg.countrySlug, pkg.title);
             return (
-              <Card key={pkg.id} className="overflow-hidden animate-fade-in" style={{animationDelay:`${index*60}ms`}}>
+              <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300" 
+                    style={{animationDelay:`${index*60}ms`}}
+                    onClick={() => setSelectedPackageForDetails(pkg)}>
                 <div className="relative h-48 overflow-hidden">
-                  <img src={pkg.image} alt={pkg.title} loading="lazy" className="w-full h-full object-cover"/>
-                  <div className="absolute top-3 left-3 flex gap-2 flex-wrap">
-                    <Badge variant="outline">{pkg.category}</Badge>
-                    <Badge variant="secondary" className="gap-1"><CheckCircle2 className="size-4"/> All-inclusive</Badge>
-                    <Badge variant="secondary">Guides & Drivers included</Badge>
-                    <Badge variant="secondary"><Utensils className="size-4 mr-1"/> Indian meals on request</Badge>
+                  <img src={packageImage} alt={pkg.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
+                  <div className="absolute top-3 left-3">
+                    <Badge variant="outline" className="bg-background/90 backdrop-blur">{pkg.category}</Badge>
+                  </div>
+                  <div className="absolute top-3 right-3 bg-background/90 backdrop-blur rounded-full px-2 py-1">
+                    <div className="flex items-center space-x-1">
+                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                      <span className="text-xs font-medium">{pkg.rating}</span>
+                    </div>
                   </div>
                 </div>
-                <CardHeader>
-                  <CardTitle className="text-xl">{pkg.title}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{pkg.country} • {pkg.duration}</p>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg line-clamp-1">{pkg.title}</CardTitle>
+                  <div className="flex items-center text-muted-foreground text-sm">
+                    <MapPinned className="h-3 w-3 mr-1" />
+                    <span>{pkg.country}</span>
+                  </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {pkg.highlights.slice(0,3).map((h,i)=>(<Badge key={i} variant="outline">{h}</Badge>))}
+                <CardContent className="pt-0">
+                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
+                    <div className="flex items-center">
+                      <Calendar className="h-3 w-3 mr-1" />
+                      <span>{pkg.duration}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Users className="h-3 w-3 mr-1" />
+                      <span>{pkg.groupSize}</span>
+                    </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-2xl font-bold">{price?`$${price}`: 'Price on request'}</div>
-                      <p className="text-xs text-muted-foreground">per person • Transparent pricing</p>
+                      <div className="text-xl font-bold text-primary">{price ? `$${price}` : pkg.price}</div>
+                      <p className="text-xs text-muted-foreground">per person</p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm text-muted-foreground">Best time: {pkg.bestTime}</p>
-                      <p className="text-sm text-muted-foreground">Group: {pkg.groupSize}</p>
-                    </div>
+                    <Button size="sm" variant="outline" onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPackageForDetails(pkg);
+                    }}>
+                      View Details
+                    </Button>
                   </div>
                 </CardContent>
-                <CardFooter className="flex flex-col gap-3">
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="itinerary">
-                      <AccordionTrigger className="text-sm">Interactive itinerary preview</AccordionTrigger>
-                      <AccordionContent>
-                        <ul className="space-y-2">
-                          {pkg.itinerary.slice(0,3).map((d,i)=> (
-                            <li key={i} className="flex gap-3 items-start">
-                              <div className="w-16 h-16 bg-accent/10 rounded grid place-items-center text-sm">Day {d.day}</div>
-                              <div>
-                                <p className="text-sm font-medium">{d.title}</p>
-                                <p className="text-xs text-muted-foreground line-clamp-2">{d.description}</p>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                        <div className="mt-3">
-                          <MapWidget regionKey={regionKey} compact />
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                  <div className="flex w-full gap-2">
-                    <Button variant="outline" className="flex-1" onClick={()=>setOpenFormFor(pkg)}>Customize</Button>
-                    <Button className="flex-1" onClick={()=>setOpenFormFor(pkg)}>Book / Enquire</Button>
-                  </div>
-                </CardFooter>
               </Card>
             )
           })}
@@ -233,6 +244,18 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
       </Dialog>
 
       <ChatbotWidget regionKey={regionKey} />
+
+      {/* Package Detail Modal */}
+      {selectedPackageForDetails && (
+        <PackageDetailModal
+          package={selectedPackageForDetails}
+          onClose={() => setSelectedPackageForDetails(null)}
+          onBook={(pkg) => {
+            setSelectedPackageForDetails(null);
+            setOpenFormFor(pkg);
+          }}
+        />
+      )}
     </div>
   );
 };
