@@ -1,10 +1,20 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { TravelPackage } from "@/data/packagesData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 import { 
   X, 
   Star, 
@@ -17,8 +27,24 @@ import {
   ChevronLeft,
   ChevronRight,
   Heart,
-  Share2
+  Share2,
+  Languages,
+  Globe,
+  Phone,
+  Mail,
+  StarHalf,
+  ZoomIn
 } from "lucide-react";
+
+// Form validation schema
+const enquiryFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  city: z.string().min(2, "City is required"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  countryCode: z.string().min(1, "Country code is required"),
+  message: z.string().optional(),
+});
 
 interface PackageDetailModalProps {
   package: TravelPackage;
@@ -121,7 +147,29 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
 
 const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
+  const { toast } = useToast();
+  
+  const form = useForm<z.infer<typeof enquiryFormSchema>>({
+    resolver: zodResolver(enquiryFormSchema),
+    defaultValues: {
+      name: "",
+      city: "",
+      email: "",
+      phone: "",
+      countryCode: "+1",
+      message: "",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof enquiryFormSchema>) => {
+    console.log(values);
+    toast({
+      title: "Enquiry Sent!",
+      description: "We'll get back to you within 24 hours.",
+    });
+    form.reset();
+  };
   
   const placeImages = getPlaceImages(pkg.countrySlug, pkg.country);
   
@@ -133,164 +181,194 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
     setCurrentImageIndex((prev) => (prev - 1 + placeImages.length) % placeImages.length);
   };
 
+  // Mock data for reviews breakdown
+  const reviewsBreakdown = {
+    excellent: 65,
+    veryGood: 25, 
+    average: 8,
+    poor: 2,
+    terrible: 0
+  };
+
+  const renderStars = (rating: number) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    return (
+      <div className="flex items-center">
+        {[...Array(fullStars)].map((_, i) => (
+          <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+        ))}
+        {hasHalfStar && <StarHalf className="h-4 w-4 fill-yellow-400 text-yellow-400" />}
+        {[...Array(emptyStars)].map((_, i) => (
+          <Star key={i} className="h-4 w-4 text-gray-300" />
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-6xl max-h-[90vh] overflow-hidden bg-background">
-        <CardHeader className="relative p-0">
-          {/* Image Gallery */}
-          <div className="relative h-64 md:h-80 overflow-hidden">
-            <img
-              src={placeImages[currentImageIndex].src}
-              alt={placeImages[currentImageIndex].alt}
-              className="w-full h-full object-cover"
-              loading="eager"
-            />
-            
-            {/* Navigation buttons */}
-            {placeImages.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-              </>
-            )}
-            
-            {/* Image indicators */}
-            {placeImages.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                {placeImages.map((_, index) => (
+    <>
+      {/* Main Modal */}
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-6xl max-h-[90vh] overflow-hidden bg-background">
+          {/* Header with Hero Image */}
+          <CardHeader className="relative p-0">
+            <div className="relative h-80 overflow-hidden">
+              <img
+                src={placeImages[currentImageIndex].src}
+                alt={placeImages[currentImageIndex].alt}
+                className="w-full h-full object-cover cursor-pointer"
+                loading="eager"
+                onClick={() => setEnlargedImage(placeImages[currentImageIndex].src)}
+              />
+              
+              {/* Navigation buttons */}
+              {placeImages.length > 1 && (
+                <>
                   <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentImageIndex ? 'bg-white' : 'bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
-            
-            {/* Close button */}
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-            >
-              <X className="h-4 w-4" />
-            </button>
-            
-            {/* Action buttons */}
-            <div className="absolute top-4 left-4 flex space-x-2">
-              <Badge className="bg-foreground text-background">{pkg.category}</Badge>
-              <button className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors">
-                <Heart className="h-4 w-4" />
-              </button>
-              <button className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors">
-                <Share2 className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        </CardHeader>
-
-        <ScrollArea className="max-h-[calc(90vh-20rem)] overflow-auto">
-          <CardContent className="p-6">
-            {/* Package Header */}
-            <div className="mb-6">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h1 className="text-3xl font-bold text-primary mb-2">{pkg.title}</h1>
-                  <div className="flex items-center text-muted-foreground mb-2">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    <span>{pkg.country}</span>
-                  </div>
-                  <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                    <div className="flex items-center">
-                      <Clock className="h-4 w-4 mr-1" />
-                      {pkg.duration}
-                    </div>
-                    <div className="flex items-center">
-                      <Users className="h-4 w-4 mr-1" />
-                      {pkg.groupSize}
-                    </div>
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      Best: {pkg.bestTime}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  {pkg.originalPrice && (
-                    <span className="text-lg text-muted-foreground line-through">{pkg.originalPrice}</span>
-                  )}
-                  <div className="text-3xl font-bold text-accent">{pkg.price}</div>
-                  <span className="text-sm text-muted-foreground">per person</span>
-                  <div className="flex items-center mt-2">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                    <span className="font-medium">{pkg.rating}</span>
-                    <span className="text-muted-foreground ml-1">({pkg.reviews} reviews)</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tab Navigation */}
-              <div className="flex space-x-4 mb-6 border-b">
-                {[
-                  { id: "overview", label: "Overview" },
-                  { id: "itinerary", label: "Itinerary" },
-                  { id: "inclusions", label: "Inclusions" }
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`pb-2 px-1 border-b-2 transition-colors ${
-                      activeTab === tab.id 
-                        ? 'border-primary text-primary' 
-                        : 'border-transparent text-muted-foreground hover:text-foreground'
-                    }`}
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
                   >
-                    {tab.label}
+                    <ChevronLeft className="h-4 w-4" />
                   </button>
-                ))}
-              </div>
-
-              {/* Tab Content */}
-              {activeTab === "overview" && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3">Highlights</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {pkg.highlights.map((highlight, idx) => (
-                        <Badge key={idx} variant="outline" className="border-primary text-primary">
-                          {highlight}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </>
+              )}
+              
+              {/* Image indicators */}
+              {placeImages.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                  {placeImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                      }`}
+                    />
+                  ))}
                 </div>
               )}
+              
+              {/* Close button */}
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              
+              {/* Zoom indicator */}
+              <div className="absolute bottom-4 right-4 bg-black/50 text-white p-2 rounded-full">
+                <ZoomIn className="h-4 w-4" />
+              </div>
 
-              {activeTab === "itinerary" && (
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Day-by-Day Itinerary</h3>
+              {/* Package info overlay */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
+                <div className="flex items-end justify-between">
+                  <div>
+                    <h1 className="text-3xl font-bold mb-2">{pkg.title}</h1>
+                    <div className="flex items-center mb-2">
+                      <MapPin className="h-4 w-4 mr-2" />
+                      <span className="text-lg">{pkg.country}</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    {pkg.originalPrice && (
+                      <span className="text-lg text-white/70 line-through">{pkg.originalPrice}</span>
+                    )}
+                    <div className="text-3xl font-bold">{pkg.price}</div>
+                    <Button size="lg" className="mt-2 bg-primary hover:bg-primary/90" onClick={() => onBook?.(pkg)}>
+                      Book Now
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardHeader>
+
+          <ScrollArea className="max-h-[calc(90vh-20rem)] overflow-auto">
+            <CardContent className="p-6 space-y-8">
+              {/* Key Facts Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
+                  <Clock className="h-5 w-5 text-primary" />
+                  <div>
+                    <div className="text-sm font-medium">Duration</div>
+                    <div className="text-sm text-muted-foreground">{pkg.duration}</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
+                  <Users className="h-5 w-5 text-primary" />
+                  <div>
+                    <div className="text-sm font-medium">Group Size</div>
+                    <div className="text-sm text-muted-foreground">{pkg.groupSize}</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
+                  <Calendar className="h-5 w-5 text-primary" />
+                  <div>
+                    <div className="text-sm font-medium">Best Time</div>
+                    <div className="text-sm text-muted-foreground">{pkg.bestTime}</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
+                  <Languages className="h-5 w-5 text-primary" />
+                  <div>
+                    <div className="text-sm font-medium">Languages</div>
+                    <div className="text-sm text-muted-foreground">English</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rating */}
+              <div className="flex items-center space-x-4">
+                {renderStars(pkg.rating)}
+                <span className="font-medium text-lg">{pkg.rating}</span>
+                <span className="text-muted-foreground">({pkg.reviews} reviews)</span>
+                <Badge>{pkg.category}</Badge>
+              </div>
+
+              {/* Overview Section */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-3">Overview</h2>
+                <p className="text-muted-foreground mb-4">
+                  Discover the beauty and culture of {pkg.country} on this amazing {pkg.duration} journey. 
+                  Experience the highlights and hidden gems that make this destination truly special.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {pkg.highlights.map((highlight, idx) => (
+                    <Badge key={idx} variant="outline" className="border-primary text-primary">
+                      {highlight}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Itinerary Accordion */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Day-by-Day Itinerary</h2>
+                <Accordion type="single" collapsible className="w-full">
                   {pkg.itinerary.map((day, idx) => (
-                    <Card key={idx} className="border border-border">
-                      <CardContent className="p-4">
-                        <div className="flex items-center mb-2">
-                          <Badge variant="outline" className="mr-3">Day {day.day}</Badge>
-                          <h4 className="font-semibold">{day.title}</h4>
+                    <AccordionItem key={idx} value={`day-${day.day}`}>
+                      <AccordionTrigger className="text-left">
+                        <div className="flex items-center space-x-3">
+                          <Badge variant="outline">Day {day.day}</Badge>
+                          <span className="font-semibold">{day.title}</span>
                         </div>
-                        <p className="text-muted-foreground mb-3">{day.description}</p>
+                      </AccordionTrigger>
+                      <AccordionContent className="pt-4">
+                        <p className="text-muted-foreground mb-4">{day.description}</p>
                         
                         {day.activities && day.activities.length > 0 && (
-                          <div className="mb-2">
+                          <div className="mb-3">
                             <span className="font-medium text-sm">Activities: </span>
                             <span className="text-sm text-muted-foreground">
                               {day.activities.join(", ")}
@@ -299,7 +377,7 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                         )}
                         
                         {day.meals && day.meals.length > 0 && (
-                          <div className="mb-2">
+                          <div className="mb-3">
                             <span className="font-medium text-sm">Meals: </span>
                             <span className="text-sm text-muted-foreground">
                               {day.meals.join(", ")}
@@ -309,22 +387,28 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                         
                         {day.accommodation && (
                           <div>
-                            <span className="font-medium text-sm">Stay: </span>
+                            <span className="font-medium text-sm">Accommodation: </span>
                             <span className="text-sm text-muted-foreground">
                               {day.accommodation}
                             </span>
                           </div>
                         )}
-                      </CardContent>
-                    </Card>
+                      </AccordionContent>
+                    </AccordionItem>
                   ))}
-                </div>
-              )}
+                </Accordion>
+              </div>
 
-              {activeTab === "inclusions" && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-green-600">What's Included</h3>
+              {/* Included / Excluded Lists */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-green-600 flex items-center">
+                      <Check className="h-5 w-5 mr-2" />
+                      What's Included
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
                     <ul className="space-y-2">
                       {pkg.inclusions.map((item, idx) => (
                         <li key={idx} className="flex items-center text-sm">
@@ -333,10 +417,17 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                         </li>
                       ))}
                     </ul>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-red-600">What's Not Included</h3>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-red-600 flex items-center">
+                      <XIcon className="h-5 w-5 mr-2" />
+                      What's Not Included
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
                     <ul className="space-y-2">
                       {pkg.exclusions.map((item, idx) => (
                         <li key={idx} className="flex items-center text-sm">
@@ -345,29 +436,219 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                         </li>
                       ))}
                     </ul>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Location & Map */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-4 flex items-center">
+                  <Globe className="h-6 w-6 mr-2" />
+                  Location & Destinations
+                </h2>
+                <div className="flex items-center space-x-2 mb-4">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <span className="font-medium">Primary Destination: {pkg.country}</span>
+                </div>
+                <div className="bg-muted rounded-lg p-4 text-center">
+                  <Globe className="h-12 w-12 mx-auto mb-2 text-muted-foreground" />
+                  <p className="text-muted-foreground">Interactive map coming soon</p>
+                </div>
+              </div>
+
+              {/* Reviews Section */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Reviews & Ratings</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <div className="flex items-center space-x-4 mb-4">
+                      {renderStars(pkg.rating)}
+                      <span className="text-2xl font-bold">{pkg.rating}</span>
+                      <span className="text-muted-foreground">({pkg.reviews} reviews)</span>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      {Object.entries(reviewsBreakdown).map(([key, value]) => (
+                        <div key={key} className="flex items-center space-x-3">
+                          <span className="w-16 text-sm capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                          <Progress value={value} className="flex-1" />
+                          <span className="text-sm text-muted-foreground w-8">{value}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-semibold mb-3">Leave a Review</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm">Your Rating:</span>
+                        <div className="flex space-x-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} className="h-4 w-4 text-gray-300 hover:text-yellow-400 cursor-pointer" />
+                          ))}
+                        </div>
+                      </div>
+                      <Textarea placeholder="Share your experience..." />
+                      <Button size="sm">Submit Review</Button>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
 
-            <Separator className="my-6" />
+              {/* Enquiry Form */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Mail className="h-5 w-5 mr-2" />
+                    Send Enquiry
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Full Name</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter your name" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={form.control}
+                          name="city"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>City of Residence</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter your city" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="flex-1 bg-primary hover:bg-primary/90" onClick={() => onBook?.(pkg)}>
-                Book Now - {pkg.price}
-              </Button>
-              <Button size="lg" variant="outline" className="flex-1 border-primary text-primary hover:bg-primary hover:text-white">
-                Add to Wishlist
-              </Button>
-              <Button size="lg" variant="ghost" onClick={onClose}>
-                Close
-              </Button>
-            </div>
-          </CardContent>
-        </ScrollArea>
-      </Card>
-    </div>
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="Enter your email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="countryCode"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Country Code</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Code" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="+1">+1 (US)</SelectItem>
+                                  <SelectItem value="+44">+44 (UK)</SelectItem>
+                                  <SelectItem value="+91">+91 (IN)</SelectItem>
+                                  <SelectItem value="+61">+61 (AU)</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <div className="md:col-span-3">
+                          <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Phone Number</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Enter your phone number" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+
+                      <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Message (Optional)</FormLabel>
+                            <FormControl>
+                              <Textarea placeholder="Any specific requirements or questions..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <Button type="submit" className="flex-1">Send Enquiry</Button>
+                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                          <Phone className="h-4 w-4" />
+                          <span>+1-800-TRAVEL</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                          <Mail className="h-4 w-4" />
+                          <span>info@travel.com</span>
+                        </div>
+                      </div>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
+            </CardContent>
+          </ScrollArea>
+        </Card>
+      </div>
+
+      {/* Enlarged Image Modal */}
+      {enlargedImage && (
+        <div 
+          className="fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4"
+          onClick={() => setEnlargedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh]">
+            <img 
+              src={enlargedImage} 
+              alt="Enlarged view" 
+              className="max-w-full max-h-full object-contain"
+            />
+            <button
+              onClick={() => setEnlargedImage(null)}
+              className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
