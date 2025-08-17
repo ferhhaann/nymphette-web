@@ -6,13 +6,26 @@ import RegionPackages from "@/components/RegionPackages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Clock, Star, Users } from "lucide-react";
-// Individual region images for better loading and UX
-import asiaImage from "@/assets/regions/asia-destinations.jpg";
-import europeImage from "@/assets/regions/europe-destinations.jpg";
-import africaImage from "@/assets/regions/africa-destinations.jpg";
-import americasImage from "@/assets/regions/americas-destinations.jpg";
-import pacificIslandsImage from "@/assets/regions/pacific-islands-destinations.jpg";
-import middleEastImage from "@/assets/regions/middle-east-destinations.jpg";
+import ImageSlideshow from "@/components/ImageSlideshow";
+// Region slideshow images - 3 images per region
+import asia1 from "@/assets/regions/asia-1.jpg";
+import asia2 from "@/assets/regions/asia-2.jpg";
+import asia3 from "@/assets/regions/asia-3.jpg";
+import europe1 from "@/assets/regions/europe-1.jpg";
+import europe2 from "@/assets/regions/europe-2.jpg";
+import europe3 from "@/assets/regions/europe-3.jpg";
+import africa1 from "@/assets/regions/africa-1.jpg";
+import africa2 from "@/assets/regions/africa-2.jpg";
+import africa3 from "@/assets/regions/africa-3.jpg";
+import americas1 from "@/assets/regions/americas-1.jpg";
+import americas2 from "@/assets/regions/americas-2.jpg";
+import americas3 from "@/assets/regions/americas-3.jpg";
+import pacific1 from "@/assets/regions/pacific-1.jpg";
+import pacific2 from "@/assets/regions/pacific-2.jpg";
+import pacific3 from "@/assets/regions/pacific-3.jpg";
+import middleEast1 from "@/assets/regions/middle-east-1.jpg";
+import middleEast2 from "@/assets/regions/middle-east-2.jpg";
+import middleEast3 from "@/assets/regions/middle-east-3.jpg";
 // Featured package images
 import baliImage from "@/assets/packages/bali-paradise.jpg";
 import europeGrandTourImage from "@/assets/packages/europe-grand-tour.jpg";
@@ -26,7 +39,7 @@ const Packages = () => {
 
   // Preload critical images for faster initial load
   useEffect(() => {
-    const preloadImages = [asiaImage, europeImage, africaImage];
+    const preloadImages = [asia1, europe1, africa1];
     preloadImages.forEach(src => {
       const link = document.createElement('link');
       link.rel = 'preload';
@@ -48,7 +61,7 @@ const Packages = () => {
       countries: ["Thailand", "Japan", "Singapore", "Malaysia", "Indonesia", "Vietnam"],
       packageCount: (packagesData["Asia"] || []).length,
       startingPrice: "₹25,000",
-      image: asiaImage,
+      images: [asia1, asia2, asia3],
       highlights: ["Cultural Tours", "Beach Resorts", "Adventure"]
     },
     {
@@ -56,7 +69,7 @@ const Packages = () => {
       countries: ["France", "Italy", "Switzerland", "Germany", "Spain", "Greece"],
       packageCount: (packagesData["Europe"] || []).length,
       startingPrice: "₹85,000",
-      image: europeImage,
+      images: [europe1, europe2, europe3],
       highlights: ["Historic Sites", "Art & Culture", "Scenic Beauty"]
     },
     {
@@ -64,7 +77,7 @@ const Packages = () => {
       countries: ["Kenya", "Tanzania", "South Africa", "Morocco", "Egypt", "Botswana"],
       packageCount: (packagesData["Africa"] || []).length,
       startingPrice: "₹95,000", 
-      image: africaImage,
+      images: [africa1, africa2, africa3],
       highlights: ["Safari Adventures", "Wildlife", "Desert Tours"]
     },
     {
@@ -72,7 +85,7 @@ const Packages = () => {
       countries: ["USA", "Canada", "Brazil", "Argentina", "Peru", "Mexico"],
       packageCount: (packagesData["Americas"] || []).length,
       startingPrice: "₹75,000",
-      image: americasImage,
+      images: [americas1, americas2, americas3],
       highlights: ["City Tours", "Natural Wonders", "Cultural Heritage"]
     },
     {
@@ -80,7 +93,7 @@ const Packages = () => {
       countries: ["Maldives", "Fiji", "Tahiti", "Hawaii", "Mauritius", "Seychelles"],
       packageCount: (packagesData["Pacific Islands"] || []).length,
       startingPrice: "₹65,000",
-      image: pacificIslandsImage,
+      images: [pacific1, pacific2, pacific3],
       highlights: ["Beach Resorts", "Water Sports", "Luxury Stays"]
     },
     {
@@ -88,7 +101,7 @@ const Packages = () => {
       countries: ["UAE", "Turkey", "Jordan", "Israel", "Qatar", "Oman"],
       packageCount: (packagesData["Middle East"] || []).length,
       startingPrice: "₹45,000",
-      image: middleEastImage,
+      images: [middleEast1, middleEast2, middleEast3],
       highlights: ["Luxury Tours", "Desert Safari", "Historic Sites"]
     }
   ];
@@ -215,14 +228,12 @@ const Packages = () => {
                 onClick={() => handleRegionClick(region.name)}
               >
                 <div className="relative overflow-hidden">
-                  <img
-                    src={region.image}
+                  <ImageSlideshow
+                    images={region.images}
                     alt={`${region.name} travel destinations and highlights`}
-                    loading={index < 3 ? "eager" : "lazy"}
-                    decoding="async"
                     width="400"
                     height="192"
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-48 group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-primary-dark/40 group-hover:bg-primary-dark/30 transition-colors"></div>
                   <div className="absolute top-4 right-4">
