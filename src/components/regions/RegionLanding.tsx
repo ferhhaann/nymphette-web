@@ -70,13 +70,13 @@ const toUSD = (pkg: TravelPackage): number => {
 
 const includesTag = (arr: string[], key: string) => arr.some(i => i.toLowerCase().includes(key));
 
-// Get individual images for each package based on country
+// Get individual images for each package based on country (WebP optimized)
 const getPackageImage = (countrySlug?: string, title?: string) => {
-  if (countrySlug === "thailand") return "/places/thailand/bangkok.jpg";
-  if (countrySlug === "japan") return "/places/japan/tokyo.jpg";
-  if (countrySlug === "indonesia") return "/places/indonesia/bali.jpg";
-  if (countrySlug === "china") return "/places/china/beijing.jpg";
-  if (countrySlug === "kazakhstan") return "/places/kazakhstan/almaty.jpg";
+  if (countrySlug === "thailand") return "/places/thailand/bangkok.webp";
+  if (countrySlug === "japan") return "/places/japan/tokyo.webp";
+  if (countrySlug === "indonesia") return "/places/indonesia/bali.webp";
+  if (countrySlug === "china") return "/places/china/beijing.webp";
+  if (countrySlug === "kazakhstan") return "/places/kazakhstan/almaty.webp";
   if (countrySlug === "malaysia") return "/places/malaysia/kuala-lumpur.jpg";
   if (countrySlug === "philippines") return "/places/philippines/manila.jpg";
   if (countrySlug === "south-korea") return "/places/south-korea/seoul.jpg";
@@ -89,9 +89,9 @@ const getPackageImage = (countrySlug?: string, title?: string) => {
   // Fallback based on title keywords
   if (title?.toLowerCase().includes("maldives")) return "/places/maldives/overwater-villas.jpg";
   if (title?.toLowerCase().includes("dubai")) return "/places/uae/burj-khalifa.jpg";
-  if (title?.toLowerCase().includes("japan")) return "/places/japan/mount-fuji.jpg";
+  if (title?.toLowerCase().includes("japan")) return "/places/japan/mount-fuji.webp";
   
-  return "/places/thailand/bangkok.jpg"; // Default fallback
+  return "/places/thailand/bangkok.webp"; // Default fallback
 };
 
 const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, description, canonical, data, heroImages }) => {

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock, Users, MapPin } from "lucide-react";
-import ImageSlideshow from "@/components/ImageSlideshow";
 import packagesContent from "@/data/packagesContent.json";
 // Individual country images - 4 images per country
 import japanImage from "@/assets/countries/japan.jpg";
@@ -77,12 +76,11 @@ const FeaturedPackages = () => {
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <div className="relative overflow-hidden">
-                <ImageSlideshow
-                  images={pkg.images}
+                <img
+                  src={pkg.images[0]}
                   alt={`${pkg.title} - ${pkg.destination} travel package`}
-                  width="400"
-                  height="256"
-                  className="w-full h-64 group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                  className="w-full h-64 object-cover"
                 />
                 <div className="absolute top-4 left-4">
                   <Badge variant="secondary" className="bg-foreground text-background">

@@ -32,32 +32,32 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
   
   if (slug === "thailand") {
     return [
-      { src: "/places/thailand/bangkok.jpg", alt: "Bangkok Grand Palace" },
-      { src: "/places/thailand/phuket.jpg", alt: "Phuket Beach" },
-      { src: "/places/thailand/chiang-mai.jpg", alt: "Chiang Mai Temples" }
+      { src: "/places/thailand/bangkok.webp", alt: "Bangkok Grand Palace" },
+      { src: "/places/thailand/phuket.webp", alt: "Phuket Beach" },
+      { src: "/places/thailand/chiang-mai.webp", alt: "Chiang Mai Temples" }
     ];
   }
   if (slug === "japan") {
     return [
-      { src: "/places/japan/tokyo.jpg", alt: "Tokyo Skyline" },
-      { src: "/places/japan/mount-fuji.jpg", alt: "Mount Fuji" },
+      { src: "/places/japan/tokyo.webp", alt: "Tokyo Skyline" },
+      { src: "/places/japan/mount-fuji.webp", alt: "Mount Fuji" },
       { src: "/places/japan/arashiyama-bamboo-grove.jpg", alt: "Kyoto Bamboo Grove" },
       { src: "/places/japan/fushimi-inari-shrine.jpg", alt: "Fushimi Inari Shrine" }
     ];
   }
   if (slug === "indonesia") {
     return [
-      { src: "/places/indonesia/bali.jpg", alt: "Bali Rice Terraces" }
+      { src: "/places/indonesia/bali.webp", alt: "Bali Rice Terraces" }
     ];
   }
   if (slug === "china") {
     return [
-      { src: "/places/china/beijing.jpg", alt: "Beijing Forbidden City" }
+      { src: "/places/china/beijing.webp", alt: "Beijing Forbidden City" }
     ];
   }
   if (slug === "kazakhstan") {
     return [
-      { src: "/places/kazakhstan/almaty.jpg", alt: "Almaty Mountains" }
+      { src: "/places/kazakhstan/almaty.webp", alt: "Almaty Mountains" }
     ];
   }
   if (slug === "malaysia") {
@@ -115,7 +115,7 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
   
   // Default fallback
   return [
-    { src: "/places/thailand/bangkok.jpg", alt: "Travel Destination" }
+    { src: "/places/thailand/bangkok.webp", alt: "Travel Destination" }
   ];
 };
 
