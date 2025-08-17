@@ -241,7 +241,7 @@ const Packages = () => {
                     height="192"
                     className="w-full h-48 group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-primary-dark/40 group-hover:bg-primary-dark/30 transition-colors"></div>
+                  <div className="absolute inset-0 bg-primary-dark/40 group-hover:bg-primary-dark/30 transition-colors pointer-events-none"></div>
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-accent text-white">
                       {region.packageCount} Packages
