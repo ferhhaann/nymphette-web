@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Filter } from "lucide-react";
 import { TravelPackage, packagesData } from "@/data/packagesData";
 import PackageCard from "./PackageCard";
-import PackageItineraryComponent from "./PackageItinerary";
+import PackageDetailView from "./PackageDetailView";
 
 interface RegionPackagesProps {
   region: string;
@@ -15,7 +15,7 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedPackage, setSelectedPackage] = useState<TravelPackage | null>(null);
-  const [showItinerary, setShowItinerary] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const packages = packagesData[region] || [];
   
@@ -43,12 +43,12 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
     const pkg = packages.find(p => p.id === packageId);
     if (pkg) {
       setSelectedPackage(pkg);
-      setShowItinerary(true);
+      setShowDetails(true);
     }
   };
 
-  const handleCloseItinerary = () => {
-    setShowItinerary(false);
+  const handleCloseDetails = () => {
+    setShowDetails(false);
     setSelectedPackage(null);
   };
 
@@ -171,12 +171,11 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
         </div>
       )}
 
-      {/* Itinerary Modal */}
-      {showItinerary && selectedPackage && (
-        <PackageItineraryComponent
-          itinerary={selectedPackage.itinerary}
-          packageTitle={selectedPackage.title}
-          onClose={handleCloseItinerary}
+      {/* Package Detail Modal */}
+      {showDetails && selectedPackage && (
+        <PackageDetailView
+          package={selectedPackage}
+          onClose={handleCloseDetails}
         />
       )}
     </div>
