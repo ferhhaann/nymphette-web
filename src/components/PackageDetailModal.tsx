@@ -1,17 +1,13 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { TravelPackage } from "@/data/packagesData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
@@ -26,8 +22,6 @@ import {
   X as XIcon,
   ChevronLeft,
   ChevronRight,
-  Heart,
-  Share2,
   Languages,
   Globe,
   Phone,
@@ -35,16 +29,6 @@ import {
   StarHalf,
   ZoomIn
 } from "lucide-react";
-
-// Form validation schema
-const enquiryFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  city: z.string().min(2, "City is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  countryCode: z.string().min(1, "Country code is required"),
-  message: z.string().optional(),
-});
 
 interface PackageDetailModalProps {
   package: TravelPackage;
@@ -148,27 +132,31 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
 const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    city: "",
+    email: "",
+    phone: "",
+    countryCode: "+1",
+    message: "",
+  });
   const { toast } = useToast();
-  
-  const form = useForm<z.infer<typeof enquiryFormSchema>>({
-    resolver: zodResolver(enquiryFormSchema),
-    defaultValues: {
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(formData);
+    toast({
+      title: "Enquiry Sent!",
+      description: "We'll get back to you within 24 hours.",
+    });
+    setFormData({
       name: "",
       city: "",
       email: "",
       phone: "",
       countryCode: "+1",
       message: "",
-    },
-  });
-
-  const onSubmit = (values: z.infer<typeof enquiryFormSchema>) => {
-    console.log(values);
-    toast({
-      title: "Enquiry Sent!",
-      description: "We'll get back to you within 24 hours.",
     });
-    form.reset();
   };
   
   const placeImages = getPlaceImages(pkg.countrySlug, pkg.country);
@@ -505,121 +493,92 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Full Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Enter your name" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="city"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>City of Residence</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Enter your city" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="name">Full Name</Label>
+                        <Input 
+                          id="name"
+                          placeholder="Enter your name" 
+                          value={formData.name}
+                          onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                         />
                       </div>
+                      
+                      <div>
+                        <Label htmlFor="city">City of Residence</Label>
+                        <Input 
+                          id="city"
+                          placeholder="Enter your city" 
+                          value={formData.city}
+                          onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                        />
+                      </div>
+                    </div>
 
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input type="email" placeholder="Enter your email" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                    <div>
+                      <Label htmlFor="email">Email</Label>
+                      <Input 
+                        id="email"
+                        type="email" 
+                        placeholder="Enter your email" 
+                        value={formData.email}
+                        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                       />
+                    </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="countryCode"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Country Code</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Code" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="+1">+1 (US)</SelectItem>
-                                  <SelectItem value="+44">+44 (UK)</SelectItem>
-                                  <SelectItem value="+91">+91 (IN)</SelectItem>
-                                  <SelectItem value="+61">+61 (AU)</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                      <div>
+                        <Label htmlFor="countryCode">Country Code</Label>
+                        <Select 
+                          value={formData.countryCode}
+                          onValueChange={(value) => setFormData(prev => ({ ...prev, countryCode: value }))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Code" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="+1">+1 (US)</SelectItem>
+                            <SelectItem value="+44">+44 (UK)</SelectItem>
+                            <SelectItem value="+91">+91 (IN)</SelectItem>
+                            <SelectItem value="+61">+61 (AU)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="md:col-span-3">
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input 
+                          id="phone"
+                          placeholder="Enter your phone number" 
+                          value={formData.phone}
+                          onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                         />
-                        
-                        <div className="md:col-span-3">
-                          <FormField
-                            control={form.control}
-                            name="phone"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Phone Number</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="Enter your phone number" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
                       </div>
+                    </div>
 
-                      <FormField
-                        control={form.control}
-                        name="message"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Message (Optional)</FormLabel>
-                            <FormControl>
-                              <Textarea placeholder="Any specific requirements or questions..." {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                    <div>
+                      <Label htmlFor="message">Message (Optional)</Label>
+                      <Textarea 
+                        id="message"
+                        placeholder="Any specific requirements or questions..." 
+                        value={formData.message}
+                        onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                       />
+                    </div>
 
-                      <div className="flex flex-col sm:flex-row gap-4">
-                        <Button type="submit" className="flex-1">Send Enquiry</Button>
-                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                          <Phone className="h-4 w-4" />
-                          <span>+1-800-TRAVEL</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                          <Mail className="h-4 w-4" />
-                          <span>info@travel.com</span>
-                        </div>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button type="submit" className="flex-1">Send Enquiry</Button>
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                        <Phone className="h-4 w-4" />
+                        <span>+1-800-TRAVEL</span>
                       </div>
-                    </form>
-                  </Form>
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                        <Mail className="h-4 w-4" />
+                        <span>info@travel.com</span>
+                      </div>
+                    </div>
+                  </form>
                 </CardContent>
               </Card>
             </CardContent>
