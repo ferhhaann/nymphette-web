@@ -14,22 +14,25 @@ const ImageSlideshow = ({ images, alt, className = "", width, height }: ImageSli
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    // Clear any existing interval
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    // Start new interval only when hovering and has multiple images
     if (isHovered && images.length > 1) {
       intervalRef.current = setInterval(() => {
         setCurrentImageIndex((prevIndex) => 
           (prevIndex + 1) % images.length
         );
       }, 2000); // Change image every 2 seconds
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
     }
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
   }, [isHovered, images.length]);

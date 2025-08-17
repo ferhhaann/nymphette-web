@@ -26,10 +26,10 @@ import pacific3 from "@/assets/regions/pacific-3.jpg";
 import middleEast1 from "@/assets/regions/middle-east-1.jpg";
 import middleEast2 from "@/assets/regions/middle-east-2.jpg";
 import middleEast3 from "@/assets/regions/middle-east-3.jpg";
-// Featured package images
-import baliImage from "@/assets/packages/bali-paradise.jpg";
-import europeGrandTourImage from "@/assets/packages/europe-grand-tour.jpg";
-import maldivesImage from "@/assets/packages/maldives-honeymoon.jpg";
+// Individual country images for featured packages
+import baliImage from "@/assets/countries/indonesia.jpg";
+import europeGrandTourImage from "@/assets/countries/france.jpg";
+import maldivesImage from "@/assets/countries/maldives.jpg";
 import { packagesData } from "@/data/packagesData";
 
 const Packages = () => {

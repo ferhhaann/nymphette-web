@@ -2,10 +2,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock, Users, MapPin } from "lucide-react";
-import destinationsImage from "@/assets/destinations-collage.jpg";
+import ImageSlideshow from "@/components/ImageSlideshow";
 import packagesContent from "@/data/packagesContent.json";
+// Individual country images
+import japanImage from "@/assets/countries/japan.jpg";
+import thailandImage from "@/assets/countries/thailand.jpg";
+import indonesiaImage from "@/assets/countries/indonesia.jpg";
+import franceImage from "@/assets/countries/france.jpg";
+import italyImage from "@/assets/countries/italy.jpg";
+import maldivesImage from "@/assets/countries/maldives.jpg";
 
 const FeaturedPackages = () => {
+  // Map countries to their respective images
+  const getCountryImages = (destination: string) => {
+    const destinationLower = destination.toLowerCase();
+    if (destinationLower.includes('japan')) return [japanImage];
+    if (destinationLower.includes('thailand') || destinationLower.includes('bali')) return [thailandImage, indonesiaImage];
+    if (destinationLower.includes('france') || destinationLower.includes('paris') || destinationLower.includes('europe')) return [franceImage, italyImage];
+    if (destinationLower.includes('maldives')) return [maldivesImage];
+    if (destinationLower.includes('italy') || destinationLower.includes('rome')) return [italyImage];
+    return [thailandImage]; // Default fallback
+  };
+
   const packages = packagesContent.packages.featuredPackages.map((pkg, index) => ({
     id: index + 1,
     title: pkg.title,
@@ -14,7 +32,7 @@ const FeaturedPackages = () => {
     price: pkg.price,
     rating: pkg.rating,
     reviews: 124, // Default value since not in JSON
-    image: destinationsImage,
+    images: getCountryImages(pkg.destination),
     highlights: ["Premium Experience", "Best Value", "Highly Rated"], // Default highlights
     category: pkg.region
   }));
@@ -39,11 +57,12 @@ const FeaturedPackages = () => {
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <div className="relative overflow-hidden">
-                <img
-                  src={pkg.image}
-                  alt={pkg.title}
-                  loading="lazy"
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                <ImageSlideshow
+                  images={pkg.images}
+                  alt={`${pkg.title} - ${pkg.destination} travel package`}
+                  width="400"
+                  height="256"
+                  className="w-full h-64 group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4">
                   <Badge variant="secondary" className="bg-foreground text-background">
