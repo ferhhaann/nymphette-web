@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -6,7 +6,17 @@ import RegionPackages from "@/components/RegionPackages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Clock, Star, Users } from "lucide-react";
-import regionsImage from "@/assets/regions-world.jpg";
+// Individual region images for better loading and UX
+import asiaImage from "@/assets/regions/asia-destinations.jpg";
+import europeImage from "@/assets/regions/europe-destinations.jpg";
+import africaImage from "@/assets/regions/africa-destinations.jpg";
+import americasImage from "@/assets/regions/americas-destinations.jpg";
+import pacificIslandsImage from "@/assets/regions/pacific-islands-destinations.jpg";
+import middleEastImage from "@/assets/regions/middle-east-destinations.jpg";
+// Featured package images
+import baliImage from "@/assets/packages/bali-paradise.jpg";
+import europeGrandTourImage from "@/assets/packages/europe-grand-tour.jpg";
+import maldivesImage from "@/assets/packages/maldives-honeymoon.jpg";
 import { packagesData } from "@/data/packagesData";
 
 const Packages = () => {
@@ -14,13 +24,31 @@ const Packages = () => {
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
 
+  // Preload critical images for faster initial load
+  useEffect(() => {
+    const preloadImages = [asiaImage, europeImage, africaImage];
+    preloadImages.forEach(src => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    });
+    
+    return () => {
+      // Cleanup preload links
+      const preloadLinks = document.querySelectorAll('link[rel="preload"][as="image"]');
+      preloadLinks.forEach(link => link.remove());
+    };
+  }, []);
+
   const regions = [
     {
       name: "Asia",
       countries: ["Thailand", "Japan", "Singapore", "Malaysia", "Indonesia", "Vietnam"],
       packageCount: (packagesData["Asia"] || []).length,
       startingPrice: "₹25,000",
-      image: regionsImage,
+      image: asiaImage,
       highlights: ["Cultural Tours", "Beach Resorts", "Adventure"]
     },
     {
@@ -28,7 +56,7 @@ const Packages = () => {
       countries: ["France", "Italy", "Switzerland", "Germany", "Spain", "Greece"],
       packageCount: (packagesData["Europe"] || []).length,
       startingPrice: "₹85,000",
-      image: regionsImage,
+      image: europeImage,
       highlights: ["Historic Sites", "Art & Culture", "Scenic Beauty"]
     },
     {
@@ -36,7 +64,7 @@ const Packages = () => {
       countries: ["Kenya", "Tanzania", "South Africa", "Morocco", "Egypt", "Botswana"],
       packageCount: (packagesData["Africa"] || []).length,
       startingPrice: "₹95,000", 
-      image: regionsImage,
+      image: africaImage,
       highlights: ["Safari Adventures", "Wildlife", "Desert Tours"]
     },
     {
@@ -44,7 +72,7 @@ const Packages = () => {
       countries: ["USA", "Canada", "Brazil", "Argentina", "Peru", "Mexico"],
       packageCount: (packagesData["Americas"] || []).length,
       startingPrice: "₹75,000",
-      image: regionsImage,
+      image: americasImage,
       highlights: ["City Tours", "Natural Wonders", "Cultural Heritage"]
     },
     {
@@ -52,7 +80,7 @@ const Packages = () => {
       countries: ["Maldives", "Fiji", "Tahiti", "Hawaii", "Mauritius", "Seychelles"],
       packageCount: (packagesData["Pacific Islands"] || []).length,
       startingPrice: "₹65,000",
-      image: regionsImage,
+      image: pacificIslandsImage,
       highlights: ["Beach Resorts", "Water Sports", "Luxury Stays"]
     },
     {
@@ -60,7 +88,7 @@ const Packages = () => {
       countries: ["UAE", "Turkey", "Jordan", "Israel", "Qatar", "Oman"],
       packageCount: (packagesData["Middle East"] || []).length,
       startingPrice: "₹45,000",
-      image: regionsImage,
+      image: middleEastImage,
       highlights: ["Luxury Tours", "Desert Safari", "Historic Sites"]
     }
   ];
@@ -102,7 +130,7 @@ const Packages = () => {
       duration: "6D/5N",
       price: "₹45,000",
       rating: 4.8,
-      image: regionsImage,
+      image: baliImage,
       region: "Asia"
     },
     {
@@ -111,7 +139,7 @@ const Packages = () => {
       duration: "12D/11N", 
       price: "₹1,25,000",
       rating: 4.9,
-      image: regionsImage,
+      image: europeGrandTourImage,
       region: "Europe"
     },
     {
@@ -120,7 +148,7 @@ const Packages = () => {
       duration: "7D/6N",
       price: "₹85,000",
       rating: 4.9,
-      image: regionsImage,
+      image: maldivesImage,
       region: "Pacific Islands"
     }
   ];
@@ -189,8 +217,11 @@ const Packages = () => {
                 <div className="relative overflow-hidden">
                   <img
                     src={region.image}
-                    alt={region.name}
-                    loading="lazy"
+                    alt={`${region.name} travel destinations and highlights`}
+                    loading={index < 3 ? "eager" : "lazy"}
+                    decoding="async"
+                    width="400"
+                    height="192"
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-primary-dark/40 group-hover:bg-primary-dark/30 transition-colors"></div>
@@ -250,8 +281,11 @@ const Packages = () => {
                   <div className="relative overflow-hidden">
                     <img
                       src={pkg.image}
-                      alt={pkg.title}
+                      alt={`${pkg.title} - ${pkg.destination} travel package`}
                       loading="lazy"
+                      decoding="async"
+                      width="400"
+                      height="256"
                       className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4">
