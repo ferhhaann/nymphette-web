@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Clock, Star, Users } from "lucide-react";
 import ImageSlideshow from "@/components/ImageSlideshow";
+import packagesHeroBg from "@/assets/packages-hero-bg.jpg";
 // Region slideshow images - 3 images per region
 import asia1 from "@/assets/regions/asia-1.jpg";
 import asia2 from "@/assets/regions/asia-2.jpg";
@@ -178,8 +179,13 @@ const Packages = () => {
       ) : (
         <>
           {/* Hero Section */}
-          <section className="pt-20 pb-16 bg-hero-gradient text-background">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <section className="relative pt-20 pb-16 text-background overflow-hidden">
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${packagesHeroBg})` }}
+            />
+            <div className="absolute inset-0 bg-primary/60 backdrop-blur-sm" />
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
                 Explore Our Travel Packages
               </h1>
