@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock, Users, MapPin } from "lucide-react";
 import { useFeaturedPackages } from "@/hooks/useFeaturedPackages";
-import { useContentValue } from "@/hooks/useContent";
+import { useContent } from "@/hooks/useContent";
 // Individual country images - 4 images per country
 import japanImage from "@/assets/countries/japan.jpg";
 import japan2Image from "@/assets/countries/japan-2.jpg";
@@ -32,8 +32,7 @@ import maldives4Image from "@/assets/countries/maldives-4.jpg";
 
 const FeaturedPackages = () => {
   const { packages, loading } = useFeaturedPackages();
-  const { value: sectionTitle } = useContentValue("featured-packages", "title", "Featured Travel Packages");
-  const { value: sectionSubtitle } = useContentValue("featured-packages", "subtitle", "Handpicked destinations and experiences crafted for unforgettable journeys");
+  const { getContentValue } = useContent('featured-packages');
   
   // Already filtered to featured packages from hook
 
@@ -67,10 +66,10 @@ const FeaturedPackages = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-sans text-foreground mb-4">
-            {sectionTitle}
+            {getContentValue('title', 'Featured Travel Packages')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {sectionSubtitle}
+            {getContentValue('subtitle', 'Handpicked destinations and experiences crafted for unforgettable journeys')}
           </p>
         </div>
 

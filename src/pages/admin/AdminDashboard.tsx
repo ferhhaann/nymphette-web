@@ -5,12 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Package, FileText, Settings, Database, Globe } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { AdminOverview } from "@/components/admin/AdminOverview"
 import { PackageManager } from "@/components/admin/PackageManager"
 import { ContentManager } from "@/components/admin/ContentManager"
-import { ComprehensiveMigration } from "@/components/ComprehensiveMigration"
-import { RegionCountryMigration } from "@/components/RegionCountryMigration"
 import { CountryManager } from "@/components/admin/CountryManager"
-import { CountryDetailsMigration } from "@/components/CountryDetailsMigration"
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -87,11 +85,11 @@ const AdminDashboard = () => {
           </Button>
         </div>
 
-        <Tabs defaultValue="migration" className="space-y-6">
+        <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="migration" className="flex items-center gap-2">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
               <Database className="h-4 w-4" />
-              Data Migration
+              Overview
             </TabsTrigger>
             <TabsTrigger value="packages" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
@@ -111,32 +109,8 @@ const AdminDashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="migration">
-            <Card>
-              <CardHeader>
-                <CardTitle>Data Migration</CardTitle>
-                <CardDescription>
-                  Migrate all data from JSON files to the database
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3">Complete Data Migration</h3>
-                    <ComprehensiveMigration />
-                  </div>
-                  
-                  <div className="border-t pt-6">
-                    <h3 className="text-lg font-semibold mb-3">Region & Country Data Only</h3>
-                    <RegionCountryMigration />
-                  </div>
-                  <div className="border-t pt-6">
-                    <h3 className="text-lg font-semibold mb-3">Country Details Migration</h3>
-                    <CountryDetailsMigration />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <TabsContent value="overview">
+            <AdminOverview />
           </TabsContent>
 
           <TabsContent value="packages">

@@ -1,4 +1,3 @@
-import packagesDataJson from './packagesData.json';
 import regionsImage from "@/assets/regions-world.jpg";
 
 // TypeScript interfaces for packages
@@ -43,13 +42,5 @@ export interface TravelPackage {
   featured?: boolean;
 }
 
-// Load packages data from JSON and replace image paths with actual imports
-export const packagesData: Record<string, TravelPackage[]> = Object.fromEntries(
-  Object.entries(packagesDataJson).map(([region, packages]) => [
-    region,
-    packages.map(pkg => ({
-      ...pkg,
-      image: regionsImage // Replace JSON path with actual image import
-    }))
-  ])
-);
+// Legacy support - empty object since we now use database
+export const packagesData: Record<string, TravelPackage[]> = {};
