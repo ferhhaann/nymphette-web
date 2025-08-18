@@ -64,14 +64,19 @@ export const usePackageById = (packageId: string) => {
 
   const loadPackage = async () => {
     console.log('usePackageById: Loading package with ID:', packageId);
+    console.log('usePackageById: isSupabaseConfigured =', isSupabaseConfigured);
+    console.log('usePackageById: supabase =', !!supabase);
     try {
       setLoading(true)
       setError(null)
       
       // If Supabase is not configured, use local JSON data
       if (!isSupabaseConfigured || !supabase) {
+        console.log('usePackageById: Using local data, packagesData =', packagesData);
         const allRegions = Object.values(packagesData).flat()
+        console.log('usePackageById: allRegions =', allRegions);
         const foundPackage = allRegions.find(pkg => pkg.id === packageId)
+        console.log('usePackageById: foundPackage =', foundPackage);
         setPackageData(foundPackage || null)
         setLoading(false)
         return
