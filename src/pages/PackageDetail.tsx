@@ -136,7 +136,9 @@ const PackageDetail = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
+  console.log('PackageDetail: packageId =', packageId);
   const { packageData: pkg, loading, error } = usePackageById(packageId || '');
+  console.log('PackageDetail: pkg =', pkg, 'loading =', loading, 'error =', error);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const [isWishlisted, setIsWishlisted] = useState(false);

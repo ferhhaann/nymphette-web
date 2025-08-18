@@ -63,6 +63,7 @@ export const usePackageById = (packageId: string) => {
   }, [packageId])
 
   const loadPackage = async () => {
+    console.log('usePackageById: Loading package with ID:', packageId);
     try {
       setLoading(true)
       setError(null)
@@ -82,11 +83,15 @@ export const usePackageById = (packageId: string) => {
         .eq('id', packageId)
         .maybeSingle()
       
+      console.log('usePackageById: Supabase response:', { data, error });
+      
       if (error) throw error
       
       if (data) {
+        console.log('usePackageById: Transforming data:', data);
         setPackageData(transformDatabasePackage(data))
       } else {
+        console.log('usePackageById: No data found for packageId:', packageId);
         setPackageData(null)
       }
       
