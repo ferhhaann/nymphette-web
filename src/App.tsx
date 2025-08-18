@@ -17,6 +17,7 @@ import PacificIslands from "./pages/regions/PacificIslands";
 import MiddleEast from "./pages/regions/MiddleEast";
 import CountryDetail from "./pages/country/CountryDetail";
 import PackageDetail from "./pages/PackageDetail";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/packages/region/americas" element={<Americas />} />
           <Route path="/packages/region/pacific-islands" element={<PacificIslands />} />
           <Route path="/packages/region/middle-east" element={<MiddleEast />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

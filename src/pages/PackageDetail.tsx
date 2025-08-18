@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { TravelPackage } from "@/data/packagesData";
+import { usePackageById } from "@/hooks/usePackages";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -35,29 +36,7 @@ import {
   Heart
 } from "lucide-react";
 
-// Import all region data to find packages
-import asiaMerged from "@/data/regions/asia.data";
-import europeMerged from "@/data/regions/europe.data";
-import africaMerged from "@/data/regions/africa.data";
-import americasMerged from "@/data/regions/americas.data";
-import pacificIslandsMerged from "@/data/regions/pacificIslands.data";
-import middleEastMerged from "@/data/regions/middleEast.data";
-
-// Get all packages from all regions
-const getAllPackages = (): TravelPackage[] => {
-  const allRegions = [
-    asiaMerged,
-    europeMerged,
-    africaMerged,
-    americasMerged,
-    pacificIslandsMerged,
-    middleEastMerged
-  ];
-  
-  return allRegions.flatMap(region => 
-    Object.values((region as any).countries || {}).flatMap((c: any) => c.packages || [])
-  ) as TravelPackage[];
-};
+// This component now uses the database via usePackageById hook
 
 // Get multiple images for places in each country for gallery
 const getPlaceImages = (countrySlug?: string, country?: string) => {
@@ -157,7 +136,7 @@ const PackageDetail = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const [pkg, setPkg] = useState<TravelPackage | null>(null);
+  const { packageData: pkg, loading, error } = usePackageById(packageId || '');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -171,23 +150,29 @@ const PackageDetail = () => {
   });
 
   useEffect(() => {
-    if (packageId) {
-      const allPackages = getAllPackages();
-      const foundPackage = allPackages.find(p => p.id === packageId);
-      setPkg(foundPackage || null);
-      
-      if (foundPackage) {
-        // Set page title and meta
-        document.title = `${foundPackage.title} - Travel Package Details`;
-        const metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
-        if (metaDesc) {
-          metaDesc.content = `Discover ${foundPackage.title} in ${foundPackage.country}. ${foundPackage.duration} journey with all-inclusive packages.`;
-        }
+    if (pkg) {
+      // Set page title and meta
+      document.title = `${pkg.title} - Travel Package Details`;
+      const metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+      if (metaDesc) {
+        metaDesc.content = `Discover ${pkg.title} in ${pkg.country}. ${pkg.duration} journey with all-inclusive packages.`;
       }
     }
-  }, [packageId]);
+  }, [pkg]);
 
-  if (!pkg) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !pkg) {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />

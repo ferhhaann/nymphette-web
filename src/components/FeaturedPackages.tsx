@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock, Users, MapPin } from "lucide-react";
-import packagesContent from "@/data/packagesContent.json";
+import { usePackages } from "@/hooks/usePackages";
+import { useContentValue } from "@/hooks/useContent";
 // Individual country images - 4 images per country
 import japanImage from "@/assets/countries/japan.jpg";
 import japan2Image from "@/assets/countries/japan-2.jpg";
@@ -30,6 +31,13 @@ import maldives3Image from "@/assets/countries/maldives-3.jpg";
 import maldives4Image from "@/assets/countries/maldives-4.jpg";
 
 const FeaturedPackages = () => {
+  const { packages, loading } = usePackages();
+  const { value: sectionTitle } = useContentValue("featured-packages", "title", "Featured Travel Packages");
+  const { value: sectionSubtitle } = useContentValue("featured-packages", "subtitle", "Handpicked destinations and experiences crafted for unforgettable journeys");
+  
+  // Get top 3 packages for featured section
+  const featuredPackages = packages.slice(0, 3);
+
   // Map countries to their respective images - 4 images per destination
   const getCountryImages = (destination: string) => {
     const destinationLower = destination.toLowerCase();
@@ -43,33 +51,32 @@ const FeaturedPackages = () => {
     return [thailandImage, thailand2Image, thailand3Image, thailand4Image]; // Default fallback
   };
 
-  const packages = packagesContent.packages.featuredPackages.map((pkg, index) => ({
-    id: index + 1,
-    title: pkg.title,
-    destination: pkg.destination,
-    duration: pkg.duration,
-    price: pkg.price,
-    rating: pkg.rating,
-    reviews: 124, // Default value since not in JSON
-    images: getCountryImages(pkg.destination),
-    highlights: ["Premium Experience", "Best Value", "Highly Rated"], // Default highlights
-    category: pkg.region
-  }));
+  if (loading) {
+    return (
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-sans text-foreground mb-4">
-            Featured Travel Packages
+            {sectionTitle}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Handpicked destinations and experiences crafted for unforgettable journeys
+            {sectionSubtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {packages.map((pkg, index) => (
+          {featuredPackages.map((pkg, index) => (
             <Card 
               key={pkg.id}
               className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
@@ -77,8 +84,8 @@ const FeaturedPackages = () => {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={pkg.images[0]}
-                  alt={`${pkg.title} - ${pkg.destination} travel package`}
+                  src={pkg.image}
+                  alt={`${pkg.title} - ${pkg.country} travel package`}
                   loading="lazy"
                   className="w-full h-64 object-cover"
                 />
@@ -100,7 +107,7 @@ const FeaturedPackages = () => {
                 
                 <div className="flex items-center text-muted-foreground mb-4">
                   <MapPin className="h-4 w-4 mr-2" />
-                  <span>{pkg.destination}</span>
+                  <span>{pkg.country}</span>
                 </div>
 
                 <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
