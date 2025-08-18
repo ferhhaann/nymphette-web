@@ -6,6 +6,15 @@ import { packagesData } from "@/data/packagesData"
 import { useToast } from "@/hooks/use-toast"
 import { Database, Download } from "lucide-react"
 
+// Generate a valid UUID v4
+const generateUUID = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 export const MigrationButton = () => {
   const [migrating, setMigrating] = useState(false)
   const [migrated, setMigrated] = useState(false)
@@ -95,7 +104,7 @@ export const MigrationButton = () => {
         
         for (const pkg of packages) {
           const dbPackage = {
-            id: pkg.id,
+            id: generateUUID(), // Generate proper UUID instead of using string ID
             title: pkg.title,
             country: pkg.country,
             country_slug: pkg.countrySlug,
