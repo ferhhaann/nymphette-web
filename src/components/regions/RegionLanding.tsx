@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TravelPackage } from "@/data/packagesData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +31,6 @@ import InquiryBookingForm from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
 import MapWidget from "./MapWidget";
 import CountryList from "./CountryList";
-import PackageDetailModal from "../PackageDetailModal";
 
 export interface RegionLandingProps {
   regionKey: string;
@@ -95,11 +95,11 @@ const getPackageImage = (countrySlug?: string, title?: string) => {
 };
 
 const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, description, canonical, data, heroImages }) => {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [budgetMax, setBudgetMax] = useState<number>(6000);
   const [openFormFor, setOpenFormFor] = useState<TravelPackage | null>(null);
   const [stickyOpen, setStickyOpen] = useState(false);
-  const [selectedPackageForDetails, setSelectedPackageForDetails] = useState<TravelPackage | null>(null);
 
   useEffect(() => { setMeta(title, description, canonical); }, [title, description, canonical]);
 
@@ -172,7 +172,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
             return (
               <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300" 
                     style={{animationDelay:`${index*60}ms`}}
-                    onClick={() => setSelectedPackageForDetails(pkg)}>
+                    onClick={() => navigate(`/package/${pkg.id}`)}>
                 <div className="relative h-48 overflow-hidden">
                   <img src={packageImage} alt={pkg.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
                   <div className="absolute top-3 left-3">
@@ -210,7 +210,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
                     </div>
                     <Button size="sm" variant="outline" onClick={(e) => {
                       e.stopPropagation();
-                      setSelectedPackageForDetails(pkg);
+                      navigate(`/package/${pkg.id}`);
                     }}>
                       View Details
                     </Button>
@@ -244,18 +244,6 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
       </Dialog>
 
       <ChatbotWidget regionKey={regionKey} />
-
-      {/* Package Detail Modal */}
-      {selectedPackageForDetails && (
-        <PackageDetailModal
-          package={selectedPackageForDetails}
-          onClose={() => setSelectedPackageForDetails(null)}
-          onBook={(pkg) => {
-            setSelectedPackageForDetails(null);
-            setOpenFormFor(pkg);
-          }}
-        />
-      )}
     </div>
   );
 };
