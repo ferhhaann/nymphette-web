@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { MapPin, Users } from 'lucide-react'
 
 interface Country {
   id: string
   name: string
   slug: string
   region: string
+  capital?: string
+  annual_visitors?: number
 }
 
 interface CountryListProps {
@@ -26,8 +31,8 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
       setLoading(true)
       const { data, error } = await supabase
         .from('countries')
-        .select('id, name, slug, region')
-        .eq('region', region)
+        .select('id, name, slug, region, capital, annual_visitors')
+        .eq('region', region.charAt(0).toUpperCase() + region.slice(1))
         .order('name')
 
       if (error) throw error
@@ -39,21 +44,90 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
     }
   }
 
+  const formatVisitors = (visitors?: number) => {
+    if (!visitors) return ''
+    if (visitors >= 1000000) {
+      return `${(visitors / 1000000).toFixed(1)}M visitors/year`
+    }
+    return `${(visitors / 1000).toFixed(0)}K visitors/year`
+  }
+
   if (loading) {
-    return <div className="grid grid-cols-2 md:grid-cols-3 gap-4">Loading countries...</div>
+    return (
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="mb-6">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">Browse Countries</h2>
+          <p className="text-muted-foreground">Discover amazing destinations in {region}</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {[...Array(8)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardContent className="p-6">
+                <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                <div className="h-3 bg-muted rounded w-1/2"></div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  if (countries.length === 0) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="mb-6">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">Browse Countries</h2>
+          <p className="text-muted-foreground">No countries found in {region}</p>
+        </div>
+      </section>
+    )
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {countries.map((country) => (
-        <button
-          key={country.id}
-          onClick={() => onCountrySelect(country.slug)}
-          className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow text-left"
-        >
-          <h3 className="font-semibold">{country.name}</h3>
-        </button>
-      ))}
-    </div>
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+      <div className="mb-6">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">Browse Countries</h2>
+        <p className="text-muted-foreground">Discover amazing destinations in {region}</p>
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {countries.map((country, index) => (
+          <Card 
+            key={country.id} 
+            className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 animate-fade-in border-muted hover:border-primary/20"
+            style={{animationDelay: `${index * 100}ms`}}
+            onClick={() => onCountrySelect(country.slug)}
+          >
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                <div className="flex items-start justify-between">
+                  <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {country.name}
+                  </h3>
+                  <Badge variant="outline" className="ml-2 text-xs">
+                    {region}
+                  </Badge>
+                </div>
+                
+                {country.capital && (
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <MapPin className="h-3 w-3 mr-1.5" />
+                    <span>{country.capital}</span>
+                  </div>
+                )}
+                
+                {country.annual_visitors && (
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Users className="h-3 w-3 mr-1.5" />
+                    <span>{formatVisitors(country.annual_visitors)}</span>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
   )
 }
