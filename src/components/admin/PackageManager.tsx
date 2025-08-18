@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react"
-import { supabase, type DatabasePackage } from "@/lib/supabase"
+import { supabase } from "@/integrations/supabase/client"
+import type { Database } from "@/integrations/supabase/types"
+
+type DatabasePackage = Database['public']['Tables']['packages']['Row']
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -45,7 +48,7 @@ export const PackageManager = () => {
     }
   }
 
-  const savePackage = async (packageData: Partial<DatabasePackage>) => {
+  const savePackage = async (packageData: Partial<DatabasePackage> & {category: string, country: string, duration: string, image: string, title: string, region: string}) => {
     try {
       if (packageData.id) {
         // Update existing package
@@ -59,7 +62,7 @@ export const PackageManager = () => {
         // Create new package
         const { error } = await supabase
           .from('packages')
-          .insert([packageData])
+          .insert([packageData as any])
 
         if (error) throw error
       }
@@ -113,9 +116,11 @@ export const PackageManager = () => {
     id: '',
     title: '',
     country: '',
+    country_slug: null,
     region: '',
     duration: '',
     price: '',
+    original_price: null,
     rating: 4.5,
     reviews: 0,
     image: '',
@@ -123,9 +128,16 @@ export const PackageManager = () => {
     inclusions: [],
     exclusions: [],
     category: '',
-    best_time: '',
-    group_size: '',
-    itinerary: []
+    best_time: null,
+    group_size: null,
+    overview_section_title: null,
+    overview_description: null,
+    overview_highlights_label: null,
+    overview_badge_variant: null,
+    overview_badge_style: null,
+    itinerary: [],
+    created_at: null,
+    updated_at: null
   })
 
   if (loading) {

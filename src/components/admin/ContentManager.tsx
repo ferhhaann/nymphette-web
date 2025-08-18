@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react"
-import { supabase, type DatabaseContent } from "@/lib/supabase"
+import { supabase } from "@/integrations/supabase/client"
+import type { Database } from "@/integrations/supabase/types"
+
+type DatabaseContent = Database['public']['Tables']['content']['Row']
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"

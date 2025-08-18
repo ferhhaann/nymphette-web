@@ -5,6 +5,11 @@ import { supabase } from "@/integrations/supabase/client"
 import { packagesData } from "@/data/packagesData"
 import { useToast } from "@/hooks/use-toast"
 import { Database, Download } from "lucide-react"
+import siteContent from "@/data/siteContent.json"
+import aboutContent from "@/data/aboutContent.json"
+import blogContent from "@/data/blogContent.json"
+import groupToursContent from "@/data/groupToursContent.json"
+import packagesContent from "@/data/packagesContent.json"
 
 // Generate a valid UUID v4
 const generateUUID = () => {
@@ -142,45 +147,82 @@ export const MigrationButton = () => {
         }
       }
 
-      // Migrate default content
-      const defaultContent = [
-        {
-          section: "hero",
-          key: "title",
-          value: "Discover Your Next Adventure"
-        },
-        {
-          section: "hero",
-          key: "subtitle", 
-          value: "Explore amazing destinations across the globe with our carefully curated travel packages designed to create unforgettable memories."
-        },
-        {
-          section: "featured-packages",
-          key: "title",
-          value: "Featured Travel Packages"
-        },
-        {
-          section: "featured-packages",
-          key: "subtitle",
-          value: "Handpicked destinations and experiences crafted for unforgettable journeys"
-        }
+      // Migrate all JSON content
+      const contentSections = [
+        // Site content
+        { section: "site", key: "name", value: siteContent.site.name },
+        { section: "site", key: "tagline", value: siteContent.site.tagline },
+        { section: "site", key: "description", value: siteContent.site.description },
+        
+        // Hero content
+        { section: "hero", key: "title", value: siteContent.hero.title },
+        { section: "hero", key: "titleHighlight", value: siteContent.hero.titleHighlight },
+        { section: "hero", key: "subtitle", value: siteContent.hero.subtitle },
+        { section: "hero", key: "primaryButton", value: siteContent.hero.primaryButton },
+        { section: "hero", key: "secondaryButton", value: siteContent.hero.secondaryButton },
+        { section: "hero", key: "searchPlaceholders", value: siteContent.hero.searchPlaceholders },
+        { section: "hero", key: "travelerOptions", value: siteContent.hero.travelerOptions },
+        { section: "hero", key: "stats", value: siteContent.hero.stats },
+        
+        // Navigation
+        { section: "navigation", key: "items", value: siteContent.navigation },
+        
+        // Why Choose Us
+        { section: "whyChooseUs", key: "title", value: siteContent.whyChooseUs.title },
+        { section: "whyChooseUs", key: "subtitle", value: siteContent.whyChooseUs.subtitle },
+        { section: "whyChooseUs", key: "features", value: siteContent.whyChooseUs.features },
+        { section: "whyChooseUs", key: "stats", value: siteContent.whyChooseUs.stats },
+        
+        // Footer
+        { section: "footer", key: "description", value: siteContent.footer.description },
+        { section: "footer", key: "quickLinks", value: siteContent.footer.quickLinks },
+        { section: "footer", key: "destinations", value: siteContent.footer.destinations },
+        { section: "footer", key: "contact", value: siteContent.footer.contact },
+        { section: "footer", key: "newsletter", value: siteContent.footer.newsletter },
+        { section: "footer", key: "legal", value: siteContent.footer.legal },
+        { section: "footer", key: "copyright", value: siteContent.footer.copyright },
+        
+        // About content
+        { section: "about", key: "hero", value: aboutContent.aboutUs.hero },
+        { section: "about", key: "values", value: aboutContent.aboutUs.values },
+        { section: "about", key: "story", value: aboutContent.aboutUs.story },
+        { section: "about", key: "milestones", value: aboutContent.aboutUs.milestones },
+        { section: "about", key: "team", value: aboutContent.aboutUs.team },
+        { section: "about", key: "achievements", value: aboutContent.aboutUs.achievements },
+        
+        // Blog content
+        { section: "blog", key: "content", value: blogContent },
+        
+        // Group tours content
+        { section: "groupTours", key: "content", value: groupToursContent },
+        
+        // Packages content
+        { section: "packages", key: "content", value: packagesContent },
+        
+        // Featured packages section
+        { section: "featured-packages", key: "title", value: "Featured Travel Packages" },
+        { section: "featured-packages", key: "subtitle", value: "Handpicked destinations and experiences crafted for unforgettable journeys" }
       ]
 
-      for (const content of defaultContent) {
+      console.log(`Migrating ${contentSections.length} content sections...`)
+      
+      for (const content of contentSections) {
         const { error } = await supabase
           .from('content')
           .upsert([content], { onConflict: 'section,key' })
 
         if (error) {
           console.error(`Error inserting content ${content.section}.${content.key}:`, error)
+        } else {
+          console.log(`✓ Migrated content: ${content.section}.${content.key}`)
         }
       }
 
-      console.log(`Migration completed! Migrated ${totalMigrated} packages`)
+      console.log(`Migration completed! Migrated ${totalMigrated} packages and ${contentSections.length} content sections`)
       
       toast({
         title: "Migration Successful!",
-        description: `Migrated ${totalMigrated} packages and default content to database.`
+        description: `Migrated ${totalMigrated} packages and ${contentSections.length} content sections to database.`
       })
       
       setMigrated(true)
