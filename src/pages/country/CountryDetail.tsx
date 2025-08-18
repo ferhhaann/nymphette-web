@@ -5,8 +5,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, MapPin, DollarSign, Thermometer, Calendar, HelpCircle, BookOpen, Globe, Camera, Utensils, ShoppingBag, Users, Palette } from 'lucide-react'
 import { supabase } from '@/integrations/supabase/client'
-import { Navigation } from '@/components/Navigation'
-import { Footer } from '@/components/Footer'
+import Navigation from '@/components/Navigation'
+import Footer from '@/components/Footer'
 import { CountryBreadcrumb } from '@/components/regions/CountryBreadcrumb'
 import { CountryHero } from '@/components/regions/CountryHero'
 import { CountryQuickInfo } from '@/components/regions/CountryQuickInfo'
@@ -90,7 +90,7 @@ interface CountryCity {
   is_capital: boolean
 }
 
-export const CountryDetail = () => {
+const CountryDetail = () => {
   const { country } = useParams<{ country: string }>()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
@@ -301,3 +301,5 @@ export const CountryDetail = () => {
     </div>
   )
 }
+
+export default CountryDetail

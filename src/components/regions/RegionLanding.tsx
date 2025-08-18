@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { Calendar, CheckCircle2, CircleDollarSign, MapPinned, ShieldCheck, Star, Utensils, Users, ArrowLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import InquiryBookingForm from "./InquiryBookingForm";
+import { InquiryBookingForm } from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
 import MapWidget from "./MapWidget";
 import { CountryList } from "./CountryList";
@@ -322,7 +322,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
           <DialogHeader>
             <DialogTitle>Request a quote / Book instantly</DialogTitle>
           </DialogHeader>
-          <InquiryBookingForm pkg={openFormFor || null} regionKey={regionKey} />
+          <InquiryBookingForm />
         </DialogContent>
       </Dialog>
 

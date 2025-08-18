@@ -1,181 +1,118 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
-import type { TravelPackage } from "@/data/packagesData";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Phone, Mail, MessageCircle } from 'lucide-react'
 
-interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  travelers: number;
-  departureCity: string;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  indianMeals: boolean;
-  message: string;
-}
-
-interface Props { pkg: TravelPackage | null; regionKey: string }
-
-const InquiryBookingForm: React.FC<Props> = ({ pkg, regionKey }) => {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    phone: "",
-    travelers: 2,
-    departureCity: "",
-    startDate: undefined,
-    endDate: undefined,
-    indianMeals: true,
-    message: "",
-  });
-
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-    
-    if (formData.name.length < 2) newErrors.name = "Enter your full name";
-    if (!formData.email.includes("@")) newErrors.email = "Enter a valid email";
-    if (formData.phone.length < 7) newErrors.phone = "Enter a valid phone";
-    if (!formData.startDate) newErrors.startDate = "Start date is required";
-    if (!formData.endDate) newErrors.endDate = "End date is required";
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      toast({ title: "Request sent", description: `We'll contact you shortly for ${pkg?.title ?? regionKey} trip.` });
-    }
-  };
-
-  const updateField = (field: keyof FormData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: "" }));
-    }
-  };
-
+export const InquiryBookingForm = () => {
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {pkg && (
-        <div className="text-sm text-muted-foreground">For package: <span className="font-medium">{pkg.title}</span></div>
-      )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <Input 
-            placeholder="Full name" 
-            value={formData.name}
-            onChange={(e) => updateField("name", e.target.value)}
-            aria-invalid={!!errors.name} 
-          />
-          {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
-        </div>
-        <div>
-          <Input 
-            placeholder="Email" 
-            type="email" 
-            value={formData.email}
-            onChange={(e) => updateField("email", e.target.value)}
-            aria-invalid={!!errors.email} 
-          />
-          {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
-        </div>
-        <div>
-          <Input 
-            placeholder="Phone" 
-            value={formData.phone}
-            onChange={(e) => updateField("phone", e.target.value)}
-            aria-invalid={!!errors.phone} 
-          />
-          {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
-        </div>
-        <div>
-          <Input 
-            placeholder="Departure city (optional)" 
-            value={formData.departureCity}
-            onChange={(e) => updateField("departureCity", e.target.value)}
-          />
-        </div>
-        <div className="flex gap-2 items-center">
-          <Input 
-            type="number" 
-            min={1} 
-            max={99} 
-            className="w-28" 
-            value={formData.travelers}
-            onChange={(e) => updateField("travelers", parseInt(e.target.value) || 1)}
-          />
-          <span className="text-sm text-muted-foreground">travelers</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <label className="flex items-center gap-2 text-sm">
-            <input 
-              type="checkbox" 
-              checked={formData.indianMeals}
-              onChange={(e) => updateField("indianMeals", e.target.checked)}
-            />
-            Indian meals
-          </label>
-        </div>
-      </div>
+    <Card className="mb-8">
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <MessageCircle className="h-5 w-5 mr-2" />
+          Contact & Enquiry
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Contact Information */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <h4 className="font-semibold">Get In Touch</h4>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <Phone className="h-4 w-4 text-primary" />
+                <span>+91 9876543210</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Mail className="h-4 w-4 text-primary" />
+                <span>info@travelagency.com</span>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Share your ideal tour for customization. Our travel experts will get back to you within 24 hours.
+            </p>
+          </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className={cn("justify-start", !formData.startDate && "text-muted-foreground")}> 
-              <CalendarIcon className="mr-2 size-4"/> {formData.startDate ? formData.startDate.toDateString() : "Start date"}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar 
-              mode="single" 
-              selected={formData.startDate} 
-              onSelect={(date) => updateField("startDate", date)} 
-              initialFocus 
-              className={cn("p-3 pointer-events-auto")} 
-            />
-          </PopoverContent>
-        </Popover>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className={cn("justify-start", !formData.endDate && "text-muted-foreground")}> 
-              <CalendarIcon className="mr-2 size-4"/> {formData.endDate ? formData.endDate.toDateString() : "End date"}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar 
-              mode="single" 
-              selected={formData.endDate} 
-              onSelect={(date) => updateField("endDate", date)} 
-              initialFocus 
-              className={cn("p-3 pointer-events-auto")} 
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
+          {/* Enquiry Form */}
+          <div className="space-y-4">
+            <h4 className="font-semibold">Enquire Now</h4>
+            <form className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name">Full Name *</Label>
+                  <Input id="name" placeholder="Your full name" />
+                </div>
+                <div>
+                  <Label htmlFor="email">Email *</Label>
+                  <Input id="email" type="email" placeholder="your@email.com" />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="phone">Phone Number *</Label>
+                  <Input id="phone" placeholder="+91 9876543210" />
+                </div>
+                <div>
+                  <Label htmlFor="city">City of Residence</Label>
+                  <Input id="city" placeholder="Your city" />
+                </div>
+              </div>
 
-      <Textarea 
-        rows={4} 
-        placeholder="Tell us about your ideal itinerary, budget, or special requests" 
-        value={formData.message}
-        onChange={(e) => updateField("message", e.target.value)}
-      />
+              <div>
+                <Label htmlFor="requirements">Travel Requirements</Label>
+                <Textarea 
+                  id="requirements" 
+                  placeholder="Tell us about your travel dates, group size, preferences, and any special requirements..."
+                  rows={4}
+                />
+              </div>
 
-      <div className="flex justify-end gap-2">
-        <Button type="submit">Submit</Button>
-      </div>
-    </form>
-  );
-};
+              <Button type="submit" className="w-full bg-gradient-primary">
+                Send Enquiry
+              </Button>
+            </form>
+          </div>
+        </div>
 
-export default InquiryBookingForm;
+        {/* Travel Tips */}
+        <div className="border-t pt-6">
+          <h4 className="font-semibold mb-4">Travel Tips</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="text-primary font-semibold text-sm">V</span>
+              </div>
+              <div>
+                <div className="font-medium text-sm">Visa Requirements</div>
+                <div className="text-xs text-muted-foreground">Check before travel</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="text-primary font-semibold text-sm">H</span>
+              </div>
+              <div>
+                <div className="font-medium text-sm">Health & Safety</div>
+                <div className="text-xs text-muted-foreground">Travel insurance recommended</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="text-primary font-semibold text-sm">₹</span>
+              </div>
+              <div>
+                <div className="font-medium text-sm">Currency & Tipping</div>
+                <div className="text-xs text-muted-foreground">Local currency preferred</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}

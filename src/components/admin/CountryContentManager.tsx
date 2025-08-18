@@ -86,11 +86,19 @@ export const CountryContentManager = () => {
           .update(section)
           .eq('id', section.id)
       } else {
+        if (!section.section_type) {
+          toast.error('Section type is required')
+          return
+        }
+        
         await supabase
           .from('country_content')
           .insert({
-            ...section,
-            country_id: selectedCountryId
+            country_id: selectedCountryId,
+            section_type: section.section_type,
+            title: section.title || '',
+            content: section.content || {},
+            order_index: section.order_index || 0
           })
       }
       
