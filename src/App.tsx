@@ -18,7 +18,7 @@ import MiddleEast from "./pages/regions/MiddleEast";
 import CountryDetail from "./pages/country/CountryDetail";
 import PackageDetail from "./pages/PackageDetail";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import { ComprehensiveMigration } from "@/components/ComprehensiveMigration";
+import { TestMigrationButton } from "@/components/TestMigrationButton";
 
 const queryClient = new QueryClient();
 
@@ -27,10 +27,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      {/* Global Migration Button */}
-      <div className="fixed top-20 right-4 z-50">
-        <ComprehensiveMigration />
-      </div>
+      {/* Test Migration Button */}
+      <TestMigrationButton />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
