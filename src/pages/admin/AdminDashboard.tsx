@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast"
 import { PackageManager } from "@/components/admin/PackageManager"
 import { ContentManager } from "@/components/admin/ContentManager"
 import { ComprehensiveMigration } from "@/components/ComprehensiveMigration"
+import { RegionCountryMigration } from "@/components/RegionCountryMigration"
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -113,7 +114,17 @@ const AdminDashboard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ComprehensiveMigration />
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">Complete Data Migration</h3>
+                    <ComprehensiveMigration />
+                  </div>
+                  
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-semibold mb-3">Region & Country Data Only</h3>
+                    <RegionCountryMigration />
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
