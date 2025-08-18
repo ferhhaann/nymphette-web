@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { supabase } from "@/lib/supabase"
+import { supabase, isSupabaseConfigured } from "@/lib/supabase"
 import { packagesData } from "@/data/packagesData"
 import { useToast } from "@/hooks/use-toast"
 import { Database, Download } from "lucide-react"
@@ -11,7 +11,28 @@ export const MigrationButton = () => {
   const [migrated, setMigrated] = useState(false)
   const { toast } = useToast()
 
+  // Don't show migration button if Supabase is not configured
+  if (!isSupabaseConfigured) {
+    return (
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-orange-600">
+            <Database className="h-5 w-5" />
+            Supabase Not Connected
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Click the green Supabase button in the top-right corner to connect your database for the admin panel feature.
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   const migrateData = async () => {
+    if (!supabase) return
+    
     setMigrating(true)
     
     try {

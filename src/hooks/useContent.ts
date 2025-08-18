@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { supabase, type DatabaseContent } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured, type DatabaseContent } from '@/lib/supabase'
 
 export const useContent = (section?: string) => {
   const [content, setContent] = useState<DatabaseContent[]>([])
@@ -14,6 +14,13 @@ export const useContent = (section?: string) => {
     try {
       setLoading(true)
       setError(null)
+      
+      // If Supabase is not configured, return empty content (will use defaults)
+      if (!isSupabaseConfigured || !supabase) {
+        setContent([])
+        setLoading(false)
+        return
+      }
       
       let query = supabase.from('content').select('*')
       
@@ -53,6 +60,13 @@ export const useContentValue = (section: string, key: string, defaultValue: any 
   const loadContentValue = async () => {
     try {
       setLoading(true)
+      
+      // If Supabase is not configured, use default value
+      if (!isSupabaseConfigured || !supabase) {
+        setValue(defaultValue)
+        setLoading(false)
+        return
+      }
       
       const { data, error } = await supabase
         .from('content')

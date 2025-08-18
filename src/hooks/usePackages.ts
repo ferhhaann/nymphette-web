@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { supabase, type DatabasePackage } from '@/lib/supabase'
-import type { TravelPackage } from '@/data/packagesData'
+import { supabase, isSupabaseConfigured, type DatabasePackage } from '@/lib/supabase'
+import { packagesData, type TravelPackage } from '@/data/packagesData'
+import type { TravelPackage as TravelPackageType } from '@/data/packagesData'
 
 export const usePackages = (region?: string) => {
-  const [packages, setPackages] = useState<TravelPackage[]>([])
+  const [packages, setPackages] = useState<TravelPackageType[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -16,6 +17,17 @@ export const usePackages = (region?: string) => {
       setLoading(true)
       setError(null)
       
+      // If Supabase is not configured, use local JSON data
+      if (!isSupabaseConfigured || !supabase) {
+        const allRegions = Object.values(packagesData).flat()
+        const filteredPackages = region 
+          ? allRegions.filter(pkg => pkg.region === region)
+          : allRegions
+        setPackages(filteredPackages)
+        setLoading(false)
+        return
+      }
+      
       let query = supabase.from('packages').select('*')
       
       if (region) {
@@ -27,7 +39,7 @@ export const usePackages = (region?: string) => {
       if (error) throw error
       
       // Transform database packages to TravelPackage format
-      const transformedPackages: TravelPackage[] = (data || []).map(transformDatabasePackage)
+      const transformedPackages: TravelPackageType[] = (data || []).map(transformDatabasePackage)
       setPackages(transformedPackages)
       
     } catch (err: any) {
@@ -42,7 +54,7 @@ export const usePackages = (region?: string) => {
 }
 
 export const usePackageById = (packageId: string) => {
-  const [packageData, setPackageData] = useState<TravelPackage | null>(null)
+  const [packageData, setPackageData] = useState<TravelPackageType | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -54,6 +66,15 @@ export const usePackageById = (packageId: string) => {
     try {
       setLoading(true)
       setError(null)
+      
+      // If Supabase is not configured, use local JSON data
+      if (!isSupabaseConfigured || !supabase) {
+        const allRegions = Object.values(packagesData).flat()
+        const foundPackage = allRegions.find(pkg => pkg.id === packageId)
+        setPackageData(foundPackage || null)
+        setLoading(false)
+        return
+      }
       
       const { data, error } = await supabase
         .from('packages')
@@ -81,7 +102,7 @@ export const usePackageById = (packageId: string) => {
 }
 
 // Transform database package to TravelPackage format
-const transformDatabasePackage = (dbPackage: DatabasePackage): TravelPackage => {
+const transformDatabasePackage = (dbPackage: DatabasePackage): TravelPackageType => {
   return {
     id: dbPackage.id,
     title: dbPackage.title,

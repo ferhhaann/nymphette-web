@@ -3,15 +3,16 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!supabaseUrl) {
-  throw new Error('Missing VITE_SUPABASE_URL environment variable. Please ensure your Supabase integration is properly connected.')
-}
+// Check if Supabase is properly configured
+export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey)
 
-if (!supabaseAnonKey) {
-  throw new Error('Missing VITE_SUPABASE_ANON_KEY environment variable. Please ensure your Supabase integration is properly connected.')
-}
+// Only create Supabase client if environment variables are available
+export const supabase = isSupabaseConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Helper function to check if Supabase is available
+export const useSupabase = () => isSupabaseConfigured
 
 // Database types
 export interface DatabasePackage {
