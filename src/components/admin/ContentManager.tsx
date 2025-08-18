@@ -8,14 +8,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Save, FileText } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Badge } from "@/components/ui/badge"
+import { Save, FileText, Plus, Edit, Trash2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { JsonFieldEditor } from "./JsonFieldEditor"
 
 export const ContentManager = () => {
   const [content, setContent] = useState<DatabaseContent[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedSection, setSelectedSection] = useState<string>("hero")
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+  const [newContentKey, setNewContentKey] = useState("")
+  const [newContentValue, setNewContentValue] = useState("")
   const { toast } = useToast()
 
   const sections = [
@@ -27,7 +32,11 @@ export const ContentManager = () => {
     { value: "footer", label: "Footer" },
     { value: "navigation", label: "Navigation" },
     { value: "about", label: "About Us" },
-    { value: "contact", label: "Contact" }
+    { value: "contact", label: "Contact" },
+    { value: "search", label: "Search Section" },
+    { value: "packages", label: "Packages Page" },
+    { value: "regions", label: "Regions" },
+    { value: "countries", label: "Countries" }
   ]
 
   useEffect(() => {
@@ -87,6 +96,46 @@ export const ContentManager = () => {
     }
   }
 
+  const deleteContent = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this content item?")) return
+
+    try {
+      const { error } = await supabase
+        .from('content')
+        .delete()
+        .eq('id', id)
+
+      if (error) throw error
+      await loadContent()
+      toast({
+        title: "Success",
+        description: "Content deleted"
+      })
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      })
+    }
+  }
+
+  const addNewContent = async () => {
+    if (!newContentKey.trim() || !newContentValue.trim()) {
+      toast({
+        title: "Error",
+        description: "Key and value are required",
+        variant: "destructive"
+      })
+      return
+    }
+
+    await saveContent(selectedSection, newContentKey, newContentValue)
+    setNewContentKey("")
+    setNewContentValue("")
+    setIsAddDialogOpen(false)
+  }
+
   const getSectionContent = (section: string) => {
     return content.filter(c => c.section === section)
   }
@@ -102,9 +151,58 @@ export const ContentManager = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Content Manager</h2>
-        <p className="text-muted-foreground">Edit website content sections</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold">Content Manager</h2>
+          <p className="text-muted-foreground">Edit all website content sections and JSON data</p>
+        </div>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Content
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add New Content Item</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="section">Section: {sections.find(s => s.value === selectedSection)?.label}</Label>
+                <p className="text-sm text-muted-foreground">Adding to section: {selectedSection}</p>
+              </div>
+              <div>
+                <Label htmlFor="key">Content Key</Label>
+                <Input
+                  id="key"
+                  value={newContentKey}
+                  onChange={(e) => setNewContentKey(e.target.value)}
+                  placeholder="e.g., title, description, subtitle"
+                />
+              </div>
+              <div>
+                <Label htmlFor="value">Content Value</Label>
+                <Textarea
+                  id="value"
+                  value={newContentValue}
+                  onChange={(e) => setNewContentValue(e.target.value)}
+                  placeholder="Enter the content value..."
+                  rows={3}
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={addNewContent}>
+                  <Save className="h-4 w-4 mr-2" />
+                  Add Content
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid grid-cols-4 gap-6">
@@ -125,7 +223,12 @@ export const ContentManager = () => {
                         : ''
                     }`}
                   >
-                    {section.label}
+                    <div className="flex justify-between items-center">
+                      <span>{section.label}</span>
+                      <Badge variant="secondary" className="text-xs">
+                        {getSectionContent(section.value).length}
+                      </Badge>
+                    </div>
                   </button>
                 ))}
               </div>
@@ -141,7 +244,7 @@ export const ContentManager = () => {
                 {sections.find(s => s.value === selectedSection)?.label} Content
               </CardTitle>
               <CardDescription>
-                Edit content for the selected section
+                Edit all content items for the selected section. All JSON values are editable.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -150,6 +253,7 @@ export const ContentManager = () => {
                 content={getSectionContent(selectedSection)}
                 getContentValue={getContentValue}
                 onSave={saveContent}
+                onDelete={deleteContent}
               />
             </CardContent>
           </Card>
@@ -164,9 +268,10 @@ interface SectionEditorProps {
   content: DatabaseContent[]
   getContentValue: (section: string, key: string, defaultValue?: any) => any
   onSave: (section: string, key: string, value: any) => void
+  onDelete: (id: string) => void
 }
 
-const SectionEditor = ({ section, content, getContentValue, onSave }: SectionEditorProps) => {
+const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: SectionEditorProps) => {
   const [formData, setFormData] = useState<Record<string, any>>({})
 
   useEffect(() => {
@@ -183,155 +288,75 @@ const SectionEditor = ({ section, content, getContentValue, onSave }: SectionEdi
     onSave(section, key, value)
   }
 
-  const renderSectionFields = () => {
-    switch (section) {
-      case 'hero':
-        return (
-          <div className="space-y-4">
+  const renderContentItem = (item: DatabaseContent) => {
+    const isJson = typeof item.value === 'object' && item.value !== null
+    
+    return (
+      <Card key={item.id} className="space-y-4">
+        <CardHeader className="pb-3">
+          <div className="flex justify-between items-center">
             <div>
-              <Label htmlFor="title">Hero Title</Label>
-              <Input
-                id="title"
-                value={formData.title || getContentValue(section, 'title', 'Discover Your Next Adventure')}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                onBlur={(e) => handleSave('title', e.target.value)}
-              />
+              <CardTitle className="text-sm font-medium">{item.key}</CardTitle>
+              <CardDescription className="text-xs">
+                Type: {isJson ? 'JSON Object/Array' : typeof item.value}
+              </CardDescription>
             </div>
-            <div>
-              <Label htmlFor="subtitle">Hero Subtitle</Label>
-              <Textarea
-                id="subtitle"
-                value={formData.subtitle || getContentValue(section, 'subtitle', 'Explore amazing destinations with our curated travel packages')}
-                onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
-                onBlur={(e) => handleSave('subtitle', e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="cta_text">Call to Action Text</Label>
-              <Input
-                id="cta_text"
-                value={formData.cta_text || getContentValue(section, 'cta_text', 'Explore Packages')}
-                onChange={(e) => setFormData(prev => ({ ...prev, cta_text: e.target.value }))}
-                onBlur={(e) => handleSave('cta_text', e.target.value)}
-              />
-            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onDelete(item.id)}
+              className="text-red-600 hover:text-red-700"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
-        )
-
-      case 'why-choose-us':
-        return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Section Title</Label>
-              <Input
-                id="title"
-                value={formData.title || getContentValue(section, 'title', 'Why Choose Us')}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                onBlur={(e) => handleSave('title', e.target.value)}
-              />
+        </CardHeader>
+        <CardContent className="pt-0">
+          {isJson ? (
+            <JsonFieldEditor
+              label={`${item.key} (JSON)`}
+              value={item.value}
+              onChange={(value) => handleSave(item.key, value)}
+            />
+          ) : (
+            <div className="space-y-2">
+              <Label className="text-sm">{item.key}</Label>
+              {typeof item.value === 'string' && item.value.length > 100 ? (
+                <Textarea
+                  value={formData[item.key] !== undefined ? formData[item.key] : item.value}
+                  onChange={(e) => setFormData(prev => ({ ...prev, [item.key]: e.target.value }))}
+                  onBlur={(e) => handleSave(item.key, e.target.value)}
+                  rows={4}
+                  className="text-sm"
+                />
+              ) : (
+                <Input
+                  value={formData[item.key] !== undefined ? formData[item.key] : item.value}
+                  onChange={(e) => setFormData(prev => ({ ...prev, [item.key]: e.target.value }))}
+                  onBlur={(e) => handleSave(item.key, e.target.value)}
+                  className="text-sm"
+                />
+              )}
             </div>
-            <div>
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={formData.description || getContentValue(section, 'description', 'We provide exceptional travel experiences')}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                onBlur={(e) => handleSave('description', e.target.value)}
-              />
-            </div>
-          </div>
-        )
-
-      case 'promo-banner':
-        return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Banner Title</Label>
-              <Input
-                id="title"
-                value={formData.title || getContentValue(section, 'title', 'Special Offer')}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                onBlur={(e) => handleSave('title', e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="discount">Discount Text</Label>
-              <Input
-                id="discount"
-                value={formData.discount || getContentValue(section, 'discount', '20% OFF')}
-                onChange={(e) => setFormData(prev => ({ ...prev, discount: e.target.value }))}
-                onBlur={(e) => handleSave('discount', e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={formData.description || getContentValue(section, 'description', 'Book your dream vacation today')}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                onBlur={(e) => handleSave('description', e.target.value)}
-              />
-            </div>
-          </div>
-        )
-
-      case 'featured-packages':
-        return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Section Title</Label>
-              <Input
-                id="title"
-                value={formData.title || getContentValue(section, 'title', 'Featured Travel Packages')}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                onBlur={(e) => handleSave('title', e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="subtitle">Section Subtitle</Label>
-              <Textarea
-                id="subtitle"
-                value={formData.subtitle || getContentValue(section, 'subtitle', 'Handpicked destinations and experiences')}
-                onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
-                onBlur={(e) => handleSave('subtitle', e.target.value)}
-                rows={2}
-              />
-            </div>
-          </div>
-        )
-
-      default:
-        return (
-          <div className="space-y-4">
-            <p className="text-muted-foreground">
-              Content editor for {section} section. Add specific fields as needed.
-            </p>
-            <div>
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                value={formData.title || getContentValue(section, 'title', '')}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                onBlur={(e) => handleSave('title', e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={formData.description || getContentValue(section, 'description', '')}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                onBlur={(e) => handleSave('description', e.target.value)}
-              />
-            </div>
-          </div>
-        )
-    }
+          )}
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
-    <div>
-      {renderSectionFields()}
+    <div className="space-y-4">
+      {content.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+          <p>No content items found for this section.</p>
+          <p className="text-sm">Click "Add Content" to create the first item.</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {content.map(renderContentItem)}
+        </div>
+      )}
     </div>
   )
 }
