@@ -17,7 +17,6 @@ import { Plus, Edit, Trash2, Save, Package, Settings, Calendar } from "lucide-re
 import { useToast } from "@/hooks/use-toast"
 import { ImageUpload } from "./ImageUpload"
 import { ItineraryEditor } from "./ItineraryEditor"
-import { JsonFieldEditor } from "./JsonFieldEditor"
 
 export const PackageManager = () => {
   const [packages, setPackages] = useState<DatabasePackage[]>([])
@@ -296,21 +295,18 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="basic" className="flex items-center gap-2">
             <Package className="h-4 w-4" />
             Basic Info
           </TabsTrigger>
           <TabsTrigger value="content" className="flex items-center gap-2">
             <Settings className="h-4 w-4" />
-            Content & Overview
+            Content & Details
           </TabsTrigger>
           <TabsTrigger value="itinerary" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
             Itinerary
-          </TabsTrigger>
-          <TabsTrigger value="advanced">
-            Advanced
           </TabsTrigger>
         </TabsList>
 
@@ -581,42 +577,6 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
           />
         </TabsContent>
 
-        <TabsContent value="advanced" className="space-y-4">
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Advanced JSON Fields</h3>
-            <p className="text-sm text-muted-foreground">
-              Edit raw JSON data directly. Be careful with formatting.
-            </p>
-            
-            <JsonFieldEditor
-              label="Highlights (JSON Array)"
-              value={formData.highlights}
-              onChange={(value) => updateField('highlights', value)}
-              placeholder='["Highlight 1", "Highlight 2"]'
-            />
-
-            <JsonFieldEditor
-              label="Inclusions (JSON Array)"
-              value={formData.inclusions}
-              onChange={(value) => updateField('inclusions', value)}
-              placeholder='["Inclusion 1", "Inclusion 2"]'
-            />
-
-            <JsonFieldEditor
-              label="Exclusions (JSON Array)"
-              value={formData.exclusions}
-              onChange={(value) => updateField('exclusions', value)}
-              placeholder='["Exclusion 1", "Exclusion 2"]'
-            />
-
-            <JsonFieldEditor
-              label="Itinerary (JSON Array)"
-              value={getItinerary()}
-              onChange={(value) => updateField('itinerary', value)}
-              placeholder='[{"day": 1, "title": "Arrival", "description": "...", "activities": [], "meals": []}]'
-            />
-          </div>
-        </TabsContent>
       </Tabs>
 
       <div className="flex justify-end gap-2 pt-4 border-t">

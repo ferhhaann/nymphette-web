@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { TravelPackage } from "@/data/packagesData";
+import { TravelPackage as TravelPackageType } from "@/data/packagesData";
 import { usePackageById } from "@/hooks/usePackages";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";

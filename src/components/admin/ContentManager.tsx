@@ -12,7 +12,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from "@/components/ui/badge"
 import { Save, FileText, Plus, Edit, Trash2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { JsonFieldEditor } from "./JsonFieldEditor"
 
 export const ContentManager = () => {
   const [content, setContent] = useState<DatabaseContent[]>([])
@@ -313,11 +312,34 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
         </CardHeader>
         <CardContent className="pt-0">
           {isJson ? (
-            <JsonFieldEditor
-              label={`${item.key} (JSON)`}
-              value={item.value}
-              onChange={(value) => handleSave(item.key, value)}
-            />
+            <div className="space-y-2">
+              <Label className="text-sm">{item.key} (JSON - edit as text)</Label>
+              <Textarea
+                value={formData[item.key] !== undefined ? 
+                  (typeof formData[item.key] === 'string' ? formData[item.key] : JSON.stringify(formData[item.key], null, 2)) : 
+                  JSON.stringify(item.value, null, 2)
+                }
+                onChange={(e) => {
+                  try {
+                    const parsed = JSON.parse(e.target.value)
+                    setFormData(prev => ({ ...prev, [item.key]: parsed }))
+                  } catch {
+                    setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
+                  }
+                }}
+                onBlur={(e) => {
+                  try {
+                    const parsed = JSON.parse(e.target.value)
+                    handleSave(item.key, parsed)
+                  } catch {
+                    handleSave(item.key, e.target.value)
+                  }
+                }}
+                rows={6}
+                className="font-mono text-sm"
+                placeholder="Enter JSON content..."
+              />
+            </div>
           ) : (
             <div className="space-y-2">
               <Label className="text-sm">{item.key}</Label>
