@@ -80,7 +80,7 @@ export const usePackageById = (packageId: string) => {
         .from('packages')
         .select('*')
         .eq('id', packageId)
-        .single()
+        .maybeSingle()
       
       if (error) throw error
       
@@ -129,6 +129,10 @@ const transformDatabasePackage = (dbPackage: DatabasePackage): TravelPackageType
       highlightsBadgeVariant: dbPackage.overview_badge_variant || 'outline',
       highlightsBadgeStyle: dbPackage.overview_badge_style || 'border-primary text-primary'
     } : undefined,
-    itinerary: dbPackage.itinerary
+    itinerary: Array.isArray(dbPackage.itinerary) 
+      ? dbPackage.itinerary 
+      : (typeof dbPackage.itinerary === 'string' 
+          ? JSON.parse(dbPackage.itinerary) 
+          : dbPackage.itinerary || [])
   }
 }
