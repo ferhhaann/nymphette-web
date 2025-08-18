@@ -11,6 +11,14 @@ export interface PackageItinerary {
   accommodation?: string;
 }
 
+export interface PackageOverview {
+  sectionTitle: string;
+  description: string;
+  highlightsLabel: string;
+  highlightsBadgeVariant: string;
+  highlightsBadgeStyle: string;
+}
+
 export interface TravelPackage {
   id: string;
   title: string;
@@ -31,6 +39,7 @@ export interface TravelPackage {
   category: string;
   bestTime: string;
   groupSize: string;
+  overview?: PackageOverview;
 }
 
 // Load packages data from JSON and replace image paths with actual imports

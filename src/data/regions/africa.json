@@ -16,6 +16,13 @@
     "category": "Wildlife & Adventure",
     "bestTime": "Jul - Oct",
     "groupSize": "2-12 people",
+    "overview": {
+      "sectionTitle": "Overview",
+      "description": "Embark on the ultimate African safari adventure in Kenya's world-renowned Masai Mara. Witness the Big Five and experience the incredible Great Migration in their natural habitat.",
+      "highlightsLabel": "Package Highlights",
+      "highlightsBadgeVariant": "outline",
+      "highlightsBadgeStyle": "border-primary text-primary"
+    },
     "itinerary": [
       {
         "day": 1,
