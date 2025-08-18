@@ -1,29 +1,7 @@
-import React, { useMemo } from "react";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
 import RegionLanding from "@/components/regions/RegionLanding";
-import pacificIslandsMerged from "@/data/regions/pacificIslands.data";
-import type { TravelPackage } from "@/data/packagesData";
-import hero1 from "@/assets/hero-travel.jpg";
-import hero2 from "@/assets/destinations-collage.jpg";
-import hero3 from "@/assets/regions-world.jpg";
 
-const PacificIslands: React.FC = () => {
-  const packages: TravelPackage[] = useMemo(() => (Object.values((pacificIslandsMerged as any).countries || {}).flatMap((c: any) => c.packages) as TravelPackage[]), []);
-  return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      <RegionLanding
-        regionKey="pacific-islands"
-        title="Pacific Islands Tour Packages"
-        description="All-inclusive island escapes with resorts, transfers, water activities and romantic add-ons. Customize for families and honeymooners."
-        canonical="/regions/pacific-islands"
-        data={packages}
-        heroImages={[hero1, hero2, hero3]}
-      />
-      <Footer />
-    </div>
-  );
+const PacificIslands = () => {
+  return <RegionLanding region="Pacific Islands" />;
 };
 
 export default PacificIslands;

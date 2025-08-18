@@ -30,15 +30,10 @@ import { Separator } from "@/components/ui/separator";
 import InquiryBookingForm from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
 import MapWidget from "./MapWidget";
-import CountryList from "./CountryList";
+import { CountryList } from "./CountryList";
 
 export interface RegionLandingProps {
-  regionKey: string;
-  title: string;
-  description: string;
-  canonical: string;
-  data: TravelPackage[];
-  heroImages: string[];
+  region: string;
 }
 
 const setMeta = (title: string, description: string, canonicalPath: string) => {
@@ -94,12 +89,20 @@ const getPackageImage = (countrySlug?: string, title?: string) => {
   return "/places/thailand/bangkok.webp"; // Default fallback
 };
 
-const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, description, canonical, data, heroImages }) => {
+const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [budgetMax, setBudgetMax] = useState<number>(6000);
   const [openFormFor, setOpenFormFor] = useState<TravelPackage | null>(null);
   const [stickyOpen, setStickyOpen] = useState(false);
+  
+  // Derive values from the region prop
+  const regionKey = region.toLowerCase().replace(/\s+/g, '-');
+  const title = `Discover ${region}`;
+  const description = `Explore amazing destinations and travel packages in ${region}`;
+  const canonical = `/regions/${regionKey}`;
+  const data: TravelPackage[] = []; // TODO: Load from database
+  const heroImages = ["/places/thailand/bangkok.webp"]; // TODO: Load region-specific images
 
   // Check if we're coming from packages page
   const isFromPackagesPage = window.location.pathname.includes('/packages/region/');
@@ -176,7 +179,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
         </Carousel>
       </section>
 
-      <CountryList regionKey={regionKey} data={data} />
+      <CountryList region={regionKey} onCountrySelect={(slug) => navigate(`/country/${regionKey}/${slug}`)} />
 
       {/* PACKAGES GRID */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
