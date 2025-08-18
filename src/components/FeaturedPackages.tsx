@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock, Users, MapPin } from "lucide-react";
-import { usePackages } from "@/hooks/usePackages";
+import { useFeaturedPackages } from "@/hooks/useFeaturedPackages";
 import { useContentValue } from "@/hooks/useContent";
 // Individual country images - 4 images per country
 import japanImage from "@/assets/countries/japan.jpg";
@@ -31,12 +31,11 @@ import maldives3Image from "@/assets/countries/maldives-3.jpg";
 import maldives4Image from "@/assets/countries/maldives-4.jpg";
 
 const FeaturedPackages = () => {
-  const { packages, loading } = usePackages();
+  const { packages, loading } = useFeaturedPackages();
   const { value: sectionTitle } = useContentValue("featured-packages", "title", "Featured Travel Packages");
   const { value: sectionSubtitle } = useContentValue("featured-packages", "subtitle", "Handpicked destinations and experiences crafted for unforgettable journeys");
   
-  // Get top 3 packages for featured section
-  const featuredPackages = packages.slice(0, 3);
+  // Already filtered to featured packages from hook
 
   // Map countries to their respective images - 4 images per destination
   const getCountryImages = (destination: string) => {
@@ -76,7 +75,7 @@ const FeaturedPackages = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredPackages.map((pkg, index) => (
+          {packages.map((pkg, index) => (
             <Card 
               key={pkg.id}
               className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"

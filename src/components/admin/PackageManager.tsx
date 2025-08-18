@@ -137,6 +137,7 @@ export const PackageManager = () => {
     overview_badge_variant: null,
     overview_badge_style: null,
     itinerary: [],
+    featured: false,
     created_at: null,
     updated_at: null
   })
@@ -209,6 +210,7 @@ export const PackageManager = () => {
             <CardContent>
               <div className="flex gap-4 items-center">
                 <Badge variant="secondary">{pkg.category}</Badge>
+                {pkg.featured && <Badge variant="default">Featured</Badge>}
                 <span className="text-sm text-muted-foreground">
                   ₹{pkg.price} • ⭐ {pkg.rating} ({pkg.reviews} reviews)
                 </span>
@@ -360,7 +362,7 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div>
           <Label htmlFor="best_time">Best Time to Visit</Label>
           <Input
@@ -369,6 +371,18 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
             onChange={(e) => updateField('best_time', e.target.value)}
             placeholder="e.g., Nov - Apr"
           />
+        </div>
+        <div>
+          <Label htmlFor="featured">Featured Package</Label>
+          <Select value={formData.featured ? "true" : "false"} onValueChange={(value) => updateField('featured', value === "true")}>
+            <SelectTrigger>
+              <SelectValue placeholder="Featured status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="false">Not Featured</SelectItem>
+              <SelectItem value="true">Featured</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <ImageUpload

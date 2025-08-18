@@ -40,6 +40,7 @@ export interface TravelPackage {
   bestTime: string;
   groupSize: string;
   overview?: PackageOverview;
+  featured?: boolean;
 }
 
 // Load packages data from JSON and replace image paths with actual imports

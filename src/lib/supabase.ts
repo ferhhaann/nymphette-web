@@ -39,6 +39,7 @@ export interface DatabasePackage {
   overview_badge_variant?: string
   overview_badge_style?: string
   itinerary: any[]
+  featured?: boolean
   created_at?: string
   updated_at?: string
 }

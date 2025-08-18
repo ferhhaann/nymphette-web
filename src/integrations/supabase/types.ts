@@ -212,6 +212,7 @@ export type Database = {
           created_at: string | null
           duration: string
           exclusions: string[] | null
+          featured: boolean | null
           group_size: string | null
           highlights: string[] | null
           id: string
@@ -239,6 +240,7 @@ export type Database = {
           created_at?: string | null
           duration: string
           exclusions?: string[] | null
+          featured?: boolean | null
           group_size?: string | null
           highlights?: string[] | null
           id?: string
@@ -266,6 +268,7 @@ export type Database = {
           created_at?: string | null
           duration?: string
           exclusions?: string[] | null
+          featured?: boolean | null
           group_size?: string | null
           highlights?: string[] | null
           id?: string

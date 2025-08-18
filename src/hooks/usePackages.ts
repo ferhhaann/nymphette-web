@@ -121,6 +121,7 @@ const transformDatabasePackage = (dbPackage: DatabasePackage): TravelPackageType
     category: dbPackage.category,
     bestTime: dbPackage.best_time,
     groupSize: dbPackage.group_size,
+    featured: dbPackage.featured || false,
     overview: dbPackage.overview_section_title ? {
       sectionTitle: dbPackage.overview_section_title,
       description: dbPackage.overview_description || '',

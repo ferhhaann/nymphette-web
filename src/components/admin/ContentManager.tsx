@@ -275,6 +275,31 @@ const SectionEditor = ({ section, content, getContentValue, onSave }: SectionEdi
           </div>
         )
 
+      case 'featured-packages':
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="title">Section Title</Label>
+              <Input
+                id="title"
+                value={formData.title || getContentValue(section, 'title', 'Featured Travel Packages')}
+                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                onBlur={(e) => handleSave('title', e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="subtitle">Section Subtitle</Label>
+              <Textarea
+                id="subtitle"
+                value={formData.subtitle || getContentValue(section, 'subtitle', 'Handpicked destinations and experiences')}
+                onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
+                onBlur={(e) => handleSave('subtitle', e.target.value)}
+                rows={2}
+              />
+            </div>
+          </div>
+        )
+
       default:
         return (
           <div className="space-y-4">
