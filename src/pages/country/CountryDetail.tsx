@@ -1,12 +1,25 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft, MapPin, DollarSign, Thermometer, Calendar, HelpCircle, BookOpen, Globe, Camera, Utensils, ShoppingBag, Users, Palette } from 'lucide-react'
 import { supabase } from '@/integrations/supabase/client'
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Calendar, Users, Globe, Currency, Thermometer, CreditCard } from "lucide-react";
+import { Navigation } from '@/components/Navigation'
+import { Footer } from '@/components/Footer'
+import { CountryBreadcrumb } from '@/components/regions/CountryBreadcrumb'
+import { CountryHero } from '@/components/regions/CountryHero'
+import { CountryQuickInfo } from '@/components/regions/CountryQuickInfo'
+import { CountryEssentialTips } from '@/components/regions/CountryEssentialTips'
+import { CountryStats } from '@/components/regions/CountryStats'
+import { CountryContentSection } from '@/components/regions/CountryContentSection'
+import { InquiryBookingForm } from '@/components/regions/InquiryBookingForm'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 interface Country {
   id: string
@@ -17,12 +30,12 @@ interface Country {
   currency?: string
   climate?: string
   best_season?: string
-  culture?: string
-  speciality?: string
   languages?: string[]
   annual_visitors?: number
   gender_male_percentage?: number
   gender_female_percentage?: number
+  culture?: string
+  speciality?: string
 }
 
 interface FamousPlace {
@@ -30,7 +43,7 @@ interface FamousPlace {
   name: string
   description?: string
   image_url?: string
-  type: string
+  type?: string
 }
 
 interface EssentialTip {
@@ -52,234 +65,239 @@ interface CountryFAQ {
   answer: string
 }
 
-const CountryDetail = () => {
-  const { region, country } = useParams<{ region: string; country: string }>();
-  const navigate = useNavigate();
-  const [countryData, setCountryData] = useState<Country | null>(null);
-  const [famousPlaces, setFamousPlaces] = useState<FamousPlace[]>([]);
-  const [essentialTips, setEssentialTips] = useState<EssentialTip[]>([]);
-  const [travelPurposes, setTravelPurposes] = useState<TravelPurpose[]>([]);
-  const [faqs, setFaqs] = useState<CountryFAQ[]>([]);
-  const [loading, setLoading] = useState(true);
+interface ContentSection {
+  id: string
+  section_type: string
+  title?: string
+  content: any
+  order_index: number
+}
+
+interface CountryAttraction {
+  id: string
+  name: string
+  description?: string
+  category: string
+  image_url?: string
+}
+
+interface CountryCity {
+  id: string
+  name: string
+  description?: string
+  highlights?: string[]
+  image_url?: string
+  is_capital: boolean
+}
+
+export const CountryDetail = () => {
+  const { country } = useParams<{ country: string }>()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
+  const [countryData, setCountryData] = useState<Country | null>(null)
+  const [famousPlaces, setFamousPlaces] = useState<FamousPlace[]>([])
+  const [essentialTips, setEssentialTips] = useState<EssentialTip[]>([])
+  const [travelPurposes, setTravelPurposes] = useState<TravelPurpose[]>([])
+  const [faqs, setFaqs] = useState<CountryFAQ[]>([])
+  const [contentSections, setContentSections] = useState<ContentSection[]>([])
+  const [attractions, setAttractions] = useState<CountryAttraction[]>([])
+  const [cities, setCities] = useState<CountryCity[]>([])
+  const [packageCount, setPackageCount] = useState(0)
 
   useEffect(() => {
     if (country) {
-      loadCountryData();
+      loadCountryData(country)
     }
-  }, [country]);
+  }, [country])
 
-  const loadCountryData = async () => {
+  const loadCountryData = async (countrySlug: string) => {
     try {
-      setLoading(true);
-      
-      // Load country basic info
+      setLoading(true)
+
+      // Load country basic data
       const { data: countryInfo, error: countryError } = await supabase
         .from('countries')
         .select('*')
-        .eq('slug', country)
-        .single();
+        .eq('slug', countrySlug)
+        .single()
 
-      if (countryError) throw countryError;
-      setCountryData(countryInfo);
+      if (countryError) throw countryError
+      setCountryData(countryInfo)
 
-      // Load related data
-      const [placesResult, tipsResult, purposesResult, faqsResult] = await Promise.all([
-        supabase.from('famous_places').select('*').eq('country_id', countryInfo.id),
-        supabase.from('essential_tips').select('*').eq('country_id', countryInfo.id),
-        supabase.from('travel_purposes').select('*').eq('country_id', countryInfo.id),
-        supabase.from('country_faqs').select('*').eq('country_id', countryInfo.id)
-      ]);
+      if (countryInfo) {
+        // Load package count
+        const { count } = await supabase
+          .from('packages')
+          .select('*', { count: 'exact', head: true })
+          .eq('country_slug', countrySlug)
+        
+        setPackageCount(count || 0)
 
-      setFamousPlaces(placesResult.data || []);
-      setEssentialTips(tipsResult.data || []);
-      setTravelPurposes(purposesResult.data || []);
-      setFaqs(faqsResult.data || []);
+        // Load all related data in parallel
+        const [placesResult, tipsResult, purposesResult, faqResult, contentResult, attractionsResult, citiesResult] = await Promise.all([
+          supabase.from('famous_places').select('*').eq('country_id', countryInfo.id).order('name'),
+          supabase.from('essential_tips').select('*').eq('country_id', countryInfo.id).order('title'),
+          supabase.from('travel_purposes').select('*').eq('country_id', countryInfo.id).order('percentage', { ascending: false }),
+          supabase.from('country_faqs').select('*').eq('country_id', countryInfo.id),
+          supabase.from('country_content').select('*').eq('country_id', countryInfo.id).order('order_index'),
+          supabase.from('country_attractions').select('*').eq('country_id', countryInfo.id).order('order_index'),
+          supabase.from('country_cities').select('*').eq('country_id', countryInfo.id).order('order_index')
+        ])
 
+        setFamousPlaces(placesResult.data || [])
+        setEssentialTips(tipsResult.data || [])
+        setTravelPurposes(purposesResult.data || [])
+        setFaqs(faqResult.data || [])
+        setContentSections(contentResult.data || [])
+        setAttractions(attractionsResult.data || [])
+        setCities(citiesResult.data || [])
+      }
     } catch (error) {
-      console.error('Error loading country data:', error);
+      console.error('Error loading country data:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
-        <div className="container mx-auto px-4 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="animate-pulse space-y-8">
-            <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-            <div className="h-64 bg-gray-200 rounded"></div>
+            <div className="h-8 bg-muted rounded w-1/3"></div>
+            <div className="h-64 bg-muted rounded"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-48 bg-gray-200 rounded"></div>
+                <div key={i} className="h-48 bg-muted rounded"></div>
               ))}
             </div>
           </div>
         </div>
         <Footer />
       </div>
-    );
-  }
-
-  if (!countryData) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">Country not found</h1>
-          <Button onClick={() => navigate(-1)}>Go Back</Button>
-        </div>
-        <Footer />
-      </div>
-    );
+    )
   }
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-16">
-        <div className="mb-8">
-          <Button 
-            variant="outline" 
-            onClick={() => navigate(-1)}
-            className="mb-4"
-          >
-            ← Back to {region}
-          </Button>
-          
-          <div className="flex items-center gap-4 mb-6">
-            <h1 className="text-4xl font-bold">{countryData.name}</h1>
-            <Badge variant="secondary">{countryData.region}</Badge>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {countryData ? (
+          <div className="space-y-8">
+            {/* Breadcrumb */}
+            <CountryBreadcrumb 
+              region={countryData.region} 
+              countryName={countryData.name} 
+            />
+
+            {/* Hero Section */}
+            <CountryHero
+              countryName={countryData.name}
+              capital={countryData.capital}
+              packageCount={packageCount}
+            />
+
+            {/* Quick Information Panel */}
+            <CountryQuickInfo
+              currency={countryData.currency}
+              climate={countryData.climate}
+              bestSeason={countryData.best_season}
+              languages={countryData.languages}
+            />
+
+            {/* Essential Travel Tips */}
+            <CountryEssentialTips />
+
+            {/* Visitor Statistics */}
+            <CountryStats
+              annualVisitors={countryData.annual_visitors}
+              genderMalePercentage={countryData.gender_male_percentage}
+              genderFemalePercentage={countryData.gender_female_percentage}
+              travelPurposes={travelPurposes}
+            />
+
+            {/* Content Sections */}
+            <CountryContentSection
+              sections={contentSections}
+              sectionType="introduction"
+              title="About the Destination"
+              icon={<BookOpen className="h-5 w-5" />}
+            />
+
+            {/* Famous Places */}
+            {famousPlaces.length > 0 && (
+              <Card className="mb-8">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Camera className="h-5 w-5 mr-2" />
+                    Famous Places
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {famousPlaces.map((place) => (
+                      <div key={place.id} className="space-y-3">
+                        {place.image_url && (
+                          <img 
+                            src={place.image_url} 
+                            alt={place.name}
+                            className="w-full h-48 object-cover rounded-lg"
+                          />
+                        )}
+                        <h3 className="font-semibold">{place.name}</h3>
+                        {place.description && (
+                          <p className="text-sm text-muted-foreground">{place.description}</p>
+                        )}
+                        {place.type && (
+                          <Badge variant="outline">{place.type}</Badge>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* FAQs */}
+            {faqs.length > 0 && (
+              <Card className="mb-8">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <HelpCircle className="h-5 w-5 mr-2" />
+                    Frequently Asked Questions
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Accordion type="single" collapsible className="w-full">
+                    {faqs.map((faq, index) => (
+                      <AccordionItem key={faq.id} value={`item-${index}`}>
+                        <AccordionTrigger>{faq.question}</AccordionTrigger>
+                        <AccordionContent>{faq.answer}</AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Contact & Enquiry Form */}
+            <InquiryBookingForm />
           </div>
-        </div>
-
-        {/* Country Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {countryData.capital && (
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  Capital
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xl font-semibold">{countryData.capital}</p>
-              </CardContent>
-            </Card>
-          )}
-          
-          {countryData.currency && (
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Currency className="h-4 w-4" />
-                  Currency
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xl font-semibold">{countryData.currency}</p>
-              </CardContent>
-            </Card>
-          )}
-          
-          {countryData.climate && (
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Thermometer className="h-4 w-4" />
-                  Climate
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xl font-semibold">{countryData.climate}</p>
-              </CardContent>
-            </Card>
-          )}
-          
-          {countryData.best_season && (
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  Best Season
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xl font-semibold">{countryData.best_season}</p>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-
-        {/* Famous Places */}
-        {famousPlaces.length > 0 && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Famous Places</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {famousPlaces.map((place) => (
-                <Card key={place.id}>
-                  <CardHeader>
-                    <CardTitle>{place.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {place.description && (
-                      <p className="text-muted-foreground">{place.description}</p>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Essential Tips */}
-        {essentialTips.length > 0 && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Essential Tips</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {essentialTips.map((tip) => (
-                <Card key={tip.id}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <span>{tip.icon}</span>
-                      {tip.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{tip.note}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+        ) : (
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">
+              Country not found
+            </h2>
+            <p className="text-muted-foreground">
+              The country you're looking for doesn't exist or has been removed.
+            </p>
           </div>
         )}
+      </main>
 
-        {/* FAQs */}
-        {faqs.length > 0 && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-4">
-              {faqs.map((faq) => (
-                <Card key={faq.id}>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{faq.question}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{faq.answer}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-      
       <Footer />
     </div>
-  );
-};
-
-export default CountryDetail;
+  )
+}

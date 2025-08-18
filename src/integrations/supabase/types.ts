@@ -98,6 +98,108 @@ export type Database = {
         }
         Relationships: []
       }
+      country_attractions: {
+        Row: {
+          category: string
+          country_id: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          order_index: number | null
+        }
+        Insert: {
+          category?: string
+          country_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          order_index?: number | null
+        }
+        Update: {
+          category?: string
+          country_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          order_index?: number | null
+        }
+        Relationships: []
+      }
+      country_cities: {
+        Row: {
+          country_id: string
+          created_at: string
+          description: string | null
+          highlights: string[] | null
+          id: string
+          image_url: string | null
+          is_capital: boolean | null
+          name: string
+          order_index: number | null
+        }
+        Insert: {
+          country_id: string
+          created_at?: string
+          description?: string | null
+          highlights?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_capital?: boolean | null
+          name: string
+          order_index?: number | null
+        }
+        Update: {
+          country_id?: string
+          created_at?: string
+          description?: string | null
+          highlights?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_capital?: boolean | null
+          name?: string
+          order_index?: number | null
+        }
+        Relationships: []
+      }
+      country_content: {
+        Row: {
+          content: Json
+          country_id: string
+          created_at: string
+          id: string
+          order_index: number | null
+          section_type: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          content?: Json
+          country_id: string
+          created_at?: string
+          id?: string
+          order_index?: number | null
+          section_type: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          content?: Json
+          country_id?: string
+          created_at?: string
+          id?: string
+          order_index?: number | null
+          section_type?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       country_faqs: {
         Row: {
           answer: string

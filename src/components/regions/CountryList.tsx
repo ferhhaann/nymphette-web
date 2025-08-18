@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { MapPin, Users } from 'lucide-react'
+import { MapPin, Users, Package } from 'lucide-react'
 
 interface Country {
   id: string
@@ -11,6 +11,7 @@ interface Country {
   region: string
   capital?: string
   annual_visitors?: number
+  package_count?: number
 }
 
 interface CountryListProps {
@@ -29,14 +30,32 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
   const loadCountries = async () => {
     try {
       setLoading(true)
-      const { data, error } = await supabase
+      
+      // Get countries with package counts
+      const { data: countriesData, error: countriesError } = await supabase
         .from('countries')
         .select('id, name, slug, region, capital, annual_visitors')
         .eq('region', region.charAt(0).toUpperCase() + region.slice(1))
         .order('name')
 
-      if (error) throw error
-      setCountries(data || [])
+      if (countriesError) throw countriesError
+
+      // Get package counts for each country
+      const countriesWithCounts = await Promise.all(
+        (countriesData || []).map(async (country) => {
+          const { count } = await supabase
+            .from('packages')
+            .select('*', { count: 'exact', head: true })
+            .eq('country_slug', country.slug)
+          
+          return {
+            ...country,
+            package_count: count || 0
+          }
+        })
+      )
+
+      setCountries(countriesWithCounts)
     } catch (error) {
       console.error('Error loading countries:', error)
     } finally {
@@ -123,6 +142,11 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
                     <span>{formatVisitors(country.annual_visitors)}</span>
                   </div>
                 )}
+                
+                <div className="flex items-center text-sm text-primary font-medium">
+                  <Package className="h-3 w-3 mr-1.5" />
+                  <span>{country.package_count || 0} packages available</span>
+                </div>
               </div>
             </CardContent>
           </Card>
