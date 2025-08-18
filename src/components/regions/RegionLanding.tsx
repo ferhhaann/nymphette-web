@@ -139,7 +139,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
         originalPrice: pkg.original_price,
         rating: pkg.rating,
         reviews: pkg.reviews,
-        image: pkg.image,
+        image: pkg.image || getPackageImage(pkg.country_slug, pkg.title),
         highlights: pkg.highlights || [],
         inclusions: pkg.inclusions || [],
         exclusions: pkg.exclusions || [],
@@ -175,11 +175,10 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return packages.filter(p => {
-      const price = toUSD(p) || 0;
       const matchesQuery = !q || p.title.toLowerCase().includes(q) || p.country.toLowerCase().includes(q) || p.highlights.some(h => h.toLowerCase().includes(q));
-      return matchesQuery && (price === 0 || price <= budgetMax);
+      return matchesQuery;
     });
-  }, [packages, query, budgetMax]);
+  }, [packages, query]);
 
   // JSON-LD basic
   useEffect(() => {
@@ -240,7 +239,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
         </Carousel>
       </section>
 
-      <CountryList region={regionKey} onCountrySelect={(slug) => navigate(`/country/${regionKey}/${slug}`)} />
+      <CountryList region={regionKey} onCountrySelect={(slug) => navigate(`/regions/${regionKey}/country/${slug}`)} />
 
       {/* PACKAGES GRID */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
@@ -252,7 +251,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((pkg, index)=>{
             const price = toUSD(pkg);
-            const packageImage = getPackageImage(pkg.countrySlug, pkg.title);
+            const packageImage = pkg.image || getPackageImage(pkg.countrySlug, pkg.title);
             return (
               <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300" 
                     style={{animationDelay:`${index*60}ms`}}
