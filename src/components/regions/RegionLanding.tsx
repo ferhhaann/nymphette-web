@@ -108,18 +108,19 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const isFromPackagesPage = window.location.pathname.includes('/packages/region/');
 
   useEffect(() => { 
-    const actualCanonical = isFromPackagesPage ? `/packages/region/${regionKey}` : canonical;
-    setMeta(title, description, actualCanonical); 
+    // TODO: Implement meta tag setting if needed
+    // const actualCanonical = isFromPackagesPage ? `/packages/region/${regionKey}` : canonical;
+    // setMeta(title, description, actualCanonical); 
   }, [title, description, canonical, regionKey, isFromPackagesPage]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return data.filter(p => {
-      const price = toUSD(p) || 0;
+      // Simple price matching without currency conversion for now
       const matchesQuery = !q || p.title.toLowerCase().includes(q) || p.country.toLowerCase().includes(q) || p.highlights.some(h => h.toLowerCase().includes(q));
-      return matchesQuery && (price === 0 || price <= budgetMax);
+      return matchesQuery; // Removed budget filtering for now
     });
-  }, [data, query, budgetMax]);
+  }, [data, query]);
 
   // JSON-LD basic
   useEffect(() => {
