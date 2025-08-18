@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from '@/integrations/supabase/client';
 import { TravelPackage } from "@/data/packagesData";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -95,17 +98,73 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const [budgetMax, setBudgetMax] = useState<number>(6000);
   const [openFormFor, setOpenFormFor] = useState<TravelPackage | null>(null);
   const [stickyOpen, setStickyOpen] = useState(false);
+  const [packages, setPackages] = useState<TravelPackage[]>([]);
+  const [loading, setLoading] = useState(true);
   
   // Derive values from the region prop
   const regionKey = region.toLowerCase().replace(/\s+/g, '-');
   const title = `Discover ${region}`;
   const description = `Explore amazing destinations and travel packages in ${region}`;
   const canonical = `/regions/${regionKey}`;
-  const data: TravelPackage[] = []; // TODO: Load from database
   const heroImages = ["/places/thailand/bangkok.webp"]; // TODO: Load region-specific images
 
   // Check if we're coming from packages page
   const isFromPackagesPage = window.location.pathname.includes('/packages/region/');
+
+  // Load packages from database
+  useEffect(() => {
+    loadRegionPackages();
+  }, [region]);
+
+  const loadRegionPackages = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('packages')
+        .select('*')
+        .eq('region', region)
+        .order('rating', { ascending: false });
+
+      if (error) throw error;
+      
+      // Transform database packages to TravelPackage format
+      const transformedPackages: TravelPackage[] = (data || []).map(pkg => ({
+        id: pkg.id,
+        title: pkg.title,
+        country: pkg.country,
+        countrySlug: pkg.country_slug,
+        region: pkg.region,
+        duration: pkg.duration,
+        price: pkg.price,
+        originalPrice: pkg.original_price,
+        rating: pkg.rating,
+        reviews: pkg.reviews,
+        image: pkg.image,
+        highlights: pkg.highlights || [],
+        inclusions: pkg.inclusions || [],
+        exclusions: pkg.exclusions || [],
+        category: pkg.category,
+        bestTime: pkg.best_time,
+        groupSize: pkg.group_size,
+        featured: pkg.featured,
+        itinerary: (Array.isArray(pkg.itinerary) ? pkg.itinerary : []) as any,
+        overview: pkg.overview_section_title ? {
+          sectionTitle: pkg.overview_section_title,
+          description: pkg.overview_description || '',
+          highlightsLabel: pkg.overview_highlights_label || 'Package Highlights',
+          highlightsBadgeVariant: pkg.overview_badge_variant || 'outline',
+          highlightsBadgeStyle: pkg.overview_badge_style || 'border-primary text-primary'
+        } : undefined
+      }));
+      
+      setPackages(transformedPackages);
+    } catch (error) {
+      console.error('Error loading region packages:', error);
+      setPackages([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => { 
     // TODO: Implement meta tag setting if needed
@@ -115,12 +174,12 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return data.filter(p => {
-      // Simple price matching without currency conversion for now
+    return packages.filter(p => {
+      const price = toUSD(p) || 0;
       const matchesQuery = !q || p.title.toLowerCase().includes(q) || p.country.toLowerCase().includes(q) || p.highlights.some(h => h.toLowerCase().includes(q));
-      return matchesQuery; // Removed budget filtering for now
+      return matchesQuery && (price === 0 || price <= budgetMax);
     });
-  }, [data, query]);
+  }, [packages, query, budgetMax]);
 
   // JSON-LD basic
   useEffect(() => {
@@ -134,6 +193,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navigation />
       {/* Back Button - Only show when coming from packages page */}
       {isFromPackagesPage && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
@@ -268,6 +328,8 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       </Dialog>
 
       <ChatbotWidget regionKey={regionKey} />
+      
+      <Footer />
     </div>
   );
 };
