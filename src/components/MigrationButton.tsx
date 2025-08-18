@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { supabase } from "@/integrations/supabase/client"
@@ -9,7 +9,36 @@ import { Database, Download } from "lucide-react"
 export const MigrationButton = () => {
   const [migrating, setMigrating] = useState(false)
   const [migrated, setMigrated] = useState(false)
+  const [hasData, setHasData] = useState(false)
+  const [checking, setChecking] = useState(true)
   const { toast } = useToast()
+
+  useEffect(() => {
+    checkExistingData()
+  }, [])
+
+  const checkExistingData = async () => {
+    if (!supabase) {
+      setChecking(false)
+      return
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('packages')
+        .select('id')
+        .limit(1)
+
+      if (error) throw error
+      
+      setHasData((data?.length || 0) > 0)
+    } catch (error) {
+      console.error('Error checking existing data:', error)
+      setHasData(false)
+    } finally {
+      setChecking(false)
+    }
+  }
 
   // Don't show migration button if Supabase is not configured
   if (!supabase) {
@@ -28,6 +57,15 @@ export const MigrationButton = () => {
         </CardContent>
       </Card>
     )
+  }
+
+  // Don't show anything if data already exists
+  if (checking) {
+    return null
+  }
+
+  if (hasData && !migrated) {
+    return null
   }
 
   const migrateData = async () => {
