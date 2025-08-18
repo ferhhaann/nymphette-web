@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { supabase, isSupabaseConfigured } from "@/lib/supabase"
+import { supabase } from "@/integrations/supabase/client"
 import { packagesData } from "@/data/packagesData"
 import { useToast } from "@/hooks/use-toast"
 import { Database, Download } from "lucide-react"
@@ -12,7 +12,7 @@ export const MigrationButton = () => {
   const { toast } = useToast()
 
   // Don't show migration button if Supabase is not configured
-  if (!isSupabaseConfigured) {
+  if (!supabase) {
     return (
       <Card className="w-full max-w-md mx-auto">
         <CardHeader>
@@ -79,7 +79,7 @@ export const MigrationButton = () => {
             overview_highlights_label: pkg.overview?.highlightsLabel,
             overview_badge_variant: pkg.overview?.highlightsBadgeVariant,
             overview_badge_style: pkg.overview?.highlightsBadgeStyle,
-            itinerary: pkg.itinerary
+            itinerary: JSON.stringify(pkg.itinerary)
           }
 
           const { error } = await supabase
