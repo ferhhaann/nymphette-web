@@ -10,9 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as DayPicker } from "@/components/ui/calendar";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -62,20 +59,18 @@ const deslug = (slug: string) => slug.replace(/-/g, " ").replace(/\b\w/g, (c) =>
 const slugify = (name: string) => name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
 // (deprecated) pickRegionPackages removed in favor of pickRegionUnified
 
-const EnquirySchema = z.object({
-  name: z.string().min(2),
-  city: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().min(6),
-  whatsapp: z.string().min(6).optional(),
-  destination: z.string().min(2),
-  date: z.date({ required_error: "Please select a travel date" }),
-  travellers: z.number().min(1).max(99),
-  vacationType: z.string(),
-  captcha: z.string(),
-});
-
-type EnquiryData = z.infer<typeof EnquirySchema>;
+interface EnquiryData {
+  name: string;
+  city: string;
+  email: string;
+  phone: string;
+  whatsapp: string;
+  destination: string;
+  date: Date | undefined;
+  travellers: number;
+  vacationType: string;
+  captcha: string;
+}
 
 const CountryDetail: React.FC = () => {
   const { region, country } = useParams();
@@ -134,31 +129,63 @@ const CountryDetail: React.FC = () => {
     setB(1 + Math.floor(Math.random() * 7));
   }, [country]);
 
-  const form = useForm<EnquiryData>({
-    resolver: zodResolver(EnquirySchema),
-    defaultValues: {
+  const [formData, setFormData] = useState<EnquiryData>({
+    name: "",
+    city: "",
+    email: "",
+    phone: "",
+    whatsapp: "",
+    destination: details.name,
+    date: undefined,
+    travellers: 2,
+    vacationType: "Leisure",
+    captcha: "",
+  });
+
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    
+    if (formData.name.length < 2) newErrors.name = "Name required";
+    if (formData.city.length < 2) newErrors.city = "City required";
+    if (!formData.email.includes("@")) newErrors.email = "Valid email required";
+    if (formData.phone.length < 6) newErrors.phone = "Valid phone required";
+    if (!formData.date) newErrors.date = "Please select a travel date";
+    
+    setFormErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const updateFormField = (field: keyof EnquiryData, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (formErrors[field]) {
+      setFormErrors(prev => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    const answer = String(a + b);
+    if (formData.captcha.trim() !== answer) {
+      toast({ title: "CAPTCHA incorrect", description: "Please solve the simple math to verify.", variant: "destructive" });
+      return;
+    }
+    toast({ title: "Enquiry submitted", description: `Thanks ${formData.name}! Our team will reach out shortly.` });
+    setFormData({
       name: "",
       city: "",
       email: "",
       phone: "",
       whatsapp: "",
       destination: details.name,
-      date: undefined as unknown as Date,
+      date: undefined,
       travellers: 2,
       vacationType: "Leisure",
       captcha: "",
-    } as any,
-  });
-
-  const onSubmit = (values: EnquiryData) => {
-    const answer = String(a + b);
-    if (values.captcha.trim() !== answer) {
-      toast({ title: "CAPTCHA incorrect", description: "Please solve the simple math to verify.", variant: "destructive" });
-      return;
-    }
-    toast({ title: "Enquiry submitted", description: `Thanks ${values.name}! Our team will reach out shortly.` });
-    form.reset();
-    // Optional: navigate to thank-you or keep on page
+    });
   };
 
   const PurposeChart = () => (
@@ -410,66 +437,113 @@ const CountryDetail: React.FC = () => {
 
             <Card className="p-6">
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={onSubmit}
                 className="grid grid-cols-1 sm:grid-cols-2 gap-4"
                 aria-label="Destination enquiry form"
               >
                 <div className="sm:col-span-2 text-lg font-semibold mb-1">Enquire about {details.name}</div>
                 <div>
                   <Label htmlFor="name">Name</Label>
-                  <Input id="name" {...form.register('name')} />
+                  <Input 
+                    id="name" 
+                    value={formData.name}
+                    onChange={(e) => updateFormField('name', e.target.value)}
+                  />
+                  {formErrors.name && <p className="text-xs text-destructive mt-1">{formErrors.name}</p>}
                 </div>
                 <div>
                   <Label htmlFor="city">City</Label>
-                  <Input id="city" {...form.register('city')} />
+                  <Input 
+                    id="city" 
+                    value={formData.city}
+                    onChange={(e) => updateFormField('city', e.target.value)}
+                  />
+                  {formErrors.city && <p className="text-xs text-destructive mt-1">{formErrors.city}</p>}
                 </div>
                 <div>
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" {...form.register('email')} />
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    value={formData.email}
+                    onChange={(e) => updateFormField('email', e.target.value)}
+                  />
+                  {formErrors.email && <p className="text-xs text-destructive mt-1">{formErrors.email}</p>}
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" {...form.register('phone')} />
+                  <Input 
+                    id="phone" 
+                    value={formData.phone}
+                    onChange={(e) => updateFormField('phone', e.target.value)}
+                  />
+                  {formErrors.phone && <p className="text-xs text-destructive mt-1">{formErrors.phone}</p>}
                 </div>
                 <div>
                   <Label htmlFor="whatsapp">WhatsApp</Label>
-                  <Input id="whatsapp" {...form.register('whatsapp')} />
+                  <Input 
+                    id="whatsapp" 
+                    value={formData.whatsapp}
+                    onChange={(e) => updateFormField('whatsapp', e.target.value)}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="destination">Destination</Label>
-                  <Input id="destination" {...form.register('destination')} readOnly />
+                  <Input 
+                    id="destination" 
+                    value={formData.destination}
+                    onChange={(e) => updateFormField('destination', e.target.value)}
+                    readOnly 
+                  />
                 </div>
                 <div className="sm:col-span-2">
                   <Label>Desired Travel Date</Label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !form.getValues('date') && "text-muted-foreground")}>
+                      <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.date && "text-muted-foreground")}>
                         <CalendarIcon className="mr-2 size-4" />
-                        {form.getValues('date') ? format(form.getValues('date') as any, "PPP") : <span>Pick a date</span>}
+                        {formData.date ? format(formData.date, "PPP") : <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                       <DayPicker
                         mode="single"
-                        selected={form.getValues('date') as any}
-                        onSelect={(d) => form.setValue('date', d as Date)}
+                        selected={formData.date}
+                        onSelect={(date) => updateFormField('date', date)}
                         initialFocus
                         className={cn("p-3 pointer-events-auto")}
                       />
                     </PopoverContent>
                   </Popover>
+                  {formErrors.date && <p className="text-xs text-destructive mt-1">{formErrors.date}</p>}
                 </div>
                 <div>
                   <Label htmlFor="travellers">Travellers</Label>
-                  <Input id="travellers" type="number" min={1} max={99} {...form.register('travellers', { valueAsNumber: true })} />
+                  <Input 
+                    id="travellers" 
+                    type="number" 
+                    min={1} 
+                    max={99} 
+                    value={formData.travellers}
+                    onChange={(e) => updateFormField('travellers', parseInt(e.target.value) || 1)}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="vacationType">Vacation Type</Label>
-                  <Input id="vacationType" placeholder="Leisure / Family / Honeymoon / Business" {...form.register('vacationType')} />
+                  <Input 
+                    id="vacationType" 
+                    placeholder="Leisure / Family / Honeymoon / Business" 
+                    value={formData.vacationType}
+                    onChange={(e) => updateFormField('vacationType', e.target.value)}
+                  />
                 </div>
                 <div className="sm:col-span-2">
                   <Label htmlFor="captcha">Captcha: What is {a} + {b}?</Label>
-                  <Input id="captcha" {...form.register('captcha')} />
+                  <Input 
+                    id="captcha" 
+                    value={formData.captcha}
+                    onChange={(e) => updateFormField('captcha', e.target.value)}
+                  />
                 </div>
                 <div className="sm:col-span-2">
                   <Button type="submit" className="w-full">Submit</Button>
