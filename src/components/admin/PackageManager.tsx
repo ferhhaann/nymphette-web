@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Plus, Edit, Trash2, Save } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { ImageUpload } from "./ImageUpload"
 
 export const PackageManager = () => {
   const [packages, setPackages] = useState<DatabasePackage[]>([])
@@ -370,12 +371,11 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
           />
         </div>
         <div>
-          <Label htmlFor="image">Image URL</Label>
-          <Input
-            id="image"
-            value={formData.image}
-            onChange={(e) => updateField('image', e.target.value)}
-            placeholder="Image URL"
+          <ImageUpload
+            label="Package Image"
+            currentImageUrl={formData.image}
+            onImageUploaded={(url) => updateField('image', url)}
+            folder="packages"
           />
         </div>
       </div>

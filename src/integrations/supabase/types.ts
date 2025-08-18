@@ -41,6 +41,168 @@ export type Database = {
         }
         Relationships: []
       }
+      countries: {
+        Row: {
+          annual_visitors: number | null
+          best_season: string | null
+          capital: string | null
+          climate: string | null
+          created_at: string | null
+          culture: string | null
+          currency: string | null
+          gender_female_percentage: number | null
+          gender_male_percentage: number | null
+          id: string
+          languages: string[] | null
+          name: string
+          region: string
+          slug: string
+          speciality: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          annual_visitors?: number | null
+          best_season?: string | null
+          capital?: string | null
+          climate?: string | null
+          created_at?: string | null
+          culture?: string | null
+          currency?: string | null
+          gender_female_percentage?: number | null
+          gender_male_percentage?: number | null
+          id?: string
+          languages?: string[] | null
+          name: string
+          region: string
+          slug: string
+          speciality?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          annual_visitors?: number | null
+          best_season?: string | null
+          capital?: string | null
+          climate?: string | null
+          created_at?: string | null
+          culture?: string | null
+          currency?: string | null
+          gender_female_percentage?: number | null
+          gender_male_percentage?: number | null
+          id?: string
+          languages?: string[] | null
+          name?: string
+          region?: string
+          slug?: string
+          speciality?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      country_faqs: {
+        Row: {
+          answer: string
+          country_id: string | null
+          created_at: string | null
+          id: string
+          question: string
+        }
+        Insert: {
+          answer: string
+          country_id?: string | null
+          created_at?: string | null
+          id?: string
+          question: string
+        }
+        Update: {
+          answer?: string
+          country_id?: string | null
+          created_at?: string | null
+          id?: string
+          question?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "country_faqs_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      essential_tips: {
+        Row: {
+          country_id: string | null
+          created_at: string | null
+          icon: string
+          id: string
+          note: string
+          title: string
+        }
+        Insert: {
+          country_id?: string | null
+          created_at?: string | null
+          icon: string
+          id?: string
+          note: string
+          title: string
+        }
+        Update: {
+          country_id?: string | null
+          created_at?: string | null
+          icon?: string
+          id?: string
+          note?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "essential_tips_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      famous_places: {
+        Row: {
+          country_id: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          type: string | null
+        }
+        Insert: {
+          country_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          type?: string | null
+        }
+        Update: {
+          country_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "famous_places_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       packages: {
         Row: {
           best_time: string | null
@@ -124,6 +286,38 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      travel_purposes: {
+        Row: {
+          country_id: string | null
+          created_at: string | null
+          id: string
+          name: string
+          percentage: number
+        }
+        Insert: {
+          country_id?: string | null
+          created_at?: string | null
+          id?: string
+          name: string
+          percentage: number
+        }
+        Update: {
+          country_id?: string | null
+          created_at?: string | null
+          id?: string
+          name?: string
+          percentage?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "travel_purposes_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
