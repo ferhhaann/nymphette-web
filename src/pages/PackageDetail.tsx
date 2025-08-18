@@ -34,6 +34,9 @@ import {
   Heart
 } from "lucide-react";
 
+// Import content configuration
+import packageDetailContent from "@/data/packageDetailContent.json";
+
 // Import all region data to find packages
 import asiaMerged from "@/data/regions/asia.data";
 import europeMerged from "@/data/regions/europe.data";
@@ -176,11 +179,17 @@ const PackageDetail = () => {
       setPkg(foundPackage || null);
       
       if (foundPackage) {
-        // Set page title and meta
-        document.title = `${foundPackage.title} - Travel Package Details`;
+        // Set page title and meta using content from JSON
+        const title = packageDetailContent.meta.titleTemplate
+          .replace('{packageTitle}', foundPackage.title);
+        document.title = title;
+        
         const metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
         if (metaDesc) {
-          metaDesc.content = `Discover ${foundPackage.title} in ${foundPackage.country}. ${foundPackage.duration} journey with all-inclusive packages.`;
+          metaDesc.content = packageDetailContent.meta.descriptionTemplate
+            .replace('{packageTitle}', foundPackage.title)
+            .replace('{country}', foundPackage.country)
+            .replace('{duration}', foundPackage.duration);
         }
       }
     }
@@ -192,8 +201,8 @@ const PackageDetail = () => {
         <Navigation />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Package Not Found</h1>
-            <Button onClick={() => navigate('/')}>Return Home</Button>
+            <h1 className="text-2xl font-bold mb-4">{packageDetailContent.ui.messages.packageNotFound.title}</h1>
+            <Button onClick={() => navigate('/')}>{packageDetailContent.ui.messages.packageNotFound.action}</Button>
           </div>
         </div>
         <Footer />
@@ -205,8 +214,8 @@ const PackageDetail = () => {
     e.preventDefault();
     console.log(formData);
     toast({
-      title: "Enquiry Sent!",
-      description: "We'll get back to you within 24 hours.",
+      title: packageDetailContent.ui.messages.enquirySent.title,
+      description: packageDetailContent.ui.messages.enquirySent.description,
     });
     setFormData({
       name: "",
@@ -231,19 +240,13 @@ const PackageDetail = () => {
   const toggleWishlist = () => {
     setIsWishlisted(!isWishlisted);
     toast({
-      title: isWishlisted ? "Removed from Wishlist" : "Added to Wishlist",
-      description: isWishlisted ? "Package removed from your wishlist" : "Package added to your wishlist",
+      title: isWishlisted ? packageDetailContent.ui.messages.wishlistRemoved.title : packageDetailContent.ui.messages.wishlistAdded.title,
+      description: isWishlisted ? packageDetailContent.ui.messages.wishlistRemoved.description : packageDetailContent.ui.messages.wishlistAdded.description,
     });
   };
 
-  // Mock data for reviews breakdown
-  const reviewsBreakdown = {
-    excellent: 65,
-    veryGood: 25, 
-    average: 8,
-    poor: 2,
-    terrible: 0
-  };
+  // Reviews breakdown from JSON
+  const reviewsBreakdown = packageDetailContent.content.reviewsBreakdown;
 
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);
@@ -269,14 +272,14 @@ const PackageDetail = () => {
       
       {/* Back Button */}
       <div className="max-w-6xl mx-auto px-4 pt-6">
-        <Button 
-          variant="outline" 
-          onClick={() => navigate(-1)}
-          className="mb-4"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </Button>
+          <Button 
+            variant="outline" 
+            onClick={() => navigate(-1)}
+            className="mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            {packageDetailContent.ui.buttons.back}
+          </Button>
       </div>
 
       {/* Hero Section with Image Gallery */}
@@ -371,29 +374,29 @@ const PackageDetail = () => {
               <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
                 <Clock className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="text-sm font-medium">Duration</div>
+                  <div className="text-sm font-medium">{packageDetailContent.ui.labels.duration}</div>
                   <div className="text-sm text-muted-foreground">{pkg.duration}</div>
                 </div>
               </div>
               <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
                 <Users className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="text-sm font-medium">Group Size</div>
+                  <div className="text-sm font-medium">{packageDetailContent.ui.labels.groupSize}</div>
                   <div className="text-sm text-muted-foreground">{pkg.groupSize}</div>
                 </div>
               </div>
               <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
                 <Calendar className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="text-sm font-medium">Best Time</div>
+                  <div className="text-sm font-medium">{packageDetailContent.ui.labels.bestTime}</div>
                   <div className="text-sm text-muted-foreground">{pkg.bestTime}</div>
                 </div>
               </div>
               <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
                 <Languages className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="text-sm font-medium">Languages</div>
-                  <div className="text-sm text-muted-foreground">English</div>
+                  <div className="text-sm font-medium">{packageDetailContent.ui.labels.languages}</div>
+                  <div className="text-sm text-muted-foreground">{packageDetailContent.content.defaultLanguages.join(", ")}</div>
                 </div>
               </div>
             </div>
@@ -408,10 +411,11 @@ const PackageDetail = () => {
 
             {/* Overview Section */}
             <div>
-              <h2 className="text-2xl font-semibold mb-3">Overview</h2>
+              <h2 className="text-2xl font-semibold mb-3">{packageDetailContent.ui.labels.overview}</h2>
               <p className="text-muted-foreground mb-4">
-                Discover the beauty and culture of {pkg.country} on this amazing {pkg.duration} journey. 
-                Experience the highlights and hidden gems that make this destination truly special.
+                {packageDetailContent.content.overviewTemplate
+                  .replace('{country}', pkg.country)
+                  .replace('{duration}', pkg.duration)}
               </p>
               <div className="flex flex-wrap gap-2">
                 {pkg.highlights.map((highlight, idx) => (
@@ -424,7 +428,7 @@ const PackageDetail = () => {
 
             {/* Itinerary Accordion */}
             <div>
-              <h2 className="text-2xl font-semibold mb-4">Day-by-Day Itinerary</h2>
+              <h2 className="text-2xl font-semibold mb-4">{packageDetailContent.ui.labels.itinerary}</h2>
               <Accordion type="single" collapsible className="w-full">
                 {pkg.itinerary.map((day, idx) => (
                   <AccordionItem key={idx} value={`day-${day.day}`}>
@@ -475,7 +479,7 @@ const PackageDetail = () => {
                 <CardHeader>
                   <CardTitle className="text-green-600 flex items-center">
                     <Check className="h-5 w-5 mr-2" />
-                    What's Included
+                    {packageDetailContent.ui.labels.included}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -494,7 +498,7 @@ const PackageDetail = () => {
                 <CardHeader>
                   <CardTitle className="text-red-600 flex items-center">
                     <XIcon className="h-5 w-5 mr-2" />
-                    What's Not Included
+                    {packageDetailContent.ui.labels.excluded}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -515,34 +519,36 @@ const PackageDetail = () => {
           <div className="lg:col-span-1">
             <Card className="sticky top-6">
               <CardHeader>
-                <CardTitle>Book This Package</CardTitle>
+                <CardTitle>{packageDetailContent.ui.buttons.bookNow}</CardTitle>
                 <div className="text-3xl font-bold text-primary">{pkg.price}</div>
                 <p className="text-sm text-muted-foreground">per person</p>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <Label htmlFor="name">Full Name *</Label>
+                    <Label htmlFor="name">{packageDetailContent.ui.labels.name} *</Label>
                     <Input
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      placeholder={packageDetailContent.ui.placeholders.name}
                       required
                     />
                   </div>
                   
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email">{packageDetailContent.ui.labels.email} *</Label>
                     <Input
                       id="email"
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      placeholder={packageDetailContent.ui.placeholders.email}
                       required
                     />
                   </div>
                   
-                  <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                     <div>
                       <Label htmlFor="countryCode">Code</Label>
                       <Select value={formData.countryCode} onValueChange={(value) => setFormData({...formData, countryCode: value})}>
@@ -550,46 +556,48 @@ const PackageDetail = () => {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="+1">+1</SelectItem>
-                          <SelectItem value="+44">+44</SelectItem>
-                          <SelectItem value="+91">+91</SelectItem>
-                          <SelectItem value="+86">+86</SelectItem>
-                          <SelectItem value="+81">+81</SelectItem>
+                          {packageDetailContent.content.countryCodes.map((country) => (
+                            <SelectItem key={country.code} value={country.code}>
+                              {country.code} ({country.country})
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="col-span-2">
-                      <Label htmlFor="phone">Phone Number *</Label>
+                      <Label htmlFor="phone">{packageDetailContent.ui.labels.phone} *</Label>
                       <Input
                         id="phone"
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        placeholder={packageDetailContent.ui.placeholders.phone}
                         required
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <Label htmlFor="city">City</Label>
+                    <Label htmlFor="city">{packageDetailContent.ui.labels.city}</Label>
                     <Input
                       id="city"
                       value={formData.city}
                       onChange={(e) => setFormData({...formData, city: e.target.value})}
+                      placeholder={packageDetailContent.ui.placeholders.city}
                     />
                   </div>
                   
                   <div>
-                    <Label htmlFor="message">Special Requirements</Label>
+                    <Label htmlFor="message">{packageDetailContent.ui.labels.message}</Label>
                     <Textarea
                       id="message"
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      placeholder="Any special requirements or requests..."
+                      placeholder={packageDetailContent.ui.placeholders.message}
                     />
                   </div>
                   
                   <Button type="submit" className="w-full">
-                    Send Enquiry
+                    {packageDetailContent.ui.buttons.sendEnquiry}
                   </Button>
                   
                   <div className="text-center text-sm text-muted-foreground">
