@@ -18,6 +18,25 @@ type EssentialTip = Database['public']['Tables']['essential_tips']['Row']
 type TravelPurpose = Database['public']['Tables']['travel_purposes']['Row']
 type CountryFAQ = Database['public']['Tables']['country_faqs']['Row']
 
+const createEmptyCountry = (): Country => ({
+  id: '',
+  name: '',
+  slug: '',
+  region: '',
+  capital: '',
+  currency: '',
+  climate: '',
+  best_season: '',
+  languages: [],
+  speciality: '',
+  culture: '',
+  annual_visitors: null,
+  gender_male_percentage: null,
+  gender_female_percentage: null,
+  created_at: null,
+  updated_at: null
+})
+
 export const CountryManager = () => {
   const [countries, setCountries] = useState<Country[]>([])
   const [loading, setLoading] = useState(true)
@@ -110,24 +129,6 @@ export const CountryManager = () => {
     }
   }
 
-  const createEmptyCountry = (): Country => ({
-    id: '',
-    name: '',
-    slug: '',
-    region: '',
-    capital: '',
-    currency: '',
-    climate: '',
-    best_season: '',
-    languages: [],
-    speciality: '',
-    culture: '',
-    annual_visitors: null,
-    gender_male_percentage: null,
-    gender_female_percentage: null,
-    created_at: null,
-    updated_at: null
-  })
 
   if (loading) {
     return <div className="text-center">Loading countries...</div>
@@ -219,8 +220,10 @@ interface CountryFormProps {
 }
 
 const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
-  const [formData, setFormData] = useState<Country>(country)
-  const [languages, setLanguages] = useState<string>(country.languages?.join(', ') || '')
+  const [formData, setFormData] = useState<Country>(country || createEmptyCountry())
+  const [languages, setLanguages] = useState<string>(
+    country?.languages ? country.languages.join(', ') : ''
+  )
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
