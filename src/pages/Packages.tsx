@@ -130,7 +130,7 @@ const Packages = () => {
 
   const handleRegionClick = (regionName: string) => {
     const slug = regionName.toLowerCase().replace(/\s+/g, "-");
-    navigate(`/regions/${slug}`);
+    navigate(`/packages/region/${slug}`);
   };
 
   const handleBackToRegions = () => {

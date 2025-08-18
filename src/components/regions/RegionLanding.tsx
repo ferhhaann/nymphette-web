@@ -25,7 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Calendar, CheckCircle2, CircleDollarSign, MapPinned, ShieldCheck, Star, Utensils, Users } from "lucide-react";
+import { Calendar, CheckCircle2, CircleDollarSign, MapPinned, ShieldCheck, Star, Utensils, Users, ArrowLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import InquiryBookingForm from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
@@ -101,7 +101,13 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
   const [openFormFor, setOpenFormFor] = useState<TravelPackage | null>(null);
   const [stickyOpen, setStickyOpen] = useState(false);
 
-  useEffect(() => { setMeta(title, description, canonical); }, [title, description, canonical]);
+  // Check if we're coming from packages page
+  const isFromPackagesPage = window.location.pathname.includes('/packages/region/');
+
+  useEffect(() => { 
+    const actualCanonical = isFromPackagesPage ? `/packages/region/${regionKey}` : canonical;
+    setMeta(title, description, actualCanonical); 
+  }, [title, description, canonical, regionKey, isFromPackagesPage]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -124,8 +130,22 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ regionKey, title, descrip
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Back Button - Only show when coming from packages page */}
+      {isFromPackagesPage && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/packages')}
+            className="mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Packages
+          </Button>
+        </div>
+      )}
+      
       {/* HERO */}
-      <section className="relative mt-4 sm:mt-6 lg:mt-8">
+      <section className={`relative ${isFromPackagesPage ? 'mt-0' : 'mt-4 sm:mt-6 lg:mt-8'}`}>
         <Carousel>
           <CarouselContent>
             {heroImages.map((img, idx) => (

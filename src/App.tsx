@@ -41,6 +41,12 @@ const App = () => (
           <Route path="/regions/americas" element={<Americas />} />
           <Route path="/regions/pacific-islands" element={<PacificIslands />} />
           <Route path="/regions/middle-east" element={<MiddleEast />} />
+          <Route path="/packages/region/asia" element={<Asia />} />
+          <Route path="/packages/region/europe" element={<Europe />} />
+          <Route path="/packages/region/africa" element={<Africa />} />
+          <Route path="/packages/region/americas" element={<Americas />} />
+          <Route path="/packages/region/pacific-islands" element={<PacificIslands />} />
+          <Route path="/packages/region/middle-east" element={<MiddleEast />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
