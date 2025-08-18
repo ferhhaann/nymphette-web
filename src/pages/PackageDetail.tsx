@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { TravelPackage } from "@/data/packagesData";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import packageDetailContent from "@/data/packageDetailContent.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -408,14 +409,20 @@ const PackageDetail = () => {
 
             {/* Overview Section */}
             <div>
-              <h2 className="text-2xl font-semibold mb-3">Overview</h2>
+              <h2 className="text-2xl font-semibold mb-3">{packageDetailContent.overview.sectionTitle}</h2>
               <p className="text-muted-foreground mb-4">
-                Discover the beauty and culture of {pkg.country} on this amazing {pkg.duration} journey. 
-                Experience the highlights and hidden gems that make this destination truly special.
+                {packageDetailContent.overview.customDescriptions[pkg.id] || 
+                 packageDetailContent.overview.descriptionTemplate
+                   .replace('{country}', pkg.country)
+                   .replace('{duration}', pkg.duration.toLowerCase())}
               </p>
               <div className="flex flex-wrap gap-2">
                 {pkg.highlights.map((highlight, idx) => (
-                  <Badge key={idx} variant="outline" className="border-primary text-primary">
+                  <Badge 
+                    key={idx} 
+                    variant={packageDetailContent.overview.highlightsBadgeVariant as any}
+                    className={packageDetailContent.overview.highlightsBadgeStyle}
+                  >
                     {highlight}
                   </Badge>
                 ))}
