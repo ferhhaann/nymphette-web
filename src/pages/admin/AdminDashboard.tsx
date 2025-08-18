@@ -3,10 +3,11 @@ import { supabase } from "@/integrations/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Package, FileText, Settings } from "lucide-react"
+import { Plus, Package, FileText, Settings, Database } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { PackageManager } from "@/components/admin/PackageManager"
 import { ContentManager } from "@/components/admin/ContentManager"
+import { ComprehensiveMigration } from "@/components/ComprehensiveMigration"
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -83,8 +84,12 @@ const AdminDashboard = () => {
           </Button>
         </div>
 
-        <Tabs defaultValue="packages" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+        <Tabs defaultValue="migration" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="migration" className="flex items-center gap-2">
+              <Database className="h-4 w-4" />
+              Data Migration
+            </TabsTrigger>
             <TabsTrigger value="packages" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
               Packages
@@ -98,6 +103,20 @@ const AdminDashboard = () => {
               Settings
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="migration">
+            <Card>
+              <CardHeader>
+                <CardTitle>Data Migration</CardTitle>
+                <CardDescription>
+                  Migrate all data from JSON files to the database
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ComprehensiveMigration />
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="packages">
             <PackageManager />

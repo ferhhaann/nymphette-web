@@ -18,7 +18,7 @@ import MiddleEast from "./pages/regions/MiddleEast";
 import CountryDetail from "./pages/country/CountryDetail";
 import PackageDetail from "./pages/PackageDetail";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import { TestMigrationButton } from "@/components/TestMigrationButton";
+
 
 const queryClient = new QueryClient();
 
@@ -27,8 +27,6 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      {/* Test Migration Button */}
-      <TestMigrationButton />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
