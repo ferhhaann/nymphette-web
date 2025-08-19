@@ -6,9 +6,10 @@ interface ImageSlideshowProps {
   className?: string;
   width?: string;
   height?: string;
+  hoverToPlay?: boolean;
 }
 
-const ImageSlideshow = ({ images, alt, className = "", width, height }: ImageSlideshowProps) => {
+const ImageSlideshow = ({ images, alt, className = "", width, height, hoverToPlay = true }: ImageSlideshowProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -20,8 +21,8 @@ const ImageSlideshow = ({ images, alt, className = "", width, height }: ImageSli
       intervalRef.current = null;
     }
 
-    // Start new interval only when hovering and has multiple images
-    if (isHovered && images.length > 1) {
+  // Start new interval only when hovering (if allowed) and has multiple images
+  if (hoverToPlay && isHovered && images.length > 1) {
       intervalRef.current = setInterval(() => {
         setCurrentImageIndex((prevIndex) => 
           (prevIndex + 1) % images.length
@@ -37,12 +38,12 @@ const ImageSlideshow = ({ images, alt, className = "", width, height }: ImageSli
     };
   }, [isHovered, images.length]);
 
-  // Reset to first image when not hovering
+  // Reset to first image when not hovering (only relevant if hoverToPlay enabled)
   useEffect(() => {
-    if (!isHovered) {
+    if (hoverToPlay && !isHovered) {
       setCurrentImageIndex(0);
     }
-  }, [isHovered]);
+  }, [isHovered, hoverToPlay]);
 
   return (
     <div 
@@ -66,7 +67,7 @@ const ImageSlideshow = ({ images, alt, className = "", width, height }: ImageSli
       ))}
       
       {/* Slideshow indicator dots */}
-      {isHovered && images.length > 1 && (
+  {hoverToPlay && isHovered && images.length > 1 && (
         <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
           {images.map((_, index) => (
             <div
