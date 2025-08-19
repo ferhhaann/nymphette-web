@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Filter } from "lucide-react";
-import { TravelPackage, packagesData } from "@/data/packagesData";
+import { TravelPackage } from "@/data/packagesData";
+import { usePackages } from "@/hooks/usePackages";
 import PackageCard from "./PackageCard";
 import PackageDetailView from "./PackageDetailView";
 
@@ -17,14 +18,18 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
   const [selectedPackage, setSelectedPackage] = useState<TravelPackage | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
-  const packages = packagesData[region] || [];
+  // Load packages for this region (uses Supabase when configured, otherwise local fallback)
+  const { packages: regionPackagesRaw, loading, error } = usePackages();
+  // Normalize region name for matching because DB values may differ in case/whitespace
+  const norm = (s?: string) => (s || "").toString().trim().toLowerCase();
+  const regionPackages = (regionPackagesRaw || []).filter(p => norm(p.region) === norm(region));
   
   // Get unique countries and categories for filters
-  const countries = ["all", ...Array.from(new Set(packages.map(pkg => pkg.country)))];
-  const categories = ["all", ...Array.from(new Set(packages.map(pkg => pkg.category)))];
+  const countries = ["all", ...Array.from(new Set(regionPackages.map(pkg => pkg.country)))];
+  const categories = ["all", ...Array.from(new Set(regionPackages.map(pkg => pkg.category)))];
 
   // Filter packages based on selected filters
-  const filteredPackages = packages.filter(pkg => {
+  const filteredPackages = regionPackages.filter(pkg => {
     const countryMatch = selectedCountry === "all" || pkg.country === selectedCountry;
     const categoryMatch = selectedCategory === "all" || pkg.category === selectedCategory;
     return countryMatch && categoryMatch;
@@ -40,7 +45,7 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
   }, {} as Record<string, TravelPackage[]>);
 
   const handleViewDetails = (packageId: string) => {
-    const pkg = packages.find(p => p.id === packageId);
+  const pkg = regionPackages.find(p => p.id === packageId);
     if (pkg) {
       setSelectedPackage(pkg);
       setShowDetails(true);
@@ -71,7 +76,7 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
           </div>
         </div>
         <Badge className="bg-accent text-white text-lg px-4 py-2">
-          {filteredPackages.length} Packages Found
+          {loading ? 'Loading...' : `${filteredPackages.length} Packages Found`}
         </Badge>
       </div>
 

@@ -31,7 +31,7 @@ import middleEast3 from "@/assets/regions/middle-east-3.jpg";
 import baliImage from "@/assets/countries/indonesia.jpg";
 import europeGrandTourImage from "@/assets/countries/france.jpg";
 import maldivesImage from "@/assets/countries/maldives.jpg";
-import { packagesData } from "@/data/packagesData";
+import { usePackages } from "@/hooks/usePackages";
 
 const Packages = () => {
   const [searchParams] = useSearchParams();
@@ -56,11 +56,18 @@ const Packages = () => {
     };
   }, []);
 
+  // We'll compute package counts dynamically using the data hook so counts reflect Supabase/local data.
+  const { packages: allPackages, loading: packagesLoading } = usePackages();
+
+  // packages are loaded via usePackages(); counts are computed below
+
+  const norm = (s?: string) => (s || "").toString().trim().toLowerCase();
+
   const regions = [
     {
       name: "Asia",
       countries: ["Thailand", "Japan", "Singapore", "Malaysia", "Indonesia", "Vietnam"],
-      packageCount: (packagesData["Asia"] || []).length,
+      packageCount: allPackages ? allPackages.filter(p => norm(p.region) === norm("Asia")).length : 0,
       startingPrice: "₹25,000",
       images: [asia1, asia2, asia3],
       highlights: ["Cultural Tours", "Beach Resorts", "Adventure"]
@@ -68,7 +75,7 @@ const Packages = () => {
     {
       name: "Europe", 
       countries: ["France", "Italy", "Switzerland", "Germany", "Spain", "Greece"],
-      packageCount: (packagesData["Europe"] || []).length,
+      packageCount: allPackages ? allPackages.filter(p => norm(p.region) === norm("Europe")).length : 0,
       startingPrice: "₹85,000",
       images: [europe1, europe2, europe3],
       highlights: ["Historic Sites", "Art & Culture", "Scenic Beauty"]
@@ -76,7 +83,7 @@ const Packages = () => {
     {
       name: "Africa",
       countries: ["Kenya", "Tanzania", "South Africa", "Morocco", "Egypt", "Botswana"],
-      packageCount: (packagesData["Africa"] || []).length,
+      packageCount: allPackages ? allPackages.filter(p => norm(p.region) === norm("Africa")).length : 0,
       startingPrice: "₹95,000", 
       images: [africa1, africa2, africa3],
       highlights: ["Safari Adventures", "Wildlife", "Desert Tours"]
@@ -84,7 +91,7 @@ const Packages = () => {
     {
       name: "Americas",
       countries: ["USA", "Canada", "Brazil", "Argentina", "Peru", "Mexico"],
-      packageCount: (packagesData["Americas"] || []).length,
+      packageCount: allPackages ? allPackages.filter(p => norm(p.region) === norm("Americas")).length : 0,
       startingPrice: "₹75,000",
       images: [americas1, americas2, americas3],
       highlights: ["City Tours", "Natural Wonders", "Cultural Heritage"]
@@ -92,7 +99,7 @@ const Packages = () => {
     {
       name: "Pacific Islands",
       countries: ["Maldives", "Fiji", "Tahiti", "Hawaii", "Mauritius", "Seychelles"],
-      packageCount: (packagesData["Pacific Islands"] || []).length,
+      packageCount: allPackages ? allPackages.filter(p => norm(p.region) === norm("Pacific Islands")).length : 0,
       startingPrice: "₹65,000",
       images: [pacific1, pacific2, pacific3],
       highlights: ["Beach Resorts", "Water Sports", "Luxury Stays"]
@@ -100,7 +107,7 @@ const Packages = () => {
     {
       name: "Middle East",
       countries: ["UAE", "Turkey", "Jordan", "Israel", "Qatar", "Oman"],
-      packageCount: (packagesData["Middle East"] || []).length,
+      packageCount: allPackages ? allPackages.filter(p => norm(p.region) === norm("Middle East")).length : 0,
       startingPrice: "₹45,000",
       images: [middleEast1, middleEast2, middleEast3],
       highlights: ["Luxury Tours", "Desert Safari", "Historic Sites"]
@@ -115,7 +122,7 @@ const Packages = () => {
   const searchTravelers = searchParams.get('travelers');
 
   useEffect(() => {
-    // Filter regions based on search destination if provided
+    // Recompute filtered regions whenever searchDestination or package data changes
     if (searchDestination) {
       const filtered = regions.filter(region => 
         region.countries.some(country => 
@@ -126,7 +133,7 @@ const Packages = () => {
     } else {
       setFilteredRegions(regions);
     }
-  }, [searchDestination]);
+  }, [searchDestination, allPackages]);
 
   const handleRegionClick = (regionName: string) => {
     const slug = regionName.toLowerCase().replace(/\s+/g, "-");
