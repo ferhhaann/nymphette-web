@@ -119,32 +119,12 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
             onClick={() => onCountrySelect(country.slug)}
           >
             <CardContent className="p-6">
-              <div className="space-y-3">
-                <div className="flex items-start justify-between">
-                  <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {country.name}
-                  </h3>
-                  <Badge variant="outline" className="ml-2 text-xs">
-                    {region}
-                  </Badge>
-                </div>
-                
-                {country.capital && (
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <MapPin className="h-3 w-3 mr-1.5" />
-                    <span>{country.capital}</span>
-                  </div>
-                )}
-                
-                {country.annual_visitors && (
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Users className="h-3 w-3 mr-1.5" />
-                    <span>{formatVisitors(country.annual_visitors)}</span>
-                  </div>
-                )}
-                
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                  {country.name}
+                </h3>
                 <div className="flex items-center text-sm text-primary font-medium">
-                  <Package className="h-3 w-3 mr-1.5" />
+                  <Package className="h-4 w-4 mr-2" />
                   <span>{country.package_count || 0} packages available</span>
                 </div>
               </div>
