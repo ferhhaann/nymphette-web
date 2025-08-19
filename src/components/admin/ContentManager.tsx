@@ -297,7 +297,7 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
             <div>
               <CardTitle className="text-sm font-medium">{item.key}</CardTitle>
               <CardDescription className="text-xs">
-                Type: {isJson ? 'JSON Object/Array' : typeof item.value}
+                Type: {isJson ? 'Object/Array' : typeof item.value}
               </CardDescription>
             </div>
             <Button
@@ -312,28 +312,42 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
         </CardHeader>
         <CardContent className="pt-0">
           {isJson ? (
-            <div className="space-y-2">
-              <Label className="text-sm">{item.key}</Label>
-              <Textarea
-                value={formData[item.key] !== undefined ? 
-                  (typeof formData[item.key] === 'string' ? formData[item.key] : JSON.stringify(formData[item.key], null, 2)) : 
-                  JSON.stringify(item.value, null, 2)
-                }
-                onChange={(e) => {
-                  setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
-                }}
-                onBlur={(e) => {
-                  try {
-                    const parsed = JSON.parse(e.target.value)
-                    handleSave(item.key, parsed)
-                  } catch {
-                    handleSave(item.key, e.target.value)
-                  }
-                }}
-                rows={6}
-                className="font-mono text-sm"
-                placeholder="Enter content..."
-              />
+            <div className="space-y-3">
+              {Object.entries(item.value as Record<string, any>).map(([key, value]) => (
+                <div key={key} className="space-y-2">
+                  <Label className="text-sm font-medium">{key}</Label>
+                  <Input
+                    value={formData[`${item.key}.${key}`] !== undefined ? 
+                      formData[`${item.key}.${key}`] : 
+                      Array.isArray(value) ? value.join(', ') : String(value || '')
+                    }
+                    onChange={(e) => {
+                      const newValue = e.target.value
+                      setFormData(prev => ({ ...prev, [`${item.key}.${key}`]: newValue }))
+                    }}
+                    onBlur={(e) => {
+                      const newValue = e.target.value
+                      const currentJson = { ...(item.value as Record<string, any>) }
+                      
+                      // Handle arrays (comma-separated values)
+                      if (Array.isArray(currentJson[key])) {
+                        currentJson[key] = newValue.split(',').map(v => v.trim()).filter(Boolean)
+                      } else {
+                        currentJson[key] = newValue
+                      }
+                      
+                      handleSave(item.key, currentJson)
+                    }}
+                    placeholder={Array.isArray(value) ? "Enter values separated by commas" : "Enter value"}
+                    className="text-sm"
+                  />
+                  {Array.isArray(value) && (
+                    <p className="text-xs text-muted-foreground">
+                      Separate multiple values with commas
+                    </p>
+                  )}
+                </div>
+              ))}
             </div>
           ) : (
             <div className="space-y-2">
