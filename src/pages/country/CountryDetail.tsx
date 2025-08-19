@@ -106,6 +106,7 @@ const CountryDetail = () => {
   const [packageCount, setPackageCount] = useState(0)
 
   useEffect(() => {
+    console.log('CountryDetail useEffect - country param:', country)
     if (country) {
       loadCountryData(country)
     }
@@ -285,7 +286,7 @@ const CountryDetail = () => {
 
             {/* Contact & Enquiry Form */}
             <CountryAttractionsGallery countryId={countryData.id} countryName={countryData.name} />
-            <CountryPackagesList countrySlug={country} countryName={countryData.name} />
+            <CountryPackagesList countrySlug={country || ''} countryName={countryData.name} />
           </div>
         ) : (
           <div className="text-center py-12">
