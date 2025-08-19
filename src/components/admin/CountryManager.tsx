@@ -20,8 +20,9 @@ type EssentialTip = Database['public']['Tables']['essential_tips']['Row']
 type TravelPurpose = Database['public']['Tables']['travel_purposes']['Row']
 type CountryFAQ = Database['public']['Tables']['country_faqs']['Row']
 
-const createEmptyCountry = (): Country => ({
-  id: '',
+const createEmptyCountry = (): Partial<Country> => ({
+  // leave id undefined so DB will generate UUID
+  id: undefined,
   name: '',
   slug: '',
   region: '',
@@ -42,7 +43,7 @@ const createEmptyCountry = (): Country => ({
 export const CountryManager = () => {
   const [countries, setCountries] = useState<Country[]>([])
   const [loading, setLoading] = useState(true)
-  const [editingCountry, setEditingCountry] = useState<Country | null>(null)
+  const [editingCountry, setEditingCountry] = useState<Partial<Country> | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { toast } = useToast()
 
@@ -83,10 +84,13 @@ export const CountryManager = () => {
 
         if (error) throw error
       } else {
-        // Create new country
+        // Create new country — ensure we don't send id (DB will generate UUID)
+        const insertData = { ...countryData } as any
+        delete insertData.id
+
         const { error } = await supabase
           .from('countries')
-          .insert([countryData as any])
+          .insert([insertData])
 
         if (error) throw error
       }
@@ -229,13 +233,13 @@ export const CountryManager = () => {
 }
 
 interface CountryFormProps {
-  country: Country
+  country: Partial<Country>
   onSave: (country: Partial<Country>) => void
   onCancel: () => void
 }
 
 const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
-  const [formData, setFormData] = useState<Country>(country || createEmptyCountry())
+  const [formData, setFormData] = useState<Partial<Country>>(country || createEmptyCountry())
   const [languages, setLanguages] = useState<string>(
     country?.languages ? country.languages.join(', ') : ''
   )

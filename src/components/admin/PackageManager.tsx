@@ -21,7 +21,7 @@ import { ItineraryEditor } from "./ItineraryEditor"
 export const PackageManager = () => {
   const [packages, setPackages] = useState<DatabasePackage[]>([])
   const [loading, setLoading] = useState(true)
-  const [editingPackage, setEditingPackage] = useState<DatabasePackage | null>(null)
+  const [editingPackage, setEditingPackage] = useState<Partial<DatabasePackage> | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { toast } = useToast()
 
@@ -68,10 +68,13 @@ export const PackageManager = () => {
 
         if (error) throw error
       } else {
-        // Create new package
+        // Create new package — ensure we don't send an id field (DB will generate UUID)
+        const insertData = { ...packageData } as any
+        delete insertData.id
+
         const { error } = await supabase
           .from('packages')
-          .insert([packageData as any])
+          .insert([insertData])
 
         if (error) throw error
       }
@@ -121,8 +124,9 @@ export const PackageManager = () => {
     setIsDialogOpen(true)
   }
 
-  const createEmptyPackage = (): DatabasePackage => ({
-    id: '',
+  const createEmptyPackage = (): Partial<DatabasePackage> => ({
+    // don't set id to empty string — leave undefined so the DB will generate a UUID
+    id: undefined,
     title: '',
     country: '',
     country_slug: null,
@@ -254,14 +258,14 @@ export const PackageManager = () => {
 }
 
 interface PackageFormProps {
-  package: DatabasePackage
+  package: Partial<DatabasePackage>
   onSave: (pkg: Partial<DatabasePackage>) => void
   regions: string[]
   categories: string[]
 }
 
 const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormProps) => {
-  const [formData, setFormData] = useState(pkg)
+  const [formData, setFormData] = useState<Partial<DatabasePackage>>(pkg)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
