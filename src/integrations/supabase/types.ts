@@ -108,6 +108,7 @@ export type Database = {
           image_url: string | null
           name: string
           order_index: number | null
+          type: string | null
         }
         Insert: {
           category?: string
@@ -118,6 +119,7 @@ export type Database = {
           image_url?: string | null
           name: string
           order_index?: number | null
+          type?: string | null
         }
         Update: {
           category?: string
@@ -128,6 +130,7 @@ export type Database = {
           image_url?: string | null
           name?: string
           order_index?: number | null
+          type?: string | null
         }
         Relationships: []
       }

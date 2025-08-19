@@ -13,7 +13,8 @@ import { CountryQuickInfo } from '@/components/regions/CountryQuickInfo'
 import { CountryEssentialTips } from '@/components/regions/CountryEssentialTips'
 import { CountryStats } from '@/components/regions/CountryStats'
 import { CountryContentSection } from '@/components/regions/CountryContentSection'
-import { InquiryBookingForm } from '@/components/regions/InquiryBookingForm'
+import { CountryAttractionsGallery } from '@/components/regions/CountryAttractionsGallery'
+import { CountryPackagesList } from '@/components/regions/CountryPackagesList'
 import {
   Accordion,
   AccordionContent,
@@ -283,7 +284,8 @@ const CountryDetail = () => {
             )}
 
             {/* Contact & Enquiry Form */}
-            <InquiryBookingForm />
+            <CountryAttractionsGallery countryId={countryData.id} countryName={countryData.name} />
+            <CountryPackagesList countrySlug={country} countryName={countryData.name} />
           </div>
         ) : (
           <div className="text-center py-12">

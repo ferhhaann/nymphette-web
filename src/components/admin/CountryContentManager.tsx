@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { CountryAttractionsManager } from './CountryAttractionsManager'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
@@ -150,8 +152,21 @@ export const CountryContentManager = () => {
             </div>
 
             {selectedCountryId && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Content Sections</h3>
+              <Tabs defaultValue="attractions" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="attractions">Attractions & Places</TabsTrigger>
+                  <TabsTrigger value="content">Page Content</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="attractions" className="space-y-6">
+                  <CountryAttractionsManager 
+                    countryId={selectedCountryId} 
+                    countryName={countries.find(c => c.id === selectedCountryId)?.name || ''} 
+                  />
+                </TabsContent>
+                
+                <TabsContent value="content" className="space-y-6">
+                  <h3 className="text-lg font-semibold">Content Sections</h3>
                 
                 {/* Add New Section */}
                 <Card>
@@ -234,8 +249,9 @@ export const CountryContentManager = () => {
                       </CardContent>
                     </Card>
                   ))}
-                </div>
-              </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
             )}
           </div>
         </CardContent>
