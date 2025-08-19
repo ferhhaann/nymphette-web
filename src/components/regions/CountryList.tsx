@@ -118,14 +118,14 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
             style={{animationDelay: `${index * 100}ms`}}
             onClick={() => onCountrySelect(country.slug)}
           >
-            <CardContent className="p-6">
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+            <CardContent className="p-3">
+              <div className="space-y-1">
+                <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
                   {country.name}
                 </h3>
-                <div className="flex items-center text-sm text-primary font-medium">
-                  <Package className="h-4 w-4 mr-2" />
-                  <span>{country.package_count || 0} packages available</span>
+                <div className="flex items-center text-xs text-primary font-medium">
+                  <Package className="h-3 w-3 mr-1" />
+                  <span>{country.package_count || 0} packages</span>
                 </div>
               </div>
             </CardContent>
