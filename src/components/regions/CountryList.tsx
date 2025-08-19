@@ -119,14 +119,13 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
             onClick={() => onCountrySelect(country.slug)}
           >
             <CardContent className="p-3">
-              <div className="space-y-1">
+              <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
                   {country.name}
                 </h3>
-                <div className="flex items-center text-xs text-primary font-medium">
-                  <Package className="h-3 w-3 mr-1" />
-                  <span>{country.package_count || 0} packages</span>
-                </div>
+                <span className="text-sm text-primary font-medium">
+                  {country.package_count || 0}
+                </span>
               </div>
             </CardContent>
           </Card>
