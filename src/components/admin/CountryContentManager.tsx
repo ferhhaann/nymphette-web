@@ -165,85 +165,12 @@ export const CountryContentManager = () => {
                   />
                 </TabsContent>
                 
-                 <TabsContent value="content" className="space-y-6">
-                   <h3 className="text-lg font-semibold">Content Sections</h3>
-                 
-                 {/* Add New Section */}
-                 <Card>
-                   <CardHeader>
-                     <CardTitle className="text-base">Add New Section</CardTitle>
-                   </CardHeader>
-                   <CardContent className="space-y-4">
-                     <Select value={newSection.section_type} onValueChange={(value) => setNewSection({...newSection, section_type: value})}>
-                       <SelectTrigger>
-                         <SelectValue placeholder="Section Type" />
-                       </SelectTrigger>
-                       <SelectContent>
-                         {sectionTypes.map(type => (
-                           <SelectItem key={type} value={type}>
-                             {type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                           </SelectItem>
-                         ))}
-                       </SelectContent>
-                     </Select>
-                     
-                     <Input
-                       placeholder="Section Title"
-                       value={newSection.title}
-                       onChange={(e) => setNewSection({...newSection, title: e.target.value})}
-                     />
-                     
-                     <Textarea
-                       placeholder="Write your content here..."
-                       value={typeof newSection.content === 'string' ? newSection.content : newSection.content.text || ''}
-                       onChange={(e) => setNewSection({...newSection, content: { text: e.target.value }})}
-                       rows={6}
-                     />
-                     
-                     <Button onClick={() => saveSection(newSection)}>
-                       <Plus className="h-4 w-4 mr-2" />
-                       Add Section
-                     </Button>
-                   </CardContent>
-                 </Card>
-
-                 {/* Existing Sections */}
-                 <div className="space-y-4">
-                   {contentSections.map(section => (
-                     <Card key={section.id}>
-                       <CardHeader>
-                         <div className="flex items-center justify-between">
-                           <div>
-                             <CardTitle className="text-base">{section.title || section.section_type}</CardTitle>
-                             <Badge variant="outline">{section.section_type}</Badge>
-                           </div>
-                           <div className="flex gap-2">
-                             <Button
-                               variant="ghost"
-                               size="sm"
-                               onClick={() => setEditingSection(section)}
-                             >
-                               <Edit className="h-4 w-4" />
-                             </Button>
-                             <Button
-                               variant="ghost"
-                               size="sm"
-                               onClick={() => deleteSection(section.id)}
-                             >
-                               <Trash2 className="h-4 w-4" />
-                             </Button>
-                           </div>
-                         </div>
-                       </CardHeader>
-                       <CardContent>
-                         <div className="prose prose-sm max-w-none">
-                           <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                             {typeof section.content === 'string' ? section.content : section.content.text || 'No content'}
-                           </p>
-                         </div>
-                       </CardContent>
-                     </Card>
-                   ))}
+                <TabsContent value="content" className="space-y-6">
+                   <div className="text-center py-8">
+                     <h3 className="text-lg font-semibold mb-2">Content Management</h3>
+                     <p className="text-muted-foreground">
+                       Content management has been simplified. Use the Attractions & Places tab to manage country-specific content.
+                     </p>
                    </div>
                 </TabsContent>
               </Tabs>
