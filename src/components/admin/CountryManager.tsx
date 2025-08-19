@@ -10,6 +10,8 @@ import { supabase } from "@/integrations/supabase/client"
 import { useToast } from "@/hooks/use-toast"
 import { Plus, Edit, Trash2, Globe, MapPin } from "lucide-react"
 import { ImageUpload } from "./ImageUpload"
+import { CountryContentManager } from "./CountryContentManager"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Database } from "@/integrations/supabase/types"
 
 type Country = Database['public']['Tables']['countries']['Row']
@@ -166,49 +168,62 @@ export const CountryManager = () => {
         </Dialog>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {countries.map((country) => (
-          <Card key={country.id}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="h-5 w-5" />
-                {country.name}
-              </CardTitle>
-              <CardDescription>
-                <MapPin className="h-4 w-4 inline mr-1" />
-                {country.region} • {country.capital}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex justify-between items-center">
-                <div className="text-sm text-muted-foreground">
-                  <p>Currency: {country.currency}</p>
-                  <p>Best Season: {country.best_season}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setEditingCountry(country)
-                      setIsDialogOpen(true)
-                    }}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => deleteCountry(country.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Tabs defaultValue="countries" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="countries">Countries Overview</TabsTrigger>
+          <TabsTrigger value="content">Attractions & Content</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="countries" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {countries.map((country) => (
+              <Card key={country.id}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Globe className="h-5 w-5" />
+                    {country.name}
+                  </CardTitle>
+                  <CardDescription>
+                    <MapPin className="h-4 w-4 inline mr-1" />
+                    {country.region} • {country.capital}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm text-muted-foreground">
+                      <p>Currency: {country.currency}</p>
+                      <p>Best Season: {country.best_season}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setEditingCountry(country)
+                          setIsDialogOpen(true)
+                        }}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => deleteCountry(country.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="content">
+          <CountryContentManager />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
