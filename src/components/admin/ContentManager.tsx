@@ -312,15 +312,28 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
         </CardHeader>
         <CardContent className="pt-0">
           {isJson ? (
-            <div className="space-y-2 p-4 bg-muted/50 rounded-lg">
-              <Label className="text-sm font-medium">{item.key} (Complex Data)</Label>
-              <p className="text-sm text-muted-foreground">
-                This content contains structured data. For complex editing, use specialized management tools.
-              </p>
-              <div className="text-xs font-mono text-muted-foreground bg-background p-2 rounded border">
-                {JSON.stringify(item.value, null, 2).substring(0, 200)}
-                {JSON.stringify(item.value, null, 2).length > 200 && '...'}
-              </div>
+            <div className="space-y-2">
+              <Label className="text-sm">{item.key}</Label>
+              <Textarea
+                value={formData[item.key] !== undefined ? 
+                  (typeof formData[item.key] === 'string' ? formData[item.key] : JSON.stringify(formData[item.key], null, 2)) : 
+                  JSON.stringify(item.value, null, 2)
+                }
+                onChange={(e) => {
+                  setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
+                }}
+                onBlur={(e) => {
+                  try {
+                    const parsed = JSON.parse(e.target.value)
+                    handleSave(item.key, parsed)
+                  } catch {
+                    handleSave(item.key, e.target.value)
+                  }
+                }}
+                rows={6}
+                className="font-mono text-sm"
+                placeholder="Enter content..."
+              />
             </div>
           ) : (
             <div className="space-y-2">
