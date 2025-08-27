@@ -43,58 +43,112 @@ export type Database = {
       }
       countries: {
         Row: {
+          about_content: string | null
           annual_visitors: number | null
+          art_culture_content: string | null
+          before_you_go_tips: Json | null
           best_season: string | null
+          best_time_content: string | null
           capital: string | null
           climate: string | null
+          contact_email: string | null
+          contact_info: Json | null
+          contact_phone: string | null
           created_at: string | null
           culture: string | null
           currency: string | null
+          description: string | null
+          dos_donts: Json | null
+          food_shopping_content: string | null
+          fun_facts: Json | null
           gender_female_percentage: number | null
           gender_male_percentage: number | null
+          hero_image_url: string | null
+          hero_images: Json | null
           id: string
           languages: string[] | null
+          map_outline_url: string | null
           name: string
+          overview_description: string | null
+          reasons_to_visit: Json | null
           region: string
           slug: string
           speciality: string | null
+          travel_tips: string | null
           updated_at: string | null
+          visitor_statistics: Json | null
         }
         Insert: {
+          about_content?: string | null
           annual_visitors?: number | null
+          art_culture_content?: string | null
+          before_you_go_tips?: Json | null
           best_season?: string | null
+          best_time_content?: string | null
           capital?: string | null
           climate?: string | null
+          contact_email?: string | null
+          contact_info?: Json | null
+          contact_phone?: string | null
           created_at?: string | null
           culture?: string | null
           currency?: string | null
+          description?: string | null
+          dos_donts?: Json | null
+          food_shopping_content?: string | null
+          fun_facts?: Json | null
           gender_female_percentage?: number | null
           gender_male_percentage?: number | null
+          hero_image_url?: string | null
+          hero_images?: Json | null
           id?: string
           languages?: string[] | null
+          map_outline_url?: string | null
           name: string
+          overview_description?: string | null
+          reasons_to_visit?: Json | null
           region: string
           slug: string
           speciality?: string | null
+          travel_tips?: string | null
           updated_at?: string | null
+          visitor_statistics?: Json | null
         }
         Update: {
+          about_content?: string | null
           annual_visitors?: number | null
+          art_culture_content?: string | null
+          before_you_go_tips?: Json | null
           best_season?: string | null
+          best_time_content?: string | null
           capital?: string | null
           climate?: string | null
+          contact_email?: string | null
+          contact_info?: Json | null
+          contact_phone?: string | null
           created_at?: string | null
           culture?: string | null
           currency?: string | null
+          description?: string | null
+          dos_donts?: Json | null
+          food_shopping_content?: string | null
+          fun_facts?: Json | null
           gender_female_percentage?: number | null
           gender_male_percentage?: number | null
+          hero_image_url?: string | null
+          hero_images?: Json | null
           id?: string
           languages?: string[] | null
+          map_outline_url?: string | null
           name?: string
+          overview_description?: string | null
+          reasons_to_visit?: Json | null
           region?: string
           slug?: string
           speciality?: string | null
+          travel_tips?: string | null
           updated_at?: string | null
+          visitor_statistics?: Json | null
         }
         Relationships: []
       }
@@ -203,6 +257,47 @@ export type Database = {
         }
         Relationships: []
       }
+      country_essential_tips: {
+        Row: {
+          country_id: string
+          created_at: string | null
+          icon: string
+          id: string
+          note: string
+          order_index: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          country_id: string
+          created_at?: string | null
+          icon?: string
+          id?: string
+          note: string
+          order_index?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          country_id?: string
+          created_at?: string | null
+          icon?: string
+          id?: string
+          note?: string
+          order_index?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_country_essential_tips_country"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       country_faqs: {
         Row: {
           answer: string
@@ -228,6 +323,138 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "country_faqs_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      country_hero_images: {
+        Row: {
+          alt_text: string | null
+          caption: string | null
+          country_id: string
+          created_at: string | null
+          id: string
+          image_url: string
+          order_index: number | null
+        }
+        Insert: {
+          alt_text?: string | null
+          caption?: string | null
+          country_id: string
+          created_at?: string | null
+          id?: string
+          image_url: string
+          order_index?: number | null
+        }
+        Update: {
+          alt_text?: string | null
+          caption?: string | null
+          country_id?: string
+          created_at?: string | null
+          id?: string
+          image_url?: string
+          order_index?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "country_hero_images_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      country_must_visit: {
+        Row: {
+          country_id: string
+          created_at: string | null
+          description: string | null
+          highlights: string[] | null
+          id: string
+          image_url: string | null
+          name: string
+          order_index: number | null
+          type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          country_id: string
+          created_at?: string | null
+          description?: string | null
+          highlights?: string[] | null
+          id?: string
+          image_url?: string | null
+          name: string
+          order_index?: number | null
+          type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          country_id?: string
+          created_at?: string | null
+          description?: string | null
+          highlights?: string[] | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          order_index?: number | null
+          type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_country_must_visit_country"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      country_sections: {
+        Row: {
+          content: Json
+          country_id: string
+          created_at: string | null
+          id: string
+          images: Json | null
+          is_enabled: boolean | null
+          order_index: number | null
+          section_name: string
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content?: Json
+          country_id: string
+          created_at?: string | null
+          id?: string
+          images?: Json | null
+          is_enabled?: boolean | null
+          order_index?: number | null
+          section_name: string
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: Json
+          country_id?: string
+          created_at?: string | null
+          id?: string
+          images?: Json | null
+          is_enabled?: boolean | null
+          order_index?: number | null
+          section_name?: string
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "country_sections_country_id_fkey"
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
@@ -397,22 +624,28 @@ export type Database = {
       }
       travel_purposes: {
         Row: {
+          color: string | null
           country_id: string | null
           created_at: string | null
+          display_name: string | null
           id: string
           name: string
           percentage: number
         }
         Insert: {
+          color?: string | null
           country_id?: string | null
           created_at?: string | null
+          display_name?: string | null
           id?: string
           name: string
           percentage: number
         }
         Update: {
+          color?: string | null
           country_id?: string | null
           created_at?: string | null
+          display_name?: string | null
           id?: string
           name?: string
           percentage?: number
