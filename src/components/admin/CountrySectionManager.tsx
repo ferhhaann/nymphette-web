@@ -335,8 +335,13 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-sm text-muted-foreground">
-                {JSON.stringify(section.content).substring(0, 200)}...
+              <div className="text-sm text-muted-foreground line-clamp-3">
+                {section.content && typeof section.content === 'object' 
+                  ? Object.entries(section.content).map(([key, value]) => 
+                      `${key}: ${Array.isArray(value) ? value.join(', ') : String(value)}`
+                    ).join(' • ')
+                  : String(section.content || 'No content')
+                }
               </div>
             </CardContent>
           </Card>
