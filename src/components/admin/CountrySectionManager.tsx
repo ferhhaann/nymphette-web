@@ -352,106 +352,211 @@ interface SectionFormProps {
   onCancel: () => void
 }
 
+const extractContentFields = (content: any) => {
+  return {
+    description: content.description || '',
+    subtitle: content.subtitle || '',
+    points: content.points || [''],
+    highlight: content.highlight || ''
+  }
+}
+
 const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
   const [formData, setFormData] = useState<Partial<CountrySection>>(section)
-  const [contentJson, setContentJson] = useState<string>(
-    JSON.stringify(section.content || {}, null, 2)
-  )
+  const [contentFields, setContentFields] = useState({
+    description: '',
+    subtitle: '',
+    points: [''],
+    highlight: '',
+    ...extractContentFields(section.content || {})
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    try {
-      const parsedContent = JSON.parse(contentJson)
-      const dataToSave = {
-        ...formData,
-        content: parsedContent
-      }
-      
-      onSave(dataToSave)
-    } catch (error) {
-      alert("Invalid JSON in content field")
+    const content = {
+      description: contentFields.description,
+      subtitle: contentFields.subtitle,
+      points: contentFields.points.filter(point => point.trim() !== ''),
+      highlight: contentFields.highlight
     }
+    
+    const dataToSave = {
+      ...formData,
+      content
+    }
+    
+    onSave(dataToSave)
   }
 
   const updateField = (field: keyof CountrySection, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
+  const updateContentField = (field: string, value: any) => {
+    setContentFields(prev => ({ ...prev, [field]: value }))
+  }
+
+  const addPoint = () => {
+    setContentFields(prev => ({
+      ...prev,
+      points: [...prev.points, '']
+    }))
+  }
+
+  const removePoint = (index: number) => {
+    setContentFields(prev => ({
+      ...prev,
+      points: prev.points.filter((_, i) => i !== index)
+    }))
+  }
+
+  const updatePoint = (index: number, value: string) => {
+    setContentFields(prev => ({
+      ...prev,
+      points: prev.points.map((point, i) => i === index ? value : point)
+    }))
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="section_name">Section Type</Label>
-          <Select 
-            value={formData.section_name} 
-            onValueChange={(value) => updateField('section_name', value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select section type" />
-            </SelectTrigger>
-            <SelectContent>
-              {SECTION_TYPES.map(type => (
-                <SelectItem key={type.value} value={type.value}>
-                  {type.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label htmlFor="title">Title</Label>
-          <Input
-            id="title"
-            value={formData.title || ''}
-            onChange={(e) => updateField('title', e.target.value)}
-          />
-        </div>
-      </div>
+    <div className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Section Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Section Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="section_name">Section Type</Label>
+                <Select 
+                  value={formData.section_name} 
+                  onValueChange={(value) => updateField('section_name', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select section type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SECTION_TYPES.map(type => (
+                      <SelectItem key={type.value} value={type.value}>
+                        {type.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="title">Section Title</Label>
+                <Input
+                  id="title"
+                  value={formData.title || ''}
+                  onChange={(e) => updateField('title', e.target.value)}
+                  placeholder="Enter section title"
+                />
+              </div>
+            </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="order_index">Order Index</Label>
-          <Input
-            id="order_index"
-            type="number"
-            value={formData.order_index || 0}
-            onChange={(e) => updateField('order_index', parseInt(e.target.value) || 0)}
-          />
-        </div>
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="is_enabled"
-            checked={formData.is_enabled}
-            onCheckedChange={(checked) => updateField('is_enabled', checked)}
-          />
-          <Label htmlFor="is_enabled">Enabled</Label>
-        </div>
-      </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="order_index">Display Order</Label>
+                <Input
+                  id="order_index"
+                  type="number"
+                  value={formData.order_index || 0}
+                  onChange={(e) => updateField('order_index', parseInt(e.target.value) || 0)}
+                />
+              </div>
+              <div className="flex items-center space-x-2 pt-8">
+                <Switch
+                  id="is_enabled"
+                  checked={formData.is_enabled}
+                  onCheckedChange={(checked) => updateField('is_enabled', checked)}
+                />
+                <Label htmlFor="is_enabled">Section Enabled</Label>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-      <div>
-        <Label htmlFor="content">Content (JSON)</Label>
-        <Textarea
-          id="content"
-          value={contentJson}
-          onChange={(e) => setContentJson(e.target.value)}
-          rows={15}
-          className="font-mono text-sm"
-          placeholder="Enter JSON content..."
-        />
-        <p className="text-xs text-muted-foreground mt-1">
-          Content structure varies by section type. Check existing sections for examples.
-        </p>
-      </div>
+        {/* Content Fields */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Content</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="description">Main Description</Label>
+              <Textarea
+                id="description"
+                value={contentFields.description}
+                onChange={(e) => updateContentField('description', e.target.value)}
+                rows={4}
+                placeholder="Enter main content description"
+              />
+            </div>
 
-      <div className="flex justify-end gap-2">
-        <Button type="button" variant="outline" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit">
-          {formData.id ? 'Update' : 'Create'}
-        </Button>
-      </div>
-    </form>
+            <div>
+              <Label htmlFor="subtitle">Subtitle (Optional)</Label>
+              <Input
+                id="subtitle"
+                value={contentFields.subtitle}
+                onChange={(e) => updateContentField('subtitle', e.target.value)}
+                placeholder="Enter subtitle"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="highlight">Highlight Text (Optional)</Label>
+              <Input
+                id="highlight"
+                value={contentFields.highlight}
+                onChange={(e) => updateContentField('highlight', e.target.value)}
+                placeholder="Enter highlight or callout text"
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <Label>Key Points</Label>
+                <Button type="button" variant="outline" size="sm" onClick={addPoint}>
+                  <Plus className="h-4 w-4 mr-1" />
+                  Add Point
+                </Button>
+              </div>
+              <div className="space-y-2">
+                {contentFields.points.map((point, index) => (
+                  <div key={index} className="flex gap-2">
+                    <Input
+                      value={point}
+                      onChange={(e) => updatePoint(index, e.target.value)}
+                      placeholder={`Point ${index + 1}`}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removePoint(index)}
+                      disabled={contentFields.points.length === 1}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="flex justify-end gap-2">
+          <Button type="button" variant="outline" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button type="submit">
+            {formData.id ? 'Update Section' : 'Create Section'}
+          </Button>
+        </div>
+      </form>
+    </div>
   )
 }
