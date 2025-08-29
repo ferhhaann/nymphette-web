@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Save, FileText, Plus, Edit, Trash2, RefreshCw } from "lucide-react"
+import { Save, FileText, Plus, Edit, Trash2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 export const ContentManager = () => {
@@ -155,59 +155,53 @@ export const ContentManager = () => {
           <h2 className="text-2xl font-bold">Content Manager</h2>
           <p className="text-muted-foreground">Edit all website content sections with structured forms</p>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={loadContent} variant="outline" size="sm">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
-          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Content
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New Content Item</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="section">Section: {sections.find(s => s.value === selectedSection)?.label}</Label>
-                  <p className="text-sm text-muted-foreground">Adding to section: {selectedSection}</p>
-                </div>
-                <div>
-                  <Label htmlFor="key">Content Key</Label>
-                  <Input
-                    id="key"
-                    value={newContentKey}
-                    onChange={(e) => setNewContentKey(e.target.value)}
-                    placeholder="e.g., title, description, subtitle"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="value">Content Value</Label>
-                  <Textarea
-                    id="value"
-                    value={newContentValue}
-                    onChange={(e) => setNewContentValue(e.target.value)}
-                    placeholder="Enter the content value..."
-                    rows={3}
-                  />
-                </div>
-                <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button onClick={addNewContent}>
-                    <Save className="h-4 w-4 mr-2" />
-                    Add Content
-                  </Button>
-                </div>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Content
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add New Content Item</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="section">Section: {sections.find(s => s.value === selectedSection)?.label}</Label>
+                <p className="text-sm text-muted-foreground">Adding to section: {selectedSection}</p>
               </div>
-            </DialogContent>
-          </Dialog>
-        </div>
+              <div>
+                <Label htmlFor="key">Content Key</Label>
+                <Input
+                  id="key"
+                  value={newContentKey}
+                  onChange={(e) => setNewContentKey(e.target.value)}
+                  placeholder="e.g., title, description, subtitle"
+                />
+              </div>
+              <div>
+                <Label htmlFor="value">Content Value</Label>
+                <Textarea
+                  id="value"
+                  value={newContentValue}
+                  onChange={(e) => setNewContentValue(e.target.value)}
+                  placeholder="Enter the content value..."
+                  rows={3}
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={addNewContent}>
+                  <Save className="h-4 w-4 mr-2" />
+                  Add Content
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid grid-cols-4 gap-6">
@@ -318,132 +312,105 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
         </CardHeader>
         <CardContent className="pt-0">
           {isJson ? (
-            // Special handling for region raw configs
-            item.key.endsWith('_raw') && item.section === 'regions' ? (
-              <div className="space-y-4">
-                <p className="text-sm text-muted-foreground mb-4">
-                  This is a complex package configuration. For advanced editing, contact your technical administrator.
-                </p>
-                <div className="bg-muted p-4 rounded-lg">
-                  <p className="text-sm">
-                    <strong>Package Count:</strong> {Array.isArray(item.value) ? item.value.length : 'N/A'}
-                  </p>
-                  {Array.isArray(item.value) && item.value.length > 0 && (
-                    <div className="mt-2">
-                      <p className="text-sm font-medium">Sample Package:</p>
-                      <p className="text-xs text-muted-foreground">
-                        {(item.value[0] as any)?.title || 'No title'} - {(item.value[0] as any)?.duration || 'N/A'} - {(item.value[0] as any)?.price || 'N/A'}
-                      </p>
-                    </div>
-                  )}
-                </div>
-                <div className="text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Use the Package Manager to edit individual packages instead of this raw configuration.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="grid gap-4">
-                  {Object.entries(item.value as Record<string, any>).map(([fieldKey, fieldValue]) => (
-                    <div key={fieldKey} className="space-y-2">
-                      <Label className="text-sm font-medium capitalize">{fieldKey.replace(/_/g, ' ')}</Label>
-                      {Array.isArray(fieldValue) ? (
-                        <div className="space-y-2">
-                          {fieldValue.map((arrayItem, index) => (
-                            <div key={index} className="flex gap-2">
-                              <Input
-                                value={arrayItem}
-                                onChange={(e) => {
-                                  const newArray = [...fieldValue]
-                                  newArray[index] = e.target.value
-                                  const currentJson = { ...(item.value as Record<string, any>) }
-                                  currentJson[fieldKey] = newArray
-                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                                }}
-                                onBlur={(e) => {
-                                  const newArray = [...fieldValue]
-                                  newArray[index] = e.target.value
-                                  const currentJson = { ...(item.value as Record<string, any>) }
-                                  currentJson[fieldKey] = newArray
-                                  handleSave(item.key, currentJson)
-                                }}
-                                className="text-sm"
-                                placeholder={`${fieldKey} ${index + 1}`}
-                              />
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  const newArray = fieldValue.filter((_, i) => i !== index)
-                                  const currentJson = { ...(item.value as Record<string, any>) }
-                                  currentJson[fieldKey] = newArray
-                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                                  handleSave(item.key, currentJson)
-                                }}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          ))}
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const newArray = [...fieldValue, '']
-                              const currentJson = { ...(item.value as Record<string, any>) }
-                              currentJson[fieldKey] = newArray
-                              setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                              handleSave(item.key, currentJson)
-                            }}
-                            className="w-full"
-                          >
-                            <Plus className="h-4 w-4 mr-1" />
-                            Add {fieldKey.slice(0, -1)}
-                          </Button>
-                        </div>
-                      ) : typeof fieldValue === 'string' && fieldValue.length > 50 ? (
-                        <Textarea
-                          value={fieldValue}
-                          onChange={(e) => {
+            <div className="space-y-4">
+              <div className="grid gap-4">
+                {Object.entries(item.value as Record<string, any>).map(([fieldKey, fieldValue]) => (
+                  <div key={fieldKey} className="space-y-2">
+                    <Label className="text-sm font-medium capitalize">{fieldKey.replace(/_/g, ' ')}</Label>
+                    {Array.isArray(fieldValue) ? (
+                      <div className="space-y-2">
+                        {fieldValue.map((arrayItem, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              value={arrayItem}
+                              onChange={(e) => {
+                                const newArray = [...fieldValue]
+                                newArray[index] = e.target.value
+                                const currentJson = { ...(item.value as Record<string, any>) }
+                                currentJson[fieldKey] = newArray
+                                setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                              }}
+                              onBlur={(e) => {
+                                const newArray = [...fieldValue]
+                                newArray[index] = e.target.value
+                                const currentJson = { ...(item.value as Record<string, any>) }
+                                currentJson[fieldKey] = newArray
+                                handleSave(item.key, currentJson)
+                              }}
+                              className="text-sm"
+                              placeholder={`${fieldKey} ${index + 1}`}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newArray = fieldValue.filter((_, i) => i !== index)
+                                const currentJson = { ...(item.value as Record<string, any>) }
+                                currentJson[fieldKey] = newArray
+                                setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                handleSave(item.key, currentJson)
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newArray = [...fieldValue, '']
                             const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = e.target.value
+                            currentJson[fieldKey] = newArray
                             setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                          }}
-                          onBlur={(e) => {
-                            const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = e.target.value
                             handleSave(item.key, currentJson)
                           }}
-                          rows={3}
-                          className="text-sm"
-                          placeholder={`Enter ${fieldKey}`}
-                        />
-                      ) : (
-                        <Input
-                          value={String(fieldValue || '')}
-                          onChange={(e) => {
-                            const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = e.target.value
-                            setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                          }}
-                          onBlur={(e) => {
-                            const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = e.target.value
-                            handleSave(item.key, currentJson)
-                          }}
-                          className="text-sm"
-                          placeholder={`Enter ${fieldKey}`}
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
+                          className="w-full"
+                        >
+                          <Plus className="h-4 w-4 mr-1" />
+                          Add {fieldKey.slice(0, -1)}
+                        </Button>
+                      </div>
+                    ) : typeof fieldValue === 'string' && fieldValue.length > 50 ? (
+                      <Textarea
+                        value={fieldValue}
+                        onChange={(e) => {
+                          const currentJson = { ...(item.value as Record<string, any>) }
+                          currentJson[fieldKey] = e.target.value
+                          setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                        }}
+                        onBlur={(e) => {
+                          const currentJson = { ...(item.value as Record<string, any>) }
+                          currentJson[fieldKey] = e.target.value
+                          handleSave(item.key, currentJson)
+                        }}
+                        rows={3}
+                        className="text-sm"
+                        placeholder={`Enter ${fieldKey}`}
+                      />
+                    ) : (
+                      <Input
+                        value={String(fieldValue || '')}
+                        onChange={(e) => {
+                          const currentJson = { ...(item.value as Record<string, any>) }
+                          currentJson[fieldKey] = e.target.value
+                          setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                        }}
+                        onBlur={(e) => {
+                          const currentJson = { ...(item.value as Record<string, any>) }
+                          currentJson[fieldKey] = e.target.value
+                          handleSave(item.key, currentJson)
+                        }}
+                        className="text-sm"
+                        placeholder={`Enter ${fieldKey}`}
+                      />
+                    )}
+                  </div>
+                ))}
               </div>
-            )
+            </div>
           ) : (
             <div className="space-y-2">
               <Label className="text-sm">{item.key}</Label>
