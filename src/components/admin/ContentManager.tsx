@@ -312,105 +312,132 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
         </CardHeader>
         <CardContent className="pt-0">
           {isJson ? (
-            <div className="space-y-4">
-              <div className="grid gap-4">
-                {Object.entries(item.value as Record<string, any>).map(([fieldKey, fieldValue]) => (
-                  <div key={fieldKey} className="space-y-2">
-                    <Label className="text-sm font-medium capitalize">{fieldKey.replace(/_/g, ' ')}</Label>
-                    {Array.isArray(fieldValue) ? (
-                      <div className="space-y-2">
-                        {fieldValue.map((arrayItem, index) => (
-                          <div key={index} className="flex gap-2">
-                            <Input
-                              value={arrayItem}
-                              onChange={(e) => {
-                                const newArray = [...fieldValue]
-                                newArray[index] = e.target.value
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                              }}
-                              onBlur={(e) => {
-                                const newArray = [...fieldValue]
-                                newArray[index] = e.target.value
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                handleSave(item.key, currentJson)
-                              }}
-                              className="text-sm"
-                              placeholder={`${fieldKey} ${index + 1}`}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                const newArray = fieldValue.filter((_, i) => i !== index)
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                                handleSave(item.key, currentJson)
-                              }}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const newArray = [...fieldValue, '']
+            // Special handling for region raw configs
+            item.key.endsWith('_raw') && item.section === 'regions' ? (
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground mb-4">
+                  This is a complex package configuration. For advanced editing, contact your technical administrator.
+                </p>
+                <div className="bg-muted p-4 rounded-lg">
+                  <p className="text-sm">
+                    <strong>Package Count:</strong> {Array.isArray(item.value) ? item.value.length : 'N/A'}
+                  </p>
+                  {Array.isArray(item.value) && item.value.length > 0 && (
+                    <div className="mt-2">
+                      <p className="text-sm font-medium">Sample Package:</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(item.value[0] as any)?.title || 'No title'} - {(item.value[0] as any)?.duration || 'N/A'} - {(item.value[0] as any)?.price || 'N/A'}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Use the Package Manager to edit individual packages instead of this raw configuration.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="grid gap-4">
+                  {Object.entries(item.value as Record<string, any>).map(([fieldKey, fieldValue]) => (
+                    <div key={fieldKey} className="space-y-2">
+                      <Label className="text-sm font-medium capitalize">{fieldKey.replace(/_/g, ' ')}</Label>
+                      {Array.isArray(fieldValue) ? (
+                        <div className="space-y-2">
+                          {fieldValue.map((arrayItem, index) => (
+                            <div key={index} className="flex gap-2">
+                              <Input
+                                value={arrayItem}
+                                onChange={(e) => {
+                                  const newArray = [...fieldValue]
+                                  newArray[index] = e.target.value
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                }}
+                                onBlur={(e) => {
+                                  const newArray = [...fieldValue]
+                                  newArray[index] = e.target.value
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  handleSave(item.key, currentJson)
+                                }}
+                                className="text-sm"
+                                placeholder={`${fieldKey} ${index + 1}`}
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const newArray = fieldValue.filter((_, i) => i !== index)
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                  handleSave(item.key, currentJson)
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ))}
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newArray = [...fieldValue, '']
+                              const currentJson = { ...(item.value as Record<string, any>) }
+                              currentJson[fieldKey] = newArray
+                              setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                              handleSave(item.key, currentJson)
+                            }}
+                            className="w-full"
+                          >
+                            <Plus className="h-4 w-4 mr-1" />
+                            Add {fieldKey.slice(0, -1)}
+                          </Button>
+                        </div>
+                      ) : typeof fieldValue === 'string' && fieldValue.length > 50 ? (
+                        <Textarea
+                          value={fieldValue}
+                          onChange={(e) => {
                             const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = newArray
+                            currentJson[fieldKey] = e.target.value
                             setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                          }}
+                          onBlur={(e) => {
+                            const currentJson = { ...(item.value as Record<string, any>) }
+                            currentJson[fieldKey] = e.target.value
                             handleSave(item.key, currentJson)
                           }}
-                          className="w-full"
-                        >
-                          <Plus className="h-4 w-4 mr-1" />
-                          Add {fieldKey.slice(0, -1)}
-                        </Button>
-                      </div>
-                    ) : typeof fieldValue === 'string' && fieldValue.length > 50 ? (
-                      <Textarea
-                        value={fieldValue}
-                        onChange={(e) => {
-                          const currentJson = { ...(item.value as Record<string, any>) }
-                          currentJson[fieldKey] = e.target.value
-                          setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                        }}
-                        onBlur={(e) => {
-                          const currentJson = { ...(item.value as Record<string, any>) }
-                          currentJson[fieldKey] = e.target.value
-                          handleSave(item.key, currentJson)
-                        }}
-                        rows={3}
-                        className="text-sm"
-                        placeholder={`Enter ${fieldKey}`}
-                      />
-                    ) : (
-                      <Input
-                        value={String(fieldValue || '')}
-                        onChange={(e) => {
-                          const currentJson = { ...(item.value as Record<string, any>) }
-                          currentJson[fieldKey] = e.target.value
-                          setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                        }}
-                        onBlur={(e) => {
-                          const currentJson = { ...(item.value as Record<string, any>) }
-                          currentJson[fieldKey] = e.target.value
-                          handleSave(item.key, currentJson)
-                        }}
-                        className="text-sm"
-                        placeholder={`Enter ${fieldKey}`}
-                      />
-                    )}
-                  </div>
-                ))}
+                          rows={3}
+                          className="text-sm"
+                          placeholder={`Enter ${fieldKey}`}
+                        />
+                      ) : (
+                        <Input
+                          value={String(fieldValue || '')}
+                          onChange={(e) => {
+                            const currentJson = { ...(item.value as Record<string, any>) }
+                            currentJson[fieldKey] = e.target.value
+                            setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                          }}
+                          onBlur={(e) => {
+                            const currentJson = { ...(item.value as Record<string, any>) }
+                            currentJson[fieldKey] = e.target.value
+                            handleSave(item.key, currentJson)
+                          }}
+                          className="text-sm"
+                          placeholder={`Enter ${fieldKey}`}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )
           ) : (
             <div className="space-y-2">
               <Label className="text-sm">{item.key}</Label>
