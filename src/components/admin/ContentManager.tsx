@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Save, FileText, Plus, Edit, Trash2 } from "lucide-react"
+import { Save, FileText, Plus, Edit, Trash2, RefreshCw } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 export const ContentManager = () => {
@@ -155,53 +155,59 @@ export const ContentManager = () => {
           <h2 className="text-2xl font-bold">Content Manager</h2>
           <p className="text-muted-foreground">Edit all website content sections with structured forms</p>
         </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Content
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add New Content Item</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="section">Section: {sections.find(s => s.value === selectedSection)?.label}</Label>
-                <p className="text-sm text-muted-foreground">Adding to section: {selectedSection}</p>
+        <div className="flex gap-2">
+          <Button onClick={loadContent} variant="outline" size="sm">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
+          </Button>
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Content
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Content Item</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="section">Section: {sections.find(s => s.value === selectedSection)?.label}</Label>
+                  <p className="text-sm text-muted-foreground">Adding to section: {selectedSection}</p>
+                </div>
+                <div>
+                  <Label htmlFor="key">Content Key</Label>
+                  <Input
+                    id="key"
+                    value={newContentKey}
+                    onChange={(e) => setNewContentKey(e.target.value)}
+                    placeholder="e.g., title, description, subtitle"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="value">Content Value</Label>
+                  <Textarea
+                    id="value"
+                    value={newContentValue}
+                    onChange={(e) => setNewContentValue(e.target.value)}
+                    placeholder="Enter the content value..."
+                    rows={3}
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={addNewContent}>
+                    <Save className="h-4 w-4 mr-2" />
+                    Add Content
+                  </Button>
+                </div>
               </div>
-              <div>
-                <Label htmlFor="key">Content Key</Label>
-                <Input
-                  id="key"
-                  value={newContentKey}
-                  onChange={(e) => setNewContentKey(e.target.value)}
-                  placeholder="e.g., title, description, subtitle"
-                />
-              </div>
-              <div>
-                <Label htmlFor="value">Content Value</Label>
-                <Textarea
-                  id="value"
-                  value={newContentValue}
-                  onChange={(e) => setNewContentValue(e.target.value)}
-                  placeholder="Enter the content value..."
-                  rows={3}
-                />
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={addNewContent}>
-                  <Save className="h-4 w-4 mr-2" />
-                  Add Content
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <div className="grid grid-cols-4 gap-6">
