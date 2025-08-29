@@ -14,6 +14,7 @@ import {
   ArrowRight, Star
 } from 'lucide-react'
 import { supabase } from '@/integrations/supabase/client'
+import type { Tables } from '@/integrations/supabase/types'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import { CountryBreadcrumb } from '@/components/regions/CountryBreadcrumb'
@@ -145,8 +146,9 @@ const CountryDetail = () => {
       const { data: countryInfo, error: countryError } = await supabase
         .from('countries')
         .select('*')
-        .eq('slug', countrySlug)
+        .eq('slug', countrySlug as any)
         .single()
+        .returns<Tables<'countries'>>()
 
       if (countryError) throw countryError
       setCountryData(countryInfo)
@@ -158,17 +160,42 @@ const CountryDetail = () => {
         const { count } = await supabase
           .from('packages')
           .select('*', { count: 'exact', head: true })
-          .eq('country_slug', countrySlug)
+          .eq('country_slug', countrySlug as any)
         
         setPackageCount(count || 0)
 
         // Load all related data in parallel
         const [sectionsResult, heroImagesResult, tipsResult, purposesResult, faqResult] = await Promise.all([
-          supabase.from('country_sections').select('*').eq('country_id', countryInfo.id).eq('is_enabled', true).order('order_index'),
-          supabase.from('country_hero_images').select('*').eq('country_id', countryInfo.id).order('order_index'),
-          supabase.from('country_essential_tips').select('*').eq('country_id', countryInfo.id).order('order_index'),
-          supabase.from('travel_purposes').select('*').eq('country_id', countryInfo.id).order('percentage', { ascending: false }),
-          supabase.from('country_faqs').select('*').eq('country_id', countryInfo.id)
+          supabase
+            .from('country_sections')
+            .select('*')
+            .eq('country_id', countryInfo.id as any)
+            .eq('is_enabled', true as any)
+            .order('order_index')
+            .returns<Tables<'country_sections'>[]>(),
+          supabase
+            .from('country_hero_images')
+            .select('*')
+            .eq('country_id', countryInfo.id as any)
+            .order('order_index')
+            .returns<Tables<'country_hero_images'>[]>(),
+          supabase
+            .from('country_essential_tips')
+            .select('*')
+            .eq('country_id', countryInfo.id as any)
+            .order('order_index')
+            .returns<Tables<'country_essential_tips'>[]>(),
+          supabase
+            .from('travel_purposes')
+            .select('*')
+            .eq('country_id', countryInfo.id as any)
+            .order('percentage', { ascending: false })
+            .returns<Tables<'travel_purposes'>[]>(),
+          supabase
+            .from('country_faqs')
+            .select('*')
+            .eq('country_id', countryInfo.id as any)
+            .returns<Tables<'country_faqs'>[]>()
         ])
 
         setSections(sectionsResult.data || [])
@@ -294,12 +321,18 @@ const CountryDetail = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <CountryBreadcrumb 
-          region={countryData.region} 
-          countryName={countryData.name} 
-        />
+      {/* Content wrapper with padding for fixed navbar */}
+      <div className="pt-20">
+        {/* Breadcrumb section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <CountryBreadcrumb 
+            region={countryData.region} 
+            countryName={countryData.name} 
+          />
+        </div>
+
+        {/* Main content */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
 
         {/* Hero Section */}
         <section className="relative overflow-hidden rounded-2xl my-8">
@@ -343,7 +376,7 @@ const CountryDetail = () => {
                     </div>
                   )}
                   <div className="flex gap-4">
-                    <Button size="lg" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
+                    <Button size="lg" onClick={() => { if (typeof document !== 'undefined') document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' }) }}>
                       Plan Your Trip
                     </Button>
                     <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
@@ -447,7 +480,7 @@ const CountryDetail = () => {
                     key={section.id}
                     variant="outline" 
                     className="justify-start"
-                    onClick={() => document.getElementById(section.section_name)?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => { if (typeof document !== 'undefined') document.getElementById(section.section_name)?.scrollIntoView({ behavior: 'smooth' }) }}
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
                     {section.title}
@@ -764,6 +797,7 @@ const CountryDetail = () => {
           </div>
         </section>
       </main>
+      </div>
 
       <Footer />
     </div>
