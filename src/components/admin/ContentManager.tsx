@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { supabase } from "@/integrations/supabase/client"
-import type { Database } from "@/integrations/supabase/types"
+import type { Database, Tables } from "@/integrations/supabase/types"
 
 type DatabaseContent = Database['public']['Tables']['content']['Row']
 import { Button } from "@/components/ui/button"
@@ -12,10 +12,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from "@/components/ui/badge"
 import { Save, FileText, Plus, Edit, Trash2, Package, AlertCircle } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export const ContentManager = () => {
   const [content, setContent] = useState<DatabaseContent[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedPage, setSelectedPage] = useState<string>("home")
   const [selectedSection, setSelectedSection] = useState<string>("hero")
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [newContentKey, setNewContentKey] = useState("")
@@ -35,8 +37,31 @@ export const ContentManager = () => {
     { value: "search", label: "Search Section" },
     { value: "packages", label: "Packages Page" },
     { value: "regions", label: "Regions" },
-    { value: "countries", label: "Countries" }
+    { value: "countries", label: "Countries" },
+    // Additional logical sections for new pages (optional; created on first save)
+    { value: "group-tours", label: "Group Tours" },
+    { value: "blog", label: "Blog" }
   ]
+
+  const pageToSections: Record<string, string[]> = {
+    home: [
+      "hero",
+      "search",
+      "featured-packages",
+      "why-choose-us",
+      "top-values",
+      "promo-banner",
+      "about",
+      "navigation",
+      "footer"
+    ],
+    packages: ["packages", "regions"],
+    group: ["group-tours"],
+    blog: ["blog"],
+    contact: ["contact", "navigation", "footer"],
+  }
+
+  const visibleSections = sections.filter(s => (pageToSections[selectedPage] || []).includes(s.value))
 
   useEffect(() => {
     loadContent()
@@ -44,14 +69,36 @@ export const ContentManager = () => {
 
   const loadContent = async () => {
     try {
+      console.log('Loading content from database...')
       const { data, error } = await supabase
         .from('content')
         .select('*')
         .order('section', { ascending: true })
+        .returns<Tables<'content'>[]>()
 
       if (error) throw error
-      setContent(data || [])
+      
+      console.log('Content loaded:', data)
+      console.log('Content length:', data?.length)
+      
+      // If no content exists, insert some test data
+      if (!data || data.length === 0) {
+        console.log('No content found, inserting test data...')
+        await insertTestData()
+        // Reload content after inserting test data
+        const { data: newData, error: newError } = await supabase
+          .from('content')
+          .select('*')
+          .order('section', { ascending: true })
+          .returns<Tables<'content'>[]>()
+        
+        if (newError) throw newError
+        setContent((newData as any) || [])
+      } else {
+        setContent((data as any) || [])
+      }
     } catch (error: any) {
+      console.error('Error loading content:', error)
       toast({
         title: "Error",
         description: "Failed to load content: " + error.message,
@@ -62,6 +109,39 @@ export const ContentManager = () => {
     }
   }
 
+  const insertTestData = async () => {
+    try {
+      const testData = [
+        { section: 'hero', key: 'title', value: 'Discover Amazing Destinations' },
+        { section: 'hero', key: 'subtitle', value: 'Your Gateway to Unforgettable Travel Experiences' },
+        { section: 'why-choose-us', key: 'title', value: 'Why Choose Nymphette Tours' },
+        { section: 'why-choose-us', key: 'features', value: { 
+          expert_guides: { title: 'Expert Local Guides', description: 'Our experienced guides provide authentic insights' },
+          customized_trips: { title: 'Customized Itineraries', description: 'Tailored travel plans for your preferences' }
+        }},
+        { section: 'top-values', key: 'title', value: 'Our Core Values' },
+        { section: 'top-values', key: 'values', value: {
+          authenticity: { title: 'Authentic Experiences', description: 'Genuine cultural immersion', icon: 'globe' },
+          sustainability: { title: 'Sustainable Tourism', description: 'Responsible travel practices', icon: 'leaf' }
+        }}
+      ]
+
+      for (const item of testData) {
+        const { error } = await supabase
+          .from('content')
+          .insert([item] as any)
+        
+        if (error) {
+          console.error(`Error inserting ${item.section}.${item.key}:`, error)
+        } else {
+          console.log(`Successfully inserted ${item.section}.${item.key}`)
+        }
+      }
+    } catch (error) {
+      console.error('Error inserting test data:', error)
+    }
+  }
+
   const saveContent = async (section: string, key: string, value: any) => {
     try {
       const existingContent = content.find(c => c.section === section && c.key === key)
@@ -69,14 +149,14 @@ export const ContentManager = () => {
       if (existingContent) {
         const { error } = await supabase
           .from('content')
-          .update({ value, updated_at: new Date().toISOString() })
-          .eq('id', existingContent.id)
+          .update({ value, updated_at: new Date().toISOString() } as any)
+          .eq('id', existingContent.id as any)
 
         if (error) throw error
       } else {
         const { error } = await supabase
           .from('content')
-          .insert([{ section, key, value }])
+          .insert([{ section, key, value }] as any)
 
         if (error) throw error
       }
@@ -102,7 +182,7 @@ export const ContentManager = () => {
       const { error } = await supabase
         .from('content')
         .delete()
-        .eq('id', id)
+        .eq('id', id as any)
 
       if (error) throw error
       await loadContent()
@@ -153,7 +233,7 @@ export const ContentManager = () => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">Content Manager</h2>
-          <p className="text-muted-foreground">Edit all website content sections with structured forms</p>
+          <p className="text-muted-foreground">Edit website content organized by page</p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -204,60 +284,76 @@ export const ContentManager = () => {
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-4 gap-6">
-        <div className="col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Sections</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="space-y-1">
-                {sections.map((section) => (
-                  <button
-                    key={section.value}
-                    onClick={() => setSelectedSection(section.value)}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-muted ${
-                      selectedSection === section.value 
-                        ? 'bg-primary text-primary-foreground' 
-                        : ''
-                    }`}
-                  >
-                    <div className="flex justify-between items-center">
-                      <span>{section.label}</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {getSectionContent(section.value).length}
-                      </Badge>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <Tabs value={selectedPage} onValueChange={(v) => {
+        setSelectedPage(v)
+        const defaultSection = (pageToSections[v] && pageToSections[v][0]) || selectedSection
+        setSelectedSection(defaultSection)
+      }}>
+        <TabsList>
+          <TabsTrigger value="home">Home Page</TabsTrigger>
+          <TabsTrigger value="packages">Packages Page</TabsTrigger>
+          <TabsTrigger value="group">Group Tours Page</TabsTrigger>
+          <TabsTrigger value="blog">Blog Page</TabsTrigger>
+          <TabsTrigger value="contact">Contact Us Page</TabsTrigger>
+        </TabsList>
 
-        <div className="col-span-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                {sections.find(s => s.value === selectedSection)?.label} Content
-              </CardTitle>
-              <CardDescription>
-                Edit all content items for the selected section using user-friendly form fields.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <SectionEditor
-                section={selectedSection}
-                content={getSectionContent(selectedSection)}
-                getContentValue={getContentValue}
-                onSave={saveContent}
-                onDelete={deleteContent}
-              />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+        <TabsContent value={selectedPage}>
+          <div className="grid grid-cols-4 gap-6">
+            <div className="col-span-1">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Sections</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="space-y-1">
+                    {visibleSections.map((section) => (
+                      <button
+                        key={section.value}
+                        onClick={() => setSelectedSection(section.value)}
+                        className={`w-full text-left px-4 py-2 text-sm hover:bg-muted ${
+                          selectedSection === section.value 
+                            ? 'bg-primary text-primary-foreground' 
+                            : ''
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span>{section.label}</span>
+                          <Badge variant="secondary" className="text-xs">
+                            {getSectionContent(section.value).length}
+                          </Badge>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="col-span-3">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    {sections.find(s => s.value === selectedSection)?.label} Content
+                  </CardTitle>
+                  <CardDescription>
+                    Edit content items for the selected section using user-friendly form fields.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <SectionEditor
+                    section={selectedSection}
+                    content={getSectionContent(selectedSection)}
+                    getContentValue={getContentValue}
+                    onSave={saveContent}
+                    onDelete={deleteContent}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
@@ -325,48 +421,134 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                     {Array.isArray(fieldValue) ? (
                       <div className="space-y-2">
                         {fieldValue.map((arrayItem, index) => (
-                          <div key={index} className="flex gap-2">
-                            <Input
-                              value={arrayItem}
-                              onChange={(e) => {
-                                const newArray = [...fieldValue]
-                                newArray[index] = e.target.value
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                              }}
-                              onBlur={(e) => {
-                                const newArray = [...fieldValue]
-                                newArray[index] = e.target.value
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                handleSave(item.key, currentJson)
-                              }}
-                              className="text-sm"
-                              placeholder={`${fieldKey} ${index + 1}`}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                const newArray = fieldValue.filter((_, i) => i !== index)
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                                handleSave(item.key, currentJson)
-                              }}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
+                          typeof arrayItem === 'object' && arrayItem !== null ? (
+                            <div key={index} className="space-y-2 rounded border p-3">
+                              {Object.keys(arrayItem).map((k) => {
+                                const nestedVal = (arrayItem as any)[k]
+                                const label = k.replace(/_/g, ' ')
+                                const onChangePrimitive = (val: any) => {
+                                  const newArray = fieldValue.map((v, i) => i === index ? { ...(arrayItem as any), [k]: val } : v)
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                }
+                                const onBlurPrimitive = (val: any) => {
+                                  const newArray = fieldValue.map((v, i) => i === index ? { ...(arrayItem as any), [k]: val } : v)
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  handleSave(item.key, currentJson)
+                                }
+                                return (
+                                  <div key={k} className="space-y-1">
+                                    <Label className="text-xs capitalize">{label}</Label>
+                                    {Array.isArray(nestedVal) ? (
+                                      <Textarea
+                                        value={nestedVal.join(', ')}
+                                        onChange={(e) => onChangePrimitive(e.target.value.split(',').map(s => s.trim()))}
+                                        onBlur={(e) => onBlurPrimitive(e.target.value.split(',').map(s => s.trim()))}
+                                        rows={2}
+                                        className="text-sm"
+                                      />
+                                    ) : (typeof nestedVal === 'object' && nestedVal !== null) ? (
+                                      <Textarea
+                                        value={JSON.stringify(nestedVal, null, 2)}
+                                        onChange={(e) => {
+                                          try {
+                                            const parsed = JSON.parse(e.target.value || '{}')
+                                            onChangePrimitive(parsed)
+                                          } catch {
+                                            onChangePrimitive(e.target.value)
+                                          }
+                                        }}
+                                        onBlur={(e) => {
+                                          try {
+                                            const parsed = JSON.parse(e.target.value || '{}')
+                                            onBlurPrimitive(parsed)
+                                          } catch {
+                                            onBlurPrimitive(e.target.value)
+                                          }
+                                        }}
+                                        rows={3}
+                                        className="text-sm font-mono"
+                                        placeholder={`JSON for ${label}`}
+                                      />
+                                    ) : (
+                                      <Input
+                                        value={String(nestedVal ?? '')}
+                                        onChange={(e) => onChangePrimitive(e.target.value)}
+                                        onBlur={(e) => onBlurPrimitive(e.target.value)}
+                                        className="text-sm"
+                                        placeholder={`${String(k)} of item ${index + 1}`}
+                                      />
+                                    )}
+                                  </div>
+                                )
+                              })}
+                              <div className="flex justify-end">
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newArray = fieldValue.filter((_, i) => i !== index)
+                                    const currentJson = { ...(item.value as Record<string, any>) }
+                                    currentJson[fieldKey] = newArray
+                                    setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                    handleSave(item.key, currentJson)
+                                  }}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div key={index} className="flex gap-2">
+                              <Input
+                                value={String(arrayItem ?? '')}
+                                onChange={(e) => {
+                                  const newArray = [...fieldValue]
+                                  newArray[index] = e.target.value
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                }}
+                                onBlur={(e) => {
+                                  const newArray = [...fieldValue]
+                                  newArray[index] = e.target.value
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  handleSave(item.key, currentJson)
+                                }}
+                                className="text-sm"
+                                placeholder={`${fieldKey} ${index + 1}`}
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const newArray = fieldValue.filter((_, i) => i !== index)
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                  handleSave(item.key, currentJson)
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )
                         ))}
                         <Button
                           type="button"
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const newArray = [...fieldValue, '']
+                            const sample = fieldValue[0]
+                            const emptyItem = typeof sample === 'object' && sample !== null
+                              ? Object.keys(sample).reduce((acc, k) => ({ ...acc, [k]: '' }), {} as Record<string, any>)
+                              : ''
+                            const newArray = [...fieldValue, emptyItem]
                             const currentJson = { ...(item.value as Record<string, any>) }
                             currentJson[fieldKey] = newArray
                             setFormData(prev => ({ ...prev, [item.key]: currentJson }))
@@ -377,6 +559,56 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                           <Plus className="h-4 w-4 mr-1" />
                           Add {fieldKey.slice(0, -1)}
                         </Button>
+                      </div>
+                    ) : (typeof fieldValue === 'object' && fieldValue !== null) ? (
+                      <div className="space-y-2 rounded border p-3">
+                        {Object.entries(fieldValue as Record<string, any>).map(([nestedKey, nestedValue]) => (
+                          <div key={nestedKey} className="space-y-1">
+                            <Label className="text-xs capitalize">{nestedKey.replace(/_/g, ' ')}</Label>
+                            {Array.isArray(nestedValue) ? (
+                              <Textarea
+                                value={nestedValue.join(', ')}
+                                onChange={(e) => {
+                                  const values = e.target.value.split(',').map(s => s.trim())
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  const cloneObj = { ...(fieldValue as Record<string, any>) }
+                                  cloneObj[nestedKey] = values
+                                  currentJson[fieldKey] = cloneObj
+                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                }}
+                                onBlur={(e) => {
+                                  const values = e.target.value.split(',').map(s => s.trim())
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  const cloneObj = { ...(fieldValue as Record<string, any>) }
+                                  cloneObj[nestedKey] = values
+                                  currentJson[fieldKey] = cloneObj
+                                  handleSave(item.key, currentJson)
+                                }}
+                                rows={2}
+                                className="text-sm"
+                              />
+                            ) : (
+                              <Input
+                                value={String(nestedValue ?? '')}
+                                onChange={(e) => {
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  const cloneObj = { ...(fieldValue as Record<string, any>) }
+                                  cloneObj[nestedKey] = e.target.value
+                                  currentJson[fieldKey] = cloneObj
+                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                }}
+                                onBlur={(e) => {
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  const cloneObj = { ...(fieldValue as Record<string, any>) }
+                                  cloneObj[nestedKey] = e.target.value
+                                  currentJson[fieldKey] = cloneObj
+                                  handleSave(item.key, currentJson)
+                                }}
+                                className="text-sm"
+                              />
+                            )}
+                          </div>
+                        ))}
                       </div>
                     ) : typeof fieldValue === 'string' && fieldValue.length > 50 ? (
                       <Textarea
