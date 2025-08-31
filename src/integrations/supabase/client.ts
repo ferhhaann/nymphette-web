@@ -12,8 +12,8 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 const memoryStorage = {
   data: new Map<string, string>(),
   getItem: (key: string) => memoryStorage.data.get(key) ?? null,
-  setItem: (key: string, value: string) => memoryStorage.data.set(key, value),
-  removeItem: (key: string) => memoryStorage.data.delete(key),
+  setItem: (key: string, value: string) => { memoryStorage.data.set(key, value); },
+  removeItem: (key: string) => { memoryStorage.data.delete(key); },
 };
 
 // Use memory storage for SSR, localStorage for client

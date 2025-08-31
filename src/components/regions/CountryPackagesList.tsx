@@ -40,12 +40,12 @@ export const CountryPackagesList = ({ countrySlug, countryName }: CountryPackage
       const { data, error } = await supabase
         .from('packages')
         .select('*')
-        .eq('country_slug', countrySlug)
+        .eq('country_slug', countrySlug as any)
         .order('featured', { ascending: false })
         .order('rating', { ascending: false })
 
       if (error) throw error
-      setPackages(data || [])
+      setPackages((data || []) as any)
     } catch (error) {
       console.error('Error loading packages:', error)
     } finally {

@@ -137,7 +137,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       const { data, error } = await supabase
         .from('packages')
         .select('*')
-        .eq('region', region)
+        .eq('region', region as any)
         .order('rating', { ascending: false });
 
       if (error) {
@@ -148,7 +148,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       console.log('Received packages:', data); // Debug log
       
       // Transform database packages to TravelPackage format
-      const transformedPackages: TravelPackage[] = (data || []).map(pkg => ({
+      const transformedPackages: TravelPackage[] = (data || []).map((pkg: any) => ({
         id: pkg.id,
         title: pkg.title,
         country: pkg.country,

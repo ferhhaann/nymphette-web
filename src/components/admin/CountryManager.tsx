@@ -62,7 +62,7 @@ export const CountryManager = () => {
         .order('name', { ascending: true })
 
       if (error) throw error
-      setCountries(data || [])
+      setCountries((data || []) as any)
     } catch (error: any) {
       toast({
         title: "Error",
@@ -80,8 +80,8 @@ export const CountryManager = () => {
         // Update existing country
         const { error } = await supabase
           .from('countries')
-          .update(countryData)
-          .eq('id', countryData.id)
+          .update(countryData as any)
+          .eq('id', countryData.id as any)
 
         if (error) throw error
       } else {
@@ -119,7 +119,7 @@ export const CountryManager = () => {
       const { error } = await supabase
         .from('countries')
         .delete()
-        .eq('id', id)
+        .eq('id', id as any)
 
       if (error) throw error
       await loadCountries()

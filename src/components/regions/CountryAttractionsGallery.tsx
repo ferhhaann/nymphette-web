@@ -33,11 +33,11 @@ export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAtt
       const { data, error } = await supabase
         .from('country_attractions')
         .select('*')
-        .eq('country_id', countryId)
+        .eq('country_id', countryId as any)
         .order('order_index')
 
       if (error) throw error
-      setAttractions(data || [])
+      setAttractions((data || []) as any)
     } catch (error) {
       console.error('Error loading attractions:', error)
     } finally {
