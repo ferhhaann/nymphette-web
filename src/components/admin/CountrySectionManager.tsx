@@ -56,20 +56,20 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
         supabase
           .from('country_sections')
           .select('*')
-          .eq('country_id', countryId as any)
+          .eq('country_id', countryId)
           .order('order_index'),
         supabase
           .from('country_hero_images')
           .select('*')
-          .eq('country_id', countryId as any)
+          .eq('country_id', countryId)
           .order('order_index')
       ])
 
       if (sectionsResult.error) throw sectionsResult.error
       if (heroImagesResult.error) throw heroImagesResult.error
 
-      setSections((sectionsResult.data || []) as any)
-      setHeroImages((heroImagesResult.data || []) as any)
+      setSections(sectionsResult.data || [])
+      setHeroImages(heroImagesResult.data || [])
     } catch (error: any) {
       toast({
         title: "Error",
@@ -86,8 +86,8 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
       if (sectionData.id) {
         const { error } = await supabase
           .from('country_sections')
-          .update(sectionData as any)
-          .eq('id', sectionData.id as any)
+          .update(sectionData)
+          .eq('id', sectionData.id)
 
         if (error) throw error
       } else {
@@ -101,7 +101,7 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
 
         const { error } = await supabase
           .from('country_sections')
-          .insert([insertData as any])
+          .insert([insertData])
 
         if (error) throw error
       }
@@ -129,7 +129,7 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
       const { error } = await supabase
         .from('country_sections')
         .delete()
-        .eq('id', id as any)
+        .eq('id', id)
 
       if (error) throw error
       await loadData()
@@ -154,7 +154,7 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
           country_id: countryId,
           image_url: imageUrl,
           order_index: heroImages.length + 1
-        } as any])
+        }])
 
       if (error) throw error
       await loadData()
@@ -178,7 +178,7 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
       const { error } = await supabase
         .from('country_hero_images')
         .delete()
-        .eq('id', id as any)
+        .eq('id', id)
 
       if (error) throw error
       await loadData()

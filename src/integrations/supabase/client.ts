@@ -8,24 +8,10 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-// Create memory storage for SSR
-const memoryStorage = {
-  data: new Map<string, string>(),
-  getItem: (key: string) => memoryStorage.data.get(key) ?? null,
-  setItem: (key: string, value: string) => { memoryStorage.data.set(key, value); },
-  removeItem: (key: string) => { memoryStorage.data.delete(key); },
-};
-
-// Use memory storage for SSR, localStorage for client
-const storage = typeof window !== 'undefined' ? localStorage : memoryStorage;
-
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage,
-    persistSession: typeof window !== 'undefined',
+    storage: localStorage,
+    persistSession: true,
     autoRefreshToken: true,
-  },
-  db: {
-    schema: 'public'
   }
 });

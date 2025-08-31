@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react"
 import { supabase } from "@/integrations/supabase/client"
+import type { Database } from "@/integrations/supabase/types"
+
+type DatabaseContent = Database['public']['Tables']['content']['Row']
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -9,15 +12,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from "@/components/ui/badge"
 import { Save, FileText, Plus, Edit, Trash2, Package, AlertCircle } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-
-type DatabaseContent = {
-  id: string
-  section: string
-  key: string
-  value: any
-  created_at: string | null
-  updated_at: string | null
-}
 
 export const ContentManager = () => {
   const [content, setContent] = useState<DatabaseContent[]>([])
@@ -56,7 +50,7 @@ export const ContentManager = () => {
         .order('section', { ascending: true })
 
       if (error) throw error
-      setContent((data || []) as unknown as DatabaseContent[])
+      setContent(data || [])
     } catch (error: any) {
       toast({
         title: "Error",
@@ -75,14 +69,14 @@ export const ContentManager = () => {
       if (existingContent) {
         const { error } = await supabase
           .from('content')
-          .update({ value, updated_at: new Date().toISOString() } as any)
-          .eq('id', existingContent.id as any)
+          .update({ value, updated_at: new Date().toISOString() })
+          .eq('id', existingContent.id)
 
         if (error) throw error
       } else {
         const { error } = await supabase
           .from('content')
-          .insert([{ section, key, value }] as any)
+          .insert([{ section, key, value }])
 
         if (error) throw error
       }
@@ -108,7 +102,7 @@ export const ContentManager = () => {
       const { error } = await supabase
         .from('content')
         .delete()
-        .eq('id', id as any)
+        .eq('id', id)
 
       if (error) throw error
       await loadContent()

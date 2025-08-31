@@ -5,12 +5,7 @@ interface Props { regionKey: string; compact?: boolean }
 
 const MapWidget: React.FC<Props> = ({ regionKey, compact }) => {
   const container = useRef<HTMLDivElement>(null);
-  const [token, setToken] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('mapbox_public_token') || ""
-    }
-    return ""
-  });
+  const [token, setToken] = useState<string>(() => localStorage.getItem('mapbox_public_token') || "");
 
   useEffect(() => {
     if (!token || !container.current) return;
@@ -37,16 +32,7 @@ const MapWidget: React.FC<Props> = ({ regionKey, compact }) => {
         <p className="text-muted-foreground mb-2">Add a Mapbox public token to enable the interactive map.</p>
         <div className="flex gap-2">
           <input className="flex-1 border rounded px-2 py-1 text-sm bg-background" placeholder="Mapbox public token" onChange={(e)=>setToken(e.target.value)} />
-          <button 
-            className="text-sm px-3 py-1 rounded border" 
-            onClick={() => {
-              if (typeof window !== 'undefined') {
-                localStorage.setItem('mapbox_public_token', token);
-              }
-            }}
-          >
-            Save
-          </button>
+          <button className="text-sm px-3 py-1 rounded border" onClick={()=>{ localStorage.setItem('mapbox_public_token', token); }}>Save</button>
         </div>
       </div>
     );

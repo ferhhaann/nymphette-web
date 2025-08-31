@@ -8,23 +8,22 @@ interface CountryBreadcrumbProps {
 
 export const CountryBreadcrumb = ({ region, countryName }: CountryBreadcrumbProps) => {
   return (
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground my-4">
+    <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
       <Link to="/" className="hover:text-primary transition-colors flex items-center">
         <Home className="h-4 w-4 mr-1" />
         Home
       </Link>
-      <ChevronRight className="h-4 w-4 flex-shrink-0" />
+      <ChevronRight className="h-4 w-4" />
       <Link to="/packages" className="hover:text-primary transition-colors">
         Tour Packages
       </Link>
-      <ChevronRight className="h-4 w-4 flex-shrink-0" />
-      <Link 
-        to={`/regions/${region.toLowerCase()}`} 
-        className="hover:text-primary transition-colors whitespace-nowrap"
-      >
+      <ChevronRight className="h-4 w-4" />
+      <span>International Tour Packages</span>
+      <ChevronRight className="h-4 w-4" />
+      <Link to={`/regions/${region.toLowerCase()}`} className="hover:text-primary transition-colors">
         {region} Tour Packages
       </Link>
-      <ChevronRight className="h-4 w-4 flex-shrink-0" />
+      <ChevronRight className="h-4 w-4" />
       <span className="text-foreground font-medium">{countryName}</span>
     </nav>
   )

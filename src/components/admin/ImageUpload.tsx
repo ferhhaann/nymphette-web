@@ -109,7 +109,7 @@ export const ImageUpload = ({ onImageUploaded, currentImageUrl, label = "Upload 
         <Button
           type="button"
           variant="outline"
-          onClick={() => { if (typeof document !== 'undefined') document.getElementById('image-upload')?.click() }}
+          onClick={() => document.getElementById('image-upload')?.click()}
           disabled={uploading}
           className="w-full"
         >

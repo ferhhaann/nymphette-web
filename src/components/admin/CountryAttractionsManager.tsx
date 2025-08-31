@@ -51,12 +51,12 @@ export const CountryAttractionsManager = ({ countryId, countryName }: CountryAtt
       const { data, error } = await supabase
         .from('country_attractions')
         .select('*')
-        .eq('country_id', countryId as any)
+        .eq('country_id', countryId)
         .order('type')
         .order('order_index')
 
       if (error) throw error
-      setAttractions((data || []) as any)
+      setAttractions(data || [])
     } catch (error) {
       console.error('Error loading attractions:', error)
     } finally {
@@ -113,8 +113,8 @@ export const CountryAttractionsManager = ({ countryId, countryName }: CountryAtt
             type: formData.type,
             category: formData.category,
             order_index: formData.order_index
-          } as any)
-          .eq('id', editingAttraction.id as any)
+          })
+          .eq('id', editingAttraction.id)
 
         if (error) throw error
 
@@ -133,7 +133,7 @@ export const CountryAttractionsManager = ({ countryId, countryName }: CountryAtt
             type: formData.type,
             category: formData.category,
             order_index: formData.order_index
-          } as any)
+          })
 
         if (error) throw error
 
@@ -161,7 +161,7 @@ export const CountryAttractionsManager = ({ countryId, countryName }: CountryAtt
       const { error } = await supabase
         .from('country_attractions')
         .delete()
-        .eq('id', id as any)
+        .eq('id', id)
 
       if (error) throw error
 

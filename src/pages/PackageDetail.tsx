@@ -152,10 +152,10 @@ const PackageDetail = () => {
   });
 
   useEffect(() => {
-    if (pkg && typeof document !== 'undefined') {
+    if (pkg) {
       // Set page title and meta
       document.title = `${pkg.title} - Travel Package Details`;
-      const metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
+      const metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
       if (metaDesc) {
         metaDesc.content = `Discover ${pkg.title} in ${pkg.country}. ${pkg.duration} journey with all-inclusive packages.`;
       }

@@ -45,7 +45,7 @@ export const PackageManager = () => {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      setPackages((data || []) as any)
+      setPackages(data || [])
     } catch (error: any) {
       toast({
         title: "Error",
@@ -63,8 +63,8 @@ export const PackageManager = () => {
         // Update existing package
         const { error } = await supabase
           .from('packages')
-          .update(packageData as any)
-          .eq('id', packageData.id as any)
+          .update(packageData)
+          .eq('id', packageData.id)
 
         if (error) throw error
       } else {
@@ -102,7 +102,7 @@ export const PackageManager = () => {
       const { error } = await supabase
         .from('packages')
         .delete()
-        .eq('id', id as any)
+        .eq('id', id)
 
       if (error) throw error
       await loadPackages()

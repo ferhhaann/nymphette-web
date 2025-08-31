@@ -40,7 +40,6 @@ const Packages = () => {
 
   // Preload critical images for faster initial load
   useEffect(() => {
-    if (typeof document === 'undefined') return
     const preloadImages = [asia1, europe1, africa1];
     preloadImages.forEach(src => {
       const link = document.createElement('link');

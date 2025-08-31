@@ -34,33 +34,20 @@ import { InquiryBookingForm } from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
 import MapWidget from "./MapWidget";
 import { CountryList } from "./CountryList";
-import { RegionBreadcrumb } from "./RegionBreadcrumb";
 
 export interface RegionLandingProps {
   region: string;
 }
 
-// Utility function to update meta tags (not using hooks)
-const updateMetaTags = (title: string, description: string, canonicalPath: string) => {
-  if (typeof window === 'undefined') return;
-  
+const setMeta = (title: string, description: string, canonicalPath: string) => {
   document.title = title;
   let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
-  if (!meta) { 
-    meta = document.createElement("meta"); 
-    meta.name = "description"; 
-    document.head.appendChild(meta); 
-  }
-  meta.content = description;
-  
+  if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
+  meta.setAttribute("content", description);
   let link = document.querySelector("link[rel='canonical']") as HTMLLinkElement | null;
-  if (!link) { 
-    link = document.createElement("link"); 
-    link.setAttribute("rel", "canonical"); 
-    document.head.appendChild(link); 
-  }
+  if (!link) { link = document.createElement("link"); link.setAttribute("rel", "canonical"); document.head.appendChild(link); }
   const url = new URL(canonicalPath, window.location.origin).toString();
-  link.href = url;
+  link.setAttribute("href", url);
 };
 
 const toUSD = (pkg: TravelPackage): number => {
@@ -121,8 +108,8 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const canonical = `/regions/${regionKey}`;
   const heroImages = ["/places/thailand/bangkok.webp"]; // TODO: Load region-specific images
 
-  // Check if we're coming from packages page (guard for SSR)
-  const isFromPackagesPage = typeof window !== 'undefined' ? window.location.pathname.includes('/packages/region/') : false;
+  // Check if we're coming from packages page
+  const isFromPackagesPage = window.location.pathname.includes('/packages/region/');
 
   // Load packages from database
   useEffect(() => {
@@ -132,23 +119,16 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const loadRegionPackages = async () => {
     try {
       setLoading(true);
-      console.log('Loading packages for region:', region); // Debug log
-      
       const { data, error } = await supabase
         .from('packages')
         .select('*')
-        .eq('region', region as any)
+        .eq('region', region)
         .order('rating', { ascending: false });
 
-      if (error) {
-        console.error('Supabase query error:', error);
-        throw error;
-      }
-
-      console.log('Received packages:', data); // Debug log
+      if (error) throw error;
       
       // Transform database packages to TravelPackage format
-      const transformedPackages: TravelPackage[] = (data || []).map((pkg: any) => ({
+      const transformedPackages: TravelPackage[] = (data || []).map(pkg => ({
         id: pkg.id,
         title: pkg.title,
         country: pkg.country,
@@ -180,7 +160,6 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       setPackages(transformedPackages);
     } catch (error) {
       console.error('Error loading region packages:', error);
-      setError(error instanceof Error ? error.message : 'Failed to load packages');
       setPackages([]);
     } finally {
       setLoading(false);
@@ -188,9 +167,9 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   };
 
   useEffect(() => { 
-    // Update meta tags on client-side only
-    const actualCanonical = isFromPackagesPage ? `/packages/region/${regionKey}` : canonical;
-    updateMetaTags(title, description, actualCanonical);
+    // TODO: Implement meta tag setting if needed
+    // const actualCanonical = isFromPackagesPage ? `/packages/region/${regionKey}` : canonical;
+    // setMeta(title, description, actualCanonical); 
   }, [title, description, canonical, regionKey, isFromPackagesPage]);
 
   const filtered = useMemo(() => {
@@ -203,63 +182,30 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
 
   // JSON-LD basic
   useEffect(() => {
-    if (typeof document === 'undefined') return
     const ld = {
       '@context': 'https://schema.org', '@type': 'ItemList',
       itemListElement: filtered.slice(0, 10).map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.title }))
     } as const;
-    if (typeof window === 'undefined') return;
-    const el = document.createElement('script');
-    el.type = 'application/ld+json';
-    el.text = JSON.stringify(ld);
-    document.head.appendChild(el);
-    return () => {
-      if (document.head.contains(el)) {
-        document.head.removeChild(el);
-      }
-    };
+    const el = document.createElement('script'); el.type = 'application/ld+json'; el.text = JSON.stringify(ld);
+    document.head.appendChild(el); return () => { document.head.removeChild(el); };
   }, [filtered]);
-
-  // Add error state
-  const [error, setError] = useState<string | null>(null);
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <div className="max-w-7xl mx-auto px-4 py-8 text-center">
-          <h2 className="text-xl font-semibold text-red-500">Error loading packages</h2>
-          <p className="mt-2 text-muted-foreground">{error}</p>
-          <Button className="mt-4" onClick={() => window.location.reload()}>Try Again</Button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
-      <div className="pt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <RegionBreadcrumb region={region} isFromPackagesPage={isFromPackagesPage} />
-        </div>
-
-      {loading && (
-        <div className="max-w-7xl mx-auto px-4 py-8 text-center">
-          <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-muted rounded w-1/4 mx-auto"></div>
-            <div className="h-4 bg-muted rounded w-1/2 mx-auto"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1,2,3].map(i => (
-                <div key={i} className="h-64 bg-muted rounded"></div>
-              ))}
-            </div>
-          </div>
+      {/* Back Button - Only show when coming from packages page */}
+      {isFromPackagesPage && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/packages')}
+            className="mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Packages
+          </Button>
         </div>
       )}
-      {/* Back Button - Only show when coming from packages page */}
-      {/* Back button removed; breadcrumb provides navigation */}
       
       {/* HERO */}
       <section className={`relative ${isFromPackagesPage ? 'mt-0' : 'mt-4 sm:mt-6 lg:mt-8'}`}>
@@ -383,7 +329,6 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       <ChatbotWidget regionKey={regionKey} />
       
       <Footer />
-      </div>
     </div>
   );
 };

@@ -28,13 +28,13 @@ export const useContent = (section?: string) => {
       let query = supabase.from('content').select('*')
       
       if (section) {
-        query = query.eq('section', section as any)
+        query = query.eq('section', section)
       }
       
       const { data, error } = await query.order('key', { ascending: true })
       
       if (error) throw error
-      setContent((data || []) as any)
+      setContent(data || [])
       
     } catch (err: any) {
       setError(err.message)
@@ -74,15 +74,15 @@ export const useContentValue = (section: string, key: string, defaultValue: any 
       const { data, error } = await supabase
         .from('content')
         .select('value')
-        .eq('section', section as any)
-        .eq('key', key as any)
+        .eq('section', section)
+        .eq('key', key)
         .single()
       
       if (error && error.code !== 'PGRST116') {
         throw error
       }
       
-      setValue((data as any)?.value || defaultValue)
+      setValue(data?.value || defaultValue)
       
     } catch (err: any) {
       console.error('Error loading content value:', err)

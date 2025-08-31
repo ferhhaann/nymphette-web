@@ -35,7 +35,7 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
       const { data: countriesData, error: countriesError } = await supabase
         .from('countries')
         .select('id, name, slug, region, capital, annual_visitors')
-        .eq('region', region.charAt(0).toUpperCase() + region.slice(1) as any)
+        .eq('region', region.charAt(0).toUpperCase() + region.slice(1))
         .order('name')
 
       if (countriesError) throw countriesError
@@ -46,10 +46,10 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
           const { count } = await supabase
             .from('packages')
             .select('*', { count: 'exact', head: true })
-            .eq('country_slug', (country as any).slug as any)
+            .eq('country_slug', country.slug)
           
           return {
-            ...(country as any),
+            ...country,
             package_count: count || 0
           }
         })
