@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Trash2, Settings, BarChart3, Users } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
@@ -36,7 +34,7 @@ export const AdminOverview = () => {
       const [packagesResult, countriesResult, featuredResult, contentResult] = await Promise.all([
         supabase.from('packages').select('id', { count: 'exact' }),
         supabase.from('countries').select('id', { count: 'exact' }),
-        supabase.from('packages').select('id', { count: 'exact' }).eq('featured', true),
+        supabase.from('packages').select('id', { count: 'exact' }).eq('featured', true as any),
         supabase.from('content').select('section', { count: 'exact' })
       ])
 
@@ -65,13 +63,13 @@ export const AdminOverview = () => {
 
     try {
       await Promise.all([
-        supabase.from('packages').delete().neq('id', ''),
-        supabase.from('countries').delete().neq('id', ''),
-        supabase.from('content').delete().neq('id', ''),
-        supabase.from('famous_places').delete().neq('id', ''),
-        supabase.from('essential_tips').delete().neq('id', ''),
-        supabase.from('travel_purposes').delete().neq('id', ''),
-        supabase.from('country_faqs').delete().neq('id', '')
+        supabase.from('packages').delete().gte('created_at', '1900-01-01' as any),
+        supabase.from('countries').delete().gte('created_at', '1900-01-01' as any),
+        supabase.from('content').delete().gte('created_at', '1900-01-01' as any),
+        supabase.from('famous_places').delete().gte('created_at', '1900-01-01' as any),
+        supabase.from('essential_tips').delete().gte('created_at', '1900-01-01' as any),
+        supabase.from('travel_purposes').delete().gte('created_at', '1900-01-01' as any),
+        supabase.from('country_faqs').delete().gte('created_at', '1900-01-01' as any)
       ])
 
       toast({
@@ -182,6 +180,20 @@ export const AdminOverview = () => {
               <span className="text-xs text-muted-foreground">Manage admin users</span>
             </Button>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-orange-200 bg-orange-50">
+        <CardHeader>
+          <CardTitle className="text-orange-800">Package.json Configuration Required</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-orange-700 mb-2">
+            Your package.json is missing a required 'build:dev' script. Please add this script to enable development builds:
+          </p>
+          <code className="block bg-orange-100 p-2 rounded text-sm text-orange-800">
+            "build:dev": "vite build --mode development"
+          </code>
         </CardContent>
       </Card>
     </div>
