@@ -67,17 +67,17 @@ export const CountryContentManager = () => {
       .select('id, name, slug')
       .order('name')
     
-    setCountries(data || [])
+    setCountries((data || []) as any)
   }
 
   const loadContentSections = async () => {
     const { data } = await supabase
       .from('country_content')
       .select('*')
-      .eq('country_id', selectedCountryId)
+      .eq('country_id', selectedCountryId as any)
       .order('order_index')
     
-    setContentSections(data || [])
+    setContentSections((data || []) as any)
   }
 
   const saveSection = async (section: Partial<ContentSection>) => {
@@ -85,8 +85,8 @@ export const CountryContentManager = () => {
       if (section.id) {
         await supabase
           .from('country_content')
-          .update(section)
-          .eq('id', section.id)
+          .update(section as any)
+          .eq('id', section.id as any)
       } else {
         if (!section.section_type) {
           toast.error('Section type is required')
@@ -101,7 +101,7 @@ export const CountryContentManager = () => {
             title: section.title || '',
             content: section.content || {},
             order_index: section.order_index || 0
-          })
+          } as any)
       }
       
       toast.success('Content section saved successfully')
@@ -118,7 +118,7 @@ export const CountryContentManager = () => {
       await supabase
         .from('country_content')
         .delete()
-        .eq('id', id)
+        .eq('id', id as any)
       
       toast.success('Content section deleted')
       loadContentSections()
