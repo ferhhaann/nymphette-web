@@ -1,7 +1,10 @@
 import { Shield, Award, Headphones, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useContent } from "@/hooks/useContent";
 
 const WhyChooseUs = () => {
+  const { getContentValue } = useContent('why-choose-us');
+  
   const features = [
     {
       icon: Globe,
@@ -30,11 +33,10 @@ const WhyChooseUs = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-geo mb-4">
-            Why Choose Nymphette Tours?
+            {getContentValue('title', 'Why Choose Nymphette Tours?')}
           </h2>
           <p className="text-xl text-background/80 max-w-3xl mx-auto">
-            We don't just plan trips – we create life-changing experiences that connect you 
-            with the world's most incredible destinations and cultures.
+            {getContentValue('subtitle', 'We don\'t just plan trips – we create life-changing experiences that connect you with the world\'s most incredible destinations and cultures.')}
           </p>
         </div>
 

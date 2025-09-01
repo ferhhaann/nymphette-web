@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useContent } from "@/hooks/useContent";
 import heroImage from "@/assets/hero-travel.jpg";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { getContentValue } = useContent('hero');
 
   const handleExplorePackages = () => {
     navigate('/packages');
@@ -25,10 +27,10 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center text-background max-w-4xl mx-auto px-3 sm:px-6 md:px-4 py-8 sm:py-12">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold font-sans tracking-tight mb-4 sm:mb-6 animate-fade-in leading-tight">
-          Discover your next adventure
+          {getContentValue('title', 'Discover your next adventure')}
         </h1>
         <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-background/90 animate-slide-up leading-relaxed px-2">
-          Explore breathtaking destinations with our curated travel experiences. Create memories that last a lifetime.
+          {getContentValue('subtitle', 'Explore breathtaking destinations with our curated travel experiences. Create memories that last a lifetime.')}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-scale-in px-4 sm:px-0">
@@ -37,7 +39,7 @@ const Hero = () => {
             className="bg-foreground hover:bg-foreground/90 text-background px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto"
             onClick={handleExplorePackages}
           >
-            Start your journey
+            {getContentValue('primary_button', 'Start your journey')}
           </Button>
           <Button 
             size="lg" 
@@ -45,7 +47,7 @@ const Hero = () => {
             className="border-2 border-background/40 text-background hover:bg-background hover:text-foreground px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto bg-background/10 backdrop-blur-sm"
             onClick={handlePlanCustomTrip}
           >
-            Book now
+            {getContentValue('secondary_button', 'Book now')}
           </Button>
         </div>
       </div>
