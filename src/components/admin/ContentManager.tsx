@@ -326,25 +326,66 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                       <div className="space-y-2">
                         {fieldValue.map((arrayItem, index) => (
                           <div key={index} className="flex gap-2">
-                            <Input
-                              value={arrayItem}
-                              onChange={(e) => {
-                                const newArray = [...fieldValue]
-                                newArray[index] = e.target.value
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                              }}
-                              onBlur={(e) => {
-                                const newArray = [...fieldValue]
-                                newArray[index] = e.target.value
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                handleSave(item.key, currentJson)
-                              }}
-                              className="text-sm"
-                              placeholder={`${fieldKey} ${index + 1}`}
-                            />
+                            {typeof arrayItem === 'object' && arrayItem !== null ? (
+                              <Textarea
+                                value={JSON.stringify(arrayItem, null, 2)}
+                                onChange={(e) => {
+                                  try {
+                                    const newArray = [...fieldValue]
+                                    newArray[index] = JSON.parse(e.target.value)
+                                    const currentJson = { ...(item.value as Record<string, any>) }
+                                    currentJson[fieldKey] = newArray
+                                    setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                  } catch (err) {
+                                    // Invalid JSON, keep as string for now
+                                    const newArray = [...fieldValue]
+                                    newArray[index] = e.target.value
+                                    const currentJson = { ...(item.value as Record<string, any>) }
+                                    currentJson[fieldKey] = newArray
+                                    setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                  }
+                                }}
+                                onBlur={(e) => {
+                                  try {
+                                    const newArray = [...fieldValue]
+                                    newArray[index] = JSON.parse(e.target.value)
+                                    const currentJson = { ...(item.value as Record<string, any>) }
+                                    currentJson[fieldKey] = newArray
+                                    handleSave(item.key, currentJson)
+                                  } catch (err) {
+                                    // Invalid JSON, save as string
+                                    const newArray = [...fieldValue]
+                                    newArray[index] = e.target.value
+                                    const currentJson = { ...(item.value as Record<string, any>) }
+                                    currentJson[fieldKey] = newArray
+                                    handleSave(item.key, currentJson)
+                                  }
+                                }}
+                                className="text-sm font-mono"
+                                placeholder={`${fieldKey} ${index + 1} (JSON)`}
+                                rows={3}
+                              />
+                            ) : (
+                              <Input
+                                value={String(arrayItem || '')}
+                                onChange={(e) => {
+                                  const newArray = [...fieldValue]
+                                  newArray[index] = e.target.value
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                                }}
+                                onBlur={(e) => {
+                                  const newArray = [...fieldValue]
+                                  newArray[index] = e.target.value
+                                  const currentJson = { ...(item.value as Record<string, any>) }
+                                  currentJson[fieldKey] = newArray
+                                  handleSave(item.key, currentJson)
+                                }}
+                                className="text-sm"
+                                placeholder={`${fieldKey} ${index + 1}`}
+                              />
+                            )}
                             <Button
                               type="button"
                               variant="outline"
@@ -378,6 +419,37 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                           Add {fieldKey.slice(0, -1)}
                         </Button>
                       </div>
+                    ) : typeof fieldValue === 'object' && fieldValue !== null ? (
+                      <Textarea
+                        value={JSON.stringify(fieldValue, null, 2)}
+                        onChange={(e) => {
+                          try {
+                            const currentJson = { ...(item.value as Record<string, any>) }
+                            currentJson[fieldKey] = JSON.parse(e.target.value)
+                            setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                          } catch (err) {
+                            // Invalid JSON, keep as string for now
+                            const currentJson = { ...(item.value as Record<string, any>) }
+                            currentJson[fieldKey] = e.target.value
+                            setFormData(prev => ({ ...prev, [item.key]: currentJson }))
+                          }
+                        }}
+                        onBlur={(e) => {
+                          try {
+                            const currentJson = { ...(item.value as Record<string, any>) }
+                            currentJson[fieldKey] = JSON.parse(e.target.value)
+                            handleSave(item.key, currentJson)
+                          } catch (err) {
+                            // Invalid JSON, save as string
+                            const currentJson = { ...(item.value as Record<string, any>) }
+                            currentJson[fieldKey] = e.target.value
+                            handleSave(item.key, currentJson)
+                          }
+                        }}
+                        rows={6}
+                        className="text-sm font-mono"
+                        placeholder={`Enter ${fieldKey} (JSON format)`}
+                      />
                     ) : typeof fieldValue === 'string' && fieldValue.length > 50 ? (
                       <Textarea
                         value={fieldValue}
@@ -429,7 +501,9 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                 />
               ) : (
                 <Input
-                  value={formData[item.key] !== undefined ? formData[item.key] : item.value}
+                  value={formData[item.key] !== undefined ? 
+                    (typeof formData[item.key] === 'object' ? JSON.stringify(formData[item.key]) : String(formData[item.key])) : 
+                    (typeof item.value === 'object' ? JSON.stringify(item.value) : String(item.value))}
                   onChange={(e) => setFormData(prev => ({ ...prev, [item.key]: e.target.value }))}
                   onBlur={(e) => handleSave(item.key, e.target.value)}
                   className="text-sm"
