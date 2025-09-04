@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Star, MapPin } from "lucide-react";
 import { TravelPackage } from "@/data/packagesData";
 
@@ -41,10 +42,9 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
     <Card className="group overflow-hidden hover:shadow-card-soft transition-all duration-300 cursor-pointer"
           onClick={() => onViewDetails(pkg.id)}>
       <div className="relative overflow-hidden">
-        <img
+        <OptimizedImage
           src={packageImage}
           alt={pkg.title}
-          loading="lazy"
           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute top-4 left-4">

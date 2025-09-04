@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface ImageSlideshowProps {
   images: string[];
@@ -52,12 +53,11 @@ const ImageSlideshow = ({ images, alt, className = "", width, height, hoverToPla
       onMouseLeave={() => setIsHovered(false)}
     >
       {images.map((image, index) => (
-        <img
+        <OptimizedImage
           key={index}
           src={image}
           alt={`${alt} - View ${index + 1}`}
-          loading={index === 0 ? "eager" : "lazy"}
-          decoding="async"
+          priority={index === 0}
           width={width}
           height={height}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${

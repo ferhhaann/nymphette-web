@@ -6,7 +6,16 @@ import TopValues from "@/components/TopValues";
 import PromoBanner from "@/components/PromoBanner";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Footer from "@/components/Footer";
+import { preloadCriticalImages } from "@/hooks/useImagePreloader";
+import { useEffect } from "react";
+import heroImage from "@/assets/hero-travel.jpg";
+import regionsImage from "@/assets/regions-world.jpg";
 const Index = () => {
+  useEffect(() => {
+    // Preload critical images for faster loading
+    preloadCriticalImages([heroImage, regionsImage]);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { OptimizedImage } from '@/components/ui/optimized-image'
 import { MapPin, Star } from 'lucide-react'
 
 interface CountryHeroProps {
@@ -22,9 +23,10 @@ export const CountryHero = ({
       {/* Hero Banner */}
       <div className="relative h-96 rounded-xl overflow-hidden mb-8">
         {heroImage ? (
-          <img 
+          <OptimizedImage
             src={heroImage} 
             alt={`${countryName} tour packages`}
+            priority={true}
             className="w-full h-full object-cover"
           />
         ) : (

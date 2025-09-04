@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Star, Clock, Users, MapPin } from "lucide-react";
 import { useFeaturedPackages } from "@/hooks/useFeaturedPackages";
 import { useContent } from "@/hooks/useContent";
@@ -81,10 +82,10 @@ const FeaturedPackages = () => {
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <div className="relative overflow-hidden">
-                <img
+                <OptimizedImage
                   src={pkg.image}
                   alt={`${pkg.title} - ${pkg.country} travel package`}
-                  loading="lazy"
+                  priority={index < 3}
                   className="w-full h-64 object-cover"
                 />
                 <div className="absolute top-4 left-4">

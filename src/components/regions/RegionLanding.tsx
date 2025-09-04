@@ -34,6 +34,7 @@ import { InquiryBookingForm } from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
 import MapWidget from "./MapWidget";
 import { CountryList } from "./CountryList";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 export interface RegionLandingProps {
   region: string;
@@ -213,8 +214,8 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
           <CarouselContent>
             {heroImages.map((img, idx) => (
               <CarouselItem key={idx}>
-                <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] m-2 sm:m-4 lg:m-6 rounded-lg overflow-hidden">
-                  <img src={img} alt={`${title} hero ${idx+1}`} loading={idx===0?"eager":"lazy"} className="absolute inset-0 h-full w-full object-cover rounded-lg" />
+                 <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] m-2 sm:m-4 lg:m-6 rounded-lg overflow-hidden">
+                   <OptimizedImage src={img} alt={`${title} hero ${idx+1}`} priority={idx===0} className="absolute inset-0 h-full w-full object-cover rounded-lg" />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg" />
                   <div className="relative z-10 max-w-7xl mx-auto h-full flex items-end px-3 sm:px-6 lg:px-8 pb-4 sm:pb-8">
                     <div className="space-y-2 sm:space-y-4">
@@ -256,8 +257,8 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
               <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300" 
                     style={{animationDelay:`${index*60}ms`}}
                     onClick={() => navigate(`/package/${pkg.id}`)}>
-                <div className="relative h-48 overflow-hidden">
-                  <img src={packageImage} alt={pkg.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
+                 <div className="relative h-48 overflow-hidden">
+                   <OptimizedImage src={packageImage} alt={pkg.title} priority={index < 3} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
                   <div className="absolute top-3 left-3">
                     <Badge variant="outline" className="bg-background/90 backdrop-blur">{pkg.category}</Badge>
                   </div>
