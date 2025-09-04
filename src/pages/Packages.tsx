@@ -27,10 +27,6 @@ import pacific3 from "@/assets/regions/pacific-3.jpg";
 import middleEast1 from "@/assets/regions/middle-east-1.jpg";
 import middleEast2 from "@/assets/regions/middle-east-2.jpg";
 import middleEast3 from "@/assets/regions/middle-east-3.jpg";
-// Individual country images for featured packages
-import baliImage from "@/assets/countries/indonesia.jpg";
-import europeGrandTourImage from "@/assets/countries/france.jpg";
-import maldivesImage from "@/assets/countries/maldives.jpg";
 import { usePackages } from "@/hooks/usePackages";
 
 const Packages = () => {
@@ -144,35 +140,6 @@ const Packages = () => {
     setSelectedRegion(null);
   };
 
-  const featuredPackages = [
-    {
-      title: "Bali Paradise Escape",
-      destination: "Bali, Indonesia",
-      duration: "6D/5N",
-      price: "₹45,000",
-      rating: 4.8,
-      image: baliImage,
-      region: "Asia"
-    },
-    {
-      title: "European Grand Tour",
-      destination: "Paris, Rome, Swiss Alps",
-      duration: "12D/11N", 
-      price: "₹1,25,000",
-      rating: 4.9,
-      image: europeGrandTourImage,
-      region: "Europe"
-    },
-    {
-      title: "Maldives Honeymoon",
-      destination: "Maldives",
-      duration: "7D/6N",
-      price: "₹85,000",
-      rating: 4.9,
-      image: maldivesImage,
-      region: "Pacific Islands"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -287,63 +254,6 @@ const Packages = () => {
         </div>
       </section>
 
-      {/* Featured Packages - Only show if no search is active */}
-      {!searchDestination && (
-        <section className="py-20 bg-pale-blue/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-primary mb-4">Featured Packages</h2>
-              <p className="text-xl text-muted-foreground">Hand-picked travel experiences you shouldn't miss</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredPackages.map((pkg, index) => (
-                <Card 
-                  key={pkg.title}
-                  className="group overflow-hidden hover:shadow-travel transition-all duration-500 animate-fade-in"
-                  style={{ animationDelay: `${index * 200}ms` }}
-                >
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={pkg.image}
-                      alt={`${pkg.title} - ${pkg.destination} travel package`}
-                      loading="lazy"
-                      decoding="async"
-                      width="400"
-                      height="256"
-                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <Badge className="bg-accent text-white">{pkg.region}</Badge>
-                    </div>
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">{pkg.rating}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold text-primary mb-2">{pkg.title}</h3>
-                    <div className="flex items-center text-muted-foreground mb-2">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      <span>{pkg.destination}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {pkg.duration}
-                      </div>
-                      <div className="text-2xl font-bold text-accent">{pkg.price}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
       </>
       )}
 
