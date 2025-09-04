@@ -152,7 +152,12 @@ const FeaturedPackages = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-background">
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="border-foreground text-foreground hover:bg-foreground hover:text-background"
+            onClick={() => navigate('/packages')}
+          >
             Explore All Packages
           </Button>
         </div>
