@@ -249,7 +249,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
           <Badge variant="secondary" className="gap-1"><ShieldCheck className="size-4"/> No hidden charges</Badge>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {filtered.map((pkg, index)=>{
             const price = toUSD(pkg);
             const packageImage = pkg.image || getPackageImage(pkg.countrySlug, pkg.title);
