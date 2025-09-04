@@ -201,7 +201,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
             Home
           </Link>
           <ChevronRight className="h-4 w-4" />
-          <span>Regions</span>
+          <Link to="/" className="hover:text-primary transition-colors">Regions</Link>
           <ChevronRight className="h-4 w-4" />
           <span className="text-foreground font-medium">{region}</span>
         </nav>
