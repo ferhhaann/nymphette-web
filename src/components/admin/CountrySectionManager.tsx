@@ -42,6 +42,9 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
   const [editingSection, setEditingSection] = useState<Partial<CountrySection> | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isHeroImageDialogOpen, setIsHeroImageDialogOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedSectionType, setSelectedSectionType] = useState<string>("all")
+  const [showEnabledOnly, setShowEnabledOnly] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -195,15 +198,78 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
     }
   }
 
+  // Filter sections based on search, type, and enabled status
+  const filteredSections = sections.filter(section => {
+    const matchesSearch = section.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         section.section_name?.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesType = selectedSectionType === "all" || section.section_name === selectedSectionType
+    const matchesEnabled = !showEnabledOnly || section.is_enabled
+    return matchesSearch && matchesType && matchesEnabled
+  })
+
   if (loading) {
     return <div className="text-center">Loading sections...</div>
   }
 
   return (
     <div className="space-y-6">
+      {/* Search and Filter Section */}
+      <div className="bg-card p-6 rounded-lg border">
+        <h4 className="text-lg font-semibold mb-4">🔍 Search & Filter Content Sections</h4>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <Label htmlFor="search-sections">Search sections</Label>
+            <Input
+              id="search-sections"
+              placeholder="Search by title or type..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="section-type-filter">Filter by Section Type</Label>
+            <Select value={selectedSectionType} onValueChange={setSelectedSectionType}>
+              <SelectTrigger>
+                <SelectValue placeholder="All Section Types" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Section Types</SelectItem>
+                {SECTION_TYPES.map(type => (
+                  <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2 pt-6">
+            <Switch
+              id="enabled-only"
+              checked={showEnabledOnly}
+              onCheckedChange={setShowEnabledOnly}
+            />
+            <Label htmlFor="enabled-only">Show enabled only</Label>
+          </div>
+          <div className="flex items-end">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSearchTerm("")
+                setSelectedSectionType("all")
+                setShowEnabledOnly(false)
+              }}
+              className="w-full"
+            >
+              Clear Filters
+            </Button>
+          </div>
+        </div>
+        <div className="mt-4 text-sm text-muted-foreground">
+          Showing {filteredSections.length} of {sections.length} sections
+        </div>
+      </div>
+
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-xl font-bold">{countryName} - Content Sections</h3>
+          <h3 className="text-xl font-bold">📝 {countryName} - Content Sections</h3>
           <p className="text-muted-foreground">Manage all content sections for this country</p>
         </div>
         <div className="flex gap-2">
@@ -294,7 +360,7 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
 
       {/* Content Sections */}
       <div className="grid gap-4">
-        {sections.map((section) => (
+        {filteredSections.map((section) => (
           <Card key={section.id}>
             <CardHeader>
               <div className="flex justify-between items-center">

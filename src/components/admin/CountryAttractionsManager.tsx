@@ -31,6 +31,9 @@ export const CountryAttractionsManager = ({ countryId, countryName }: CountryAtt
   const [loading, setLoading] = useState(true)
   const [editingAttraction, setEditingAttraction] = useState<Attraction | null>(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedType, setSelectedType] = useState<string>("all")
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const { toast } = useToast()
 
   const [formData, setFormData] = useState({
@@ -180,14 +183,88 @@ export const CountryAttractionsManager = ({ countryId, countryName }: CountryAtt
     }
   }
 
+  // Filter attractions based on search, type, and category
+  const filteredAttractions = attractions.filter(attraction => {
+    const matchesSearch = attraction.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (attraction.description && attraction.description.toLowerCase().includes(searchTerm.toLowerCase()))
+    const matchesType = selectedType === "all" || attraction.type === selectedType
+    const matchesCategory = selectedCategory === "all" || attraction.category === selectedCategory
+    return matchesSearch && matchesType && matchesCategory
+  })
+
+  // Group attractions by type
+  const attractionsByType = ["most_visited", "most_attractive"].reduce((acc, type) => {
+    acc[type] = filteredAttractions.filter(attraction => attraction.type === type)
+    return acc
+  }, {} as Record<string, Attraction[]>)
+
   if (loading) {
     return <div className="p-4">Loading attractions...</div>
   }
 
   return (
     <div className="space-y-6">
+      {/* Search and Filter Section */}
+      <div className="bg-card p-6 rounded-lg border">
+        <h4 className="text-lg font-semibold mb-4">🔍 Search & Filter Attractions</h4>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <Label htmlFor="search-attractions">Search attractions</Label>
+            <Input
+              id="search-attractions"
+              placeholder="Search by name or description..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="type-filter">Filter by Type</Label>
+            <Select value={selectedType} onValueChange={setSelectedType}>
+              <SelectTrigger>
+                <SelectValue placeholder="All Types" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="most_visited">Most Visited</SelectItem>
+                <SelectItem value="most_attractive">Most Attractive</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="category-filter">Filter by Category</Label>
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger>
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {Array.from(new Set(attractions.map(a => a.category))).map(category => (
+                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-end">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSearchTerm("")
+                setSelectedType("all")
+                setSelectedCategory("all")
+              }}
+              className="w-full"
+            >
+              Clear Filters
+            </Button>
+          </div>
+        </div>
+        <div className="mt-4 text-sm text-muted-foreground">
+          Showing {filteredAttractions.length} of {attractions.length} attractions
+        </div>
+      </div>
+
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Manage Attractions for {countryName}</h3>
+        <h3 className="text-lg font-semibold">🏛️ Manage Attractions for {countryName}</h3>
         <Button onClick={() => setIsFormOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add Attraction
@@ -275,8 +352,21 @@ export const CountryAttractionsManager = ({ countryId, countryName }: CountryAtt
         </Card>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {attractions.map((attraction) => (
+      {/* Attractions organized by Type */}
+      {selectedType === "all" ? (
+        <div className="space-y-8">
+          {["most_visited", "most_attractive"].map(type => {
+            const typeAttractions = attractionsByType[type]
+            if (typeAttractions.length === 0) return null
+            
+            return (
+              <div key={type} className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <h4 className="text-lg font-semibold">{type.replace('_', ' ').toUpperCase()}</h4>
+                  <Badge variant="secondary">{typeAttractions.length} attractions</Badge>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {typeAttractions.map((attraction) => (
           <Card key={attraction.id}>
             <CardContent className="p-4">
               {attraction.image_url && (
@@ -316,9 +406,74 @@ export const CountryAttractionsManager = ({ countryId, countryName }: CountryAtt
                 </div>
               </div>
             </CardContent>
-          </Card>
-        ))}
-      </div>
+            </Card>
+                   ))}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredAttractions.map((attraction) => (
+            <Card key={attraction.id}>
+              <CardContent className="p-4">
+                {attraction.image_url && (
+                  <img
+                    src={attraction.image_url}
+                    alt={attraction.name}
+                    className="w-full h-32 object-cover rounded mb-3"
+                  />
+                )}
+                
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold">{attraction.name}</h4>
+                    <div className="flex gap-1">
+                      <Button size="sm" variant="outline" onClick={() => handleEdit(attraction)}>
+                        <Edit2 className="h-3 w-3" />
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => handleDelete(attraction.id)}>
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {attraction.description && (
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {attraction.description}
+                    </p>
+                  )}
+                  
+                  <div className="flex gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {attraction.type.replace('_', ' ')}
+                    </Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      {attraction.category}
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+                   ))}
+        </div>
+      )}
+
+      {filteredAttractions.length === 0 && attractions.length > 0 && (
+        <Card className="p-8 text-center">
+          <CardContent>
+            <p className="text-muted-foreground">No attractions match your current filters.</p>
+            <Button className="mt-4" variant="outline" onClick={() => {
+              setSearchTerm("")
+              setSelectedType("all")
+              setSelectedCategory("all")
+            }}>
+              Clear Filters
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {attractions.length === 0 && (
         <Card className="p-8 text-center">
