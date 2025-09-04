@@ -10,33 +10,33 @@ interface PackageCardProps {
   onViewDetails: (packageId: string) => void;
 }
 
-// Get individual images for each package based on country
-const getPackageImage = (countrySlug?: string, title?: string) => {
-  // Use public images for better performance
-  if (countrySlug === "thailand") return "/places/thailand/bangkok.jpg";
-  if (countrySlug === "japan") return "/places/japan/tokyo.jpg";
-  if (countrySlug === "indonesia") return "/places/indonesia/bali.jpg";
-  if (countrySlug === "china") return "/places/china/beijing.jpg";
-  if (countrySlug === "kazakhstan") return "/places/kazakhstan/almaty.jpg";
-  if (countrySlug === "malaysia") return "/places/malaysia/kuala-lumpur.jpg";
-  if (countrySlug === "philippines") return "/places/philippines/manila.jpg";
-  if (countrySlug === "south-korea") return "/places/south-korea/seoul.jpg";
-  if (countrySlug === "vietnam") return "/places/vietnam/ho-chi-minh.jpg";
-  if (countrySlug === "maldives") return "/places/maldives/male-city.jpg";
-  if (countrySlug === "uae") return "/places/uae/dubai-marina.jpg";
-  if (countrySlug === "usa") return "/places/usa/times-square.jpg";
-  if (countrySlug === "kenya") return "/places/kenya/masai-mara.jpg";
-  
-  // Fallback based on title keywords
-  if (title?.toLowerCase().includes("maldives")) return "/places/maldives/overwater-villas.jpg";
-  if (title?.toLowerCase().includes("dubai")) return "/places/uae/burj-khalifa.jpg";
-  if (title?.toLowerCase().includes("japan")) return "/places/japan/mount-fuji.jpg";
-  
-  return "/places/thailand/bangkok.jpg"; // Default fallback
-};
-
 const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
-  const packageImage = getPackageImage(pkg.countrySlug, pkg.title);
+  // Use database image first, fallback to static paths if null/empty
+  const getPackageImage = () => {
+    if (pkg.image && pkg.image.trim() !== '') {
+      return pkg.image;
+    }
+    
+    // Fallback to static images only if database image is empty
+    const countrySlug = pkg.countrySlug;
+    if (countrySlug === "thailand") return "/places/thailand/bangkok.jpg";
+    if (countrySlug === "japan") return "/places/japan/tokyo.jpg";
+    if (countrySlug === "indonesia") return "/places/indonesia/bali.jpg";
+    if (countrySlug === "china") return "/places/china/beijing.jpg";
+    if (countrySlug === "kazakhstan") return "/places/kazakhstan/almaty.jpg";
+    if (countrySlug === "malaysia") return "/places/malaysia/kuala-lumpur.jpg";
+    if (countrySlug === "philippines") return "/places/philippines/manila.jpg";
+    if (countrySlug === "south-korea") return "/places/south-korea/seoul.jpg";
+    if (countrySlug === "vietnam") return "/places/vietnam/ho-chi-minh.jpg";
+    if (countrySlug === "maldives") return "/places/maldives/male-city.jpg";
+    if (countrySlug === "uae") return "/places/uae/dubai-marina.jpg";
+    if (countrySlug === "usa") return "/places/usa/times-square.jpg";
+    if (countrySlug === "kenya") return "/places/kenya/masai-mara.jpg";
+    
+    return "/placeholder.svg"; // Final fallback
+  };
+
+  const packageImage = getPackageImage();
   
   return (
     <Card className="group overflow-hidden hover:shadow-card-soft transition-all duration-300 cursor-pointer"

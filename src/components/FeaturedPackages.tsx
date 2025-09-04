@@ -6,31 +6,6 @@ import { Star, Clock, Users, MapPin } from "lucide-react";
 import { useFeaturedPackages } from "@/hooks/useFeaturedPackages";
 import { useContent } from "@/hooks/useContent";
 import { useNavigate } from "react-router-dom";
-// Individual country images - 4 images per country
-import japanImage from "@/assets/countries/japan.jpg";
-import japan2Image from "@/assets/countries/japan-2.jpg";
-import japan3Image from "@/assets/countries/japan-3.jpg";
-import japan4Image from "@/assets/countries/japan-4.jpg";
-import thailandImage from "@/assets/countries/thailand.jpg";
-import thailand2Image from "@/assets/countries/thailand-2.jpg";
-import thailand3Image from "@/assets/countries/thailand-3.jpg";
-import thailand4Image from "@/assets/countries/thailand-4.jpg";
-import indonesiaImage from "@/assets/countries/indonesia.jpg";
-import indonesia2Image from "@/assets/countries/indonesia-2.jpg";
-import indonesia3Image from "@/assets/countries/indonesia-3.jpg";
-import indonesia4Image from "@/assets/countries/indonesia-4.jpg";
-import franceImage from "@/assets/countries/france.jpg";
-import france2Image from "@/assets/countries/france-2.jpg";
-import france3Image from "@/assets/countries/france-3.jpg";
-import france4Image from "@/assets/countries/france-4.jpg";
-import italyImage from "@/assets/countries/italy.jpg";
-import italy2Image from "@/assets/countries/italy-2.jpg";
-import italy3Image from "@/assets/countries/italy-3.jpg";
-import italy4Image from "@/assets/countries/italy-4.jpg";
-import maldivesImage from "@/assets/countries/maldives.jpg";
-import maldives2Image from "@/assets/countries/maldives-2.jpg";
-import maldives3Image from "@/assets/countries/maldives-3.jpg";
-import maldives4Image from "@/assets/countries/maldives-4.jpg";
 
 const FeaturedPackages = () => {
   const { packages, loading } = useFeaturedPackages();
@@ -39,18 +14,6 @@ const FeaturedPackages = () => {
   
   // Already filtered to featured packages from hook
 
-  // Map countries to their respective images - 4 images per destination
-  const getCountryImages = (destination: string) => {
-    const destinationLower = destination.toLowerCase();
-    if (destinationLower.includes('japan')) return [japanImage, japan2Image, japan3Image, japan4Image];
-    if (destinationLower.includes('thailand')) return [thailandImage, thailand2Image, thailand3Image, thailand4Image];
-    if (destinationLower.includes('bali') || destinationLower.includes('indonesia')) return [indonesiaImage, indonesia2Image, indonesia3Image, indonesia4Image];
-    if (destinationLower.includes('france') || destinationLower.includes('paris')) return [franceImage, france2Image, france3Image, france4Image];
-    if (destinationLower.includes('europe') && !destinationLower.includes('france')) return [italyImage, italy2Image, italy3Image, italy4Image];
-    if (destinationLower.includes('maldives')) return [maldivesImage, maldives2Image, maldives3Image, maldives4Image];
-    if (destinationLower.includes('italy') || destinationLower.includes('rome')) return [italyImage, italy2Image, italy3Image, italy4Image];
-    return [thailandImage, thailand2Image, thailand3Image, thailand4Image]; // Default fallback
-  };
 
   if (loading) {
     return (
