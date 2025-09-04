@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client"
 import { useToast } from "@/hooks/use-toast"
 import { Edit, Trash2, GripVertical } from "lucide-react"
 import type { Database } from "@/integrations/supabase/types"
+import { CountrySectionManager } from './CountrySectionManager'
 
 type Country = Database['public']['Tables']['countries']['Row']
 type CountrySection = Database['public']['Tables']['country_sections']['Row']
@@ -271,6 +272,15 @@ export const ContentSectionsManager = ({ countries }: ContentSectionsManagerProp
               <h4 className="text-lg font-semibold">{country.name}</h4>
               <Badge variant="outline">{country.region}</Badge>
               <Badge variant="secondary">{countrySections.length} sections</Badge>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  window.location.hash = `#country-${country.id}-sections`
+                }}
+              >
+                ✏️ Full Editor
+              </Button>
             </div>
             
             <div className="grid gap-4">
@@ -284,8 +294,7 @@ export const ContentSectionsManager = ({ countries }: ContentSectionsManagerProp
                           <CardTitle className="text-lg">{section.title || 'Untitled Section'}</CardTitle>
                           <p className="text-sm text-muted-foreground">
                             {SECTION_TYPES.find(t => t.value === section.section_name)?.label || section.section_name} • 
-                            Order: {section.order_index} • 
-                            {section.country_name}
+                            Order: {section.order_index}
                           </p>
                         </div>
                       </div>
@@ -294,16 +303,6 @@ export const ContentSectionsManager = ({ countries }: ContentSectionsManagerProp
                           checked={section.is_enabled}
                           onCheckedChange={(checked) => updateSectionStatus(section.id, checked)}
                         />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            // Navigate to individual country section manager
-                            window.location.hash = `#country-${section.country_id}-sections`
-                          }}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
                         <Button
                           variant="destructive"
                           size="sm"
@@ -348,10 +347,42 @@ export const ContentSectionsManager = ({ countries }: ContentSectionsManagerProp
         </Card>
       )}
 
+      {/* Individual Country Section Managers */}
+      <div className="space-y-8 mt-12">
+        <div className="border-t pt-8">
+          <h3 className="text-xl font-semibold mb-6">📝 Detailed Section Editing by Country</h3>
+          <p className="text-muted-foreground mb-6">
+            Here you can fully edit content sections with the complete editor interface including adding content, uploading images, and configuring all settings.
+          </p>
+          
+          <div className="grid gap-4">
+            {countries.map((country) => (
+              <Card key={country.id} id={`country-${country.id}-sections`} className="scroll-mt-8">
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle>🏛️ {country.name} - Full Content Editor</CardTitle>
+                      <p className="text-muted-foreground">Add, edit, and manage all content sections with images and detailed settings</p>
+                    </div>
+                    <Badge variant="outline">{country.region}</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CountrySectionManager 
+                    countryId={country.id} 
+                    countryName={country.name} 
+                  />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {sections.length === 0 && (
         <Card className="p-8 text-center">
           <CardContent>
-            <p className="text-muted-foreground">No content sections found. Add countries first, then create content sections for them.</p>
+            <p className="text-muted-foreground">No content sections found. Add countries first, then create content sections for them using the individual country editors below.</p>
           </CardContent>
         </Card>
       )}
