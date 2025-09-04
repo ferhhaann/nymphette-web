@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast"
 import { Plus, Edit, Trash2, Globe, MapPin } from "lucide-react"
 import { ImageUpload } from "./ImageUpload"
 import { CountryContentManager } from "./CountryContentManager"
+import { CountrySectionManager } from "./CountrySectionManager"
 import { ContentSectionsManager } from "./ContentSectionsManager"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Database } from "@/integrations/supabase/types"
@@ -351,7 +352,33 @@ export const CountryManager = () => {
         </TabsContent>
         
         <TabsContent value="sections">
-          <ContentSectionsManager countries={countries} />
+          <div className="space-y-6">
+            {/* Global overview with filters */}
+            <ContentSectionsManager countries={countries} />
+            
+            {/* Individual country section managers */}
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold">✏️ Edit Content Sections by Country</h3>
+              {countries.length > 0 && (
+                <div className="space-y-6">
+                  {countries.map((country) => (
+                    <Card key={country.id} id={`country-${country.id}-sections`}>
+                      <CardHeader>
+                        <CardTitle>{country.name} - Content Management</CardTitle>
+                        <p className="text-muted-foreground">Add, edit, and manage content sections for {country.name}</p>
+                      </CardHeader>
+                      <CardContent>
+                        <CountrySectionManager 
+                          countryId={country.id} 
+                          countryName={country.name} 
+                        />
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </TabsContent>
         
         <TabsContent value="content">
