@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from '@/integrations/supabase/client';
 import { TravelPackage } from "@/data/packagesData";
 import Navigation from "@/components/Navigation";
@@ -28,7 +28,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Calendar, CheckCircle2, CircleDollarSign, MapPinned, ShieldCheck, Star, Utensils, Users, ArrowLeft } from "lucide-react";
+import { Calendar, CheckCircle2, CircleDollarSign, MapPinned, ShieldCheck, Star, Utensils, Users, Home, ChevronRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { InquiryBookingForm } from "./InquiryBookingForm";
 import ChatbotWidget from "./ChatbotWidget";
@@ -193,22 +193,22 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   return (
       <div className="min-h-screen bg-background">
       <Navigation />
-      {/* Back Button - Only show when coming from packages page */}
-      {isFromPackagesPage && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-          <Button 
-            variant="outline" 
-            onClick={() => navigate('/packages')}
-            className="mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Packages
-          </Button>
-        </div>
-      )}
+      {/* Breadcrumbs */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
+          <Link to="/" className="hover:text-primary transition-colors flex items-center">
+            <Home className="h-4 w-4 mr-1" />
+            Home
+          </Link>
+          <ChevronRight className="h-4 w-4" />
+          <span>Regions</span>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-foreground font-medium">{region}</span>
+        </nav>
+      </div>
       
       {/* HERO */}
-      <section className={`relative ${isFromPackagesPage ? 'mt-0' : 'mt-20 sm:mt-22 lg:mt-24'}`}>
+      <section className="relative">
         <Carousel>
           <CarouselContent>
             {heroImages.map((img, idx) => (

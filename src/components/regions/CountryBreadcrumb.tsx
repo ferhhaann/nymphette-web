@@ -14,14 +14,10 @@ export const CountryBreadcrumb = ({ region, countryName }: CountryBreadcrumbProp
         Home
       </Link>
       <ChevronRight className="h-4 w-4" />
-      <Link to="/packages" className="hover:text-primary transition-colors">
-        Tour Packages
-      </Link>
-      <ChevronRight className="h-4 w-4" />
-      <span>International Tour Packages</span>
+      <span>Regions</span>
       <ChevronRight className="h-4 w-4" />
       <Link to={`/regions/${region.toLowerCase()}`} className="hover:text-primary transition-colors">
-        {region} Tour Packages
+        {region}
       </Link>
       <ChevronRight className="h-4 w-4" />
       <span className="text-foreground font-medium">{countryName}</span>
