@@ -13,10 +13,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
-import { Plus, Edit, Trash2, Save, Package, Settings, Calendar } from "lucide-react"
+import { Plus, Edit, Trash2, Save, Package, Settings, Calendar, Upload } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { ImageUpload } from "./ImageUpload"
 import { ItineraryEditor } from "./ItineraryEditor"
+import { PackageBulkUpload } from "./PackageBulkUpload"
 
 export const PackageManager = () => {
   const [packages, setPackages] = useState<DatabasePackage[]>([])
@@ -160,99 +161,121 @@ export const PackageManager = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">Travel Packages</h2>
-          <p className="text-muted-foreground">Manage your travel packages with complete database control</p>
+      <Tabs defaultValue="packages" className="w-full">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h2 className="text-2xl font-bold">Travel Packages</h2>
+            <p className="text-muted-foreground">Manage your travel packages with complete database control</p>
+          </div>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => openEditDialog()}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Package
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {editingPackage?.id ? 'Edit Package' : 'Create New Package'}
-              </DialogTitle>
-            </DialogHeader>
-            {editingPackage && (
-              <PackageForm
-                package={editingPackage}
-                onSave={savePackage}
-                regions={regions}
-                categories={categories}
-              />
-            )}
-          </DialogContent>
-        </Dialog>
-      </div>
 
-      <div className="grid gap-4">
-        {packages.map((pkg) => (
-          <Card key={pkg.id}>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-lg">{pkg.title}</CardTitle>
-                  <CardDescription>
-                    {pkg.country} • {pkg.region} • {pkg.duration}
-                  </CardDescription>
-                  <div className="flex gap-2 mt-2">
-                    <Badge variant="secondary">{pkg.category}</Badge>
-                    {pkg.featured && <Badge variant="default">Featured</Badge>}
-                    <Badge variant="outline">
-                      ⭐ {pkg.rating} ({pkg.reviews} reviews)
-                    </Badge>
+        <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsTrigger value="packages" className="flex items-center gap-2">
+            <Package className="h-4 w-4" />
+            Manage Packages
+          </TabsTrigger>
+          <TabsTrigger value="bulk-upload" className="flex items-center gap-2">
+            <Upload className="h-4 w-4" />
+            Bulk Upload
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="packages" className="space-y-6">
+          <div className="flex justify-end">
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button onClick={() => openEditDialog()}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Package
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingPackage?.id ? 'Edit Package' : 'Create New Package'}
+                  </DialogTitle>
+                </DialogHeader>
+                {editingPackage && (
+                  <PackageForm
+                    package={editingPackage}
+                    onSave={savePackage}
+                    regions={regions}
+                    categories={categories}
+                  />
+                )}
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          <div className="grid gap-4">
+            {packages.map((pkg) => (
+              <Card key={pkg.id}>
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-lg">{pkg.title}</CardTitle>
+                      <CardDescription>
+                        {pkg.country} • {pkg.region} • {pkg.duration}
+                      </CardDescription>
+                      <div className="flex gap-2 mt-2">
+                        <Badge variant="secondary">{pkg.category}</Badge>
+                        {pkg.featured && <Badge variant="default">Featured</Badge>}
+                        <Badge variant="outline">
+                          ⭐ {pkg.rating} ({pkg.reviews} reviews)
+                        </Badge>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => openEditDialog(pkg)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => deletePackage(pkg.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => openEditDialog(pkg)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => deletePackage(pkg.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div>
-                  <span className="font-medium">Price:</span> {pkg.price}
-                  {pkg.original_price && (
-                    <span className="text-muted-foreground line-through ml-2">
-                      {pkg.original_price}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <span className="font-medium">Group Size:</span> {pkg.group_size}
-                </div>
-                <div>
-                  <span className="font-medium">Best Time:</span> {pkg.best_time}
-                </div>
-                <div>
-                  <span className="font-medium">Itinerary Days:</span> {
-                    Array.isArray(pkg.itinerary) ? pkg.itinerary.length : 
-                    (typeof pkg.itinerary === 'string' ? JSON.parse(pkg.itinerary || '[]').length : 0)
-                  }
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium">Price:</span> {pkg.price}
+                      {pkg.original_price && (
+                        <span className="text-muted-foreground line-through ml-2">
+                          {pkg.original_price}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <span className="font-medium">Group Size:</span> {pkg.group_size}
+                    </div>
+                    <div>
+                      <span className="font-medium">Best Time:</span> {pkg.best_time}
+                    </div>
+                    <div>
+                      <span className="font-medium">Itinerary Days:</span> {
+                        Array.isArray(pkg.itinerary) ? pkg.itinerary.length : 
+                        (typeof pkg.itinerary === 'string' ? JSON.parse(pkg.itinerary || '[]').length : 0)
+                      }
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="bulk-upload">
+          <PackageBulkUpload />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
