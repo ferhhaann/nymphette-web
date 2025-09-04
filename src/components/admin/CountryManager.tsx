@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
 import { supabase } from "@/integrations/supabase/client"
 import { useToast } from "@/hooks/use-toast"
 import { Plus, Edit, Trash2, Globe, MapPin } from "lucide-react"
@@ -46,6 +47,8 @@ export const CountryManager = () => {
   const [loading, setLoading] = useState(true)
   const [editingCountry, setEditingCountry] = useState<Partial<Country> | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [selectedRegion, setSelectedRegion] = useState<string>("all")
+  const [searchTerm, setSearchTerm] = useState("")
   const { toast } = useToast()
 
   const regions = ["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"]
@@ -137,6 +140,20 @@ export const CountryManager = () => {
   }
 
 
+  // Filter countries based on search and region
+  const filteredCountries = countries.filter(country => {
+    const matchesSearch = country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (country.capital && country.capital.toLowerCase().includes(searchTerm.toLowerCase()))
+    const matchesRegion = selectedRegion === "all" || country.region === selectedRegion
+    return matchesSearch && matchesRegion
+  })
+
+  // Group countries by region
+  const countriesByRegion = regions.reduce((acc, region) => {
+    acc[region] = filteredCountries.filter(country => country.region === region)
+    return acc
+  }, {} as Record<string, Country[]>)
+
   if (loading) {
     return <div className="text-center">Loading countries...</div>
   }
@@ -145,8 +162,8 @@ export const CountryManager = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Countries Management</h2>
-          <p className="text-muted-foreground">Manage country details, places, and information</p>
+          <h2 className="text-2xl font-bold">🌍 Countries Management</h2>
+          <p className="text-muted-foreground">Manage country details, places, and information - organized by region</p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -181,8 +198,66 @@ export const CountryManager = () => {
         </TabsList>
         
         <TabsContent value="countries" className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {countries.map((country) => (
+          {/* Search and Filter Section */}
+          <div className="bg-card p-6 rounded-lg border">
+            <h3 className="text-lg font-semibold mb-4">🔍 Search & Filter Countries</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="search-countries">Search countries</Label>
+                <Input
+                  id="search-countries"
+                  placeholder="Search by name or capital..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="region-filter-countries">Filter by Region</Label>
+                <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Regions" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Regions</SelectItem>
+                    {regions.map(region => (
+                      <SelectItem key={region} value={region}>{region}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSearchTerm("")
+                    setSelectedRegion("all")
+                  }}
+                  className="w-full"
+                >
+                  Clear Filters
+                </Button>
+              </div>
+            </div>
+            <div className="mt-4 text-sm text-muted-foreground">
+              Showing {filteredCountries.length} of {countries.length} countries
+            </div>
+          </div>
+
+          {/* Countries organized by Region */}
+          {selectedRegion === "all" ? (
+            <div className="space-y-8">
+              {regions.map(region => {
+                const regionCountries = countriesByRegion[region]
+                if (regionCountries.length === 0) return null
+                
+                return (
+                  <div key={region} className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xl font-semibold">{region}</h3>
+                      <Badge variant="secondary">{regionCountries.length} countries</Badge>
+                    </div>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {regionCountries.map((country) => (
               <Card key={country.id}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -221,9 +296,58 @@ export const CountryManager = () => {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
-          </div>
+                      </Card>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredCountries.map((country) => (
+                <Card key={country.id}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Globe className="h-5 w-5" />
+                      {country.name}
+                    </CardTitle>
+                    <CardDescription>
+                      <MapPin className="h-4 w-4 inline mr-1" />
+                      {country.region} • {country.capital}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm text-muted-foreground">
+                        <p>Currency: {country.currency}</p>
+                        <p>Best Season: {country.best_season}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setEditingCountry(country)
+                            setIsDialogOpen(true)
+                          }}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => deleteCountry(country.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </TabsContent>
         
         <TabsContent value="sections">

@@ -24,6 +24,9 @@ export const PackageManager = () => {
   const [loading, setLoading] = useState(true)
   const [editingPackage, setEditingPackage] = useState<Partial<DatabasePackage> | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [selectedRegion, setSelectedRegion] = useState<string>("all")
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const { toast } = useToast()
 
   const regions = ["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"]
@@ -179,6 +182,21 @@ export const PackageManager = () => {
     updated_at: null
   })
 
+  // Filter packages based on search, region, and category
+  const filteredPackages = packages.filter(pkg => {
+    const matchesSearch = pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         pkg.country.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesRegion = selectedRegion === "all" || pkg.region === selectedRegion
+    const matchesCategory = selectedCategory === "all" || pkg.category === selectedCategory
+    return matchesSearch && matchesRegion && matchesCategory
+  })
+
+  // Group packages by region
+  const packagesByRegion = regions.reduce((acc, region) => {
+    acc[region] = filteredPackages.filter(pkg => pkg.region === region)
+    return acc
+  }, {} as Record<string, DatabasePackage[]>)
+
   if (loading) {
     return <div className="flex justify-center p-8">Loading packages...</div>
   }
@@ -188,8 +206,8 @@ export const PackageManager = () => {
       <Tabs defaultValue="packages" className="w-full">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-2xl font-bold">Travel Packages</h2>
-            <p className="text-muted-foreground">Manage your travel packages with complete database control</p>
+            <h2 className="text-2xl font-bold">📦 Travel Packages</h2>
+            <p className="text-muted-foreground">Easily manage your travel packages - organized by region for better navigation</p>
           </div>
         </div>
 
@@ -205,43 +223,119 @@ export const PackageManager = () => {
         </TabsList>
 
         <TabsContent value="packages" className="space-y-6">
-          <div className="flex justify-between items-center">
-            <Button
-              variant="destructive"
-              onClick={deleteAllPackages}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete All Packages
-            </Button>
-            
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => openEditDialog()}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Package
+          {/* Search and Filter Section */}
+          <div className="bg-card p-6 rounded-lg border">
+            <h3 className="text-lg font-semibold mb-4">🔍 Search & Filter Packages</h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <Label htmlFor="search">Search packages</Label>
+                <Input
+                  id="search"
+                  placeholder="Search by name or country..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="region-filter">Filter by Region</Label>
+                <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Regions" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Regions</SelectItem>
+                    {regions.map(region => (
+                      <SelectItem key={region} value={region}>{region}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="category-filter">Filter by Category</Label>
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Categories" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {categories.map(category => (
+                      <SelectItem key={category} value={category}>{category}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSearchTerm("")
+                    setSelectedRegion("all")
+                    setSelectedCategory("all")
+                  }}
+                  className="w-full"
+                >
+                  Clear Filters
                 </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>
-                    {editingPackage?.id ? 'Edit Package' : 'Create New Package'}
-                  </DialogTitle>
-                </DialogHeader>
-                {editingPackage && (
-                  <PackageForm
-                    package={editingPackage}
-                    onSave={savePackage}
-                    regions={regions}
-                    categories={categories}
-                  />
-                )}
-              </DialogContent>
-            </Dialog>
+              </div>
+            </div>
           </div>
 
-          <div className="grid gap-4">
-            {packages.map((pkg) => (
+          {/* Action Buttons */}
+          <div className="flex justify-between items-center">
+            <div className="text-sm text-muted-foreground">
+              Showing {filteredPackages.length} of {packages.length} packages
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="destructive"
+                onClick={deleteAllPackages}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete All
+              </Button>
+              
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button onClick={() => openEditDialog()}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add New Package
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>
+                      {editingPackage?.id ? '✏️ Edit Package' : '➕ Create New Package'}
+                    </DialogTitle>
+                  </DialogHeader>
+                  {editingPackage && (
+                    <PackageForm
+                      package={editingPackage}
+                      onSave={savePackage}
+                      regions={regions}
+                      categories={categories}
+                    />
+                  )}
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+
+          {/* Packages organized by Region */}
+          {selectedRegion === "all" ? (
+            <div className="space-y-8">
+              {regions.map(region => {
+                const regionPackages = packagesByRegion[region]
+                if (regionPackages.length === 0) return null
+                
+                return (
+                  <div key={region} className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xl font-semibold">{region}</h3>
+                      <Badge variant="secondary">{regionPackages.length} packages</Badge>
+                    </div>
+                    <div className="grid gap-4">
+                      {regionPackages.map((pkg) => (
               <Card key={pkg.id}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
@@ -300,9 +394,78 @@ export const PackageManager = () => {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
-          </div>
+                      </Card>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {filteredPackages.map((pkg) => (
+                <Card key={pkg.id}>
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <CardTitle className="text-lg">{pkg.title}</CardTitle>
+                        <CardDescription>
+                          {pkg.country} • {pkg.region} • {pkg.duration}
+                        </CardDescription>
+                        <div className="flex gap-2 mt-2">
+                          <Badge variant="secondary">{pkg.category}</Badge>
+                          {pkg.featured && <Badge variant="default">Featured</Badge>}
+                          <Badge variant="outline">
+                            ⭐ {pkg.rating} ({pkg.reviews} reviews)
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openEditDialog(pkg)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => deletePackage(pkg.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <span className="font-medium">Price:</span> {pkg.price}
+                        {pkg.original_price && (
+                          <span className="text-muted-foreground line-through ml-2">
+                            {pkg.original_price}
+                          </span>
+                        )}
+                      </div>
+                      <div>
+                        <span className="font-medium">Group Size:</span> {pkg.group_size}
+                      </div>
+                      <div>
+                        <span className="font-medium">Best Time:</span> {pkg.best_time}
+                      </div>
+                      <div>
+                        <span className="font-medium">Itinerary Days:</span> {
+                          Array.isArray(pkg.itinerary) ? pkg.itinerary.length : 
+                          (typeof pkg.itinerary === 'string' ? JSON.parse(pkg.itinerary || '[]').length : 0)
+                        }
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="bulk-upload">
