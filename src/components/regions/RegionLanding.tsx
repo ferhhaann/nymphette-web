@@ -102,12 +102,67 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const [packages, setPackages] = useState<TravelPackage[]>([]);
   const [loading, setLoading] = useState(true);
   
+  // Import region-specific images to match packages page
+  const getRegionImages = (regionName: string) => {
+    const normalizedRegion = regionName.toLowerCase();
+    
+    if (normalizedRegion === 'asia') {
+      return [
+        '/src/assets/regions/asia-1.jpg',
+        '/src/assets/regions/asia-2.jpg', 
+        '/src/assets/regions/asia-3.jpg'
+      ];
+    }
+    if (normalizedRegion === 'europe') {
+      return [
+        '/src/assets/regions/europe-1.jpg',
+        '/src/assets/regions/europe-2.jpg',
+        '/src/assets/regions/europe-3.jpg'
+      ];
+    }
+    if (normalizedRegion === 'africa') {
+      return [
+        '/src/assets/regions/africa-1.jpg',
+        '/src/assets/regions/africa-2.jpg',
+        '/src/assets/regions/africa-3.jpg'
+      ];
+    }
+    if (normalizedRegion === 'americas') {
+      return [
+        '/src/assets/regions/americas-1.jpg',
+        '/src/assets/regions/americas-2.jpg',
+        '/src/assets/regions/americas-3.jpg'
+      ];
+    }
+    if (normalizedRegion === 'pacific islands') {
+      return [
+        '/src/assets/regions/pacific-1.jpg',
+        '/src/assets/regions/pacific-2.jpg',
+        '/src/assets/regions/pacific-3.jpg'
+      ];
+    }
+    if (normalizedRegion === 'middle east') {
+      return [
+        '/src/assets/regions/middle-east-1.jpg',
+        '/src/assets/regions/middle-east-2.jpg',
+        '/src/assets/regions/middle-east-3.jpg'
+      ];
+    }
+    
+    // Fallback to Asia images
+    return [
+      '/src/assets/regions/asia-1.jpg',
+      '/src/assets/regions/asia-2.jpg',
+      '/src/assets/regions/asia-3.jpg'
+    ];
+  };
+
   // Derive values from the region prop
   const regionKey = region.toLowerCase().replace(/\s+/g, '-');
   const title = `Discover ${region}`;
   const description = `Explore amazing destinations and travel packages in ${region}`;
   const canonical = `/regions/${regionKey}`;
-  const heroImages = ["/places/thailand/bangkok.webp"]; // TODO: Load region-specific images
+  const heroImages = getRegionImages(region);
 
   // Check if we're coming from packages page
   const isFromPackagesPage = window.location.pathname.includes('/packages/region/');
