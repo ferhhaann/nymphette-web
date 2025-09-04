@@ -12,8 +12,11 @@ import { useToast } from "@/hooks/use-toast"
 import { Plus, Edit, Trash2, Globe, MapPin } from "lucide-react"
 import { ImageUpload } from "./ImageUpload"
 import { CountryContentManager } from "./CountryContentManager"
+import { ContentSectionsManager } from "./ContentSectionsManager"
+import { AttractionsContentManager } from "./AttractionsContentManager"
 import { CountrySectionManager } from "./CountrySectionManager"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { GenericFilter } from "./GenericFilter"
 import type { Database } from "@/integrations/supabase/types"
 
 type Country = Database['public']['Tables']['countries']['Row']
@@ -198,50 +201,23 @@ export const CountryManager = () => {
         </TabsList>
         
         <TabsContent value="countries" className="space-y-6">
-          {/* Search and Filter Section */}
-          <div className="bg-card p-6 rounded-lg border">
-            <h3 className="text-lg font-semibold mb-4">🔍 Search & Filter Countries</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="search-countries">Search countries</Label>
-                <Input
-                  id="search-countries"
-                  placeholder="Search by name or capital..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="region-filter-countries">Filter by Region</Label>
-                <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Regions" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Regions</SelectItem>
-                    {regions.map(region => (
-                      <SelectItem key={region} value={region}>{region}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex items-end">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSearchTerm("")
-                    setSelectedRegion("all")
-                  }}
-                  className="w-full"
-                >
-                  Clear Filters
-                </Button>
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-muted-foreground">
-              Showing {filteredCountries.length} of {countries.length} countries
-            </div>
-          </div>
+          <GenericFilter
+            searchValue={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedCountry=""
+            onCountryChange={() => {}}
+            selectedRegion={selectedRegion}
+            onRegionChange={setSelectedRegion}
+            totalItems={countries.length}
+            filteredItems={filteredCountries.length}
+            onClearFilters={() => {
+              setSearchTerm("")
+              setSelectedRegion("all")
+            }}
+            searchPlaceholder="Search by name or capital..."
+            showCountryFilter={false}
+            showRegionFilter={true}
+          />
 
           {/* Countries organized by Region */}
           {selectedRegion === "all" ? (
@@ -351,29 +327,11 @@ export const CountryManager = () => {
         </TabsContent>
         
         <TabsContent value="sections">
-          {countries.length > 0 && (
-            <div className="space-y-6">
-              <div className="grid gap-6">
-                {countries.map((country) => (
-                  <Card key={country.id}>
-                    <CardHeader>
-                      <CardTitle>{country.name} - Content Management</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CountrySectionManager 
-                        countryId={country.id} 
-                        countryName={country.name} 
-                      />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
+          <ContentSectionsManager />
         </TabsContent>
         
         <TabsContent value="content">
-          <CountryContentManager />
+          <AttractionsContentManager />
         </TabsContent>
       </Tabs>
     </div>
