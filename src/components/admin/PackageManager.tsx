@@ -127,7 +127,7 @@ export const PackageManager = () => {
       const { error } = await supabase
         .from('packages')
         .delete()
-        .neq('id', '') // Delete all rows (using a condition that's always true)
+        .not('id', 'is', null) // Delete all rows (using a condition that matches all non-null IDs)
 
       if (error) throw error
       await loadPackages()
