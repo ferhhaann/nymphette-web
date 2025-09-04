@@ -540,6 +540,7 @@ export type Database = {
           best_time: string | null
           category: string
           country: string
+          country_id: string | null
           country_slug: string | null
           created_at: string | null
           duration: string
@@ -568,6 +569,7 @@ export type Database = {
           best_time?: string | null
           category: string
           country: string
+          country_id?: string | null
           country_slug?: string | null
           created_at?: string | null
           duration: string
@@ -596,6 +598,7 @@ export type Database = {
           best_time?: string | null
           category?: string
           country?: string
+          country_id?: string | null
           country_slug?: string | null
           created_at?: string | null
           duration?: string
@@ -620,7 +623,15 @@ export type Database = {
           title?: string
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_packages_country_id"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       travel_purposes: {
         Row: {
