@@ -169,32 +169,32 @@ export const ItineraryEditor = ({ itinerary, onChange }: ItineraryEditorProps) =
                   <Label htmlFor={`activities-${index}`} className="text-xs">Activities (comma-separated)</Label>
                   <Textarea
                     id={`activities-${index}`}
-                    value={day.activities.join(', ')}
+                    value={day.activities?.join(', ') || ''}
                     onChange={(e) => updateArrayField(index, 'activities', e.target.value)}
                     placeholder="Sightseeing, Museums, Shopping"
                     rows={2}
                     className="text-sm"
                   />
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {day.activities.map((activity, i) => (
+                    {day.activities?.map((activity, i) => (
                       <Badge key={i} variant="secondary" className="text-xs">{activity}</Badge>
-                    ))}
+                    )) || []}
                   </div>
                 </div>
                 <div>
                   <Label htmlFor={`meals-${index}`} className="text-xs">Meals (comma-separated)</Label>
                   <Textarea
                     id={`meals-${index}`}
-                    value={day.meals.join(', ')}
+                    value={day.meals?.join(', ') || ''}
                     onChange={(e) => updateArrayField(index, 'meals', e.target.value)}
                     placeholder="Breakfast, Lunch, Dinner"
                     rows={2}
                     className="text-sm"
                   />
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {day.meals.map((meal, i) => (
+                    {day.meals?.map((meal, i) => (
                       <Badge key={i} variant="outline" className="text-xs">{meal}</Badge>
-                    ))}
+                    )) || []}
                   </div>
                 </div>
               </div>
