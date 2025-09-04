@@ -19,7 +19,7 @@ const PromoBanner = () => {
                 <Button className="bg-background text-foreground hover:bg-background/90" onClick={() => navigate('/packages')}>
                   Explore packages
                 </Button>
-                <Button variant="outline" className="border-background text-background hover:bg-background hover:text-foreground" onClick={() => navigate('/blog')}>
+                <Button variant="outline" className="bg-transparent border-background text-background hover:bg-background hover:text-foreground transition-all duration-200" onClick={() => navigate('/blog')}>
                   Read more
                 </Button>
               </div>
