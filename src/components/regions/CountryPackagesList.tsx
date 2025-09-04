@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useOptimizedQuery } from '@/hooks/useOptimizedQuery'
 import { supabase } from '@/integrations/supabase/client'
+import { OptimizedImage } from '@/components/ui/optimized-image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -27,16 +28,11 @@ interface CountryPackagesListProps {
 }
 
 export const CountryPackagesList = ({ countrySlug, countryName }: CountryPackagesListProps) => {
-  const [packages, setPackages] = useState<TourPackage[]>([])
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    loadPackages()
-  }, [countrySlug])
-
-  const loadPackages = async () => {
-    try {
+  const { data: packages, loading } = useOptimizedQuery(
+    ['country-packages', countrySlug],
+    async (): Promise<TourPackage[]> => {
       const { data, error } = await supabase
         .from('packages')
         .select('*')
@@ -45,13 +41,14 @@ export const CountryPackagesList = ({ countrySlug, countryName }: CountryPackage
         .order('rating', { ascending: false })
 
       if (error) throw error
-      setPackages(data || [])
-    } catch (error) {
-      console.error('Error loading packages:', error)
-    } finally {
-      setLoading(false)
+      return data || []
+    },
+    {
+      enabled: !!countrySlug,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 15 * 60 * 1000
     }
-  }
+  )
 
   const handleViewPackage = (packageId: string) => {
     navigate(`/package/${packageId}`)
@@ -72,7 +69,7 @@ export const CountryPackagesList = ({ countrySlug, countryName }: CountryPackage
     )
   }
 
-  if (packages.length === 0) {
+  if (!packages?.length) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <h2 className="text-3xl font-bold text-foreground mb-6">Tour Packages for {countryName}</h2>
@@ -91,22 +88,21 @@ export const CountryPackagesList = ({ countrySlug, countryName }: CountryPackage
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-3xl font-bold text-foreground">Tour Packages for {countryName}</h2>
         <Badge variant="outline" className="text-sm">
-          {packages.length} packages available
+          {packages?.length || 0} packages available
         </Badge>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {packages.map((pkg) => (
+        {packages?.map((pkg, index) => (
           <Card key={pkg.id} className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20">
             <CardHeader className="p-0">
               <div className="relative overflow-hidden rounded-t-lg">
-                <img
+                <OptimizedImage
                   src={pkg.image || '/placeholder.svg'}
                   alt={pkg.title}
+                  priority={index < 3}
+                  preloadSources={packages?.slice(index + 1, index + 2).map(p => p.image) || []}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'
-                  }}
                 />
                 {pkg.original_price && (
                   <Badge className="absolute top-3 left-3 bg-destructive text-destructive-foreground">

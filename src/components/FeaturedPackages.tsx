@@ -3,13 +3,13 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Star, Clock, Users, MapPin } from "lucide-react";
-import { useFeaturedPackages } from "@/hooks/useFeaturedPackages";
-import { useContent } from "@/hooks/useContent";
+import { useOptimizedFeaturedPackages } from "@/hooks/useOptimizedPackages";
+import { useOptimizedContent } from "@/hooks/useOptimizedContent";
 import { useNavigate } from "react-router-dom";
 
 const FeaturedPackages = () => {
-  const { packages, loading } = useFeaturedPackages();
-  const { getContentValue } = useContent('featured-packages');
+  const { data: packages, loading } = useOptimizedFeaturedPackages();
+  const { getContentValue } = useOptimizedContent('featured-packages');
   const navigate = useNavigate();
   
   // Already filtered to featured packages from hook
@@ -40,7 +40,7 @@ const FeaturedPackages = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {packages.map((pkg, index) => (
+          {packages?.map((pkg, index) => (
             <Card 
               key={pkg.id}
               className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
@@ -51,6 +51,7 @@ const FeaturedPackages = () => {
                   src={pkg.image}
                   alt={`${pkg.title} - ${pkg.country} travel package`}
                   priority={index < 3}
+                  preloadSources={packages?.slice(index + 1, index + 3).map(p => p.image) || []}
                   className="w-full h-64 object-cover"
                 />
                 <div className="absolute top-4 left-4">

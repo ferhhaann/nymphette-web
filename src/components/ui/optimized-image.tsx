@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { useImagePreloader } from '@/hooks/useImagePreloader';
 
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -7,6 +8,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   priority?: boolean;
   className?: string;
   fallback?: string;
+  preloadSources?: string[];
   onLoad?: () => void;
   onError?: () => void;
 }
@@ -17,6 +19,7 @@ export const OptimizedImage = ({
   priority = false,
   className,
   fallback = '/placeholder.svg',
+  preloadSources = [],
   onLoad,
   onError,
   ...props
@@ -26,6 +29,9 @@ export const OptimizedImage = ({
   const [isIntersecting, setIsIntersecting] = useState(priority);
   const imgRef = useRef<HTMLImageElement>(null);
   const [currentSrc, setCurrentSrc] = useState(priority ? src : '');
+  
+  // Preload additional images for better performance
+  useImagePreloader([src, ...preloadSources], { priority, preloadCount: priority ? 5 : 2 });
 
   useEffect(() => {
     if (priority) return;
