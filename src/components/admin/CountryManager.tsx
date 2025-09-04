@@ -13,7 +13,6 @@ import { Plus, Edit, Trash2, Globe, MapPin } from "lucide-react"
 import { ImageUpload } from "./ImageUpload"
 import { CountryContentManager } from "./CountryContentManager"
 import { CountrySectionManager } from "./CountrySectionManager"
-import { ContentSectionsManager } from "./ContentSectionsManager"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Database } from "@/integrations/supabase/types"
 
@@ -352,7 +351,25 @@ export const CountryManager = () => {
         </TabsContent>
         
         <TabsContent value="sections">
-          <ContentSectionsManager countries={countries} />
+          {countries.length > 0 && (
+            <div className="space-y-6">
+              <div className="grid gap-6">
+                {countries.map((country) => (
+                  <Card key={country.id}>
+                    <CardHeader>
+                      <CardTitle>{country.name} - Content Management</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CountrySectionManager 
+                        countryId={country.id} 
+                        countryName={country.name} 
+                      />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
         </TabsContent>
         
         <TabsContent value="content">
