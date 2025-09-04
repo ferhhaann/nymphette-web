@@ -120,6 +120,30 @@ export const PackageManager = () => {
     }
   }
 
+  const deleteAllPackages = async () => {
+    if (!confirm("Are you sure you want to delete ALL packages? This action cannot be undone!")) return
+
+    try {
+      const { error } = await supabase
+        .from('packages')
+        .delete()
+        .neq('id', '') // Delete all rows (using a condition that's always true)
+
+      if (error) throw error
+      await loadPackages()
+      toast({
+        title: "Success",
+        description: "All packages deleted"
+      })
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      })
+    }
+  }
+
   const openEditDialog = (pkg?: DatabasePackage) => {
     setEditingPackage(pkg || createEmptyPackage())
     setIsDialogOpen(true)
@@ -181,7 +205,16 @@ export const PackageManager = () => {
         </TabsList>
 
         <TabsContent value="packages" className="space-y-6">
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <Button
+              variant="destructive"
+              onClick={deleteAllPackages}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete All Packages
+            </Button>
+            
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={() => openEditDialog()}>
