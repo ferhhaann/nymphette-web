@@ -38,18 +38,39 @@ import {
 
 // This component now uses the database via usePackageById hook
 
-// Get multiple images for places in each country for gallery
-const getPlaceImages = (countrySlug?: string, country?: string) => {
-  const slug = countrySlug || country?.toLowerCase().replace(/\s+/g, '-');
+// Get package images - primary package image first, then additional place images
+const getPackageImages = (pkg: TravelPackageType) => {
+  const images = [];
   
-  if (slug === "thailand") {
+  // Add the main package image first
+  if (pkg.image) {
+    images.push({ src: pkg.image, alt: pkg.title });
+  }
+  
+  // Then add place images based on country
+  const countrySlug = pkg.countrySlug || pkg.country?.toLowerCase().replace(/\s+/g, '-');
+  const placeImages = getPlaceImagesByCountry(countrySlug);
+  
+  // Add place images, but avoid duplicating the main package image
+  placeImages.forEach(placeImage => {
+    if (placeImage.src !== pkg.image) {
+      images.push(placeImage);
+    }
+  });
+  
+  return images.length > 0 ? images : [{ src: "/places/thailand/bangkok.webp", alt: "Travel Destination" }];
+};
+
+// Get additional place images for gallery
+const getPlaceImagesByCountry = (countrySlug?: string) => {
+  if (countrySlug === "thailand") {
     return [
       { src: "/places/thailand/bangkok.webp", alt: "Bangkok Grand Palace" },
       { src: "/places/thailand/phuket.webp", alt: "Phuket Beach" },
       { src: "/places/thailand/chiang-mai.webp", alt: "Chiang Mai Temples" }
     ];
   }
-  if (slug === "japan") {
+  if (countrySlug === "japan") {
     return [
       { src: "/places/japan/tokyo.webp", alt: "Tokyo Skyline" },
       { src: "/places/japan/mount-fuji.webp", alt: "Mount Fuji" },
@@ -57,42 +78,77 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
       { src: "/places/japan/fushimi-inari-shrine.jpg", alt: "Fushimi Inari Shrine" }
     ];
   }
-  if (slug === "indonesia") {
+  if (countrySlug === "indonesia") {
     return [
       { src: "/places/indonesia/bali.webp", alt: "Bali Rice Terraces" }
     ];
   }
-  if (slug === "china") {
+  if (countrySlug === "china") {
     return [
       { src: "/places/china/beijing.webp", alt: "Beijing Forbidden City" }
     ];
   }
-  if (slug === "kazakhstan") {
+  if (countrySlug === "kazakhstan") {
     return [
       { src: "/places/kazakhstan/almaty.webp", alt: "Almaty Mountains" }
     ];
   }
-  if (slug === "malaysia") {
+  if (countrySlug === "malaysia") {
     return [
       { src: "/places/malaysia/kuala-lumpur.jpg", alt: "Kuala Lumpur Skyline" }
     ];
   }
-  if (slug === "philippines") {
+  if (countrySlug === "philippines") {
     return [
       { src: "/places/philippines/manila.jpg", alt: "Manila Bay" }
     ];
   }
-  if (slug === "south-korea") {
+  if (countrySlug === "south-korea") {
     return [
       { src: "/places/south-korea/seoul.jpg", alt: "Seoul Skyline" }
     ];
   }
-  if (slug === "vietnam") {
+  if (countrySlug === "vietnam") {
     return [
       { src: "/places/vietnam/ho-chi-minh.jpg", alt: "Ho Chi Minh City" }
     ];
   }
-  if (slug === "maldives") {
+  if (countrySlug === "singapore") {
+    return [
+      { src: "/places/singapore/singapore.jpg", alt: "Singapore Skyline" }
+    ];
+  }
+  if (countrySlug === "cambodia") {
+    return [
+      { src: "/places/cambodia/angkor-wat.jpg", alt: "Angkor Wat Temple" }
+    ];
+  }
+  if (countrySlug === "myanmar") {
+    return [
+      { src: "/places/myanmar/yangon.jpg", alt: "Yangon City" }
+    ];
+  }
+  if (countrySlug === "laos") {
+    return [
+      { src: "/places/laos/luang-prabang.jpg", alt: "Luang Prabang" }
+    ];
+  }
+  if (countrySlug === "taiwan") {
+    return [
+      { src: "/places/taiwan/taipei.jpg", alt: "Taipei City" }
+    ];
+  }
+  if (countrySlug === "nepal") {
+    return [
+      { src: "/places/nepal/kathmandu.jpg", alt: "Kathmandu Valley" }
+    ];
+  }
+  if (countrySlug === "sri-lanka") {
+    return [
+      { src: "/places/sri-lanka/colombo.jpg", alt: "Colombo City" }
+    ];
+  }
+  if (countrySlug === "maldives") {
     return [
       { src: "/places/maldives/overwater-villas.jpg", alt: "Overwater Villas" },
       { src: "/places/maldives/banana-reef.jpg", alt: "Banana Reef" },
@@ -100,7 +156,7 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
       { src: "/places/maldives/sun-island.jpg", alt: "Sun Island Resort" }
     ];
   }
-  if (slug === "uae") {
+  if (countrySlug === "uae") {
     return [
       { src: "/places/uae/burj-khalifa.jpg", alt: "Burj Khalifa" },
       { src: "/places/uae/dubai-marina.jpg", alt: "Dubai Marina" },
@@ -108,7 +164,7 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
       { src: "/places/uae/palm-jumeirah.jpg", alt: "Palm Jumeirah" }
     ];
   }
-  if (slug === "usa") {
+  if (countrySlug === "usa") {
     return [
       { src: "/places/usa/times-square.jpg", alt: "Times Square" },
       { src: "/places/usa/statue-of-liberty.jpg", alt: "Statue of Liberty" },
@@ -116,7 +172,7 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
       { src: "/places/usa/niagara-falls.jpg", alt: "Niagara Falls" }
     ];
   }
-  if (slug === "kenya") {
+  if (countrySlug === "kenya") {
     return [
       { src: "/places/kenya/masai-mara.jpg", alt: "Masai Mara Safari" },
       { src: "/places/kenya/amboseli-national-park.jpg", alt: "Amboseli National Park" },
@@ -125,10 +181,7 @@ const getPlaceImages = (countrySlug?: string, country?: string) => {
     ];
   }
   
-  // Default fallback
-  return [
-    { src: "/places/thailand/bangkok.webp", alt: "Travel Destination" }
-  ];
+  return [];
 };
 
 const PackageDetail = () => {
@@ -206,7 +259,7 @@ const PackageDetail = () => {
     });
   };
   
-  const placeImages = getPlaceImages(pkg.countrySlug, pkg.country);
+  const placeImages = getPackageImages(pkg);
   
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % placeImages.length);
