@@ -15,6 +15,43 @@ interface CacheEntry<T> {
 
 class QueryCache {
   private cache = new Map<string, CacheEntry<any>>()
+  private storageKey = 'lovable-query-cache'
+  
+  constructor() {
+    // Load cache from localStorage on initialization
+    this.loadFromStorage()
+  }
+  
+  private loadFromStorage() {
+    try {
+      const stored = localStorage.getItem(this.storageKey)
+      if (stored) {
+        const parsedCache = JSON.parse(stored)
+        const now = Date.now()
+        
+        // Filter out expired entries
+        Object.entries(parsedCache).forEach(([key, entry]: [string, any]) => {
+          if (entry.expiresAt > now) {
+            this.cache.set(key, entry)
+          }
+        })
+      }
+    } catch (error) {
+      console.warn('Failed to load cache from storage:', error)
+    }
+  }
+  
+  private saveToStorage() {
+    try {
+      const cacheObj: Record<string, CacheEntry<any>> = {}
+      this.cache.forEach((value, key) => {
+        cacheObj[key] = value
+      })
+      localStorage.setItem(this.storageKey, JSON.stringify(cacheObj))
+    } catch (error) {
+      console.warn('Failed to save cache to storage:', error)
+    }
+  }
   
   get<T>(key: string, staleTime: number = 5 * 60 * 1000): T | null {
     const entry = this.cache.get(key)
@@ -23,6 +60,7 @@ class QueryCache {
     const now = Date.now()
     if (now > entry.expiresAt) {
       this.cache.delete(key)
+      this.saveToStorage()
       return null
     }
     
@@ -36,11 +74,13 @@ class QueryCache {
       timestamp: now,
       expiresAt: now + cacheTime
     })
+    this.saveToStorage()
   }
   
   invalidate(keyPattern?: string): void {
     if (!keyPattern) {
       this.cache.clear()
+      localStorage.removeItem(this.storageKey)
       return
     }
     
@@ -49,6 +89,7 @@ class QueryCache {
         this.cache.delete(key)
       }
     }
+    this.saveToStorage()
   }
 }
 
