@@ -14,7 +14,7 @@ export const CountryBreadcrumb = ({ region, countryName }: CountryBreadcrumbProp
         Home
       </Link>
       <ChevronRight className="h-4 w-4" />
-      <span>Regions</span>
+      <Link to="/" className="hover:text-primary transition-colors">Regions</Link>
       <ChevronRight className="h-4 w-4" />
       <Link to={`/regions/${region.toLowerCase()}`} className="hover:text-primary transition-colors">
         {region}
