@@ -18,6 +18,22 @@ const Navigation = () => {
   ];
 
   const isActive = (href: string) => {
+    if (href === "/packages") {
+      const packageRelatedPaths = [
+        "/asia",
+        "/europe",
+        "/africa",
+        "/americas",
+        "/pacific-islands",
+        "/middle-east",
+        "/regions/",
+        "/package/",
+        "/country/"
+      ];
+      // Return true for packages page and all related sub-pages
+      return location.pathname === href ||
+             packageRelatedPaths.some(path => location.pathname.toLowerCase().includes(path.toLowerCase()));
+    }
     return location.pathname === href;
   };
 

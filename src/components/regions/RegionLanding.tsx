@@ -251,7 +251,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       <Navigation />
       {/* Breadcrumbs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
+        <nav className="flex items-center space-x-2 text-sm text-muted-foreground">
           <Link to="/" className="hover:text-primary transition-colors flex items-center">
             <Home className="h-4 w-4 mr-1" />
             Home
@@ -279,7 +279,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
                       <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-3 bg-card/90 backdrop-blur rounded-lg p-3 sm:p-4 shadow">
                         <div className="col-span-1 sm:col-span-3 mb-2 sm:mb-0"><Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search city, country or highlight" aria-label="Search" className="text-sm sm:text-base"/></div>
                         <div className="col-span-1 sm:col-span-1 bg-card rounded-lg p-2 border mb-2 sm:mb-0">
-                          <div className="flex items-center justify-between text-xs mb-1"><span className="text-muted-foreground flex items-center gap-1"><CircleDollarSign className="size-3"/>Budget</span><span>${budgetMax}</span></div>
+                          <div className="flex items-center justify-between text-xs mb-1"><span className="text-muted-foreground flex items-center gap-1"><CircleDollarSign className="size-3"/>Budget</span><span>₹{budgetMax}</span></div>
                           <Slider max={8000} min={500} step={100} value={[budgetMax]} onValueChange={(v)=>setBudgetMax(v[0])} />
                         </div>
                         <Button className="col-span-1 sm:col-span-1 text-sm sm:text-base" onClick={()=>setStickyOpen(true)}>Find Packages</Button>
@@ -344,7 +344,11 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-xl font-bold text-primary">{price ? `$${price}` : pkg.price}</div>
+                      <div className="text-xl font-bold text-primary">
+                        {typeof pkg.price === 'string' ? 
+                          pkg.price.replace(/\$/g, '₹') : 
+                          `₹${pkg.price}`}
+                      </div>
                       <p className="text-xs text-muted-foreground">per person</p>
                     </div>
                     <Button size="sm" variant="outline" onClick={(e) => {
@@ -365,7 +369,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       <div className="fixed bottom-0 inset-x-0 bg-card/95 backdrop-blur border-t md:hidden z-40">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="text-sm">
-            <div className="font-medium">Live pricing in USD</div>
+            <div className="font-medium">Live pricing in INR</div>
             <div className="text-muted-foreground">No hidden charges • Free customization</div>
           </div>
           <Button onClick={()=>setStickyOpen(true)}>Check Availability</Button>

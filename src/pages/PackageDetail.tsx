@@ -308,12 +308,12 @@ const PackageDetail = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Back Button */}
-      <div className="max-w-6xl mx-auto px-4 pt-6">
+      {/* Back button */}
+      <div className="max-w-6xl mx-auto px-4 py-6 mt-16">
         <Button 
           variant="outline" 
           onClick={() => navigate(-1)}
-          className="mb-4"
+          className="border-primary text-primary hover:bg-primary hover:text-white"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
@@ -391,9 +391,17 @@ const PackageDetail = () => {
                   </Button>
                   <div>
                     {pkg.originalPrice && (
-                      <span className="text-lg text-white/70 line-through">{pkg.originalPrice}</span>
+                      <span className="text-lg text-white/70 line-through">
+                        {typeof pkg.originalPrice === 'string' ? 
+                            pkg.originalPrice.replace(/\$/g, '₹') : 
+                            `₹${pkg.originalPrice}`}
+                      </span>
                     )}
-                    <div className="text-3xl font-bold">{pkg.price}</div>
+                    <div className="text-3xl font-bold">
+                      {typeof pkg.price === 'string' ? 
+                          pkg.price.replace(/\$/g, '₹') : 
+                          `₹${pkg.price}`}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -560,7 +568,11 @@ const PackageDetail = () => {
             <Card className="sticky top-6">
               <CardHeader>
                 <CardTitle>Book This Package</CardTitle>
-                <div className="text-3xl font-bold text-primary">{pkg.price}</div>
+                <div className="text-3xl font-bold text-primary">
+                  {typeof pkg.price === 'string' ? 
+                      pkg.price.replace(/\$/g, '₹') : 
+                      `₹${pkg.price}`}
+                </div>
                 <p className="text-sm text-muted-foreground">per person</p>
               </CardHeader>
               <CardContent>

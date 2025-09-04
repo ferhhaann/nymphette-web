@@ -5,6 +5,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Star, Clock, Users, MapPin } from "lucide-react";
 import { useFeaturedPackages } from "@/hooks/useFeaturedPackages";
 import { useContent } from "@/hooks/useContent";
+import { useNavigate } from "react-router-dom";
 // Individual country images - 4 images per country
 import japanImage from "@/assets/countries/japan.jpg";
 import japan2Image from "@/assets/countries/japan-2.jpg";
@@ -34,6 +35,7 @@ import maldives4Image from "@/assets/countries/maldives-4.jpg";
 const FeaturedPackages = () => {
   const { packages, loading } = useFeaturedPackages();
   const { getContentValue } = useContent('featured-packages');
+  const navigate = useNavigate();
   
   // Already filtered to featured packages from hook
 
@@ -132,9 +134,16 @@ const FeaturedPackages = () => {
               <CardFooter className="p-6 pt-0 flex items-center justify-between">
                 <div>
                   <span className="text-sm text-muted-foreground">Starting from</span>
-                  <div className="text-2xl font-bold text-accent">{pkg.price}</div>
+                  <div className="text-2xl font-bold text-accent">
+                    {typeof pkg.price === 'string' ? 
+                        pkg.price.replace(/[\$,]/g, '') : 
+                        pkg.price}
+                  </div>
                 </div>
-                <Button className="bg-foreground hover:bg-foreground/90 text-background">
+                <Button 
+                  className="bg-foreground hover:bg-foreground/90 text-background"
+                  onClick={() => navigate(`/package/${pkg.id}`)}
+                >
                   View Details
                 </Button>
               </CardFooter>
