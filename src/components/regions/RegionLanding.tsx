@@ -191,11 +191,11 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   }, [filtered]);
 
   return (
-    <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background">
       <Navigation />
       {/* Back Button - Only show when coming from packages page */}
       {isFromPackagesPage && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
           <Button 
             variant="outline" 
             onClick={() => navigate('/packages')}
@@ -208,7 +208,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       )}
       
       {/* HERO */}
-      <section className={`relative ${isFromPackagesPage ? 'mt-0' : 'mt-4 sm:mt-6 lg:mt-8'}`}>
+      <section className={`relative ${isFromPackagesPage ? 'mt-0' : 'mt-20 sm:mt-22 lg:mt-24'}`}>
         <Carousel>
           <CarouselContent>
             {heroImages.map((img, idx) => (
