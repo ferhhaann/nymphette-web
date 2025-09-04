@@ -314,7 +314,7 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
                 </DialogTitle>
               </DialogHeader>
               <SectionForm 
-                section={editingSection!} 
+                section={editingSection}
                 onSave={saveSection}
                 onCancel={() => {
                   setIsDialogOpen(false)
@@ -418,12 +418,21 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
 }
 
 interface SectionFormProps {
-  section: Partial<CountrySection>
+  section: Partial<CountrySection> | null
   onSave: (section: Partial<CountrySection>) => void
   onCancel: () => void
 }
 
 const extractContentFields = (content: any) => {
+  if (!content || typeof content !== 'object') {
+    return {
+      description: '',
+      subtitle: '',
+      points: [''],
+      highlight: ''
+    }
+  }
+  
   return {
     description: content.description || '',
     subtitle: content.subtitle || '',
@@ -433,13 +442,23 @@ const extractContentFields = (content: any) => {
 }
 
 const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
-  const [formData, setFormData] = useState<Partial<CountrySection>>(section)
+  // Ensure section is never null/undefined
+  const safeSection = section || {
+    country_id: '',
+    section_name: '',
+    title: '',
+    content: {},
+    order_index: 0,
+    is_enabled: true
+  }
+  
+  const [formData, setFormData] = useState<Partial<CountrySection>>(safeSection)
   const [contentFields, setContentFields] = useState({
     description: '',
     subtitle: '',
     points: [''],
     highlight: '',
-    ...extractContentFields(section.content || {})
+    ...extractContentFields(safeSection.content)
   })
 
   const handleSubmit = (e: React.FormEvent) => {
