@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { supabase } from '@/integrations/supabase/client';
+import { useOptimizedPackages } from "@/hooks/useOptimizedPackages";
 import { TravelPackage } from "@/data/packagesData";
+import { supabase } from '@/integrations/supabase/client';
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -97,10 +98,11 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [budgetMax, setBudgetMax] = useState<number>(6000);
-  const [openFormFor, setOpenFormFor] = useState<TravelPackage | null>(null);
+  const [openFormFor, setOpenFormFor] = useState<any | null>(null);
   const [stickyOpen, setStickyOpen] = useState(false);
-  const [packages, setPackages] = useState<TravelPackage[]>([]);
-  const [loading, setLoading] = useState(true);
+  
+  // Use optimized packages hook for better performance
+  const { data: packages, loading } = useOptimizedPackages(region);
   
   // Import region-specific images to match packages page
   const getRegionImages = (regionName: string) => {
@@ -167,60 +169,8 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   // Check if we're coming from packages page
   const isFromPackagesPage = window.location.pathname.includes('/packages/region/');
 
-  // Load packages from database
-  useEffect(() => {
-    loadRegionPackages();
-  }, [region]);
-
-  const loadRegionPackages = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('packages')
-        .select('*')
-        .eq('region', region)
-        .order('rating', { ascending: false });
-
-      if (error) throw error;
-      
-      // Transform database packages to TravelPackage format
-      const transformedPackages: TravelPackage[] = (data || []).map(pkg => ({
-        id: pkg.id,
-        title: pkg.title,
-        country: pkg.country,
-        countrySlug: pkg.country_slug,
-        region: pkg.region,
-        duration: pkg.duration,
-        price: pkg.price,
-        originalPrice: pkg.original_price,
-        rating: pkg.rating,
-        reviews: pkg.reviews,
-        image: pkg.image || getPackageImage(pkg.country_slug, pkg.title),
-        highlights: pkg.highlights || [],
-        inclusions: pkg.inclusions || [],
-        exclusions: pkg.exclusions || [],
-        category: pkg.category,
-        bestTime: pkg.best_time,
-        groupSize: pkg.group_size,
-        featured: pkg.featured,
-        itinerary: (Array.isArray(pkg.itinerary) ? pkg.itinerary : []) as any,
-        overview: pkg.overview_section_title ? {
-          sectionTitle: pkg.overview_section_title,
-          description: pkg.overview_description || '',
-          highlightsLabel: pkg.overview_highlights_label || 'Package Highlights',
-          highlightsBadgeVariant: pkg.overview_badge_variant || 'outline',
-          highlightsBadgeStyle: pkg.overview_badge_style || 'border-primary text-primary'
-        } : undefined
-      }));
-      
-      setPackages(transformedPackages);
-    } catch (error) {
-      console.error('Error loading region packages:', error);
-      setPackages([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Remove the manual loading logic since we're using optimized hooks
+  // The useOptimizedPackages hook handles all the loading, caching, and optimization
 
   useEffect(() => { 
     // TODO: Implement meta tag setting if needed
@@ -229,6 +179,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   }, [title, description, canonical, regionKey, isFromPackagesPage]);
 
   const filtered = useMemo(() => {
+    if (!packages) return [];
     const q = query.trim().toLowerCase();
     return packages.filter(p => {
       const matchesQuery = !q || p.title.toLowerCase().includes(q) || p.country.toLowerCase().includes(q) || p.highlights.some(h => h.toLowerCase().includes(q));
@@ -270,7 +221,13 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
             {heroImages.map((img, idx) => (
               <CarouselItem key={idx}>
                  <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] m-2 sm:m-4 lg:m-6 rounded-lg overflow-hidden">
-                   <OptimizedImage src={img} alt={`${title} hero ${idx+1}`} priority={idx===0} className="absolute inset-0 h-full w-full object-cover rounded-lg" />
+                   <OptimizedImage 
+                     src={img} 
+                     alt={`${title} hero ${idx+1}`} 
+                     priority={idx===0} 
+                     preloadSources={heroImages.slice(idx + 1, idx + 3)}
+                     className="absolute inset-0 h-full w-full object-cover rounded-lg" 
+                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg" />
                   <div className="relative z-10 max-w-7xl mx-auto h-full flex items-end px-3 sm:px-6 lg:px-8 pb-4 sm:pb-8">
                     <div className="space-y-2 sm:space-y-4">
@@ -305,15 +262,37 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {filtered.map((pkg, index)=>{
+          {loading ? (
+            // Loading skeleton
+            Array.from({ length: 6 }).map((_, index) => (
+              <Card key={index} className="animate-pulse">
+                <div className="h-48 bg-muted"></div>
+                <CardHeader>
+                  <div className="h-4 bg-muted rounded w-3/4"></div>
+                  <div className="h-3 bg-muted rounded w-1/2"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-3 bg-muted rounded w-full mb-2"></div>
+                  <div className="h-3 bg-muted rounded w-2/3"></div>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+          filtered.map((pkg, index)=>{
             const price = toUSD(pkg);
             const packageImage = pkg.image || getPackageImage(pkg.countrySlug, pkg.title);
             return (
               <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300" 
                     style={{animationDelay:`${index*60}ms`}}
-                    onClick={() => navigate(`/package/${pkg.id}`)}>
+                     onClick={() => navigate(`/package/${pkg.id}`)}>
                  <div className="relative h-48 overflow-hidden">
-                   <OptimizedImage src={packageImage} alt={pkg.title} priority={index < 3} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
+                   <OptimizedImage 
+                     src={packageImage} 
+                     alt={pkg.title} 
+                     priority={index < 3} 
+                     preloadSources={filtered.slice(index + 1, index + 3).map(p => p.image || getPackageImage(p.countrySlug, p.title))}
+                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                   />
                   <div className="absolute top-3 left-3">
                     <Badge variant="outline" className="bg-background/90 backdrop-blur">{pkg.category}</Badge>
                   </div>
@@ -358,10 +337,11 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
                       View Details
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
-            )
-          })}
+                 </CardContent>
+               </Card>
+             )
+           }))
+         }
         </div>
       </section>
 
