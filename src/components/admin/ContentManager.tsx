@@ -16,26 +16,15 @@ import { useToast } from "@/hooks/use-toast"
 export const ContentManager = () => {
   const [content, setContent] = useState<DatabaseContent[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedSection, setSelectedSection] = useState<string>("hero")
+  const [selectedSection, setSelectedSection] = useState<string>("about")
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [newContentKey, setNewContentKey] = useState("")
   const [newContentValue, setNewContentValue] = useState("")
   const { toast } = useToast()
 
   const sections = [
-    { value: "hero", label: "Hero Section" },
-    { value: "featured-packages", label: "Featured Packages" },
-    { value: "why-choose-us", label: "Why Choose Us" },
-    { value: "top-values", label: "Top Values" },
-    { value: "promo-banner", label: "Promo Banner" },
-    { value: "footer", label: "Footer" },
-    { value: "navigation", label: "Navigation" },
     { value: "about", label: "About Us" },
-    { value: "contact", label: "Contact" },
-    { value: "search", label: "Search Section" },
-    { value: "packages", label: "Packages Page" },
-    { value: "regions", label: "Regions" },
-    { value: "countries", label: "Countries" }
+    { value: "contact", label: "Contact" }
   ]
 
   useEffect(() => {
@@ -153,7 +142,7 @@ export const ContentManager = () => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">Content Manager</h2>
-          <p className="text-muted-foreground">Edit all website content sections with structured forms</p>
+          <p className="text-muted-foreground">Edit contact page and about us page content</p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -287,9 +276,9 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     onSave(section, key, value)
   }
 
-  // Special handling for regions section with raw package data
-  if (section === 'regions') {
-    return <RegionsEditor content={content} onDelete={onDelete} />
+  // Only handle about and contact sections
+  if (!['about', 'contact'].includes(section)) {
+    return <div className="p-4 text-center text-muted-foreground">Section not available for editing</div>
   }
 
   const renderContentItem = (item: DatabaseContent) => {
@@ -527,97 +516,6 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
       ) : (
         <div className="space-y-4">
           {content.map(renderContentItem)}
-        </div>
-      )}
-    </div>
-  )
-}
-
-interface RegionsEditorProps {
-  content: DatabaseContent[]
-  onDelete: (id: string) => void
-}
-
-const RegionsEditor = ({ content, onDelete }: RegionsEditorProps) => {
-  return (
-    <div className="space-y-4">
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
-          <div>
-            <h3 className="font-medium text-yellow-800">Region Package Data</h3>
-            <p className="text-sm text-yellow-700 mt-1">
-              The regions section contains complex package data that should be managed through the Package Manager. 
-              This data is automatically generated and not meant for direct editing here.
-            </p>
-            <div className="mt-3">
-              <Button variant="outline" size="sm" className="text-yellow-800 border-yellow-300">
-                <Package className="h-4 w-4 mr-2" />
-                Go to Package Manager
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {content.map(item => {
-        const packages = Array.isArray(item.value) ? item.value : []
-        const regionName = item.key.replace('_raw', '').replace(/([A-Z])/g, ' $1').trim()
-        
-        return (
-          <Card key={item.id}>
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-center">
-                <div>
-                  <CardTitle className="text-sm font-medium capitalize">{regionName}</CardTitle>
-                  <CardDescription className="text-xs">
-                    Contains {packages.length} package(s)
-                  </CardDescription>
-                </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onDelete(item.id)}
-                  className="text-red-600 hover:text-red-700"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-3">
-                <p className="text-sm text-muted-foreground">
-                  This region contains package data for: {regionName}
-                </p>
-                {packages.slice(0, 3).map((pkg: any, index: number) => (
-                  <div key={index} className="bg-muted/50 rounded p-3">
-                    <div className="text-sm font-medium">{pkg.title || 'Untitled Package'}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {pkg.country} • {pkg.duration} • {pkg.price}
-                    </div>
-                  </div>
-                ))}
-                {packages.length > 3 && (
-                  <div className="text-xs text-muted-foreground">
-                    ... and {packages.length - 3} more packages
-                  </div>
-                )}
-                <div className="mt-3 p-3 bg-blue-50 rounded border border-blue-200">
-                  <p className="text-xs text-blue-700">
-                    <strong>To edit packages:</strong> Use the Package Manager where you can add, edit, and organize packages for each region with a user-friendly interface.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
-
-      {content.length === 0 && (
-        <div className="text-center py-8 text-muted-foreground">
-          <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
-          <p>No region package data found.</p>
-          <p className="text-sm">Package data is managed through the Package Manager.</p>
         </div>
       )}
     </div>
