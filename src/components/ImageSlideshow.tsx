@@ -53,17 +53,22 @@ const ImageSlideshow = ({ images, alt, className = "", width, height, hoverToPla
       onMouseLeave={() => setIsHovered(false)}
     >
       {images.map((image, index) => (
-        <OptimizedImage
+        <div
           key={index}
-          src={image}
-          alt={`${alt} - View ${index + 1}`}
-          priority={index === 0}
-          width={width}
-          height={height}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+          className={`absolute inset-0 transition-opacity duration-500 ${
             index === currentImageIndex ? 'opacity-100' : 'opacity-0'
           }`}
-        />
+        >
+          <OptimizedImage
+            src={image}
+            alt={`${alt} - View ${index + 1}`}
+            priority={index === 0}
+            width={width}
+            height={height}
+            className="w-full h-full"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
       ))}
       
       {/* Slideshow indicator dots */}
