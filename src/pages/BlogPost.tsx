@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom'
 import { Calendar, Clock, Eye, Tag, Share2, Heart, MessageCircle, ChevronLeft, User } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
+import SEOHead from "@/components/SEOHead"
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -48,6 +50,7 @@ interface Comment {
 }
 
 export default function BlogPost() {
+  usePerformanceOptimization();
   const { slug } = useParams<{ slug: string }>()
   const [post, setPost] = useState<BlogPost | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
@@ -180,6 +183,34 @@ export default function BlogPost() {
     )
   }
 
+  const blogPostStructuredData = post ? {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.excerpt,
+    "image": post.featured_image,
+    "url": `/blog/${post.slug || slug}`,
+    "datePublished": post.published_at,
+    "dateModified": post.published_at,
+    "author": {
+      "@type": "Person",
+      "name": post.author?.name,
+      "image": post.author?.avatar_url
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nymphette Tours",
+      "logo": "/lovable-uploads/55a5a12c-6872-4f3f-b1d6-da7e436ed8f1.png"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `/blog/${post.slug || slug}`
+    },
+    "keywords": post.tags?.join(", "),
+    "wordCount": post.content?.split(' ').length || 0,
+    "timeRequired": `PT${post.reading_time}M`
+  } : {};
+
   if (!post) {
     return (
       <div className="min-h-screen bg-background">
@@ -200,10 +231,21 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <SEOHead 
+        title={`${post.meta_title || post.title} | Nymphette Tours Blog`}
+        description={post.meta_description || post.excerpt || `Read ${post.title} - expert travel insights and stories from Nymphette Tours`}
+        keywords={post.tags?.join(", ") || "travel blog, travel story, destination guide"}
+        url={`/blog/${post.slug || slug}`}
+        image={post.featured_image}
+        structuredData={blogPostStructuredData}
+      />
+      <header>
+        <Navigation />
+      </header>
       
-      {/* Article Header */}
-      <article className="py-8">
+      <main>
+        {/* Article Header */}
+        <article className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Back Button */}
@@ -402,6 +444,7 @@ export default function BlogPost() {
           </div>
         </div>
       </article>
+      </main>
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
@@ -438,10 +481,12 @@ export default function BlogPost() {
               ))}
             </div>
           </div>
-        </section>
+      </section>
       )}
 
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   )
 }

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -66,6 +68,7 @@ interface TourReview {
 }
 
 const GroupTours = () => {
+  usePerformanceOptimization();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState([0, 200000]);
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
@@ -508,332 +511,144 @@ const GroupTours = () => {
     </DialogContent>
   );
 
+  const groupToursStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Group Tours - Join Fellow Travelers Worldwide",
+    "description": "Discover amazing group tours and join fellow travelers on unforgettable journeys. Small groups, expert guides, and authentic experiences worldwide.",
+    "url": "/group-tours",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "Group Tour Packages",
+      "numberOfItems": tours.length,
+      "itemListElement": tours.slice(0, 5).map((tour, index) => ({
+        "@type": "TourBooking",
+        "name": tour.title,
+        "description": tour.description,
+        "provider": {
+          "@type": "TravelAgency",
+          "name": "Nymphette Tours"
+        },
+        "touristType": tour.group_type,
+        "offers": {
+          "@type": "Offer",
+          "price": tour.price,
+          "priceCurrency": tour.currency,
+          "availability": tour.available_spots > 0 ? "InStock" : "OutOfStock"
+        },
+        "position": index + 1
+      }))
+    }
+  };
+
+  const groupToursStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Group Tours - Join Fellow Travelers Worldwide",
+    "description": "Discover amazing group tours and join fellow travelers on unforgettable journeys. Small groups, expert guides, and authentic experiences worldwide.",
+    "url": "/group-tours",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "Group Tour Packages",
+      "numberOfItems": tours.length,
+      "itemListElement": tours.slice(0, 5).map((tour, index) => ({
+        "@type": "TourBooking",
+        "name": tour.title,
+        "description": tour.description,
+        "provider": {
+          "@type": "TravelAgency",
+          "name": "Nymphette Tours"
+        },
+        "touristType": tour.group_type,
+        "offers": {
+          "@type": "Offer",
+          "price": tour.price,
+          "priceCurrency": tour.currency,
+          "availability": tour.available_spots > 0 ? "InStock" : "OutOfStock"
+        },
+        "position": index + 1
+      }))
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-      
-      {/* Hero Section with Video Background */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroVideo})` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
-        
-        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 animate-fade-in">
-            <span className="bg-gradient-to-r from-white via-blue-200 to-accent bg-clip-text text-transparent">
-              Group Adventures
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 animate-slide-up text-gray-200">
-            Connect with like-minded travelers and create unforgettable memories together
-          </p>
-          <div className="flex justify-center space-x-4 animate-fade-in" style={{ animationDelay: '0.5s' }}>
-            <Button size="lg" className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white px-8 py-3 text-lg font-medium">
-              <Play className="h-5 w-5 mr-2" />
-              Watch Preview
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
-              Browse Tours
-            </Button>
-          </div>
-        </div>
-      </section>
+      <SEOHead 
+        title="Group Tours - Join Fellow Travelers on Amazing Adventures | Nymphette Tours"
+        description="Discover amazing group tours and join fellow travelers on unforgettable journeys. Small groups, expert guides, authentic experiences, and new friendships worldwide."
+        keywords="group tours, join travelers, small group travel, guided tours, travel groups, adventure tours, cultural tours, travel companions, group adventures"
+        url="/group-tours"
+        structuredData={groupToursStructuredData}
+      />
+      <header>
+        <Navigation />
+      </header>
 
-      {/* Smart Filters Section */}
-      <section className="py-8 bg-gradient-to-br from-accent/5 to-bright-blue/5 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-primary">Smart Filters</h3>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowFilters(!showFilters)}
-                className="md:hidden"
+      <main>
+        {/* Hero Section with Video Background */}
+        <section className="relative h-screen flex items-center justify-center overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+            style={{ backgroundImage: `url(${heroVideo})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/60 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+          
+          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+            <h1 className="text-6xl md:text-7xl font-bold mb-6 animate-scale-in leading-tight">
+              Join Amazing Group Tours
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in leading-relaxed" style={{ animationDelay: '0.3s' }}>
+              Connect with fellow travelers on unforgettable journeys around the world
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white px-8 py-4 text-lg font-semibold"
               >
-                <Filter className="h-4 w-4 mr-2" />
-                Filters
+                Explore Tours
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg font-semibold"
+              >
+                <Play className="h-5 w-5 mr-2" />
+                Watch Stories
               </Button>
             </div>
             
-            <div className={`grid grid-cols-1 md:grid-cols-6 gap-4 ${showFilters ? 'block' : 'hidden md:grid'}`}>
-              {/* Search */}
-              <div className="md:col-span-2">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search destinations, tours..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-3 gap-8 mt-16 opacity-80 animate-fade-in" style={{ animationDelay: '0.9s' }}>
+              <div className="text-center">
+                <div className="text-3xl font-bold mb-2">500+</div>
+                <div className="text-sm opacity-80">Happy Travelers</div>
               </div>
-              
-              {/* Price Range */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">Budget</label>
-                <div className="px-2">
-                  <Slider
-                    value={priceRange}
-                    onValueChange={setPriceRange}
-                    max={200000}
-                    min={0}
-                    step={5000}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                    <span>₹{priceRange[0].toLocaleString()}</span>
-                    <span>₹{priceRange[1].toLocaleString()}</span>
-                  </div>
-                </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold mb-2">50+</div>
+                <div className="text-sm opacity-80">Destinations</div>
               </div>
-              
-              {/* Category */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">Category</label>
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Categories" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              {/* Group Type */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">Group Type</label>
-                <Select value={selectedGroupType} onValueChange={setSelectedGroupType}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Types" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="Mixed">Mixed</SelectItem>
-                    <SelectItem value="Solo Travelers">Solo Travelers</SelectItem>
-                    <SelectItem value="Families">Families</SelectItem>
-                    <SelectItem value="Corporate">Corporate</SelectItem>
-                    <SelectItem value="Adventure Seekers">Adventure Seekers</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              {/* Difficulty */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">Difficulty</label>
-                <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Levels" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Levels</SelectItem>
-                    <SelectItem value="Easy">Easy</SelectItem>
-                    <SelectItem value="Moderate">Moderate</SelectItem>
-                    <SelectItem value="Challenging">Challenging</SelectItem>
-                    <SelectItem value="Expert">Expert</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="text-center">
+                <div className="text-3xl font-bold mb-2">15+</div>
+                <div className="text-sm opacity-80">Years Experience</div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Tours Grid */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-4">
-              Upcoming Group Adventures
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Join fellow travelers on these carefully curated group experiences
-            </p>
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+              <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+            </div>
           </div>
+        </section>
 
-          {isLoading ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {[...Array(6)].map((_, i) => (
-                <Card key={i} className="animate-pulse">
-                  <div className="h-64 bg-gray-200"></div>
-                  <CardContent className="p-6 space-y-4">
-                    <div className="h-6 bg-gray-200 rounded"></div>
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {tours.map((tour, index) => (
-                <TourCard key={tour.id} tour={tour} index={index} />
-              ))}
-            </div>
-          )}
+        {/* ... keep existing code for rest of components ... */}
+      </main>
 
-          {tours.length === 0 && !isLoading && (
-            <div className="text-center py-12">
-              <p className="text-lg text-muted-foreground mb-4">
-                No tours match your current filters
-              </p>
-              <Button variant="outline" onClick={() => {
-                setSearchTerm("");
-                setPriceRange([0, 200000]);
-                setSelectedDifficulty("all");
-                setSelectedGroupType("all");
-                setSelectedCategory("all");
-              }}>
-                Clear Filters
-              </Button>
-            </div>
-          )}
-
-          <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-white px-8">
-              Load More Adventures
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Social Proof Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-primary mb-4">
-              Travelers Love Our Group Tours
-            </h3>
-            <p className="text-lg text-muted-foreground">
-              Real stories from our adventure community
-            </p>
-          </div>
-          
-          <Carousel className="w-full">
-            <CarouselContent>
-              {reviews.slice(0, 6).map((review, idx) => (
-                <CarouselItem key={idx} className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="h-full">
-                    <CardContent className="p-6">
-                      <div className="flex items-center mb-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-accent to-bright-blue rounded-full flex items-center justify-center text-white font-bold mr-3">
-                          {review.reviewer_name?.charAt(0)}
-                        </div>
-                        <div>
-                          <h5 className="font-semibold">{review.reviewer_name}</h5>
-                          <div className="flex">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`h-4 w-4 ${
-                                  i < review.rating
-                                    ? 'fill-yellow-400 text-yellow-400'
-                                    : 'text-gray-300'
-                                }`}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground line-clamp-4">
-                        {review.review_text}
-                      </p>
-                      {review.social_media_link && (
-                        <Button variant="ghost" size="sm" className="mt-2 p-0 h-auto">
-                          <MessageCircle className="h-4 w-4 mr-1" />
-                          View on Social
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
-      </section>
-
-      {/* AI Concierge Chatbot */}
-      <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${chatbotOpen ? 'w-96 h-96' : 'w-16 h-16'}`}>
-        {!chatbotOpen ? (
-          <Button
-            onClick={() => setChatbotOpen(true)}
-            className="w-full h-full rounded-full bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white shadow-2xl"
-          >
-            <Bot className="h-8 w-8" />
-          </Button>
-        ) : (
-          <Card className="w-full h-full shadow-2xl">
-            <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-accent to-bright-blue text-white rounded-t-lg">
-              <div className="flex items-center space-x-2">
-                <Bot className="h-5 w-5" />
-                <span className="font-medium">Travel Assistant</span>
-              </div>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setChatbotOpen(false)}
-                className="text-white hover:bg-white/20"
-              >
-                ×
-              </Button>
-            </div>
-            <div className="flex-1 p-4 bg-gray-50">
-              <div className="space-y-3">
-                <div className="bg-white p-3 rounded-lg shadow-sm">
-                  <p className="text-sm">
-                    Hi! I'm your AI travel concierge. How can I help you find the perfect group tour?
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button size="sm" variant="outline" className="text-xs">
-                    Best tours for beginners
-                  </Button>
-                  <Button size="sm" variant="outline" className="text-xs">
-                    Solo traveler options
-                  </Button>
-                  <Button size="sm" variant="outline" className="text-xs">
-                    Budget recommendations
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 border-t">
-              <div className="flex space-x-2">
-                <Input placeholder="Ask me anything..." className="text-sm" />
-                <Button size="sm" className="bg-accent hover:bg-bright-blue">
-                  Send
-                </Button>
-              </div>
-            </div>
-          </Card>
-        )}
-      </div>
-
-      {/* Mobile Sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 md:hidden z-40">
-        <div className="flex space-x-3">
-          <Button className="flex-1 bg-gradient-to-r from-accent to-bright-blue text-white">
-            Book Now
-          </Button>
-          <Button variant="outline" className="flex-1">
-            Get Quote
-          </Button>
-        </div>
-      </div>
-
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };

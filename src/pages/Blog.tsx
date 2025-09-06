@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Search, Clock, Tag, Eye, Calendar, ChevronRight } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
+import SEOHead from "@/components/SEOHead"
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -101,6 +103,30 @@ export default function Blog() {
     })
   }
 
+  const blogStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Nymphette Tours Travel Blog - Stories & Insights",
+    "description": "Discover travel stories, destination guides, tips, and insights from our expert travel writers. Get inspired for your next adventure.",
+    "url": "/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nymphette Tours",
+      "logo": "/lovable-uploads/55a5a12c-6872-4f3f-b1d6-da7e436ed8f1.png"
+    },
+    "blogPost": posts.slice(0, 3).map(post => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "url": `/blog/${post.slug}`,
+      "datePublished": post.published_at,
+      "author": {
+        "@type": "Person",
+        "name": post.author?.name
+      }
+    }))
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -115,16 +141,26 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <SEOHead 
+        title="Travel Blog - Stories, Tips & Destination Guides | Nymphette Tours"
+        description="Discover travel stories, destination guides, expert tips, and travel insights from our experienced writers. Get inspired for your next adventure with insider knowledge."
+        keywords="travel blog, travel stories, destination guides, travel tips, travel insights, travel experiences, travel inspiration, destination advice"
+        url="/blog"
+        structuredData={blogStructuredData}
+      />
+      <header>
+        <Navigation />
+      </header>
       
-      <section className="relative bg-gradient-to-r from-primary/90 to-primary/70 text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6 animate-fade-in">Travel Stories & Insights</h1>
-          <p className="text-xl max-w-2xl mx-auto opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
-            Discover hidden gems, travel tips, and inspiring stories from around the world
-          </p>
-        </div>
-      </section>
+      <main>
+        <section className="relative bg-gradient-to-r from-primary/90 to-primary/70 text-white py-20">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-5xl font-bold mb-6 animate-fade-in">Travel Stories & Expert Insights</h1>
+            <p className="text-xl max-w-2xl mx-auto opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
+              Discover hidden gems, travel tips, and inspiring stories from around the world by our expert writers
+            </p>
+          </div>
+        </section>
 
       {featuredPost && (
         <section className="py-16 bg-muted/30">
@@ -289,8 +325,11 @@ export default function Blog() {
           )}
         </div>
       </section>
+      </main>
 
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   )
 }

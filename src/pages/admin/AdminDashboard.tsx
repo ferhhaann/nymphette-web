@@ -12,6 +12,7 @@ import { CountryManager } from "@/components/admin/CountryManager"
 import GroupTourManager from "@/components/admin/GroupTourManager"
 import { BlogManager } from "@/components/admin/BlogManager"
 import { ContactManager } from "@/components/admin/ContactManager"
+import SEOManager from "@/components/admin/SEOManager"
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
