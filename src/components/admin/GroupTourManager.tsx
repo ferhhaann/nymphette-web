@@ -254,18 +254,22 @@ const GroupTourManager = () => {
   };
 
   const handleSubmit = () => {
+    // Remove the 'category' object from formData to avoid sending it to the database
+    const cleanFormData = { ...formData };
+    delete (cleanFormData as any).category;
+    
     const tourData = {
-      ...formData,
-      price: Number(formData.price),
-      original_price: formData.original_price ? Number(formData.original_price) : undefined,
-      max_participants: Number(formData.max_participants),
-      available_spots: Number(formData.available_spots),
-      min_age: Number(formData.min_age),
-      max_age: formData.max_age ? Number(formData.max_age) : undefined,
-      rating: Number(formData.rating),
-      reviews_count: Number(formData.reviews_count),
-      early_bird_discount: Number(formData.early_bird_discount || 0),
-      last_minute_discount: Number(formData.last_minute_discount || 0),
+      ...cleanFormData,
+      price: Number(cleanFormData.price || 0),
+      original_price: cleanFormData.original_price ? Number(cleanFormData.original_price) : undefined,
+      max_participants: Number(cleanFormData.max_participants || 0),
+      available_spots: Number(cleanFormData.available_spots || 0),
+      min_age: Number(cleanFormData.min_age || 18),
+      max_age: cleanFormData.max_age ? Number(cleanFormData.max_age) : undefined,
+      rating: Number(cleanFormData.rating || 4.5),
+      reviews_count: Number(cleanFormData.reviews_count || 0),
+      early_bird_discount: Number(cleanFormData.early_bird_discount || 0),
+      last_minute_discount: Number(cleanFormData.last_minute_discount || 0),
     };
     
     tourMutation.mutate(tourData);
