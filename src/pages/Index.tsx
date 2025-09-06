@@ -18,14 +18,30 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-      <Hero />
-      <SearchSection />
-      <TopValues />
-      <FeaturedPackages />
-      <PromoBanner />
-      <WhyChooseUs />
-      <Footer />
+      <div className="animate-fade-in">
+        <Navigation />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+        <Hero />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+        <SearchSection />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+        <TopValues />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
+        <FeaturedPackages />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
+        <PromoBanner />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+        <WhyChooseUs />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
+        <Footer />
+      </div>
     </div>
   );
 };
