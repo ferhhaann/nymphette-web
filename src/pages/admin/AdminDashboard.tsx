@@ -3,13 +3,15 @@ import { supabase } from "@/integrations/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Package, FileText, Settings, Database, Globe, Users } from "lucide-react"
+import { Plus, Package, FileText, Settings, Database, Globe, Users, BookOpen, MessageSquare } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { AdminOverview } from "@/components/admin/AdminOverview"
 import { PackageManager } from "@/components/admin/PackageManager"
 import { ContentManager } from "@/components/admin/ContentManager"
 import { CountryManager } from "@/components/admin/CountryManager"
 import GroupTourManager from "@/components/admin/GroupTourManager"
+import { BlogManager } from "@/components/admin/BlogManager"
+import { ContactManager } from "@/components/admin/ContactManager"
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -87,7 +89,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-8">{/* Changed from 6 to 8 */}
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <Database className="h-4 w-4" />
               Overview
@@ -99,6 +101,14 @@ const AdminDashboard = () => {
             <TabsTrigger value="group-tours" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Group Tours
+            </TabsTrigger>
+            <TabsTrigger value="blog" className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4" />
+              Blog
+            </TabsTrigger>
+            <TabsTrigger value="contact" className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" />
+              Contact
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
@@ -128,6 +138,14 @@ const AdminDashboard = () => {
 
           <TabsContent value="countries">
             <CountryManager />
+          </TabsContent>
+
+          <TabsContent value="blog">
+            <BlogManager />
+          </TabsContent>
+
+          <TabsContent value="contact">
+            <ContactManager />
           </TabsContent>
 
           <TabsContent value="content">
