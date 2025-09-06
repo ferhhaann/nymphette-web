@@ -114,40 +114,95 @@ const SEOManager = () => {
   };
 
   const fetchAnalytics = async () => {
-    // Mock analytics data - in real implementation, integrate with Google Analytics or similar
+    // Enhanced mock analytics data with realistic numbers and comprehensive page coverage
     const mockAnalytics: SEOAnalytics[] = [
       {
         page_url: '/',
-        views: 15420,
-        bounce_rate: 42.3,
-        avg_session_duration: 185,
-        search_impressions: 45230,
-        search_clicks: 2870,
-        ctr: 6.3,
-        avg_position: 3.2,
-        top_keywords: ['travel packages', 'nymphette tours', 'vacation planning']
+        views: 28450,
+        bounce_rate: 32.8,
+        avg_session_duration: 245,
+        search_impressions: 125230,
+        search_clicks: 8870,
+        ctr: 7.1,
+        avg_position: 2.4,
+        top_keywords: ['nymphette tours', 'travel packages', 'vacation planning', 'asia travel', 'group tours']
       },
       {
         page_url: '/packages',
-        views: 8950,
-        bounce_rate: 38.7,
-        avg_session_duration: 220,
-        search_impressions: 32140,
-        search_clicks: 1980,
-        ctr: 6.2,
-        avg_position: 4.1,
-        top_keywords: ['travel packages', 'asia tours', 'group travel']
+        views: 18950,
+        bounce_rate: 28.7,
+        avg_session_duration: 320,
+        search_impressions: 89140,
+        search_clicks: 5980,
+        ctr: 6.7,
+        avg_position: 3.1,
+        top_keywords: ['travel packages', 'asia tours', 'europe packages', 'vacation deals', 'holiday packages']
       },
       {
         page_url: '/group-tours',
-        views: 5200,
-        bounce_rate: 35.2,
-        avg_session_duration: 240,
+        views: 12200,
+        bounce_rate: 25.2,
+        avg_session_duration: 380,
+        search_impressions: 56750,
+        search_clicks: 3125,
+        ctr: 5.5,
+        avg_position: 3.8,
+        top_keywords: ['group tours', 'small group travel', 'guided tours', 'adventure tours', 'cultural tours']
+      },
+      {
+        page_url: '/blog',
+        views: 9850,
+        bounce_rate: 45.1,
+        avg_session_duration: 195,
+        search_impressions: 34200,
+        search_clicks: 1890,
+        ctr: 5.5,
+        avg_position: 4.2,
+        top_keywords: ['travel blog', 'destination guide', 'travel tips', 'travel stories', 'vacation inspiration']
+      },
+      {
+        page_url: '/about',
+        views: 6420,
+        bounce_rate: 38.9,
+        avg_session_duration: 165,
         search_impressions: 18750,
-        search_clicks: 1125,
-        ctr: 6.0,
+        search_clicks: 890,
+        ctr: 4.7,
+        avg_position: 5.1,
+        top_keywords: ['nymphette tours about', 'travel company', 'tour operator', 'travel agency', 'who we are']
+      },
+      {
+        page_url: '/contact',
+        views: 5120,
+        bounce_rate: 22.3,
+        avg_session_duration: 95,
+        search_impressions: 12340,
+        search_clicks: 650,
+        ctr: 5.3,
         avg_position: 4.8,
-        top_keywords: ['group tours', 'small group travel', 'guided tours']
+        top_keywords: ['contact travel agency', 'book tour', 'travel inquiry', 'nymphette contact', 'tour booking']
+      },
+      {
+        page_url: '/regions/asia',
+        views: 8750,
+        bounce_rate: 35.4,
+        avg_session_duration: 285,
+        search_impressions: 45200,
+        search_clicks: 2750,
+        ctr: 6.1,
+        avg_position: 3.5,
+        top_keywords: ['asia travel', 'southeast asia tours', 'asia vacation', 'asian destinations', 'asia packages']
+      },
+      {
+        page_url: '/regions/europe',
+        views: 7890,
+        bounce_rate: 31.2,
+        avg_session_duration: 310,
+        search_impressions: 38900,
+        search_clicks: 2340,
+        ctr: 6.0,
+        avg_position: 3.2,
+        top_keywords: ['europe travel', 'european tours', 'europe vacation', 'european packages', 'europe destinations']
       }
     ];
     setAnalytics(mockAnalytics);
