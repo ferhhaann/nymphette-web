@@ -104,28 +104,60 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
   }
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-      <div className="mb-6">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">Browse Countries</h2>
-        <p className="text-muted-foreground">Discover amazing destinations in {region}</p>
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <div className="mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-1">Browse Countries</h2>
+        <p className="text-sm text-muted-foreground">Discover destinations in {region}</p>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* Compact list layout for mobile, grid for larger screens */}
+      <div className="md:hidden space-y-2">
+        {countries.map((country, index) => (
+          <div
+            key={country.id}
+            className="flex items-center justify-between p-3 bg-card/50 rounded-lg border border-border/50 cursor-pointer hover:bg-card/80 transition-colors animate-fade-in"
+            style={{animationDelay: `${index * 50}ms`}}
+            onClick={() => onCountrySelect(country.slug)}
+          >
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-foreground">{country.name}</span>
+              {country.capital && (
+                <span className="text-xs text-muted-foreground">• {country.capital}</span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="text-xs px-2 py-0.5">
+                {country.package_count || 0} tours
+              </Badge>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Grid layout for larger screens */}
+      <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         {countries.map((country, index) => (
           <Card 
             key={country.id} 
             className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 animate-fade-in border-muted hover:border-primary/20"
-            style={{animationDelay: `${index * 100}ms`}}
+            style={{animationDelay: `${index * 50}ms`}}
             onClick={() => onCountrySelect(country.slug)}
           >
             <CardContent className="p-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+              <div className="text-center space-y-1">
+                <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
                   {country.name}
                 </h3>
-                <span className="text-sm text-primary font-medium">
-                  {country.package_count || 0}
-                </span>
+                {country.capital && (
+                  <p className="text-xs text-muted-foreground line-clamp-1">{country.capital}</p>
+                )}
+                <div className="flex items-center justify-center gap-1">
+                  <Package className="h-3 w-3 text-primary" />
+                  <span className="text-xs text-primary font-medium">
+                    {country.package_count || 0}
+                  </span>
+                </div>
               </div>
             </CardContent>
           </Card>
