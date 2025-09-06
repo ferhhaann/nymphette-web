@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Search, Edit, Trash2, Eye, FileText, Calendar, User, Tag } from 'lucide-react'
+import { Plus, Search, Edit, Trash2, Eye, FileText, Calendar, User, Tag, Upload, X } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -71,6 +71,8 @@ export const BlogManager: React.FC = () => {
     meta_title: '',
     meta_description: ''
   })
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   useEffect(() => {
     fetchData()
@@ -126,6 +128,37 @@ export const BlogManager: React.FC = () => {
     return Math.ceil(wordCount / wordsPerMinute)
   }
 
+  const uploadImage = async (file: File): Promise<string> => {
+    const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
+    const { data, error } = await supabase.storage
+      .from('blog-images')
+      .upload(fileName, file)
+    
+    if (error) throw error
+    
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('blog-images')
+      .getPublicUrl(fileName)
+    
+    return publicUrl
+  }
+
+  const handleImageUpload = async (file: File) => {
+    setUploadingImage(true)
+    try {
+      const imageUrl = await uploadImage(file)
+      setPostForm(prev => ({ ...prev, featured_image: imageUrl }))
+      setSelectedFile(null)
+      toast.success('Image uploaded successfully')
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      toast.error('Failed to upload image')
+    } finally {
+      setUploadingImage(false)
+    }
+  }
+
   const handleSavePost = async () => {
     try {
       const tagsArray = postForm.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
@@ -154,6 +187,7 @@ export const BlogManager: React.FC = () => {
 
       setIsEditing(false)
       setSelectedPost(null)
+      setSelectedFile(null)
       setPostForm({
         title: '',
         slug: '',
@@ -228,6 +262,7 @@ export const BlogManager: React.FC = () => {
           <DialogTrigger asChild>
             <Button onClick={() => {
               setSelectedPost(null)
+              setSelectedFile(null)
               setPostForm({
                 title: '',
                 slug: '',
@@ -341,13 +376,72 @@ export const BlogManager: React.FC = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="featured_image">Featured Image URL</Label>
-                  <Input
-                    id="featured_image"
-                    value={postForm.featured_image}
-                    onChange={(e) => setPostForm({ ...postForm, featured_image: e.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <Label htmlFor="featured_image">Featured Image</Label>
+                  <div className="space-y-4">
+                    {postForm.featured_image && (
+                      <div className="relative">
+                        <img 
+                          src={postForm.featured_image} 
+                          alt="Featured" 
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2"
+                          onClick={() => setPostForm({ ...postForm, featured_image: '' })}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center gap-4">
+                      <Input
+                        id="featured_image"
+                        value={postForm.featured_image}
+                        onChange={(e) => setPostForm({ ...postForm, featured_image: e.target.value })}
+                        placeholder="Image URL or upload a file"
+                      />
+                      <div className="relative">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        />
+                        <Button type="button" variant="outline" disabled={uploadingImage}>
+                          <Upload className="w-4 h-4 mr-2" />
+                          {uploadingImage ? 'Uploading...' : 'Upload'}
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    {selectedFile && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">
+                          Selected: {selectedFile.name}
+                        </span>
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={() => handleImageUpload(selectedFile)}
+                          disabled={uploadingImage}
+                        >
+                          {uploadingImage ? 'Uploading...' : 'Upload File'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedFile(null)}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 
                 <div>
