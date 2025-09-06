@@ -1,0 +1,5 @@
+-- Add sample SEO settings with proper JSONB casting
+INSERT INTO public.seo_settings (page_url, meta_title, meta_description, meta_keywords, canonical_url, og_title, og_description, og_image, page_type, robots_meta, structured_data, is_active)
+VALUES 
+('/packages', 'Travel Packages - Curated Tours & Vacation Deals | Nymphette Tours', 'Browse our collection of premium travel packages featuring destinations across Asia, Europe, and beyond. Expert-planned itineraries with competitive pricing.', 'travel packages, vacation deals, tour packages, asia packages, europe packages, holiday packages, travel deals', 'https://nymphettetours.com/packages', 'Premium Travel Packages Worldwide - Nymphette Tours', 'Discover our handpicked travel packages designed for unforgettable experiences. From cultural tours to adventure packages.', '/og-packages.jpg', 'packages', 'index,follow', '{"@context":"https://schema.org","@type":"WebPage","name":"Travel Packages","description":"Premium travel packages and vacation deals","mainEntity":{"@type":"ItemList","name":"Travel Packages","numberOfItems":50}}'::jsonb, true)
+ON CONFLICT (page_url) DO NOTHING;
