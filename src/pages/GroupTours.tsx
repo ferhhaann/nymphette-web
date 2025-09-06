@@ -641,32 +641,6 @@ const GroupTours = () => {
         </div>
       </section>
 
-      {/* Group Matchmaking Widget */}
-      <section className="py-8 bg-gradient-to-r from-accent to-bright-blue text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">Find Your Travel Tribe</h3>
-          <p className="text-lg mb-6 text-blue-100">
-            Smart matching with travelers who share your interests and style
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {[
-              { label: "Solo Adventurers", count: "124 online", icon: Users },
-              { label: "Family Friendly", count: "87 families", icon: Heart },
-              { label: "Corporate Groups", count: "45 teams", icon: Award },
-              { label: "Photography Tours", count: "56 photographers", icon: Eye }
-            ].map((group, idx) => (
-              <Card key={idx} className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all cursor-pointer">
-                <CardContent className="p-4 text-center">
-                  <group.icon className="h-8 w-8 mx-auto mb-2" />
-                  <h4 className="font-semibold">{group.label}</h4>
-                  <p className="text-sm text-blue-100">{group.count}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Tours Grid */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
