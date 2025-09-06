@@ -173,7 +173,7 @@ const GroupTours = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg font-semibold"
+                className="border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg font-semibold bg-white/10 backdrop-blur-sm"
               >
                 <Play className="h-5 w-5 mr-2" />
                 Watch Stories
