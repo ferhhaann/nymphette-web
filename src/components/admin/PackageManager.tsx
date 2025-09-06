@@ -488,11 +488,18 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSave(formData)
+    // Update the itinerary in the form data before saving
+    const itineraryData = getItinerary()
+    onSave({ ...formData, itinerary: itineraryData })
   }
 
   const updateField = (field: keyof DatabasePackage, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    // For the itinerary field, just store it temporarily without triggering a form update
+    if (field === 'itinerary') {
+      setFormData(prev => ({ ...prev, itinerary: value }))
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }))
+    }
   }
 
   const updateArrayField = (field: keyof DatabasePackage, value: string) => {

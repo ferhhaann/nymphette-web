@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -24,9 +24,14 @@ interface ItineraryEditorProps {
 export const ItineraryEditor = ({ itinerary, onChange }: ItineraryEditorProps) => {
   const [days, setDays] = useState<ItineraryDay[]>(itinerary || [])
 
-  const updateItinerary = (newDays: ItineraryDay[]) => {
-    setDays(newDays)
-    onChange(newDays)
+  // Update both local state and parent
+  const updateLocalState = (newDays: ItineraryDay[]) => {
+    const updatedDays = newDays.map((day, idx) => ({
+      ...day,
+      day: idx + 1
+    }))
+    setDays(updatedDays)
+    onChange(updatedDays)
   }
 
   const addDay = () => {
@@ -38,21 +43,30 @@ export const ItineraryEditor = ({ itinerary, onChange }: ItineraryEditorProps) =
       meals: [],
       accommodation: ""
     }
-    updateItinerary([...days, newDay])
+    const newDays = [...days, newDay];
+    updateLocalState(newDays);
+    
+    // Scroll to the newly added day after a short delay to allow for rendering
+    setTimeout(() => {
+      const container = document.querySelector('.max-h-96');
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }, 100)
   }
 
   const removeDay = (index: number) => {
     const newDays = days.filter((_, i) => i !== index)
     // Renumber days
     const renumberedDays = newDays.map((day, i) => ({ ...day, day: i + 1 }))
-    updateItinerary(renumberedDays)
+    updateLocalState(renumberedDays)
   }
 
   const updateDay = (index: number, updates: Partial<ItineraryDay>) => {
     const newDays = days.map((day, i) => 
       i === index ? { ...day, ...updates } : day
     )
-    updateItinerary(newDays)
+    updateLocalState(newDays)
   }
 
   const updateArrayField = (index: number, field: 'activities' | 'meals', value: string) => {
@@ -60,30 +74,33 @@ export const ItineraryEditor = ({ itinerary, onChange }: ItineraryEditorProps) =
     updateDay(index, { [field]: items })
   }
 
-  const moveDay = (index: number, direction: 'up' | 'down') => {
+  const moveDay = (dayIndex: number, direction: 'up' | 'down') => {
     if (
-      (direction === 'up' && index === 0) || 
-      (direction === 'down' && index === days.length - 1)
+      (direction === 'up' && dayIndex === 0) || 
+      (direction === 'down' && dayIndex === days.length - 1)
     ) return
 
-    const newDays = [...days]
-    const newIndex = direction === 'up' ? index - 1 : index + 1
+    const targetIndex = direction === 'up' ? dayIndex - 1 : dayIndex + 1
+    const updatedDays = [...days]
     
     // Swap the elements
-    const temp = newDays[index]
-    newDays[index] = newDays[newIndex]
-    newDays[newIndex] = temp
+    const temp = updatedDays[dayIndex]
+    updatedDays[dayIndex] = updatedDays[targetIndex]
+    updatedDays[targetIndex] = temp
     
-    // Renumber days
-    const renumberedDays = newDays.map((day, i) => ({ ...day, day: i + 1 }))
-    updateItinerary(renumberedDays)
+    // Renumber and update state
+    const renumberedDays = updatedDays.map((day, i) => ({ ...day, day: i + 1 }))
+    updateLocalState(renumberedDays)
   }
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold">Itinerary Editor</h3>
-        <Button onClick={addDay} size="sm">
+        <Button onClick={(e) => {
+          e.preventDefault();
+          addDay();
+        }} size="sm" type="button">
           <Plus className="h-4 w-4 mr-2" />
           Add Day
         </Button>
@@ -100,7 +117,11 @@ export const ItineraryEditor = ({ itinerary, onChange }: ItineraryEditorProps) =
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => moveDay(index, 'up')}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        moveDay(index, 'up');
+                      }}
+                      type="button"
                       disabled={index === 0}
                       className="h-6 w-6 p-0"
                     >
@@ -109,7 +130,11 @@ export const ItineraryEditor = ({ itinerary, onChange }: ItineraryEditorProps) =
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => moveDay(index, 'down')}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        moveDay(index, 'down');
+                      }}
+                      type="button"
                       disabled={index === days.length - 1}
                       className="h-6 w-6 p-0"
                     >

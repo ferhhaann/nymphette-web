@@ -60,7 +60,7 @@ const Hero = () => {
       </div>
 
       {/* Floating Elements - Hidden on mobile, visible on larger screens */}
-      <div className="hidden md:block absolute bottom-10 left-10 animate-float">
+      {/* <div className="hidden md:block absolute bottom-10 left-10 animate-float">
         <div className="bg-background/30 backdrop-blur-md rounded-full p-4">
           <div className="text-center text-background">
             <div className="text-2xl font-bold">500+</div>
@@ -76,7 +76,7 @@ const Hero = () => {
             <div className="text-sm text-background/80">Happy Travelers</div>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };

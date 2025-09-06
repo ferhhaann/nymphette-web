@@ -204,13 +204,13 @@ const GroupTours = () => {
             
             {/* Badges */}
             <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-              {tour.featured && (
+              {tour.featured && tour.badges?.includes('Featured') && (
                 <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold">
                   <Sparkles className="h-3 w-3 mr-1" />
                   Featured
                 </Badge>
               )}
-              {tour.badges?.map((badge, idx) => (
+              {tour.badges?.filter(badge => badge !== 'Featured').map((badge, idx) => (
                 <Badge key={idx} variant={getBadgeVariant(badge)} className="backdrop-blur-sm">
                   {badge === 'Eco Friendly' && <Leaf className="h-3 w-3 mr-1" />}
                   {badge === 'Top Rated' && <Award className="h-3 w-3 mr-1" />}

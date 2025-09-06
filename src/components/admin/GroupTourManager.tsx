@@ -325,6 +325,24 @@ const GroupTourManager = () => {
     return `₹${amount.toLocaleString()}`;
   };
 
+  // Predefined badge options
+  const availableBadges = [
+    'Top Rated',
+    'Featured',
+    'Alpine Adventure',
+    'Cultural Heritage',
+    'Early Bird',
+    'Best Seller',
+    'Family Friendly',
+    'Sustainable',
+    'Wildlife',
+    'Photography',
+    'Food & Culinary',
+    'Historical',
+    'Adventure',
+    'Eco-friendly'
+  ];
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Active': return 'bg-green-100 text-green-800';
@@ -332,6 +350,122 @@ const GroupTourManager = () => {
       case 'Sold Out': return 'bg-red-100 text-red-800';
       case 'Cancelled': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  // Update the content tab to include badge management
+  const renderBadgesSection = () => {
+    return (
+      <div>
+        <Label>Tour Badges (Max 3)</Label>
+        <p className="text-sm text-muted-foreground mb-3">Select up to 3 badges to highlight key features of this tour</p>
+        <div className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {availableBadges.map((badge) => (
+              <Badge
+                key={badge}
+                variant={(formData.badges || []).includes(badge) ? "default" : "outline"}
+                className={`cursor-pointer transition-colors ${
+                  (formData.badges || []).includes(badge)
+                    ? "hover:bg-primary/90"
+                    : "hover:bg-primary/10"
+                }`}
+                onClick={() => handleBadgeToggle(badge)}
+              >
+                {badge}
+                {(formData.badges || []).includes(badge) && (
+                  <X 
+                    className="h-3 w-3 ml-1" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const currentBadges = formData.badges || [];
+                      setFormData({
+                        ...formData,
+                        badges: currentBadges.filter(b => b !== badge)
+                      });
+                    }} 
+                  />
+                )}
+              </Badge>
+            ))}
+          </div>
+          
+          <div className="flex gap-2">
+            <Input
+              placeholder="Add custom badge..."
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  const value = (e.target as HTMLInputElement).value.trim();
+                  handleCustomBadge(value);
+                  (e.target as HTMLInputElement).value = '';
+                }
+              }}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={(e) => {
+                const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                const value = input.value.trim();
+                handleCustomBadge(value);
+                input.value = '';
+              }}
+            >
+              Add
+            </Button>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {formData.badges?.map((badge, idx) => (
+              <Badge key={idx} variant="default">
+                {badge}
+                <X
+                  className="h-3 w-3 ml-1 cursor-pointer"
+                  onClick={() => {
+                    const currentBadges = formData.badges || [];
+                    setFormData({
+                      ...formData,
+                      badges: currentBadges.filter(b => b !== badge)
+                    });
+                  }}
+                />
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const handleBadgeToggle = (badge: string) => {
+    const currentBadges = formData.badges || [];
+    if (currentBadges.includes(badge)) {
+      const updatedBadges = currentBadges.filter(b => b !== badge);
+      setFormData({ ...formData, badges: updatedBadges });
+    } else if (currentBadges.length < 3) {
+      setFormData({ ...formData, badges: [...currentBadges, badge] });
+    } else {
+      toast({
+        title: "Badge limit reached",
+        description: "You can only select up to 3 badges per tour.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCustomBadge = (value: string) => {
+    if (!value.trim()) return;
+    const currentBadges = formData.badges || [];
+    if (currentBadges.length >= 3) {
+      toast({
+        title: "Badge limit reached",
+        description: "You can only select up to 3 badges per tour.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!currentBadges.includes(value.trim())) {
+      setFormData({ ...formData, badges: [...currentBadges, value.trim()] });
     }
   };
 
@@ -344,13 +478,13 @@ const GroupTourManager = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">Group Tours Management</h2>
-          <p className="text-muted-foreground">Manage group tours, categories, and bookings</p>
-        </div>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold">Group Tours Management</h2>
+            <p className="text-muted-foreground">Manage group tours, categories, and bookings</p>
+          </div>
         <div className="flex space-x-2">
           <Dialog open={showCategoryDialog} onOpenChange={setShowCategoryDialog}>
             <DialogTrigger asChild>
@@ -589,6 +723,54 @@ const GroupTourManager = () => {
                   />
                 </div>
               </TabsContent>
+
+                            <TabsContent value="content" className="space-y-6">
+                {renderBadgesSection()}
+                
+                <Separator />
+                
+                <div>
+                  <Label htmlFor="highlights">Highlights (comma-separated)</Label>
+                  <Textarea
+                    id="highlights"
+                    value={formData.highlights?.join(', ') || ''}
+                    onChange={(e) => setFormData({ 
+                      ...formData, 
+                      highlights: e.target.value.split(',').map(item => item.trim()).filter(Boolean)
+                    })}
+                    placeholder="Amazing views, Local cuisine, Cultural experiences"
+                    rows={4}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="inclusions">Inclusions (comma-separated)</Label>
+                  <Textarea
+                    id="inclusions"
+                    value={formData.inclusions?.join(', ') || ''}
+                    onChange={(e) => setFormData({ 
+                      ...formData, 
+                      inclusions: e.target.value.split(',').map(item => item.trim()).filter(Boolean)
+                    })}
+                    placeholder="Accommodation, Meals, Transportation, Guide"
+                    rows={4}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="exclusions">Exclusions (comma-separated)</Label>
+                  <Textarea
+                    id="exclusions"
+                    value={formData.exclusions?.join(', ') || ''}
+                    onChange={(e) => setFormData({ 
+                      ...formData, 
+                      exclusions: e.target.value.split(',').map(item => item.trim()).filter(Boolean)
+                    })}
+                    placeholder="Flights, Personal expenses, Insurance"
+                    rows={4}
+                  />
+                </div>
+              </TabsContent>
               
               <TabsContent value="details" className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -646,113 +828,6 @@ const GroupTourManager = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  
-                  <div>
-                    <Label htmlFor="max-participants">Max Participants</Label>
-                    <Input
-                      id="max-participants"
-                      type="number"
-                      value={formData.max_participants || ''}
-                      onChange={(e) => setFormData({ ...formData, max_participants: parseInt(e.target.value) })}
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="available-spots">Available Spots</Label>
-                    <Input
-                      id="available-spots"
-                      type="number"
-                      value={formData.available_spots || ''}
-                      onChange={(e) => setFormData({ ...formData, available_spots: parseInt(e.target.value) })}
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="min-age">Minimum Age</Label>
-                    <Input
-                      id="min-age"
-                      type="number"
-                      value={formData.min_age || ''}
-                      onChange={(e) => setFormData({ ...formData, min_age: parseInt(e.target.value) })}
-                    />
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="content" className="space-y-4">
-                <div>
-                  <Label htmlFor="image-upload">Main Image</Label>
-                  <div className="space-y-4">
-                    {formData.image_url && (
-                      <div className="relative w-32 h-32">
-                        <img
-                          src={getImageUrl(formData.image_url)}
-                          alt="Tour preview"
-                          className="w-full h-full object-cover rounded-lg border"
-                        />
-                      </div>
-                    )}
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={uploading}
-                      >
-                        <Upload className="h-4 w-4 mr-2" />
-                        {uploading ? 'Uploading...' : 'Upload Image'}
-                      </Button>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Upload a high-quality image (max 5MB, JPG/PNG/WebP)
-                    </p>
-                  </div>
-                </div>
-                
-                <div>
-                  <Label htmlFor="highlights">Highlights (comma-separated)</Label>
-                  <Textarea
-                    id="highlights"
-                    value={formData.highlights?.join(', ') || ''}
-                    onChange={(e) => setFormData({ 
-                      ...formData, 
-                      highlights: e.target.value.split(',').map(item => item.trim()).filter(Boolean)
-                    })}
-                    placeholder="Amazing views, Local cuisine, Cultural experiences"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="inclusions">Inclusions (comma-separated)</Label>
-                  <Textarea
-                    id="inclusions"
-                    value={formData.inclusions?.join(', ') || ''}
-                    onChange={(e) => setFormData({ 
-                      ...formData, 
-                      inclusions: e.target.value.split(',').map(item => item.trim()).filter(Boolean)
-                    })}
-                    placeholder="Accommodation, Meals, Transportation, Guide"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="exclusions">Exclusions (comma-separated)</Label>
-                  <Textarea
-                    id="exclusions"
-                    value={formData.exclusions?.join(', ') || ''}
-                    onChange={(e) => setFormData({ 
-                      ...formData, 
-                      exclusions: e.target.value.split(',').map(item => item.trim()).filter(Boolean)
-                    })}
-                    placeholder="Flights, Personal expenses, Insurance"
-                  />
                 </div>
               </TabsContent>
               

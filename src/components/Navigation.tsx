@@ -44,19 +44,19 @@ const Navigation = () => {
 
   return (
     <nav className="fixed top-0 w-full bg-background/70 backdrop-blur-md z-50 border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
             <img 
               src="/lovable-uploads/55a5a12c-6872-4f3f-b1d6-da7e436ed8f1.png" 
               alt="Nymphette International" 
-              className="h-10 cursor-pointer hover:opacity-80 transition-opacity"
+              className="h-16 cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => handleNavigation("/")}
             />
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 ml-auto mr-6">
             {navItems.map((item) => (
               <button
                 key={item.name}
@@ -92,7 +92,7 @@ const Navigation = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden bg-background/95 backdrop-blur-sm border-t border-border">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="pt-2 pb-3 space-y-1">
               {navItems.map((item) => (
                 <button
                   key={item.name}
