@@ -64,12 +64,9 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
     }
   }
 
-  const formatVisitors = (visitors?: number) => {
-    if (!visitors) return ''
-    if (visitors >= 1000000) {
-      return `${(visitors / 1000000).toFixed(1)}M visitors/year`
-    }
-    return `${(visitors / 1000).toFixed(0)}K visitors/year`
+  const formatPackageCount = (count?: number) => {
+    const num = count || 0;
+    return num === 1 ? '1 package' : `${num} packages`;
   }
 
   if (loading) {
@@ -118,13 +115,16 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
           {displayedCountries.map((country, index) => (
             <div
               key={country.id}
-              className="flex-shrink-0 flex items-center gap-2 px-3 py-2 bg-card/60 rounded-full border border-border/30 cursor-pointer hover:bg-card transition-colors text-sm"
+              className="flex-shrink-0 flex items-center gap-2 px-3 py-2 bg-card/60 rounded-full border border-border/30 cursor-pointer hover:bg-card transition-colors text-sm group"
               onClick={() => onCountrySelect(country.slug)}
             >
               <span className="font-medium text-foreground whitespace-nowrap">{country.name}</span>
-              <Badge variant="secondary" className="text-xs px-1.5 py-0">
+              <Badge variant="secondary" className="text-xs px-1.5 py-0 group-hover:hidden">
                 {country.package_count || 0}
               </Badge>
+              <span className="text-xs text-primary hidden group-hover:inline whitespace-nowrap">
+                {formatPackageCount(country.package_count)}
+              </span>
             </div>
           ))}
           {countries.length > 6 && !showAll && (
@@ -150,8 +150,11 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
               <div className="text-xs font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
                 {country.name}
               </div>
-              <div className="text-xs text-primary mt-1">
+              <div className="text-xs text-primary mt-1 group-hover:hidden">
                 {country.package_count || 0}
+              </div>
+              <div className="text-xs text-primary mt-1 hidden group-hover:block">
+                {formatPackageCount(country.package_count)}
               </div>
             </div>
           ))}
