@@ -18,7 +18,7 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-2 sm:inset-4 md:inset-6 lg:inset-8 top-14 sm:top-16 md:top-18 lg:top-20 rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden">
+      <div className="absolute left-2 right-2 bottom-0 sm:left-4 sm:right-4 md:left-6 md:right-6 lg:left-8 lg:right-8 top-14 sm:top-16 md:top-18 lg:top-20 rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden">
         <OptimizedImage
           src={heroImage}
           alt="Travel destinations hero image"
