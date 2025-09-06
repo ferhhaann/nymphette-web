@@ -108,62 +108,58 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   // Mobile optimization settings
   const { isMobile, optimizedSettings } = useMobileOptimization();
   
-  // Import region-specific images to match packages page with mobile optimization
+  // Get region-specific images from public folder for production compatibility
   const getRegionImages = (regionName: string) => {
     const normalizedRegion = regionName.toLowerCase();
-    const isMobile = window.innerWidth < 768;
-    
-    // Use absolute paths for better mobile loading
-    const baseUrl = window.location.origin;
     
     if (normalizedRegion === 'asia') {
       return [
-        `${baseUrl}/src/assets/regions/asia-1.jpg`,
-        `${baseUrl}/src/assets/regions/asia-2.jpg`, 
-        `${baseUrl}/src/assets/regions/asia-3.jpg`
+        '/regions/asia-1.jpg',
+        '/regions/asia-2.jpg', 
+        '/regions/asia-3.jpg'
       ];
     }
     if (normalizedRegion === 'europe') {
       return [
-        `${baseUrl}/src/assets/regions/europe-1.jpg`,
-        `${baseUrl}/src/assets/regions/europe-2.jpg`,
-        `${baseUrl}/src/assets/regions/europe-3.jpg`
+        '/regions/europe-1.jpg',
+        '/regions/europe-2.jpg',
+        '/regions/europe-3.jpg'
       ];
     }
     if (normalizedRegion === 'africa') {
       return [
-        `${baseUrl}/src/assets/regions/africa-1.jpg`,
-        `${baseUrl}/src/assets/regions/africa-2.jpg`,
-        `${baseUrl}/src/assets/regions/africa-3.jpg`
+        '/regions/africa-1.jpg',
+        '/regions/africa-2.jpg',
+        '/regions/africa-3.jpg'
       ];
     }
     if (normalizedRegion === 'americas') {
       return [
-        `${baseUrl}/src/assets/regions/americas-1.jpg`,
-        `${baseUrl}/src/assets/regions/americas-2.jpg`,
-        `${baseUrl}/src/assets/regions/americas-3.jpg`
+        '/regions/americas-1.jpg',
+        '/regions/americas-2.jpg',
+        '/regions/americas-3.jpg'
       ];
     }
     if (normalizedRegion === 'pacific islands') {
       return [
-        `${baseUrl}/src/assets/regions/pacific-1.jpg`,
-        `${baseUrl}/src/assets/regions/pacific-2.jpg`,
-        `${baseUrl}/src/assets/regions/pacific-3.jpg`
+        '/regions/pacific-1.jpg',
+        '/regions/pacific-2.jpg',
+        '/regions/pacific-3.jpg'
       ];
     }
     if (normalizedRegion === 'middle east') {
       return [
-        `${baseUrl}/src/assets/regions/middle-east-1.jpg`,
-        `${baseUrl}/src/assets/regions/middle-east-2.jpg`,
-        `${baseUrl}/src/assets/regions/middle-east-3.jpg`
+        '/regions/middle-east-1.jpg',
+        '/regions/middle-east-2.jpg',
+        '/regions/middle-east-3.jpg'
       ];
     }
     
     // Fallback to Asia images
     return [
-      `${baseUrl}/src/assets/regions/asia-1.jpg`,
-      `${baseUrl}/src/assets/regions/asia-2.jpg`,
-      `${baseUrl}/src/assets/regions/asia-3.jpg`
+      '/regions/asia-1.jpg',
+      '/regions/asia-2.jpg',
+      '/regions/asia-3.jpg'
     ];
   };
 
