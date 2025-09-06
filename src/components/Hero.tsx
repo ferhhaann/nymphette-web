@@ -18,14 +18,14 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-16 sm:top-20 md:top-24 rounded-2xl sm:rounded-3xl overflow-hidden">
+      <div className="absolute inset-2 sm:inset-4 md:inset-6 lg:inset-8 top-14 sm:top-16 md:top-18 lg:top-20 rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden">
         <OptimizedImage
           src={heroImage}
           alt="Travel destinations hero image"
           priority={true}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center scale-100 hover:scale-105 transition-transform duration-700"
         />
-        <div className="absolute inset-0 bg-foreground/50"></div>
+        <div className="absolute inset-0 bg-foreground/40 sm:bg-foreground/45 md:bg-foreground/50"></div>
       </div>
 
       {/* Content */}
