@@ -23,7 +23,7 @@ const Hero = () => {
           src={heroImage}
           alt="Travel destinations hero image"
           priority={true}
-          className="w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-foreground/50"></div>
       </div>
