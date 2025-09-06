@@ -1,0 +1,72 @@
+-- Add more sample tours and reviews
+INSERT INTO group_tours (
+  title, description, destination, category_id, start_date, end_date, duration, 
+  price, original_price, max_participants, available_spots, difficulty_level, 
+  group_type, image_url, highlights, inclusions, exclusions, itinerary, badges, 
+  rating, reviews_count, status, featured, early_bird_discount, is_eco_friendly
+) VALUES 
+(
+  'Switzerland Alpine Adventure',
+  'Experience the breathtaking beauty of the Swiss Alps with scenic train rides, pristine lakes, and charming mountain villages. A perfect blend of adventure and relaxation.',
+  'Zurich, Interlaken, Zermatt, Lucerne',
+  (SELECT id FROM group_tour_categories WHERE name = 'Adventure & Trekking' LIMIT 1),
+  '2024-06-08',
+  '2024-06-16',
+  '9 Days / 8 Nights',
+  125000,
+  140000,
+  16,
+  9,
+  'Moderate',
+  'Adventure Seekers',
+  '/places/europe/alps.jpg',
+  ARRAY['Matterhorn Views', 'Jungfraujoch Top of Europe', 'Lake Geneva', 'Rhine Falls', 'Alpine Train Rides', 'Mountain Hiking'],
+  ARRAY['8 Nights Accommodation', 'Daily Breakfast', 'Swiss Pass', 'All Train Journeys', 'Cable Car Rides', 'English Guide'],
+  ARRAY['International Flights', 'Lunch & Dinner', 'Personal Expenses', 'Optional Activities', 'Travel Insurance'],
+  '[]'::jsonb,
+  ARRAY['Top Rated', 'Alpine Adventure'],
+  4.9,
+  78,
+  'Active',
+  true,
+  8,
+  true
+),
+(
+  'Morocco Desert Expedition',
+  'Journey through Morocco imperial cities, Atlas Mountains, and the magical Sahara Desert. Experience the rich culture, stunning architecture, and desert adventures.',
+  'Marrakech, Fes, Sahara Desert, Casablanca',
+  (SELECT id FROM group_tour_categories WHERE name = 'Adventure & Trekking' LIMIT 1),
+  '2024-04-20',
+  '2024-04-28',
+  '9 Days / 8 Nights',
+  67000,
+  75000,
+  20,
+  12,
+  'Challenging',
+  'Adventure Seekers',
+  '/places/regions/africa-1.jpg',
+  ARRAY['Sahara Desert Camping', 'Atlas Mountains', 'Imperial Cities', 'Camel Trekking', 'Berber Villages', 'Traditional Souks'],
+  ARRAY['8 Nights Accommodation', 'Desert Camp', 'Daily Breakfast', 'Transportation', 'Camel Trek', 'Local Guide'],
+  ARRAY['International Flights', 'Lunch & Dinner', 'Personal Expenses', 'Tips', 'Optional Activities'],
+  '[]'::jsonb,
+  ARRAY['Desert Adventure', 'Cultural'],
+  4.7,
+  92,
+  'Active',
+  false,
+  0,
+  false
+);
+
+-- Insert sample reviews for the new tours
+INSERT INTO tour_reviews (tour_id, reviewer_name, reviewer_image, rating, review_text, is_verified, social_media_link) VALUES
+((SELECT id FROM group_tours WHERE title = 'Incredible India Golden Triangle' LIMIT 1), 'Sarah Johnson', null, 5, 'Absolutely amazing experience! The Taj Mahal at sunrise was breathtaking. Our guide was knowledgeable and the group was fantastic. Highly recommend!', true, 'https://instagram.com/sarahtravels'),
+((SELECT id FROM group_tours WHERE title = 'Incredible India Golden Triangle' LIMIT 1), 'Michael Chen', null, 5, 'Perfect introduction to India. Well organized, great accommodations, and incredible sights. The group size was just right.', true, null),
+((SELECT id FROM group_tours WHERE title = 'Bali Paradise Adventure' LIMIT 1), 'Emma Rodriguez', null, 5, 'Bali exceeded all expectations! The volcano trek was challenging but so rewarding. Loved the cooking class and the beaches were pristine.', true, 'https://instagram.com/emmaadventures'),
+((SELECT id FROM group_tours WHERE title = 'Dubai Luxury Escape' LIMIT 1), 'James Wilson', null, 4, 'Luxury at its finest! Dubai is incredible and the desert safari was unforgettable. Only wish we had more time in Abu Dhabi.', true, null),
+((SELECT id FROM group_tours WHERE title = 'Thailand Island Hopping' LIMIT 1), 'Lisa Park', null, 5, 'Island paradise indeed! Phi Phi was stunning and the group bonded really well. Thai food is amazing and the people are so friendly.', true, 'https://instagram.com/lisaexplores'),
+((SELECT id FROM group_tours WHERE title = 'Switzerland Alpine Adventure' LIMIT 1), 'David Kumar', null, 5, 'Switzerland is pure magic! The train rides were scenic, Matterhorn views were spectacular. Expensive but totally worth every penny.', true, null),
+((SELECT id FROM group_tours WHERE title = 'Morocco Desert Expedition' LIMIT 1), 'Maria Santos', null, 5, 'Morocco was incredible! The desert camping under stars was magical. Our Berber guides were amazing and the food was delicious.', true, 'https://instagram.com/mariawanders'),
+((SELECT id FROM group_tours WHERE title = 'Morocco Desert Expedition' LIMIT 1), 'Alex Thompson', null, 4, 'Great adventure tour! The Atlas Mountains were stunning and Marrakech medina was fascinating. Camel trekking was unforgettable.', true, null);
