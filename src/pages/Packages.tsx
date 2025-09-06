@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import RegionPackages from "@/components/RegionPackages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +32,7 @@ import middleEast3 from "@/assets/regions/middle-east-3.jpg";
 import { usePackages } from "@/hooks/usePackages";
 
 const Packages = () => {
+  usePerformanceOptimization();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
@@ -140,10 +143,38 @@ const Packages = () => {
     setSelectedRegion(null);
   };
 
+  const packagesStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Travel Packages - Explore Destinations Worldwide",
+    "description": "Browse our curated travel packages across Asia, Europe, Africa, Americas, Pacific Islands, and Middle East. Find your perfect vacation with expert travel planning.",
+    "url": "/packages",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "Travel Package Regions",
+      "numberOfItems": filteredRegions.length,
+      "itemListElement": filteredRegions.map((region, index) => ({
+        "@type": "TravelAction",
+        "name": region.name,
+        "description": `Travel packages to ${region.name} starting from ${region.startingPrice}`,
+        "position": index + 1
+      }))
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <SEOHead 
+        title="Travel Packages - Explore Destinations Worldwide | Nymphette Tours"
+        description="Browse our curated travel packages across Asia, Europe, Africa, Americas, Pacific Islands, and Middle East. Find your perfect vacation with expert travel planning and 24/7 support."
+        keywords="travel packages, Asia tours, Europe travel, Africa safari, Americas vacation, Pacific Islands, Middle East tours, group tours, custom trips"
+        url="/packages"
+        structuredData={packagesStructuredData}
+      />
+      <header>
+        <Navigation />
+      </header>
       
       {/* Conditional rendering based on selected region */}
       {selectedRegion ? (
@@ -153,7 +184,8 @@ const Packages = () => {
       ) : (
         <>
           {/* Hero Section */}
-          <section className="relative pt-20 pb-16 text-background overflow-hidden">
+          <main>
+            <section className="relative pt-20 pb-16 text-background overflow-hidden">
             <div 
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${packagesHeroBg})` }}
@@ -161,7 +193,7 @@ const Packages = () => {
             <div className="absolute inset-0 bg-primary/60 backdrop-blur-sm" />
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
-                Explore Our Travel Packages
+                Explore Our Premium Travel Packages
               </h1>
               <p className="text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
                 Discover amazing destinations across the globe with our carefully curated travel packages
@@ -252,12 +284,14 @@ const Packages = () => {
             ))}
           </div>
         </div>
-      </section>
+          </section>
+          </main>
+          </>
+          )}
 
-      </>
-      )}
-
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };

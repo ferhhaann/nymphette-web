@@ -3,37 +3,112 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nymphette Tours</title>
-    <meta name="description" content="Discover modern, curated travel packages, group tours, and custom trips worldwide. Book with Nymphette Tours for unforgettable experiences." />
+    <title>Nymphette Tours - Premium Travel Packages & Group Tours Worldwide</title>
+    <meta name="description" content="Discover premium travel packages, curated group tours, and custom trips to Asia, Europe, Africa & more. Expert travel planning with 24/7 support. Book your dream vacation today!" />
+    <meta name="keywords" content="travel packages, group tours, custom trips, Asia tours, Europe travel, Africa safari, vacation packages, travel agency, international tours, luxury travel" />
     <meta name="author" content="Nymphette Tours" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1a2e1e" />
 
-    <link rel="icon" type="image/x-icon" href="public/favicon.ico" />
+    <!-- Performance optimization -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="canonical" href="/" />
-
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
+    <!-- Critical font loading for better performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="/src/assets/hero-mountain-road.jpg" />
+    <link rel="preload" as="image" href="/src/assets/regions-world.jpg" />
+    
+    <!-- Critical CSS inline for performance -->
+    <style>
+      /* Critical above-the-fold styles */
+      .animate-fade-in {
+        animation: fadeIn 0.6s ease-out;
+        animation-fill-mode: both;
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      /* Loading state to prevent FOUC */
+      body { opacity: 0; transition: opacity 0.3s; }
+      body.loaded { opacity: 1; }
+    </style>
 
-    <meta property="og:title" content="Nymphette Tours — Modern Travel Packages" />
-    <meta property="og:description" content="Discover modern, curated travel packages, group tours, and custom trips worldwide." />
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <!-- <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" /> -->
+    <meta property="og:url" content="/" />
+    <meta property="og:title" content="Nymphette Tours - Premium Travel Packages & Group Tours Worldwide" />
+    <meta property="og:description" content="Discover premium travel packages, curated group tours, and custom trips to Asia, Europe, Africa & more. Expert travel planning with 24/7 support." />
+    <meta property="og:image" content="/src/assets/hero-travel.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Nymphette Tours" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="/" />
+    <meta name="twitter:title" content="Nymphette Tours - Premium Travel Packages & Group Tours" />
+    <meta name="twitter:description" content="Discover premium travel packages, curated group tours, and custom trips worldwide. Expert travel planning with 24/7 support." />
+    <meta name="twitter:image" content="/src/assets/hero-travel.jpg" />
     <meta name="twitter:site" content="@nymphettetours" />
-    <!-- <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" /> -->
+    <meta name="twitter:creator" content="@nymphettetours" />
 
+    <!-- Structured Data for SEO -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TravelAgency",
         "name": "Nymphette Tours",
-        "url": "https://" ,
-        "description": "Modern, curated travel packages and custom trips worldwide.",
+        "url": "/",
+        "logo": "/lovable-uploads/55a5a12c-6872-4f3f-b1d6-da7e436ed8f1.png",
+        "description": "Premium travel agency offering curated packages, group tours, and custom trips to destinations worldwide including Asia, Europe, Africa, Americas, Pacific Islands, and Middle East.",
+        "telephone": "+1-800-NYMPHETTE",
+        "email": "info@nymphettetours.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "Global"
+        },
         "sameAs": [
-          "https://facebook.com/",
-          "https://instagram.com/",
-          "https://twitter.com/"
+          "https://facebook.com/nymphettetours",
+          "https://instagram.com/nymphettetours",
+          "https://twitter.com/nymphettetours"
+        ],
+        "areaServed": ["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"],
+        "serviceType": ["Travel Packages", "Group Tours", "Custom Trips", "Luxury Travel", "Adventure Tours"],
+        "priceRange": "₹25,000 - ₹150,000"
+      }
+    </script>
+    
+    <!-- FAQ Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What destinations does Nymphette Tours offer?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We offer travel packages to over 50 destinations across Asia, Europe, Africa, Americas, Pacific Islands, and Middle East including Thailand, Japan, France, Italy, Kenya, USA, Maldives, and UAE."
+            }
+          },
+          {
+            "@type": "Question", 
+            "name": "What types of tours do you provide?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We provide group tours, custom private trips, luxury packages, adventure tours, cultural experiences, safari tours, and honeymoon packages with expert guides and 24/7 support."
+            }
+          }
         ]
       }
     </script>
@@ -42,5 +117,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Remove loading state after page loads -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('loaded');
+      });
+    </script>
   </body>
 </html>

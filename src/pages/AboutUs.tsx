@@ -1,12 +1,33 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Award, Users, Globe, Heart, Target, Eye } from "lucide-react";
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import teamPhoto from "@/assets/team-photo.jpg";
 import heroImage from "@/assets/hero-travel.jpg";
 
 const AboutUs = () => {
+  usePerformanceOptimization();
+  
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About Nymphette Tours - Travel Agency Since 1999",
+    "description": "Learn about Nymphette Tours, a premier travel agency with 25+ years of experience creating unforgettable journeys worldwide. Meet our team and discover our story.",
+    "url": "/about",
+    "mainEntity": {
+      "@type": "TravelAgency",
+      "name": "Nymphette Tours",
+      "foundingDate": "1999",
+      "founders": [{"@type": "Person", "name": "Rajesh Sharma"}],
+      "numberOfEmployees": "50+",
+      "areaServed": ["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"],
+      "awards": ["Best Travel Agency 2023"]
+    }
+  };
+
   const milestones = [
     { year: "1999", event: "Founded Nymphette Tours with a vision to make travel accessible to everyone" },
     { year: "2005", event: "Expanded to international destinations, serving 10+ countries" },
@@ -63,10 +84,20 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <SEOHead 
+        title="About Nymphette Tours - Premier Travel Agency Since 1999"
+        description="Learn about Nymphette Tours, a premier travel agency with 25+ years of experience creating unforgettable journeys worldwide. Meet our expert team and discover our story."
+        keywords="about nymphette tours, travel agency history, travel experts, founded 1999, travel team, travel company story"
+        url="/about"
+        structuredData={structuredData}
+      />
+      <header>
+        <Navigation />
+      </header>
       
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-16 overflow-hidden">
+      <main>
+        {/* Hero Section */}
+        <section className="relative pt-20 pb-16 overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroImage})` }}
@@ -75,7 +106,7 @@ const AboutUs = () => {
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-background">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
-            About Nymphette Tours
+            About Nymphette Tours - Premier Travel Agency Since 1999
           </h1>
           <p className="text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
             Creating unforgettable travel experiences for over 25 years with passion, expertise, and dedication
@@ -146,9 +177,11 @@ const AboutUs = () => {
             <div className="animate-slide-up">
               <img 
                 src={teamPhoto}
-                alt="Nymphette Tours Team"
+                alt="Nymphette Tours experienced travel team of experts and consultants working together"
                 loading="lazy"
                 className="rounded-2xl shadow-travel w-full"
+                width="600"
+                height="400"
               />
             </div>
           </div>
@@ -243,8 +276,11 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
+      </main>
 
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };

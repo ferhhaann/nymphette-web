@@ -105,12 +105,61 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans;
+    /* Performance optimizations */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Image optimization */
+  img {
+    max-width: 100%;
+    height: auto;
+    /* Lazy loading performance */
+    loading: lazy;
+    decoding: async;
+  }
+
+  /* Critical images should load eagerly */
+  img[data-priority="high"] {
+    loading: eager;
+  }
+
+  /* SEO and performance optimizations */
   .line-clamp-1 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Performance: Reduce layout shifts */
+  .lazy {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .lazy.loaded {
+    opacity: 1;
+  }
+
+  /* Critical resource optimization */
+  .preload-critical {
+    content-visibility: auto;
+    contain-intrinsic-size: 200px;
   }
 }

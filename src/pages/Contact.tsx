@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Globe, Users } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
+import SEOHead from "@/components/SEOHead"
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,6 +35,7 @@ interface ContactInfo {
 }
 
 export default function Contact() {
+  usePerformanceOptimization();
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -102,6 +105,21 @@ export default function Contact() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Nymphette Tours - Get Travel Assistance",
+    "description": "Contact our travel experts for personalized assistance with bookings, custom packages, and travel planning. Available 24/7 for all your travel needs.",
+    "url": "/contact",
+    "mainEntity": {
+      "@type": "TravelAgency",
+      "name": "Nymphette Tours",
+      "telephone": contactInfo?.general?.phone || "+1-800-NYMPHETTE",
+      "email": contactInfo?.general?.email || "info@nymphettetours.com",
+      "address": contactInfo?.general?.address || "Global Travel Services"
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -116,12 +134,22 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <SEOHead 
+        title="Contact Nymphette Tours - Get Expert Travel Assistance"
+        description="Contact our travel experts for personalized assistance with bookings, custom packages, and travel planning. Available 24/7 for all your travel needs worldwide."
+        keywords="contact nymphette tours, travel assistance, book travel packages, custom travel planning, travel consultation, travel support"
+        url="/contact"
+        structuredData={structuredData}
+      />
+      <header>
+        <Navigation />
+      </header>
       
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary/90 to-primary/70 text-white py-20">
+      <main>
+        {/* Hero Section */}
+        <section className="relative bg-gradient-to-r from-primary/90 to-primary/70 text-white py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6 animate-fade-in">Get in Touch</h1>
+          <h1 className="text-5xl font-bold mb-6 animate-fade-in">Contact Nymphette Tours - Get Expert Travel Assistance</h1>
           <p className="text-xl max-w-2xl mx-auto opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
             {contactInfo?.general?.tagline || "Ready to start your next adventure? We're here to help!"}
           </p>
@@ -341,6 +369,7 @@ export default function Contact() {
           </div>
         </div>
       </div>
+      </main>
 
       {/* Map Section */}
       <section className="py-16 bg-muted/30">
@@ -360,7 +389,9 @@ export default function Contact() {
         </div>
       </section>
 
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   )
 }
