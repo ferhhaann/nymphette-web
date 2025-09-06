@@ -3,12 +3,13 @@ import { supabase } from "@/integrations/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Package, FileText, Settings, Database, Globe } from "lucide-react"
+import { Plus, Package, FileText, Settings, Database, Globe, Users } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { AdminOverview } from "@/components/admin/AdminOverview"
 import { PackageManager } from "@/components/admin/PackageManager"
 import { ContentManager } from "@/components/admin/ContentManager"
 import { CountryManager } from "@/components/admin/CountryManager"
+import GroupTourManager from "@/components/admin/GroupTourManager"
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -86,7 +87,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <Database className="h-4 w-4" />
               Overview
@@ -94,6 +95,10 @@ const AdminDashboard = () => {
             <TabsTrigger value="packages" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
               Packages
+            </TabsTrigger>
+            <TabsTrigger value="group-tours" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Group Tours
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
@@ -115,6 +120,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="packages">
             <PackageManager />
+          </TabsContent>
+
+          <TabsContent value="group-tours">
+            <GroupTourManager />
           </TabsContent>
 
           <TabsContent value="countries">

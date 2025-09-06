@@ -535,6 +535,155 @@ export type Database = {
           },
         ]
       }
+      group_tour_categories: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      group_tours: {
+        Row: {
+          available_spots: number
+          badges: string[] | null
+          category_id: string | null
+          contact_info: Json | null
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          destination: string
+          difficulty_level: string | null
+          duration: string
+          early_bird_discount: number | null
+          end_date: string
+          exclusions: string[] | null
+          featured: boolean | null
+          gallery_images: Json | null
+          group_type: string | null
+          highlights: string[] | null
+          id: string
+          image_url: string | null
+          inclusions: string[] | null
+          is_eco_friendly: boolean | null
+          itinerary: Json | null
+          last_minute_discount: number | null
+          max_age: number | null
+          max_participants: number
+          min_age: number | null
+          original_price: number | null
+          price: number
+          rating: number | null
+          reviews_count: number | null
+          start_date: string
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          available_spots: number
+          badges?: string[] | null
+          category_id?: string | null
+          contact_info?: Json | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          destination: string
+          difficulty_level?: string | null
+          duration: string
+          early_bird_discount?: number | null
+          end_date: string
+          exclusions?: string[] | null
+          featured?: boolean | null
+          gallery_images?: Json | null
+          group_type?: string | null
+          highlights?: string[] | null
+          id?: string
+          image_url?: string | null
+          inclusions?: string[] | null
+          is_eco_friendly?: boolean | null
+          itinerary?: Json | null
+          last_minute_discount?: number | null
+          max_age?: number | null
+          max_participants: number
+          min_age?: number | null
+          original_price?: number | null
+          price: number
+          rating?: number | null
+          reviews_count?: number | null
+          start_date: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          available_spots?: number
+          badges?: string[] | null
+          category_id?: string | null
+          contact_info?: Json | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          destination?: string
+          difficulty_level?: string | null
+          duration?: string
+          early_bird_discount?: number | null
+          end_date?: string
+          exclusions?: string[] | null
+          featured?: boolean | null
+          gallery_images?: Json | null
+          group_type?: string | null
+          highlights?: string[] | null
+          id?: string
+          image_url?: string | null
+          inclusions?: string[] | null
+          is_eco_friendly?: boolean | null
+          itinerary?: Json | null
+          last_minute_discount?: number | null
+          max_age?: number | null
+          max_participants?: number
+          min_age?: number | null
+          original_price?: number | null
+          price?: number
+          rating?: number | null
+          reviews_count?: number | null
+          start_date?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_tours_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "group_tour_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       packages: {
         Row: {
           best_time: string | null
@@ -629,6 +778,53 @@ export type Database = {
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tour_reviews: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_verified: boolean | null
+          rating: number | null
+          review_date: string | null
+          review_text: string | null
+          reviewer_image: string | null
+          reviewer_name: string
+          social_media_link: string | null
+          tour_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_verified?: boolean | null
+          rating?: number | null
+          review_date?: string | null
+          review_text?: string | null
+          reviewer_image?: string | null
+          reviewer_name: string
+          social_media_link?: string | null
+          tour_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_verified?: boolean | null
+          rating?: number | null
+          review_date?: string | null
+          review_text?: string | null
+          reviewer_image?: string | null
+          reviewer_name?: string
+          social_media_link?: string | null
+          tour_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_reviews_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "group_tours"
             referencedColumns: ["id"]
           },
         ]
