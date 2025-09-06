@@ -19,12 +19,15 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-16 sm:top-20 md:top-24 rounded-2xl sm:rounded-3xl overflow-hidden">
-        <OptimizedImage
-          src={heroImage}
-          alt="Travel destinations hero image"
-          priority={true}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <div className="absolute inset-0">
+          <OptimizedImage
+            src={heroImage}
+            alt="Travel destinations hero image"
+            priority={true}
+            className="w-full h-full"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
         <div className="absolute inset-0 bg-foreground/50"></div>
       </div>
 
