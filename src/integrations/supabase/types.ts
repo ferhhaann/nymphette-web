@@ -872,7 +872,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_group_tour_image_url: {
+        Args: { image_path: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

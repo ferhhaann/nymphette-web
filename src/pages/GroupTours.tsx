@@ -154,6 +154,19 @@ const GroupTours = () => {
     });
   };
 
+  const getImageUrl = (imagePath: string | undefined): string => {
+    if (!imagePath) return '/placeholder.svg';
+    
+    // If it's already a full URL, return as is
+    if (imagePath.startsWith('http')) return imagePath;
+    
+    // If it's a static asset path, return as is
+    if (imagePath.startsWith('/places/')) return imagePath;
+    
+    // Construct Supabase storage URL
+    return `https://duouhbzwivonyssvtiqo.supabase.co/storage/v1/object/public/group-tour-images/${imagePath}`;
+  };
+
   const getAvailabilityStatus = (available: number, total: number) => {
     const percentage = (available / total) * 100;
     if (percentage > 50) return { status: 'Available', color: 'bg-green-500', urgency: false };
@@ -189,7 +202,7 @@ const GroupTours = () => {
         <div className="relative">
           <div className="relative overflow-hidden h-64">
             <img
-              src={tour.image_url || '/placeholder.svg'}
+              src={getImageUrl(tour.image_url)}
               alt={tour.title}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             />
@@ -444,7 +457,7 @@ const GroupTours = () => {
               {[tour.image_url, ...(Array.isArray(tour.gallery_images) ? tour.gallery_images : [])].filter(Boolean).map((image, idx) => (
                 <CarouselItem key={idx} className="md:basis-1/2 lg:basis-1/3">
                   <img
-                    src={image}
+                    src={getImageUrl(image)}
                     alt={`Gallery ${idx + 1}`}
                     className="w-full h-48 object-cover rounded-lg"
                   />
