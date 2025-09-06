@@ -8,11 +8,13 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { preloadCriticalImages } from "@/hooks/useImagePreloader";
+import { useStaticSEO } from "@/hooks/useStaticSEO";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useEffect } from "react";
 import heroImage from "@/assets/hero-mountain-road.jpg";
 import regionsImage from "@/assets/regions-world.jpg";
 const Index = () => {
+  useStaticSEO(); // This will fetch and apply SEO settings from database
   usePerformanceOptimization();
   
   useEffect(() => {
