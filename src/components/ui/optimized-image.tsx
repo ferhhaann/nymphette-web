@@ -36,6 +36,11 @@ export const OptimizedImage = ({
   useEffect(() => {
     if (priority) return;
 
+    // More aggressive loading for mobile
+    const isMobile = window.innerWidth < 768;
+    const rootMargin = isMobile ? '100px' : '50px';
+    const threshold = isMobile ? 0.05 : 0.1;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -44,7 +49,7 @@ export const OptimizedImage = ({
           observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: '50px' }
+      { threshold, rootMargin }
     );
 
     if (imgRef.current) {
@@ -60,20 +65,31 @@ export const OptimizedImage = ({
   };
 
   const handleError = () => {
+    console.warn(`Image failed to load: ${src}, falling back to: ${fallback}`);
     setHasError(true);
     setCurrentSrc(fallback);
     onError?.();
   };
 
+  // Force load on mobile for critical images
+  useEffect(() => {
+    if (priority && window.innerWidth < 768) {
+      setIsIntersecting(true);
+      setCurrentSrc(src);
+    }
+  }, [priority, src]);
+
   return (
     <div ref={imgRef} className={cn("relative overflow-hidden", className)}>
-      {/* Loading placeholder */}
+      {/* Loading placeholder with better mobile experience */}
       {!isLoaded && !hasError && (
-        <div className="absolute inset-0 bg-muted animate-pulse" />
+        <div className="absolute inset-0 bg-muted animate-pulse">
+          <div className="h-full w-full bg-gradient-to-r from-muted via-muted/50 to-muted animate-pulse" />
+        </div>
       )}
       
       {/* Main image */}
-      {(isIntersecting || priority) && (
+      {(isIntersecting || priority) && currentSrc && (
         <img
           src={currentSrc}
           alt={alt}
@@ -86,8 +102,20 @@ export const OptimizedImage = ({
             isLoaded ? "opacity-100" : "opacity-0",
             className
           )}
+          style={{ 
+            maxWidth: '100%', 
+            height: 'auto',
+            objectFit: 'cover'
+          }}
           {...props}
         />
+      )}
+      
+      {/* Error state */}
+      {hasError && currentSrc === fallback && (
+        <div className="absolute inset-0 bg-muted flex items-center justify-center">
+          <div className="text-muted-foreground text-sm">Image unavailable</div>
+        </div>
       )}
     </div>
   );

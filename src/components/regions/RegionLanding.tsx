@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useOptimizedPackages } from "@/hooks/useOptimizedPackages";
+import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import { TravelPackage } from "@/data/packagesData";
 import { supabase } from '@/integrations/supabase/client';
 import Navigation from "@/components/Navigation";
@@ -104,58 +105,65 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   // Use optimized packages hook for better performance
   const { data: packages, loading } = useOptimizedPackages(region);
   
-  // Import region-specific images to match packages page
+  // Mobile optimization settings
+  const { isMobile, optimizedSettings } = useMobileOptimization();
+  
+  // Import region-specific images to match packages page with mobile optimization
   const getRegionImages = (regionName: string) => {
     const normalizedRegion = regionName.toLowerCase();
+    const isMobile = window.innerWidth < 768;
+    
+    // Use absolute paths for better mobile loading
+    const baseUrl = window.location.origin;
     
     if (normalizedRegion === 'asia') {
       return [
-        '/src/assets/regions/asia-1.jpg',
-        '/src/assets/regions/asia-2.jpg', 
-        '/src/assets/regions/asia-3.jpg'
+        `${baseUrl}/src/assets/regions/asia-1.jpg`,
+        `${baseUrl}/src/assets/regions/asia-2.jpg`, 
+        `${baseUrl}/src/assets/regions/asia-3.jpg`
       ];
     }
     if (normalizedRegion === 'europe') {
       return [
-        '/src/assets/regions/europe-1.jpg',
-        '/src/assets/regions/europe-2.jpg',
-        '/src/assets/regions/europe-3.jpg'
+        `${baseUrl}/src/assets/regions/europe-1.jpg`,
+        `${baseUrl}/src/assets/regions/europe-2.jpg`,
+        `${baseUrl}/src/assets/regions/europe-3.jpg`
       ];
     }
     if (normalizedRegion === 'africa') {
       return [
-        '/src/assets/regions/africa-1.jpg',
-        '/src/assets/regions/africa-2.jpg',
-        '/src/assets/regions/africa-3.jpg'
+        `${baseUrl}/src/assets/regions/africa-1.jpg`,
+        `${baseUrl}/src/assets/regions/africa-2.jpg`,
+        `${baseUrl}/src/assets/regions/africa-3.jpg`
       ];
     }
     if (normalizedRegion === 'americas') {
       return [
-        '/src/assets/regions/americas-1.jpg',
-        '/src/assets/regions/americas-2.jpg',
-        '/src/assets/regions/americas-3.jpg'
+        `${baseUrl}/src/assets/regions/americas-1.jpg`,
+        `${baseUrl}/src/assets/regions/americas-2.jpg`,
+        `${baseUrl}/src/assets/regions/americas-3.jpg`
       ];
     }
     if (normalizedRegion === 'pacific islands') {
       return [
-        '/src/assets/regions/pacific-1.jpg',
-        '/src/assets/regions/pacific-2.jpg',
-        '/src/assets/regions/pacific-3.jpg'
+        `${baseUrl}/src/assets/regions/pacific-1.jpg`,
+        `${baseUrl}/src/assets/regions/pacific-2.jpg`,
+        `${baseUrl}/src/assets/regions/pacific-3.jpg`
       ];
     }
     if (normalizedRegion === 'middle east') {
       return [
-        '/src/assets/regions/middle-east-1.jpg',
-        '/src/assets/regions/middle-east-2.jpg',
-        '/src/assets/regions/middle-east-3.jpg'
+        `${baseUrl}/src/assets/regions/middle-east-1.jpg`,
+        `${baseUrl}/src/assets/regions/middle-east-2.jpg`,
+        `${baseUrl}/src/assets/regions/middle-east-3.jpg`
       ];
     }
     
     // Fallback to Asia images
     return [
-      '/src/assets/regions/asia-1.jpg',
-      '/src/assets/regions/asia-2.jpg',
-      '/src/assets/regions/asia-3.jpg'
+      `${baseUrl}/src/assets/regions/asia-1.jpg`,
+      `${baseUrl}/src/assets/regions/asia-2.jpg`,
+      `${baseUrl}/src/assets/regions/asia-3.jpg`
     ];
   };
 
@@ -261,17 +269,17 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
           <Badge variant="secondary" className="gap-1"><ShieldCheck className="size-4"/> No hidden charges</Badge>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className={`grid ${optimizedSettings.gridCols} lg:grid-cols-3 ${optimizedSettings.gap} mb-8`}>
           {loading ? (
-            // Loading skeleton
-            Array.from({ length: 6 }).map((_, index) => (
+            // Loading skeleton with mobile optimization
+            Array.from({ length: optimizedSettings.skeletonCount }).map((_, index) => (
               <Card key={index} className="animate-pulse">
-                <div className="h-48 bg-muted"></div>
-                <CardHeader>
+                <div className={`bg-muted ${optimizedSettings.cardHeight}`}></div>
+                <CardHeader className="pb-2">
                   <div className="h-4 bg-muted rounded w-3/4"></div>
                   <div className="h-3 bg-muted rounded w-1/2"></div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-0">
                   <div className="h-3 bg-muted rounded w-full mb-2"></div>
                   <div className="h-3 bg-muted rounded w-2/3"></div>
                 </CardContent>
@@ -281,22 +289,24 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
           filtered.map((pkg, index)=>{
             const price = toUSD(pkg);
             const packageImage = pkg.image || getPackageImage(pkg.countrySlug, pkg.title);
+            
             return (
               <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300" 
                     style={{animationDelay:`${index*60}ms`}}
                      onClick={() => navigate(`/package/${pkg.id}`)}>
-                 <div className="relative h-48 overflow-hidden">
+                 <div className={`relative overflow-hidden ${optimizedSettings.cardHeight}`}>
                    <OptimizedImage 
                      src={packageImage} 
                      alt={pkg.title} 
-                     priority={index < 3} 
-                     preloadSources={filtered.slice(index + 1, index + 3).map(p => p.image || getPackageImage(p.countrySlug, p.title))}
+                     priority={index < optimizedSettings.priorityImageCount} 
+                     preloadSources={optimizedSettings.shouldPreload ? filtered.slice(index + 1, index + optimizedSettings.preloadCount).map(p => p.image || getPackageImage(p.countrySlug, p.title)) : []}
                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                     fallback="/placeholder.svg"
                    />
-                  <div className="absolute top-3 left-3">
-                    <Badge variant="outline" className="bg-background/90 backdrop-blur">{pkg.category}</Badge>
+                  <div className="absolute top-2 left-2">
+                    <Badge variant="outline" className="bg-background/90 backdrop-blur text-xs">{pkg.category}</Badge>
                   </div>
-                  <div className="absolute top-3 right-3 bg-background/90 backdrop-blur rounded-full px-2 py-1">
+                  <div className="absolute top-2 right-2 bg-background/90 backdrop-blur rounded-full px-2 py-1">
                     <div className="flex items-center space-x-1">
                       <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                       <span className="text-xs font-medium">{pkg.rating}</span>
