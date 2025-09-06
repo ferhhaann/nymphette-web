@@ -1,0 +1,8 @@
+-- Insert sample reviews
+INSERT INTO tour_reviews (tour_id, reviewer_name, rating, review_text, is_verified, social_media_link) VALUES
+((SELECT id FROM group_tours WHERE title = 'Incredible India Golden Triangle' LIMIT 1), 'Sarah Johnson', 5, 'Absolutely amazing experience! The Taj Mahal at sunrise was breathtaking. Our guide was knowledgeable and the group was fantastic. Highly recommend!', true, 'https://instagram.com/sarahtravels'),
+((SELECT id FROM group_tours WHERE title = 'Incredible India Golden Triangle' LIMIT 1), 'Michael Chen', 5, 'Perfect introduction to India. Well organized, great accommodations, and incredible sights. The group size was just right.', true, null),
+((SELECT id FROM group_tours WHERE title = 'Bali Paradise Adventure' LIMIT 1), 'Emma Rodriguez', 5, 'Bali exceeded all expectations! The volcano trek was challenging but so rewarding. Loved the cooking class and the beaches were pristine.', true, 'https://instagram.com/emmaadventures'),
+((SELECT id FROM group_tours WHERE title = 'Dubai Luxury Escape' LIMIT 1), 'James Wilson', 4, 'Luxury at its finest! Dubai is incredible and the desert safari was unforgettable. Only wish we had more time in Abu Dhabi.', true, null),
+((SELECT id FROM group_tours WHERE title = 'Thailand Island Hopping' LIMIT 1), 'Lisa Park', 5, 'Island paradise indeed! Phi Phi was stunning and the group bonded really well. Thai food is amazing and the people are so friendly.', true, 'https://instagram.com/lisaexplores'),
+((SELECT id FROM group_tours WHERE title = 'Bali Paradise Adventure' LIMIT 1), 'David Kumar', 5, 'Amazing cultural immersion! The rice terraces were stunning and the locals were so welcoming. Perfect mix of adventure and relaxation.', true, null);
