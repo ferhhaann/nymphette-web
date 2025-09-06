@@ -70,39 +70,32 @@ const SEOManager = () => {
 
   const fetchSEOSettings = async () => {
     try {
-      // Note: seo_settings table will be available after migration approval
-      // For now, we'll use a fallback to avoid build errors
       const { data, error } = await supabase
-        .from('content')
+        .from('seo_settings')
         .select('*')
-        .eq('section', 'seo_settings')
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('SEO settings table not available yet:', error);
+        console.error('Error fetching SEO settings:', error);
         setSeoSettings([]);
         return;
       }
       
-      // Transform content data to SEO settings format
-      const seoData = data?.map(item => {
-        const value = item.value as any;
-        return {
-          id: item.id,
-          page_url: item.key,
-          meta_title: value?.meta_title || '',
-          meta_description: value?.meta_description || '',
-          meta_keywords: value?.meta_keywords || '',
-          canonical_url: value?.canonical_url || '',
-          og_title: value?.og_title || '',
-          og_description: value?.og_description || '',
-          og_image: value?.og_image || '',
-          structured_data: value?.structured_data || {},
-          robots_meta: value?.robots_meta || 'index,follow',
-          page_type: value?.page_type || 'custom',
-          is_active: true
-        };
-      }) || [];
+      const seoData = data?.map(item => ({
+        id: item.id,
+        page_url: item.page_url,
+        meta_title: item.meta_title || '',
+        meta_description: item.meta_description || '',
+        meta_keywords: item.meta_keywords || '',
+        canonical_url: item.canonical_url || '',
+        og_title: item.og_title || '',
+        og_description: item.og_description || '',
+        og_image: item.og_image || '',
+        structured_data: item.structured_data || {},
+        robots_meta: item.robots_meta || 'index,follow',
+        page_type: item.page_type as any || 'custom',
+        is_active: item.is_active
+      })) || [];
       
       setSeoSettings(seoData);
     } catch (error) {
@@ -212,28 +205,24 @@ const SEOManager = () => {
     e.preventDefault();
     
     try {
-      // Store in content table for now until migration is approved
       const seoData = {
-        section: 'seo_settings',
-        key: formData.page_url,
-        value: {
-          meta_title: formData.meta_title,
-          meta_description: formData.meta_description,
-          meta_keywords: formData.meta_keywords,
-          canonical_url: formData.canonical_url,
-          og_title: formData.og_title,
-          og_description: formData.og_description,
-          og_image: formData.og_image,
-          structured_data: formData.structured_data,
-          robots_meta: formData.robots_meta,
-          page_type: formData.page_type,
-          is_active: formData.is_active
-        }
+        page_url: formData.page_url,
+        meta_title: formData.meta_title,
+        meta_description: formData.meta_description,
+        meta_keywords: formData.meta_keywords,
+        canonical_url: formData.canonical_url,
+        og_title: formData.og_title,
+        og_description: formData.og_description,
+        og_image: formData.og_image,
+        structured_data: formData.structured_data,
+        robots_meta: formData.robots_meta,
+        page_type: formData.page_type,
+        is_active: formData.is_active
       };
 
       if (editingItem?.id) {
         const { error } = await supabase
-          .from('content')
+          .from('seo_settings')
           .update(seoData)
           .eq('id', editingItem.id);
         
@@ -241,7 +230,7 @@ const SEOManager = () => {
         toast.success('SEO settings updated successfully');
       } else {
         const { error } = await supabase
-          .from('content')
+          .from('seo_settings')
           .insert([seoData]);
         
         if (error) throw error;
@@ -250,9 +239,13 @@ const SEOManager = () => {
       
       fetchSEOSettings();
       resetForm();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving SEO settings:', error);
-      toast.error('Failed to save SEO settings. The SEO table may not be available yet.');
+      if (error.code === '23505') {
+        toast.error('Page URL already exists. Please use a different URL or edit the existing entry.');
+      } else {
+        toast.error('Failed to save SEO settings: ' + error.message);
+      }
     }
   };
 
@@ -265,7 +258,7 @@ const SEOManager = () => {
   const handleDelete = async (id: string) => {
     try {
       const { error } = await supabase
-        .from('content')
+        .from('seo_settings')
         .delete()
         .eq('id', id);
       
