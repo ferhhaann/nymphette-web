@@ -1,302 +1,296 @@
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, User, Clock, ArrowRight } from "lucide-react";
-import regionsImage from "@/assets/regions-world.jpg";
+import React, { useState, useEffect } from 'react'
+import { Search, Clock, Tag, Eye, Calendar, ChevronRight } from 'lucide-react'
+import Navigation from "@/components/Navigation"
+import Footer from "@/components/Footer"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { supabase } from "@/integrations/supabase/client"
+import { Link } from 'react-router-dom'
 
-const Blog = () => {
-  const featuredPost = {
-    id: 1,
-    title: "The Ultimate Guide to Planning Your First European Adventure",
-    excerpt: "Everything you need to know about traveling through Europe as a first-timer, from budgeting to must-see destinations and insider tips from our travel experts.",
-    content: "Planning your first European adventure can feel overwhelming with so many incredible destinations...",
-    author: "Sarah Williams",
-    publishDate: "2024-02-15",
-    readTime: "8 min read",
-    image: regionsImage,
-    category: "Travel Guides",
-    tags: ["Europe", "First Time", "Planning", "Budget Travel"]
-  };
+interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  featured_image: string
+  reading_time: number
+  views_count: number
+  published_at: string
+  featured: boolean
+  tags: string[]
+  author: {
+    name: string
+    avatar_url: string
+  }
+  category: {
+    name: string
+    color: string
+    slug: string
+  }
+}
 
-  const blogPosts = [
-    {
-      id: 2,
-      title: "Hidden Gems of Southeast Asia You Must Visit",
-      excerpt: "Discover lesser-known but absolutely stunning destinations in Southeast Asia that offer authentic experiences away from the crowds.",
-      author: "Michael Johnson",
-      publishDate: "2024-02-10",
-      readTime: "6 min read",
-      image: regionsImage,
-      category: "Destinations",
-      tags: ["Asia", "Hidden Gems", "Adventure"]
-    },
-    {
-      id: 3,
-      title: "Sustainable Tourism: How to Travel Responsibly",
-      excerpt: "Learn about eco-friendly travel practices that help preserve destinations for future generations while supporting local communities.",
-      author: "Priya Patel",
-      publishDate: "2024-02-08",
-      readTime: "5 min read",
-      image: regionsImage,
-      category: "Sustainable Travel",
-      tags: ["Sustainability", "Eco Travel", "Responsible Tourism"]
-    },
-    {
-      id: 4,
-      title: "Monsoon Travel in India: Best Destinations",
-      excerpt: "Embrace the beauty of India's monsoon season with our guide to the most spectacular destinations that come alive during the rains.",
-      author: "Rajesh Sharma",
-      publishDate: "2024-02-05",
-      readTime: "7 min read",
-      image: regionsImage,
-      category: "India Travel",
-      tags: ["India", "Monsoon", "Seasonal Travel"]
-    },
-    {
-      id: 5,
-      title: "Digital Nomad's Guide to Working While Traveling",
-      excerpt: "Tips and tricks for maintaining productivity while exploring the world, including the best destinations for remote work.",
-      author: "Sarah Williams",
-      publishDate: "2024-02-01",
-      readTime: "9 min read",
-      image: regionsImage,
-      category: "Travel Tips",
-      tags: ["Digital Nomad", "Remote Work", "Productivity"]
-    },
-    {
-      id: 6,
-      title: "Budget Travel Hacks: Maximize Your Adventures",
-      excerpt: "Expert strategies to stretch your travel budget without compromising on experiences, from accommodation to transportation tips.",
-      author: "Michael Johnson",
-      publishDate: "2024-01-28",
-      readTime: "6 min read",
-      image: regionsImage,
-      category: "Budget Travel",
-      tags: ["Budget", "Money Saving", "Travel Hacks"]
-    },
-    {
-      id: 7,
-      title: "Cultural Etiquette: Respectful Travel Tips",
-      excerpt: "Navigate different cultures with confidence and respect. Essential etiquette tips for traveling to diverse destinations around the world.",
-      author: "Priya Patel",
-      publishDate: "2024-01-25",
-      readTime: "4 min read",
-      image: regionsImage,
-      category: "Cultural Travel",
-      tags: ["Culture", "Etiquette", "Respect"]
+interface BlogCategory {
+  id: string
+  name: string
+  slug: string
+  color: string
+}
+
+export default function Blog() {
+  const [posts, setPosts] = useState<BlogPost[]>([])
+  const [categories, setCategories] = useState<BlogCategory[]>([])
+  const [featuredPost, setFeaturedPost] = useState<BlogPost | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const { data: postsData } = await supabase
+        .from('blog_posts')
+        .select(`
+          *,
+          author:authors(name, avatar_url),
+          category:blog_categories(name, color, slug)
+        `)
+        .eq('status', 'published')
+        .order('published_at', { ascending: false })
+
+      const { data: categoriesData } = await supabase
+        .from('blog_categories')
+        .select('*')
+        .order('name')
+
+      if (postsData) {
+        const featured = postsData.find(post => post.featured)
+        const regular = postsData.filter(post => !post.featured)
+        
+        setFeaturedPost(featured || postsData[0])
+        setPosts(regular)
+      }
+
+      if (categoriesData) {
+        setCategories(categoriesData)
+      }
+    } catch (error) {
+      console.error('Error fetching blog data:', error)
+    } finally {
+      setLoading(false)
     }
-  ];
+  }
 
-  const categories = [
-    "All Posts",
-    "Travel Guides", 
-    "Destinations",
-    "Budget Travel",
-    "Cultural Travel",
-    "Sustainable Travel",
-    "Travel Tips"
-  ];
+  const filteredPosts = posts.filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         post.excerpt?.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = selectedCategory === 'all' || post.category?.slug === selectedCategory
+    return matchesSearch && matchesCategory
+  })
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    });
-  };
+    })
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center">Loading amazing stories...</div>
+        </div>
+        <Footer />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="pt-24 pb-12 bg-secondary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
-            Travel Stories & Guides
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Discover inspiring travel stories, expert tips, and insider guides to help you plan your next adventure
+      <section className="relative bg-gradient-to-r from-primary/90 to-primary/70 text-white py-20">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-5xl font-bold mb-6 animate-fade-in">Travel Stories & Insights</h1>
+          <p className="text-xl max-w-2xl mx-auto opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
+            Discover hidden gems, travel tips, and inspiring stories from around the world
           </p>
         </div>
       </section>
 
-      {/* Featured Post */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Featured Story</h2>
-          </div>
-
-          <Card className="overflow-hidden hover:shadow-card-soft transition-all duration-300">
-            <div className="lg:flex">
-              <div className="lg:w-1/2 relative overflow-hidden">
-                <img
-                  src={featuredPost.image}
-                  alt={featuredPost.title}
-                  loading="lazy"
-                  className="w-full h-64 lg:h-full object-cover hover:scale-105 transition-transform duration-500"
-                />
-              <div className="absolute top-4 left-4">
-                <Badge className="bg-foreground text-background">{featuredPost.category}</Badge>
-              </div>
-              </div>
-
-              <CardContent className="lg:w-1/2 p-8">
-                <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center">
-                    <User className="h-4 w-4 mr-1" />
-                    {featuredPost.author}
-                  </div>
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    {formatDate(featuredPost.publishDate)}
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {featuredPost.readTime}
-                  </div>
-                </div>
-
-              <h3 className="text-3xl font-bold mb-4">{featuredPost.title}</h3>
-              <p className="text-muted-foreground text-lg leading-relaxed mb-6">{featuredPost.excerpt}</p>
-
-              <div className="flex flex-wrap gap-2 mb-6">
-                {featuredPost.tags.map((tag, idx) => (
-                  <Badge key={idx} variant="outline" className="border-border text-foreground">
-                    {tag}
+      {featuredPost && (
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Featured Story</h2>
+            <Card className="overflow-hidden hover-scale transition-all duration-300 shadow-lg">
+              <div className="grid md:grid-cols-2 gap-0">
+                <div className="relative group">
+                  <img 
+                    src={featuredPost.featured_image || '/placeholder.svg'} 
+                    alt={featuredPost.title}
+                    className="w-full h-64 md:h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <Badge 
+                    className="absolute top-4 left-4"
+                    style={{ backgroundColor: featuredPost.category?.color }}
+                  >
+                    {featuredPost.category?.name}
                   </Badge>
-                ))}
-              </div>
-
-              <Button className="bg-foreground hover:bg-foreground/90 text-background">
-                Read Full Article
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-              </CardContent>
-            </div>
-          </Card>
-        </div>
-      </section>
-
-      {/* Categories Filter */}
-      <section className="py-8 bg-secondary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {categories.map((category) => (
-              <Button 
-                key={category}
-                variant="outline" 
-                className="border-foreground/30 text-foreground hover:bg-foreground hover:text-background"
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Blog Posts Grid */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-2">Latest Articles</h2>
-            <p className="text-base text-muted-foreground">Expert insights and travel inspiration</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogPosts.map((post) => (
-              <Card 
-                key={post.id}
-                className="group overflow-hidden hover:shadow-card-soft transition-all duration-200 cursor-pointer"
-              >
-                <div className="relative overflow-hidden">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      loading="lazy"
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                <div className="absolute top-4 left-4">
-                  <Badge className="bg-foreground text-background">{post.category}</Badge>
                 </div>
-                </div>
-
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
-                    <div className="flex items-center">
-                      <User className="h-3 w-3 mr-1" />
-                      {post.author}
+                <CardContent className="p-8 flex flex-col justify-center">
+                  <div className="flex items-center gap-4 mb-4 text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <img 
+                        src={featuredPost.author?.avatar_url || '/placeholder.svg'} 
+                        alt={featuredPost.author?.name}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                      <span className="text-sm">{featuredPost.author?.name}</span>
                     </div>
-                    <div className="flex items-center">
-                      <Clock className="h-3 w-3 mr-1" />
-                      {post.readTime}
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <span className="text-sm">{formatDate(featuredPost.published_at)}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <span className="text-sm">{featuredPost.reading_time} min read</span>
                     </div>
                   </div>
-
-                  <h3 className="text-xl font-bold mb-3 group-hover:opacity-80 transition-opacity">
-                    {post.title}
+                  <h3 className="text-2xl font-bold mb-4 story-link">
+                    <Link to={`/blog/${featuredPost.slug}`}>{featuredPost.title}</Link>
                   </h3>
-                  <p className="text-muted-foreground mb-4 leading-relaxed">{post.excerpt}</p>
-
-                  <div className="flex flex-wrap gap-1 mb-4">
-                  {post.tags.slice(0, 2).map((tag, idx) => (
-                    <Badge key={idx} variant="outline" className="border-border text-foreground text-xs">
-                      {tag}
-                    </Badge>
-                  ))}
-                  {post.tags.length > 2 && (
-                    <Badge variant="outline" className="border-border text-foreground text-xs">
-                      +{post.tags.length - 2}
-                    </Badge>
-                  )}
-                  </div>
-
+                  <p className="text-muted-foreground mb-6 line-clamp-3">
+                    {featuredPost.excerpt}
+                  </p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">
-                      {formatDate(post.publishDate)}
-                    </span>
-                    <Button variant="ghost" className="text-foreground hover:bg-foreground hover:text-background p-2">
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Eye className="w-4 h-4" />
+                      <span className="text-sm text-muted-foreground">{featuredPost.views_count} views</span>
+                    </div>
+                    <Link to={`/blog/${featuredPost.slug}`}>
+                      <Button variant="outline" className="group">
+                        Read More 
+                        <ChevronRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                      </Button>
+                    </Link>
                   </div>
+                </CardContent>
+              </div>
+            </Card>
+          </div>
+        </section>
+      )}
+
+      <section className="py-8 border-b">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Input
+                placeholder="Search articles..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-full md:w-48">
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {categories.map(category => (
+                  <SelectItem key={category.id} value={category.slug}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredPosts.map((post, index) => (
+              <Card key={post.id} className="overflow-hidden hover-scale transition-all duration-300 shadow-md hover:shadow-lg animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+                <div className="relative group">
+                  <img 
+                    src={post.featured_image || '/placeholder.svg'} 
+                    alt={post.title}
+                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <Badge 
+                    className="absolute top-4 left-4"
+                    style={{ backgroundColor: post.category?.color }}
+                  >
+                    {post.category?.name}
+                  </Badge>
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4 mb-3 text-muted-foreground text-sm">
+                    <div className="flex items-center gap-2">
+                      <img 
+                        src={post.author?.avatar_url || '/placeholder.svg'} 
+                        alt={post.author?.name}
+                        className="w-6 h-6 rounded-full object-cover"
+                      />
+                      <span>{post.author?.name}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      <span>{post.reading_time} min</span>
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 story-link">
+                    <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                  </h3>
+                  <p className="text-muted-foreground mb-4 line-clamp-2">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDate(post.published_at)}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Eye className="w-4 h-4" />
+                      <span>{post.views_count}</span>
+                    </div>
+                  </div>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {post.tags.slice(0, 3).map(tag => (
+                        <Badge key={tag} variant="secondary" className="text-xs">
+                          <Tag className="w-3 h-3 mr-1" />
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
           </div>
-
-          <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="border-foreground text-foreground hover:bg-foreground hover:text-background">
-              Load More Articles
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-secondary">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">Stay Updated</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Subscribe to our newsletter for the latest travel tips, destination guides, and exclusive offers
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg bg-muted border border-border text-foreground placeholder-muted-foreground outline-none"
-            />
-            <Button className="bg-foreground hover:bg-foreground/90 text-background px-8 py-3">
-              Subscribe
-            </Button>
-          </div>
+          
+          {filteredPosts.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground text-lg">No articles found matching your search.</p>
+            </div>
+          )}
         </div>
       </section>
 
       <Footer />
     </div>
-  );
-};
-
-export default Blog;
+  )
+}

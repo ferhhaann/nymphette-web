@@ -10,6 +10,8 @@ import Packages from "./pages/Packages";
 import GroupTours from "./pages/GroupTours";
 import AboutUs from "./pages/AboutUs";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Asia from "./pages/regions/Asia";
 import Europe from "./pages/regions/Europe";
@@ -40,6 +42,8 @@ const App = () => {
           <Route path="/group-tours" element={<GroupTours />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="/package/:packageId" element={<PackageDetail />} />
           <Route path="/regions/:region/country/:country" element={<CountryDetail />} />
