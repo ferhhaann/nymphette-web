@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Clock, Star, Users } from "lucide-react";
 import ImageSlideshow from "@/components/ImageSlideshow";
-import packagesHeroBg from "@/assets/packages-hero-bg.jpg";
+import premiumPackagesHero from "@/assets/premium-packages-hero.jpg";
 // Region slideshow images - 3 images per region
 import asia1 from "@/assets/regions/asia-1.jpg";
 import asia2 from "@/assets/regions/asia-2.jpg";
@@ -185,38 +185,63 @@ const Packages = () => {
         <>
           {/* Hero Section */}
           <main>
-            <section className="relative pt-20 pb-16 text-background overflow-hidden">
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${packagesHeroBg})` }}
-            />
-            <div className="absolute inset-0 bg-primary/60 backdrop-blur-sm" />
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
-                Explore Our Premium Travel Packages
-              </h1>
-              <p className="text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
-                Discover amazing destinations across the globe with our carefully curated travel packages
-              </p>
-              {/* Show search filters if any */}
-              {(searchDestination || searchDate || searchTravelers) && (
-                <div className="mt-6 bg-white/20 backdrop-blur-md rounded-xl p-4 max-w-2xl mx-auto">
-                  <p className="text-soft-blue mb-2">Search Results for:</p>
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    {searchDestination && (
-                      <Badge className="bg-accent text-white">Destination: {searchDestination}</Badge>
-                    )}
-                    {searchDate && (
-                      <Badge className="bg-accent text-white">Date: {searchDate}</Badge>
-                    )}
-                    {searchTravelers && (
-                      <Badge className="bg-accent text-white">Travelers: {searchTravelers}</Badge>
-                    )}
+            <section className="relative h-screen flex items-center justify-center overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+                style={{ backgroundImage: `url(${premiumPackagesHero})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/60 backdrop-blur-[1px]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+              
+              <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+                <h1 className="text-6xl md:text-7xl font-bold mb-6 animate-scale-in leading-tight">
+                  Explore Our Premium Travel Packages
+                </h1>
+                <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in leading-relaxed" style={{ animationDelay: '0.3s' }}>
+                  Discover amazing destinations across the globe with our carefully curated travel packages
+                </p>
+                
+                {/* Show search filters if any */}
+                {(searchDestination || searchDate || searchTravelers) && (
+                  <div className="mb-8 bg-white/20 backdrop-blur-md rounded-xl p-4 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.6s' }}>
+                    <p className="text-white/80 mb-2">Search Results for:</p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {searchDestination && (
+                        <Badge className="bg-accent text-white">Destination: {searchDestination}</Badge>
+                      )}
+                      {searchDate && (
+                        <Badge className="bg-accent text-white">Date: {searchDate}</Badge>
+                      )}
+                      {searchTravelers && (
+                        <Badge className="bg-accent text-white">Travelers: {searchTravelers}</Badge>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Quick Stats */}
+                <div className="grid grid-cols-3 gap-8 mt-16 opacity-80 animate-fade-in" style={{ animationDelay: '0.9s' }}>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold mb-2">{filteredRegions.length}</div>
+                    <div className="text-sm opacity-80">Regions</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold mb-2">{allPackages?.length || 0}+</div>
+                    <div className="text-sm opacity-80">Packages</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold mb-2">50+</div>
+                    <div className="text-sm opacity-80">Countries</div>
                   </div>
                 </div>
-              )}
-            </div>
-          </section>
+              </div>
+
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+                  <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+                </div>
+              </div>
+            </section>
 
           {/* Regions Grid */}
           <section className="py-20">
