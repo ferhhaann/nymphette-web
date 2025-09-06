@@ -49,134 +49,127 @@ const AdminDashboard = () => {
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
-        variant: "destructive"
+        description: error.message
       })
     }
   }
 
-  const signOut = async () => {
-    await supabase.auth.signOut()
-    setIsAuthenticated(false)
-    toast({
-      title: "Signed out",
-      description: "You have been signed out successfully"
-    })
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
   }
 
-  if (loading) {
+  if (isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight">Admin Dashboard</h1>
+              <p className="text-muted-foreground">
+                Manage your travel website content, packages, and SEO settings
+              </p>
+            </div>
+            <Button onClick={() => setIsAuthenticated(false)} variant="outline">
+              Sign Out
+            </Button>
+          </div>
+
+          <Tabs defaultValue="overview" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-8">
+              <TabsTrigger value="overview" className="flex items-center gap-2">
+                <Database className="h-4 w-4" />
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="packages" className="flex items-center gap-2">
+                <Package className="h-4 w-4" />
+                Packages
+              </TabsTrigger>
+              <TabsTrigger value="group-tours" className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                Group Tours
+              </TabsTrigger>
+              <TabsTrigger value="blog" className="flex items-center gap-2">
+                <BookOpen className="h-4 w-4" />
+                Blog
+              </TabsTrigger>
+              <TabsTrigger value="contact" className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4" />
+                Contact
+              </TabsTrigger>
+              <TabsTrigger value="content" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Content
+              </TabsTrigger>
+              <TabsTrigger value="countries" className="flex items-center gap-2">
+                <Globe className="h-4 w-4" />
+                Countries
+              </TabsTrigger>
+              <TabsTrigger value="seo" className="flex items-center gap-2">
+                <Settings className="h-4 w-4" />
+                SEO
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview">
+              <AdminOverview />
+            </TabsContent>
+
+            <TabsContent value="packages">
+              <PackageManager />
+            </TabsContent>
+
+            <TabsContent value="group-tours">
+              <GroupTourManager />
+            </TabsContent>
+
+            <TabsContent value="countries">
+              <CountryManager />
+            </TabsContent>
+
+            <TabsContent value="blog">
+              <BlogManager />
+            </TabsContent>
+
+            <TabsContent value="contact">
+              <ContactManager />
+            </TabsContent>
+
+            <TabsContent value="content">
+              <ContentManager />
+            </TabsContent>
+
+            <TabsContent value="seo" className="space-y-4">
+              <SEOManager />
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     )
   }
 
-  if (!isAuthenticated) {
-    return <AdminLogin onSignIn={signIn} />
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-            <p className="text-gray-600">Manage your travel packages and content</p>
-          </div>
-          <Button onClick={signOut} variant="outline">
-            Sign Out
-          </Button>
-        </div>
-
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">{/* Changed from 6 to 8 */}
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <Database className="h-4 w-4" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="packages" className="flex items-center gap-2">
-              <Package className="h-4 w-4" />
-              Packages
-            </TabsTrigger>
-            <TabsTrigger value="group-tours" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Group Tours
-            </TabsTrigger>
-            <TabsTrigger value="blog" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              Blog
-            </TabsTrigger>
-            <TabsTrigger value="contact" className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4" />
-              Contact
-            </TabsTrigger>
-            <TabsTrigger value="content" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Content
-            </TabsTrigger>
-            <TabsTrigger value="countries" className="flex items-center gap-2">
-              <Globe className="h-4 w-4" />
-              Countries
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              Settings
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview">
-            <AdminOverview />
-          </TabsContent>
-
-          <TabsContent value="packages">
-            <PackageManager />
-          </TabsContent>
-
-          <TabsContent value="group-tours">
-            <GroupTourManager />
-          </TabsContent>
-
-          <TabsContent value="countries">
-            <CountryManager />
-          </TabsContent>
-
-          <TabsContent value="blog">
-            <BlogManager />
-          </TabsContent>
-
-          <TabsContent value="contact">
-            <ContactManager />
-          </TabsContent>
-
-          <TabsContent value="content">
-            <ContentManager />
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>System Settings</CardTitle>
-                <CardDescription>
-                  Configure system-wide settings and preferences
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Settings panel coming soon...</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4 py-8">
+        <header className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            Nymphette Tours Admin
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Content Management System with SEO Tools
+          </p>
+        </header>
+        
+        <AuthForm onSignIn={signIn} />
       </div>
     </div>
   )
 }
 
-interface AdminLoginProps {
+interface AuthFormProps {
   onSignIn: (email: string, password: string) => void
 }
 
-const AdminLogin = ({ onSignIn }: AdminLoginProps) => {
+const AuthForm = ({ onSignIn }: AuthFormProps) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
@@ -186,12 +179,12 @@ const AdminLogin = ({ onSignIn }: AdminLoginProps) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md">
+    <div className="max-w-md mx-auto">
+      <Card>
         <CardHeader>
           <CardTitle>Admin Login</CardTitle>
           <CardDescription>
-            Sign in to access the admin dashboard
+            Sign in to access the admin dashboard with SEO management tools
           </CardDescription>
         </CardHeader>
         <CardContent>

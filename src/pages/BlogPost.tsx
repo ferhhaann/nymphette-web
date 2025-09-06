@@ -17,6 +17,7 @@ import { toast } from "sonner"
 interface BlogPost {
   id: string
   title: string
+  slug: string
   content: string
   excerpt: string
   featured_image: string

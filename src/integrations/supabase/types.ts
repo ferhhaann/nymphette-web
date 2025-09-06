@@ -1024,6 +1024,60 @@ export type Database = {
           },
         ]
       }
+      seo_settings: {
+        Row: {
+          canonical_url: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          meta_description: string
+          meta_keywords: string | null
+          meta_title: string
+          og_description: string | null
+          og_image: string | null
+          og_title: string | null
+          page_type: string
+          page_url: string
+          robots_meta: string | null
+          structured_data: Json | null
+          updated_at: string
+        }
+        Insert: {
+          canonical_url?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          meta_description: string
+          meta_keywords?: string | null
+          meta_title: string
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
+          page_type: string
+          page_url: string
+          robots_meta?: string | null
+          structured_data?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          canonical_url?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          meta_description?: string
+          meta_keywords?: string | null
+          meta_title?: string
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
+          page_type?: string
+          page_url?: string
+          robots_meta?: string | null
+          structured_data?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       tour_reviews: {
         Row: {
           created_at: string | null
