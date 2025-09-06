@@ -9,7 +9,14 @@ const PromoBanner = () => {
     <section className="relative overflow-hidden rounded-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="relative rounded-2xl overflow-hidden">
-          <OptimizedImage src={bannerImage} alt="Scenic landscape" className="w-full h-72 md:h-96 object-cover" />
+          <div className="absolute inset-0">
+            <OptimizedImage 
+              src={bannerImage} 
+              alt="Scenic landscape" 
+              className="w-full h-72 md:h-96"
+              style={{ objectFit: 'cover', objectPosition: 'center' }}
+            />
+          </div>
           <div className="absolute inset-0 bg-foreground/40" />
           <div className="absolute inset-0 flex items-center justify-center text-center px-6">
             <div className="max-w-2xl text-background">
