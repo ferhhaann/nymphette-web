@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from 'react-helmet-async';
 import { useImageOptimization } from "@/hooks/useImageOptimization";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
@@ -30,41 +31,43 @@ const App = () => {
   useImageOptimization();
   
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/packages" element={<Packages />} />
-          <Route path="/group-tours" element={<GroupTours />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/contact" element={<Contact />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="/package/:packageId" element={<PackageDetail />} />
-          <Route path="/regions/:region/country/:country" element={<CountryDetail />} />
-          <Route path="/regions/asia" element={<Asia />} />
-          <Route path="/regions/europe" element={<Europe />} />
-          <Route path="/regions/africa" element={<Africa />} />
-          <Route path="/regions/americas" element={<Americas />} />
-          <Route path="/regions/pacific-islands" element={<PacificIslands />} />
-          <Route path="/regions/middle-east" element={<MiddleEast />} />
-          <Route path="/packages/region/asia" element={<Asia />} />
-          <Route path="/packages/region/europe" element={<Europe />} />
-          <Route path="/packages/region/africa" element={<Africa />} />
-          <Route path="/packages/region/americas" element={<Americas />} />
-          <Route path="/packages/region/pacific-islands" element={<PacificIslands />} />
-          <Route path="/packages/region/middle-east" element={<MiddleEast />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/packages" element={<Packages />} />
+              <Route path="/group-tours" element={<GroupTours />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/package/:packageId" element={<PackageDetail />} />
+              <Route path="/regions/:region/country/:country" element={<CountryDetail />} />
+              <Route path="/regions/asia" element={<Asia />} />
+              <Route path="/regions/europe" element={<Europe />} />
+              <Route path="/regions/africa" element={<Africa />} />
+              <Route path="/regions/americas" element={<Americas />} />
+              <Route path="/regions/pacific-islands" element={<PacificIslands />} />
+              <Route path="/regions/middle-east" element={<MiddleEast />} />
+              <Route path="/packages/region/asia" element={<Asia />} />
+              <Route path="/packages/region/europe" element={<Europe />} />
+              <Route path="/packages/region/africa" element={<Africa />} />
+              <Route path="/packages/region/americas" element={<Americas />} />
+              <Route path="/packages/region/pacific-islands" element={<PacificIslands />} />
+              <Route path="/packages/region/middle-east" element={<MiddleEast />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 

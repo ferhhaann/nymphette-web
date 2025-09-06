@@ -28,12 +28,29 @@ export default defineConfig(({ mode }) => ({
   build: {
     cssMinify: true,
     cssCodeSplit: true,
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+    sourcemap: true,
     rollupOptions: {
-      output: {
-        manualChunks: {
-          'styles': ['/src/index.css'],
-        },
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
       },
-    },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+              return 'vendor';
+            }
+            if (id.includes('@radix-ui') || id.includes('@hookform')) {
+              return 'ui';
+            }
+          }
+          if (id.includes('src/index.css')) {
+            return 'styles';
+          }
+        }
+      }
+    }
   },
 }));
