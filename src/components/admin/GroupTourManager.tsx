@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Plus, Edit, Trash2, Save, X, Upload, Star, Users, Calendar, MapPin, DollarSign, Image, Loader2 } from "lucide-react";
+import { Plus, Edit, Trash2, Save, X, Upload, Star, Users, Calendar, MapPin, DollarSign } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface GroupTour {
   id?: string;
@@ -65,12 +64,17 @@ const GroupTourManager = () => {
   const [formData, setFormData] = useState<Partial<GroupTour>>({});
   const [newCategory, setNewCategory] = useState({ name: '', description: '', icon: 'Mountain', color: '#8B5CF6' });
   const [showCategoryDialog, setShowCategoryDialog] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const galleryInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Helper function to get image URL
+  const getImageUrl = (imagePath: string | undefined) => {
+    if (!imagePath) return '/placeholder.svg';
+    if (imagePath.startsWith('http') || imagePath.startsWith('/')) return imagePath;
+    return `https://duouhbzwivonyssvtiqo.supabase.co/storage/v1/object/public/group-tour-images/${imagePath}`;
+  };
 
   // Fetch group tours
   const { data: tours = [], isLoading: toursLoading } = useQuery({
@@ -197,28 +201,43 @@ const GroupTourManager = () => {
     }
   });
 
-  // Image upload function
-  const uploadImage = async (file: File, folder: string = 'tours'): Promise<string> => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-    
-    const { data, error } = await supabase.storage
-      .from('group-tour-images')
-      .upload(fileName, file);
-
-    if (error) throw error;
-    return fileName;
-  };
-
-  // Handle main image upload
+  // Image upload handler
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    setUploadingImage(true);
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Error",
+        description: "File size must be less than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Error",
+        description: "Please select an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
     try {
-      const imagePath = await uploadImage(file);
-      setFormData({ ...formData, image_url: imagePath });
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      
+      const { data, error } = await supabase.storage
+        .from('group-tour-images')
+        .upload(fileName, file);
+      
+      if (error) throw error;
+      
+      setFormData({ ...formData, image_url: fileName });
       toast({
         title: "Success",
         description: "Image uploaded successfully",
@@ -230,53 +249,8 @@ const GroupTourManager = () => {
         variant: "destructive",
       });
     } finally {
-      setUploadingImage(false);
+      setUploading(false);
     }
-  };
-
-  // Handle gallery images upload
-  const handleGalleryUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
-
-    setGalleryUploading(true);
-    try {
-      const uploadPromises = Array.from(files).map(file => uploadImage(file, 'gallery'));
-      const imagePaths = await Promise.all(uploadPromises);
-      
-      const currentGallery = Array.isArray(formData.gallery_images) ? formData.gallery_images : [];
-      setFormData({ 
-        ...formData, 
-        gallery_images: [...currentGallery, ...imagePaths] 
-      });
-      
-      toast({
-        title: "Success",
-        description: `${imagePaths.length} images uploaded successfully`,
-      });
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setGalleryUploading(false);
-    }
-  };
-
-  // Get image URL
-  const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '/placeholder.svg';
-    
-    // If it's already a full URL, return as is
-    if (imagePath.startsWith('http')) return imagePath;
-    
-    // If it's a static asset path, return as is
-    if (imagePath.startsWith('/places/')) return imagePath;
-    
-    // Construct Supabase storage URL
-    return `https://duouhbzwivonyssvtiqo.supabase.co/storage/v1/object/public/group-tour-images/${imagePath}`;
   };
 
   const handleSubmit = () => {
@@ -355,12 +329,6 @@ const GroupTourManager = () => {
       case 'Cancelled': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
-  };
-
-  const removeGalleryImage = (index: number) => {
-    const currentGallery = Array.isArray(formData.gallery_images) ? formData.gallery_images : [];
-    const newGallery = currentGallery.filter((_, i) => i !== index);
-    setFormData({ ...formData, gallery_images: newGallery });
   };
 
   if (toursLoading || categoriesLoading) {
@@ -709,23 +677,15 @@ const GroupTourManager = () => {
               
               <TabsContent value="content" className="space-y-4">
                 <div>
-                  <Label htmlFor="image-upload">Main Tour Image</Label>
+                  <Label htmlFor="image-upload">Main Image</Label>
                   <div className="space-y-4">
                     {formData.image_url && (
-                      <div className="relative w-full h-48 border rounded-lg overflow-hidden">
+                      <div className="relative w-32 h-32">
                         <img
                           src={getImageUrl(formData.image_url)}
                           alt="Tour preview"
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover rounded-lg border"
                         />
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          className="absolute top-2 right-2"
-                          onClick={() => setFormData({ ...formData, image_url: '' })}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
                       </div>
                     )}
                     <div className="flex items-center space-x-2">
@@ -733,14 +693,10 @@ const GroupTourManager = () => {
                         type="button"
                         variant="outline"
                         onClick={() => fileInputRef.current?.click()}
-                        disabled={uploadingImage}
+                        disabled={uploading}
                       >
-                        {uploadingImage ? (
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        ) : (
-                          <Upload className="h-4 w-4 mr-2" />
-                        )}
-                        {uploadingImage ? 'Uploading...' : 'Upload Image'}
+                        <Upload className="h-4 w-4 mr-2" />
+                        {uploading ? 'Uploading...' : 'Upload Image'}
                       </Button>
                       <input
                         ref={fileInputRef}
@@ -750,68 +706,9 @@ const GroupTourManager = () => {
                         className="hidden"
                       />
                     </div>
-                    <Alert>
-                      <Image className="h-4 w-4" />
-                      <AlertDescription>
-                        Upload a high-quality image that represents your tour. Recommended size: 1200x800 pixels.
-                      </AlertDescription>
-                    </Alert>
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="gallery-upload">Gallery Images</Label>
-                  <div className="space-y-4">
-                    {Array.isArray(formData.gallery_images) && formData.gallery_images.length > 0 && (
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {formData.gallery_images.map((image, index) => (
-                          <div key={index} className="relative aspect-square border rounded-lg overflow-hidden">
-                            <img
-                              src={getImageUrl(image)}
-                              alt={`Gallery ${index + 1}`}
-                              className="w-full h-full object-cover"
-                            />
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              className="absolute top-1 right-1 h-6 w-6 p-0"
-                              onClick={() => removeGalleryImage(index)}
-                            >
-                              <X className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => galleryInputRef.current?.click()}
-                        disabled={galleryUploading}
-                      >
-                        {galleryUploading ? (
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        ) : (
-                          <Upload className="h-4 w-4 mr-2" />
-                        )}
-                        {galleryUploading ? 'Uploading...' : 'Add Gallery Images'}
-                      </Button>
-                      <input
-                        ref={galleryInputRef}
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleGalleryUpload}
-                        className="hidden"
-                      />
-                    </div>
-                    <Alert>
-                      <Image className="h-4 w-4" />
-                      <AlertDescription>
-                        Upload multiple images to showcase different aspects of your tour. You can select multiple files at once.
-                      </AlertDescription>
-                    </Alert>
+                    <p className="text-sm text-muted-foreground">
+                      Upload a high-quality image (max 5MB, JPG/PNG/WebP)
+                    </p>
                   </div>
                 </div>
                 

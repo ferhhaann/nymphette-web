@@ -146,25 +146,19 @@ const GroupTours = () => {
     enabled: !!selectedTour?.id
   });
 
+  // Helper function to get image URL
+  const getImageUrl = (imagePath: string | undefined) => {
+    if (!imagePath) return '/placeholder.svg';
+    if (imagePath.startsWith('http') || imagePath.startsWith('/')) return imagePath;
+    return `https://duouhbzwivonyssvtiqo.supabase.co/storage/v1/object/public/group-tour-images/${imagePath}`;
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
     });
-  };
-
-  const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '/placeholder.svg';
-    
-    // If it's already a full URL, return as is
-    if (imagePath.startsWith('http')) return imagePath;
-    
-    // If it's a static asset path, return as is
-    if (imagePath.startsWith('/places/')) return imagePath;
-    
-    // Construct Supabase storage URL
-    return `https://duouhbzwivonyssvtiqo.supabase.co/storage/v1/object/public/group-tour-images/${imagePath}`;
   };
 
   const getAvailabilityStatus = (available: number, total: number) => {
