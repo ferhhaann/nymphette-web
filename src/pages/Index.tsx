@@ -8,7 +8,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Footer from "@/components/Footer";
 import { preloadCriticalImages } from "@/hooks/useImagePreloader";
 import { useEffect } from "react";
-import heroImage from "@/assets/hero-travel.jpg";
+import heroImage from "@/assets/hero-mountain-road.jpg";
 import regionsImage from "@/assets/regions-world.jpg";
 const Index = () => {
   useEffect(() => {

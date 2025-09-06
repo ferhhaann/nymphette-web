@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useContent } from "@/hooks/useContent";
 import { OptimizedImage } from "@/components/ui/optimized-image";
-import heroImage from "@/assets/hero-travel.jpg";
+import heroImage from "@/assets/hero-mountain-road.jpg";
 
 const Hero = () => {
   const navigate = useNavigate();
