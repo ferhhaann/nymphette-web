@@ -75,15 +75,20 @@ const FeaturedPackages = () => {
                   <span>{pkg.country}</span>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
                   <div className="flex items-center">
                     <Clock className="h-4 w-4 mr-1" />
                     {pkg.duration}
                   </div>
                   <div className="flex items-center">
                     <Users className="h-4 w-4 mr-1" />
-                    {pkg.reviews} reviews
+                    {pkg.groupSize || 'Flexible group size'}
                   </div>
+                </div>
+
+                <div className="flex items-center text-sm text-muted-foreground mb-4">
+                  <Star className="h-4 w-4 mr-1" />
+                  {pkg.rating} ({pkg.reviews} reviews)
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-4">

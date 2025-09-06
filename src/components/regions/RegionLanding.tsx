@@ -328,7 +328,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
                     </div>
                     <div className="flex items-center">
                       <Users className="h-3 w-3 mr-1" />
-                      <span>{pkg.groupSize}</span>
+                      <span>{pkg.groupSize || 'Flexible group size'}</span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">

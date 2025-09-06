@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { OptimizedImage } from "@/components/ui/optimized-image";
-import { Star, MapPin } from "lucide-react";
+import { Star, MapPin, Clock, Users } from "lucide-react";
 import { TravelPackage } from "@/data/packagesData";
 
 interface PackageCardProps {
@@ -73,9 +73,14 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
           <span className="text-sm">{pkg.country}</span>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
+        <div className="flex items-center text-sm text-muted-foreground mb-2">
+          <Clock className="h-3 w-3 mr-1" />
           <span>{pkg.duration}</span>
-          <span>{pkg.groupSize}</span>
+        </div>
+        
+        <div className="flex items-center text-sm text-muted-foreground mb-3">
+          <Users className="h-3 w-3 mr-1" />
+          <span>{pkg.groupSize || 'Flexible group size'}</span>
         </div>
 
         <div className="flex items-center justify-between">
