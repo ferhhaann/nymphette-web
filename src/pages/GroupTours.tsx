@@ -84,7 +84,7 @@ const GroupTours = () => {
         .from('group_tours')
         .select(`
           *,
-          category:group_tour_categories(name, color, icon)
+          category:group_tour_categories!category_id(name, color, icon)
         `)
         .eq('status', 'Active');
 

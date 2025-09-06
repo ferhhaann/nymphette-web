@@ -84,7 +84,7 @@ const GroupTourManager = () => {
         .from('group_tours')
         .select(`
           *,
-          category:group_tour_categories(id, name, color, icon)
+          category:group_tour_categories!category_id(id, name, color, icon)
         `)
         .order('created_at', { ascending: false });
       if (error) throw error;
