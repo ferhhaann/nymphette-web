@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Plane } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,16 +47,13 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="bg-foreground p-2 rounded-lg">
-              <Plane className="h-6 w-6 text-background" />
-            </div>
-            <span 
-              className="text-foreground text-xl font-bold font-sans cursor-pointer hover:opacity-80 transition-colors"
+          <div className="flex items-center">
+            <img 
+              src="/lovable-uploads/55a5a12c-6872-4f3f-b1d6-da7e436ed8f1.png" 
+              alt="Nymphette International" 
+              className="h-10 cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => handleNavigation("/")}
-            >
-              Nymphette Tours
-            </span>
+            />
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
