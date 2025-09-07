@@ -26,37 +26,37 @@ export const CountryStats = ({
   }
 
   return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Users className="h-5 w-5 mr-2" />
+    <Card className="mb-6">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center text-lg">
+          <Users className="h-4 w-4 mr-2" />
           Visitor Statistics
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         {/* Annual Visitors */}
-        <div className="text-center p-4 bg-primary/10 rounded-lg">
-          <div className="text-3xl font-bold text-primary mb-2">
+        <div className="text-center p-3 bg-primary/10 rounded-lg">
+          <div className="text-xl font-bold text-primary mb-1">
             {annualVisitors ? `${(annualVisitors / 1000000).toFixed(1)}M` : 'N/A'}
           </div>
-          <div className="text-sm text-muted-foreground">{formatVisitors(annualVisitors)}</div>
+          <div className="text-xs text-muted-foreground">{formatVisitors(annualVisitors)}</div>
         </div>
 
         {/* Gender Split */}
         {(genderMalePercentage || genderFemalePercentage) && (
           <div>
-            <h4 className="font-semibold mb-3">Gender Distribution</h4>
-            <div className="flex gap-4">
+            <h4 className="font-medium mb-2 text-sm">Gender Distribution</h4>
+            <div className="flex gap-3">
               {genderMalePercentage && (
-                <div className="flex-1 text-center p-3 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">{genderMalePercentage}%</div>
-                  <div className="text-sm text-muted-foreground">Male</div>
+                <div className="flex-1 text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-lg font-bold text-blue-600">{genderMalePercentage}%</div>
+                  <div className="text-xs text-muted-foreground">Male</div>
                 </div>
               )}
               {genderFemalePercentage && (
-                <div className="flex-1 text-center p-3 bg-pink-50 rounded-lg">
-                  <div className="text-2xl font-bold text-pink-600">{genderFemalePercentage}%</div>
-                  <div className="text-sm text-muted-foreground">Female</div>
+                <div className="flex-1 text-center p-2 bg-pink-50 rounded-lg">
+                  <div className="text-lg font-bold text-pink-600">{genderFemalePercentage}%</div>
+                  <div className="text-xs text-muted-foreground">Female</div>
                 </div>
               )}
             </div>
@@ -66,13 +66,13 @@ export const CountryStats = ({
         {/* Travel Purposes */}
         {travelPurposes.length > 0 && (
           <div>
-            <h4 className="font-semibold mb-3 flex items-center">
-              <Heart className="h-4 w-4 mr-2" />
+            <h4 className="font-medium mb-2 text-sm flex items-center">
+              <Heart className="h-3 w-3 mr-1" />
               Travel Purposes
             </h4>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1">
               {travelPurposes.map((purpose, index) => (
-                <Badge key={index} variant="outline" className="text-sm">
+                <Badge key={index} variant="outline" className="text-xs py-0 px-2">
                   {purpose.name}: {purpose.percentage}%
                 </Badge>
               ))}
@@ -82,13 +82,13 @@ export const CountryStats = ({
 
         {/* Top Origin Cities */}
         <div>
-          <h4 className="font-semibold mb-3 flex items-center">
-            <Plane className="h-4 w-4 mr-2" />
+          <h4 className="font-medium mb-2 text-sm flex items-center">
+            <Plane className="h-3 w-3 mr-1" />
             Top Origin Cities
           </h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1">
             {topOriginCities.map((city, index) => (
-              <Badge key={index} variant="secondary">
+              <Badge key={index} variant="secondary" className="text-xs py-0 px-2">
                 {city}
               </Badge>
             ))}
