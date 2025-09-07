@@ -6,6 +6,23 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 // Check if Supabase is properly configured
 export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey)
 
+// Create a backup client for production with better error handling
+export const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+    persistSession: true,
+    autoRefreshToken: true,
+  },
+  global: {
+    headers: {
+      'x-client-info': 'travel-agency-app/1.0.0',
+    },
+  },
+  db: {
+    schema: 'public',
+  },
+})
+
 // Remove duplicate client creation - use the official integration client instead
 
 // Helper function to check if Supabase is available

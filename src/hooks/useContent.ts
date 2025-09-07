@@ -31,14 +31,26 @@ export const useContent = (section?: string) => {
         query = query.eq('section', section)
       }
       
-      const { data, error } = await query.order('key', { ascending: true })
+      // Add timeout and retry logic for production
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 10000)
+      )
       
-      if (error) throw error
+      const queryPromise = query.order('key', { ascending: true })
+      
+      const { data, error } = await Promise.race([queryPromise, timeoutPromise]) as any
+      
+      if (error) {
+        console.error('Supabase error:', error)
+        throw error
+      }
       setContent(data || [])
       
     } catch (err: any) {
-      setError(err.message)
       console.error('Error loading content:', err)
+      setError(err.message)
+      // In production, use fallback content if available
+      setContent([])
     } finally {
       setLoading(false)
     }

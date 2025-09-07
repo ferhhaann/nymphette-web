@@ -64,33 +64,55 @@ export const getOptimizedImageUrl = (
   isMobile: boolean, 
   quality: 'low' | 'medium' | 'high' = 'medium'
 ): string => {
-  // For mobile or slow connections, we can add query parameters for optimization
-  // This assumes your CDN or image service supports these parameters
-  const params = new URLSearchParams();
-  
-  if (isMobile) {
-    params.append('w', '600'); // Max width for mobile
-    params.append('f', 'webp'); // Prefer WebP format
-  } else {
-    params.append('w', '1200'); // Max width for desktop
-  }
-  
-  switch (quality) {
-    case 'low':
-      params.append('q', '60');
-      break;
-    case 'medium':
-      params.append('q', '75');
-      break;
-    case 'high':
-      params.append('q', '90');
-      break;
-  }
-  
-  // Only append params if the URL doesn't already have them
-  if (baseUrl.includes('?')) {
+  // Handle different types of URLs for production
+  if (!baseUrl || baseUrl === '/placeholder.svg') {
     return baseUrl;
   }
   
-  return `${baseUrl}?${params.toString()}`;
+  // If it's a Supabase storage URL, don't modify it
+  if (baseUrl.includes('supabase.co/storage')) {
+    return baseUrl;
+  }
+  
+  // If it's already a full URL with params, don't modify
+  if (baseUrl.includes('?') || baseUrl.startsWith('data:')) {
+    return baseUrl;
+  }
+  
+  // For static assets in public folder, return as is for production
+  if (baseUrl.startsWith('/')) {
+    return baseUrl;
+  }
+  
+  // For other URLs, only optimize if they support query parameters
+  const params = new URLSearchParams();
+  
+  // Only add optimization params for known CDN services
+  const supportedCDNs = ['cloudinary', 'imgix', 'vercel', 'netlify'];
+  const supportsOptimization = supportedCDNs.some(cdn => baseUrl.includes(cdn));
+  
+  if (supportsOptimization) {
+    if (isMobile) {
+      params.append('w', '600');
+      params.append('f', 'webp');
+    } else {
+      params.append('w', '1200');
+    }
+    
+    switch (quality) {
+      case 'low':
+        params.append('q', '60');
+        break;
+      case 'medium':
+        params.append('q', '75');
+        break;
+      case 'high':
+        params.append('q', '90');
+        break;
+    }
+    
+    return `${baseUrl}?${params.toString()}`;
+  }
+  
+  return baseUrl;
 };
