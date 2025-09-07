@@ -44,22 +44,39 @@ const SEOHead = ({
         // Update document title
         document.title = finalTitle;
         
+        // Clear existing meta tags to prevent duplicates
+        const clearExistingMeta = () => {
+          // Remove existing SEO-related meta tags
+          const metaSelectors = [
+            'meta[name="description"]',
+            'meta[name="keywords"]',
+            'meta[name="robots"]',
+            'meta[property^="og:"]',
+            'meta[name^="twitter:"]'
+          ];
+          
+          metaSelectors.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => el.remove());
+          });
+        };
+
         // Update meta tags
         const updateMeta = (name: string, content: string, property = false) => {
-          const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
-          let meta = document.querySelector(selector) as HTMLMetaElement;
+          if (!content) return; // Skip if content is empty
           
-          if (!meta) {
-            meta = document.createElement('meta');
-            if (property) {
-              meta.setAttribute('property', name);
-            } else {
-              meta.setAttribute('name', name);
-            }
-            document.head.appendChild(meta);
+          const meta = document.createElement('meta');
+          if (property) {
+            meta.setAttribute('property', name);
+          } else {
+            meta.setAttribute('name', name);
           }
           meta.content = content;
+          document.head.appendChild(meta);
         };
+
+        // Clear existing meta tags first
+        clearExistingMeta();
 
         // Standard meta tags
         updateMeta('description', finalDescription);
@@ -74,8 +91,11 @@ const SEOHead = ({
         updateMeta('og:image', finalImage, true);
         updateMeta('og:url', seoSettings?.canonical_url || url, true);
         updateMeta('og:type', type, true);
+        updateMeta('og:site_name', 'Nymphette Tours', true);
+        updateMeta('og:locale', 'en_US', true);
         
         // Twitter
+        updateMeta('twitter:card', 'summary_large_image');
         updateMeta('twitter:title', seoSettings?.og_title || finalTitle);
         updateMeta('twitter:description', seoSettings?.og_description || finalDescription);
         updateMeta('twitter:image', finalImage);

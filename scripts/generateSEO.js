@@ -45,9 +45,13 @@ async function generateSEO() {
     const headEndPoint = '</head>';
 
     // Remove any existing meta tags to prevent duplication
-    indexContent = indexContent.replace(/<meta\s+property="og:url".*?>/g, '');
-    indexContent = indexContent.replace(/<meta\s+name="twitter:url".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+property="og:.*?".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="twitter:.*?".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="description".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="keywords".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="robots".*?>/g, '');
     indexContent = indexContent.replace(/<link\s+rel="canonical".*?>/g, '');
+    indexContent = indexContent.replace(/<script\s+type="application\/ld\+json".*?<\/script>/gs, '');
 
     // Generate meta tags for each page
     for (const [pagePath, seo] of Object.entries(seoMap)) {

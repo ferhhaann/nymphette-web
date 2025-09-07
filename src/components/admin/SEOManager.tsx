@@ -205,6 +205,27 @@ const SEOManager = () => {
     e.preventDefault();
     
     try {
+      // Validate SEO settings
+      const { validateSEOSettings } = require('@/utils/seoValidator');
+      const validationResults = validateSEOSettings(formData);
+      
+      // Check for errors
+      const errors = validationResults.filter(result => result.status === 'error');
+      if (errors.length > 0) {
+        errors.forEach(error => {
+          toast.error(`${error.field}: ${error.message}`);
+        });
+        return;
+      }
+
+      // Show warnings
+      const warnings = validationResults.filter(result => result.status === 'warning');
+      if (warnings.length > 0) {
+        warnings.forEach(warning => {
+          toast.warning(`${warning.field}: ${warning.message}`);
+        });
+      }
+
       const seoData = {
         page_url: formData.page_url,
         meta_title: formData.meta_title,
@@ -214,7 +235,7 @@ const SEOManager = () => {
         og_title: formData.og_title,
         og_description: formData.og_description,
         og_image: formData.og_image,
-        structured_data: formData.structured_data,
+        structured_data: formData.structured_data || generateStructuredData(formData.page_type),
         robots_meta: formData.robots_meta,
         page_type: formData.page_type,
         is_active: formData.is_active
@@ -278,12 +299,18 @@ const SEOManager = () => {
   };
 
   const generateStructuredData = (pageType: string) => {
+    const { generateOrganizationSchema, generatePackageSchema, generateArticleSchema, generateBreadcrumbSchema } = require('@/config/schema.config');
+
     const baseStructuredData = {
       "@context": "https://schema.org",
       "@type": "WebPage",
       "name": formData.meta_title,
       "description": formData.meta_description,
-      "url": formData.page_url
+      "url": formData.canonical_url || formData.page_url,
+      "breadcrumb": generateBreadcrumbSchema([
+        { name: "Home", url: "/" },
+        { name: formData.meta_title, url: formData.page_url }
+      ])
     };
 
     switch (pageType) {
@@ -295,27 +322,48 @@ const SEOManager = () => {
             "@type": "SearchAction",
             "target": "/?search={search_term_string}",
             "query-input": "required name=search_term_string"
-          }
+          },
+          "publisher": generateOrganizationSchema()
         };
       case 'packages':
         return {
           ...baseStructuredData,
+          "@type": "CollectionPage",
           "mainEntity": {
             "@type": "ItemList",
-            "name": "Travel Packages"
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "item": generatePackageSchema({
+                  title: formData.meta_title,
+                  description: formData.meta_description,
+                  images: [formData.og_image],
+                  price: "0",
+                  startDate: new Date().toISOString(),
+                  endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+                })
+              }
+            ]
           }
         };
       case 'blog':
         return {
           ...baseStructuredData,
-          "@type": "Blog",
-          "publisher": {
-            "@type": "Organization",
-            "name": "Nymphette Tours"
-          }
+          ...generateArticleSchema({
+            title: formData.meta_title,
+            description: formData.meta_description,
+            image: formData.og_image,
+            author: "Nymphette Tours",
+            publishDate: new Date().toISOString(),
+            modifiedDate: new Date().toISOString()
+          })
         };
       default:
-        return baseStructuredData;
+        return {
+          ...baseStructuredData,
+          "publisher": generateOrganizationSchema()
+        };
     }
   };
 

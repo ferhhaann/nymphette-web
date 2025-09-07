@@ -1,6 +1,9 @@
-export const defaultSEO = {
+import type { SEOConfig } from '@/types/seo';
+
+export const defaultSEO: SEOConfig = {
   title: 'Nymphette Tours - Premium Travel Packages & Group Tours Worldwide',
   description: 'Discover premium travel packages, curated group tours, and custom trips worldwide. Expert travel planning with 24/7 support.',
+  keywords: 'travel packages, group tours, custom trips, vacation packages, travel agency, international tours',
   canonical: 'https://nymphettetours.com',
   openGraph: {
     type: 'website',

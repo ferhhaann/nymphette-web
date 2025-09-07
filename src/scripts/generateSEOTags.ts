@@ -26,22 +26,41 @@ async function generateSEOTags() {
     const indexPath = path.join(process.cwd(), 'index.html');
     let indexContent = fs.readFileSync(indexPath, 'utf-8');
 
-    // Update title
+    // Remove existing meta tags to prevent duplicates
+    indexContent = indexContent.replace(/<meta\s+property="og:.*?".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="twitter:.*?".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="description".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="keywords".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="robots".*?>/g, '');
+    indexContent = indexContent.replace(/<link\s+rel="canonical".*?>/g, '');
+
+    // Create meta tags block
+    const metaTagsBlock = `
+    <title>${seoSettings.meta_title}</title>
+    <meta name="description" content="${seoSettings.meta_description}" />
+    <meta name="keywords" content="${seoSettings.meta_keywords}" />
+    ${seoSettings.robots_meta ? `<meta name="robots" content="${seoSettings.robots_meta}" />` : ''}
+    <link rel="canonical" href="${seoSettings.canonical_url || window.location.origin}" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="${seoSettings.og_title || seoSettings.meta_title}" />
+    <meta property="og:description" content="${seoSettings.og_description || seoSettings.meta_description}" />
+    <meta property="og:url" content="${seoSettings.canonical_url || window.location.origin}" />
+    ${seoSettings.og_image ? `<meta property="og:image" content="${seoSettings.og_image}" />` : ''}
+    <meta property="og:site_name" content="Nymphette Tours" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${seoSettings.og_title || seoSettings.meta_title}" />
+    <meta name="twitter:description" content="${seoSettings.og_description || seoSettings.meta_description}" />
+    ${seoSettings.og_image ? `<meta name="twitter:image" content="${seoSettings.og_image}" />` : ''}`;
+
+    // Replace the title and add meta tags after it
     indexContent = indexContent.replace(
       /<title>.*?<\/title>/,
-      `<title>${seoSettings.meta_title}</title>`
-    );
-
-    // Update meta description
-    indexContent = indexContent.replace(
-      /<meta name="description" content=".*?" \/>/,
-      `<meta name="description" content="${seoSettings.meta_description}" />`
-    );
-
-    // Update meta keywords
-    indexContent = indexContent.replace(
-      /<meta name="keywords" content=".*?" \/>/,
-      `<meta name="keywords" content="${seoSettings.meta_keywords}" />`
+      metaTagsBlock
     );
 
     // Update Open Graph title
