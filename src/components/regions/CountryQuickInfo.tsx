@@ -29,25 +29,26 @@ export const CountryQuickInfo = ({
   ]
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold flex items-center">
-        <Clock className="h-4 w-4 mr-2 text-primary" />
-        Essential Information
-      </h3>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {essentialInfo.map((item, index) => (
-          <div key={index} className="flex items-start space-x-3 p-4 rounded-xl bg-card border border-border/50 hover:border-primary/20 transition-colors">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <item.icon className="h-4 w-4 text-primary" />
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center text-lg">
+          <Clock className="h-4 w-4 mr-2" />
+          Essential Information
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {essentialInfo.map((item, index) => (
+            <div key={index} className="flex items-center space-x-3 p-3 rounded-lg bg-muted/50">
+              <item.icon className="h-5 w-5 text-primary" />
+              <div>
+                <div className="text-sm text-muted-foreground">{item.label}</div>
+                <div className="font-medium">{item.value}</div>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-muted-foreground">{item.label}</div>
-              <div className="font-semibold text-foreground truncate">{item.value}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   )
 }
