@@ -42,10 +42,10 @@ export const useSEO = ({
           .select('*')
           .eq('page_url', currentPath)
           .eq('is_active', true)
-          .single();
+          .maybeSingle();
 
-        if (fetchError && fetchError.code !== 'PGRST116') {
-          throw fetchError;
+        if (fetchError) {
+          console.warn('useSEO hook query error:', fetchError);
         }
 
         // Determine final values with fallbacks

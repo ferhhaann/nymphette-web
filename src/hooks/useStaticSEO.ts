@@ -7,12 +7,17 @@ export const useStaticSEO = () => {
       try {
         const currentPath = window.location.pathname;
         
-        const { data: seoSettings } = await supabase
+        const { data: seoSettings, error } = await supabase
           .from('seo_settings')
           .select('*')
           .eq('page_url', currentPath)
           .eq('is_active', true)
-          .single();
+          .maybeSingle();
+
+        if (error) {
+          console.warn('SEO settings query error:', error);
+          return;
+        }
 
         if (!seoSettings) return;
 
@@ -95,12 +100,17 @@ export const useStaticSEO = () => {
 // Helper function to manually trigger SEO update (useful for testing)
 export const triggerSEOUpdate = async (pageUrl: string = '/') => {
   try {
-    const { data: seoSettings } = await supabase
+    const { data: seoSettings, error } = await supabase
       .from('seo_settings')
       .select('*')
       .eq('page_url', pageUrl)
       .eq('is_active', true)
-      .single();
+      .maybeSingle();
+
+    if (error) {
+      console.warn('SEO settings query error:', error);
+      return null;
+    }
 
     if (seoSettings) {
       console.log('SEO Settings for', pageUrl, ':', {

@@ -28,12 +28,17 @@ export const SEO: FC<SEOProps> = ({
   useEffect(() => {
     const fetchSEOSettings = async () => {
       try {
-        const { data: seoSettings } = await supabase
+        const { data: seoSettings, error } = await supabase
           .from('seo_settings')
           .select('*')
           .eq('page_url', currentPath)
           .eq('is_active', true)
-          .single();
+          .maybeSingle();
+
+        if (error) {
+          console.warn('SEO component query error:', error);
+          return;
+        }
 
         if (seoSettings) {
           // Update meta tags dynamically if needed

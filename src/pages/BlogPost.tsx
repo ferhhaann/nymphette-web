@@ -72,7 +72,7 @@ export default function BlogPost() {
   const fetchPost = async () => {
     try {
       // Fetch blog post
-      const { data: postData } = await supabase
+      const { data: postData, error } = await supabase
         .from('blog_posts')
         .select(`
           *,
@@ -81,7 +81,13 @@ export default function BlogPost() {
         `)
         .eq('slug', slug)
         .eq('status', 'published')
-        .single()
+        .maybeSingle()
+
+      if (error) {
+        console.error('Error fetching blog post:', error);
+        setLoading(false);
+        return;
+      }
 
       if (postData) {
         setPost(postData)

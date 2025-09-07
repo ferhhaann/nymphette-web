@@ -27,12 +27,16 @@ const SEOHead = ({
         const currentPath = window.location.pathname;
         
         // Fetch SEO settings from database
-        const { data: seoSettings } = await supabase
+        const { data: seoSettings, error } = await supabase
           .from('seo_settings')
           .select('*')
           .eq('page_url', currentPath)
           .eq('is_active', true)
-          .single();
+          .maybeSingle();
+
+        if (error) {
+          console.warn('SEOHead component query error:', error);
+        }
 
         // Use database values or fallback to props/defaults
         const finalTitle = title || seoSettings?.meta_title || "Nymphette Tours - Premium Travel Packages & Group Tours Worldwide";

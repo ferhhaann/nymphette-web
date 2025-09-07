@@ -21,14 +21,20 @@ export const useAdminAccess = () => {
         return
       }
 
-      const { data: isAdminResult, error } = await supabase
-        .rpc('is_admin')
-      
-      if (error) {
-        console.error('Admin check error:', error)
+      try {
+        const { data: isAdminResult, error } = await supabase
+          .rpc('is_admin')
+        
+        if (error) {
+          console.error('Admin check error:', error)
+          setIsAdmin(false)
+        } else {
+          setIsAdmin(isAdminResult || false)
+        }
+      } catch (rpcError) {
+        console.error('RPC call failed:', rpcError)
+        // Fallback: if RPC fails completely, assume non-admin for security
         setIsAdmin(false)
-      } else {
-        setIsAdmin(isAdminResult || false)
       }
       
       setLoading(false)
