@@ -75,30 +75,8 @@ const Navigation = () => {
 
   return (
     <>
-      {/* Top contact bar - hidden on mobile, visible on desktop */}
-      <div className="hidden lg:block bg-primary text-primary-foreground py-2">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center text-sm">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <Phone className="h-4 w-4" />
-                <span>+1-800-NYMPHETTE</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4" />
-                <span>info@nymphettetours.com</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Globe className="h-4 w-4" />
-              <span>50+ Destinations Worldwide</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main navigation */}
-      <nav className={`fixed top-0 lg:top-10 w-full z-50 transition-all duration-300 ${
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-background/95 backdrop-blur-md shadow-lg' 
           : 'bg-background/70 backdrop-blur-sm'
@@ -319,7 +297,7 @@ const Navigation = () => {
       </nav>
 
       {/* Spacer to account for fixed navigation */}
-      <div className="h-16 lg:h-[120px]"></div>
+      <div className="h-16"></div>
     </>
   );
 };

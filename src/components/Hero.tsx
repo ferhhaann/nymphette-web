@@ -50,7 +50,7 @@ const Hero = () => {
   return (
     <section className="relative min-h-[70vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-16 sm:top-20 md:top-24 rounded-2xl sm:rounded-3xl overflow-hidden">
+      <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
         <div className="absolute inset-0">
           <OptimizedImage
             src={heroImage}
@@ -156,18 +156,6 @@ const Hero = () => {
             </Button>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 max-w-3xl mx-auto animate-fade-in px-2">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center group">
-                <div className="flex justify-center mb-2">
-                  <stat.icon className="h-6 w-6 sm:h-8 sm:w-8 text-white/80 group-hover:text-white transition-colors duration-200" />
-                </div>
-                <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-xs sm:text-sm text-white/70 font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
