@@ -59,9 +59,6 @@ const Index = () => {
         <div className="animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
           <Hero />
         </div>
-        <section className="animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-          <SearchSection />
-        </section>
         <section className="animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
           <TopValues />
         </section>

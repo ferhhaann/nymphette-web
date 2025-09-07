@@ -88,29 +88,31 @@ const Hero = () => {
             {getContentValue('subtitle', 'Premium travel packages, curated group tours, and custom trips to 50+ destinations worldwide. Expert planning with 24/7 support.')}
           </p>
 
-          {/* Search Bar */}
+          {/* Enhanced Search Bar */}
           <div className="mb-6 sm:mb-8 animate-scale-in px-2 sm:px-0">
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 bg-white/10 backdrop-blur-sm rounded-2xl p-2 border border-white/20">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
-                  <Input
-                    type="text"
-                    placeholder="Where do you want to go?"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-12 h-12 sm:h-14 bg-transparent border-none text-white placeholder:text-white/60 focus:ring-0 focus:ring-offset-0 text-base sm:text-lg"
-                  />
+            <form onSubmit={handleSearch} className="max-w-4xl mx-auto">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl border border-white/20">
+                <div className="flex flex-col lg:flex-row gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Where do you want to go? (e.g., Japan, Europe, Bali)"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-12 h-12 sm:h-14 bg-white border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary text-base sm:text-lg rounded-xl"
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className="h-12 sm:h-14 px-6 sm:px-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-base sm:text-lg transition-all duration-200 hover:scale-105 shadow-lg"
+                  >
+                    <span className="hidden sm:inline">Search Packages</span>
+                    <span className="sm:hidden">Search</span>
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
                 </div>
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="h-12 sm:h-14 px-6 sm:px-8 bg-primary hover:bg-primary/90 text-white rounded-xl sm:rounded-r-xl sm:rounded-l-none font-semibold text-base sm:text-lg transition-all duration-200 hover:scale-105"
-                >
-                  <span className="hidden sm:inline">Search Packages</span>
-                  <span className="sm:hidden">Search</span>
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
               </div>
             </form>
           </div>
