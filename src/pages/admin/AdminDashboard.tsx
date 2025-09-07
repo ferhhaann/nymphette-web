@@ -18,10 +18,18 @@ import SEOManager from "@/components/admin/SEOManager"
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [activeSection, setActiveSection] = useState("overview")
   const { toast } = useToast()
 
   useEffect(() => {
     checkAuth()
+    
+    // Check URL parameters for initial section
+    const params = new URLSearchParams(window.location.search)
+    const section = params.get('section')
+    if (section) {
+      setActiveSection(section)
+    }
   }, [])
 
   const checkAuth = async () => {
@@ -75,7 +83,7 @@ const AdminDashboard = () => {
             </Button>
           </div>
 
-          <Tabs defaultValue="overview" className="space-y-4">
+          <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-4">
             <TabsList className="grid w-full grid-cols-9">
               <TabsTrigger value="overview" className="flex items-center gap-2">
                 <Database className="h-4 w-4" />

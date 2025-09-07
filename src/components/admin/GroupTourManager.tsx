@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -65,9 +65,11 @@ const GroupTourManager = () => {
   const [newCategory, setNewCategory] = useState({ name: '', description: '', icon: 'Mountain', color: '#8B5CF6' });
   const [showCategoryDialog, setShowCategoryDialog] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [activeTab, setActiveTab] = useState("list");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
 
   // Helper function to get image URL
   const getImageUrl = (imagePath: string | undefined) => {
@@ -91,6 +93,19 @@ const GroupTourManager = () => {
       return data;
     }
   });
+
+  // Check URL parameters to auto-edit a specific tour
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const editTourId = params.get('editTour');
+    if (editTourId && tours.length > 0) {
+      const tourToEdit = tours.find(tour => tour.id === editTourId);
+      if (tourToEdit) {
+        startEditing(tourToEdit);
+        setActiveTab("edit");
+      }
+    }
+  }, [tours]);
 
   // Fetch categories
   const { data: categories = [], isLoading: categoriesLoading } = useQuery({

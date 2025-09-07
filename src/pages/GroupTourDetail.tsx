@@ -16,6 +16,10 @@ import {
   Star,
   ArrowLeft,
   Sparkles,
+  Edit,
+  Eye,
+  Share2,
+  Heart,
 } from "lucide-react";
 
 const GroupTourDetail = () => {
@@ -235,13 +239,35 @@ const GroupTourDetail = () => {
                       </div>
                     </div>
 
-                    <Button 
-                      className="w-full bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent"
-                      onClick={() => setIsBookingModalOpen(true)}
-                      disabled={tour.available_spots === 0}
-                    >
-                      {tour.available_spots > 0 ? 'Book Now' : 'Sold Out'}
-                    </Button>
+                    <div className="space-y-3">
+                      <Button 
+                        className="w-full bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent"
+                        onClick={() => setIsBookingModalOpen(true)}
+                        disabled={tour.available_spots === 0}
+                      >
+                        {tour.available_spots > 0 ? 'Book Now' : 'Sold Out'}
+                      </Button>
+                      
+                      <div className="grid grid-cols-3 gap-2">
+                        <Button variant="outline" size="sm" className="text-xs">
+                          <Heart className="h-3 w-3 mr-1" />
+                          Save
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-xs">
+                          <Share2 className="h-3 w-3 mr-1" />
+                          Share
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs"
+                          onClick={() => window.open(`/admin?section=group-tours&editTour=${tour.id}`, '_blank')}
+                        >
+                          <Edit className="h-3 w-3 mr-1" />
+                          Edit
+                        </Button>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
