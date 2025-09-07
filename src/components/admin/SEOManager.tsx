@@ -400,7 +400,9 @@ const SEOManager = () => {
 
       <Tabs defaultValue="settings" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="settings">SEO Settings</TabsTrigger>
+          <TabsTrigger value="settings">General SEO</TabsTrigger>
+          <TabsTrigger value="countries">Country Pages</TabsTrigger>
+          <TabsTrigger value="categories">Categories</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="tools">SEO Tools</TabsTrigger>
         </TabsList>
@@ -688,6 +690,187 @@ const SEOManager = () => {
               </Card>
             ))}
           </div>
+        </TabsContent>
+
+        <TabsContent value="countries" className="space-y-4">
+          {/* Search Bar for Countries */}
+          <div className="flex items-center space-x-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search country SEO settings..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8"
+              />
+            </div>
+            <Button onClick={() => {
+              setFormData({...initialFormData, page_type: 'country'});
+              setShowForm(true);
+            }}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Country SEO
+            </Button>
+          </div>
+
+          {/* Country SEO Form */}
+          {showForm && formData.page_type === 'country' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  {editingItem ? 'Edit Country SEO Settings' : 'Add New Country SEO Settings'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium">Country Page URL</label>
+                      <Input
+                        value={formData.page_url}
+                        onChange={(e) => setFormData({...formData, page_url: e.target.value})}
+                        placeholder="/regions/asia/country/japan"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Page Type</label>
+                      <select
+                        value={formData.page_type}
+                        onChange={(e) => setFormData({...formData, page_type: e.target.value as any})}
+                        className="w-full p-2 border rounded-md"
+                        disabled
+                      >
+                        <option value="country">Country Page</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">Meta Title (60 chars max)</label>
+                    <Input
+                      value={formData.meta_title}
+                      onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
+                      placeholder="Japan Travel Guide - Best Japan Tours | Nymphette Tours"
+                      maxLength={60}
+                      required
+                    />
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {formData.meta_title.length}/60 characters
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">Meta Description (160 chars max)</label>
+                    <Textarea
+                      value={formData.meta_description}
+                      onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
+                      placeholder="Explore Japan with our comprehensive travel packages. From Tokyo to Kyoto, discover the best of Japanese culture, food, and destinations."
+                      maxLength={160}
+                      rows={3}
+                      required
+                    />
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {formData.meta_description.length}/160 characters
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">Keywords (comma separated)</label>
+                    <Input
+                      value={formData.meta_keywords}
+                      onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
+                      placeholder="japan travel, japan tours, tokyo travel, kyoto tours"
+                    />
+                  </div>
+
+                  <div className="flex justify-end space-x-2">
+                    <Button type="button" variant="outline" onClick={resetForm}>
+                      Cancel
+                    </Button>
+                    <Button type="submit">
+                      {editingItem ? 'Update' : 'Create'} Country SEO
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Country SEO Settings List */}
+          <div className="grid gap-4">
+            {filteredSettings.filter(setting => setting.page_type === 'country').map((setting) => (
+              <Card key={setting.id}>
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-lg">{setting.page_url}</CardTitle>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {setting.meta_title}
+                      </p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Badge variant={setting.is_active ? "default" : "secondary"}>
+                        {setting.is_active ? "Active" : "Inactive"}
+                      </Badge>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(setting)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setting.id && handleDelete(setting.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {setting.meta_description}
+                  </p>
+                  {setting.meta_keywords && (
+                    <div className="flex flex-wrap gap-1">
+                      {setting.meta_keywords.split(',').map((keyword, idx) => (
+                        <Badge key={idx} variant="outline" className="text-xs">
+                          {keyword.trim()}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="categories" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Category SEO Management</CardTitle>
+              <p className="text-muted-foreground">
+                Manage SEO settings for package categories, blog categories, and tour categories.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <div className="text-muted-foreground mb-4">
+                  Category SEO management coming soon. This will include:
+                </div>
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li>• Package category SEO optimization</li>
+                  <li>• Blog category meta tags</li>
+                  <li>• Tour category descriptions</li>
+                  <li>• Automatic category page generation</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="tools" className="space-y-4">
