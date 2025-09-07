@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Phone, Mail, MessageCircle } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
-import { createEnquiry, sendWhatsAppNotification } from '@/utils/enquiryUtils'
+import { submitSecureEnquiry } from '@/utils/secureFormUtils'
 
 interface InquiryFormData {
   name: string
@@ -91,7 +91,7 @@ export const InquiryBookingForm = ({
         destination: country
       }
 
-      const result = await createEnquiry(enquiryData)
+      const result = await submitSecureEnquiry(enquiryData)
       
       if (result.success) {
         toast({

@@ -138,16 +138,23 @@ export default function BlogPost() {
     }
 
     try {
-      await supabase
-        .from('blog_comments')
-        .insert({
-          post_id: post?.id,
-          ...commentForm
-        })
+      const { submitSecureBlogComment } = await import('@/utils/secureFormUtils')
+      
+      const result = await submitSecureBlogComment({
+        post_id: post?.id || '',
+        author_name: commentForm.author_name,
+        author_email: commentForm.author_email,
+        content: commentForm.content
+      })
 
-      toast.success('Comment submitted for review!')
-      setCommentForm({ author_name: '', author_email: '', content: '' })
+      if (result.success) {
+        toast.success('Comment submitted for review!')
+        setCommentForm({ author_name: '', author_email: '', content: '' })
+      } else {
+        toast.error(result.error || 'Failed to submit comment')
+      }
     } catch (error) {
+      console.error('Comment submission error:', error)
       toast.error('Failed to submit comment')
     }
   }

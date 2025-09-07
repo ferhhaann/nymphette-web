@@ -83,21 +83,31 @@ export default function Contact() {
     setSubmitting(true)
 
     try {
-      // Save to contact_submissions (existing functionality)
-      await supabase
-        .from('contact_submissions')
-        .insert([formData])
+      // Import secure submission functions
+      const { submitSecureContactForm, submitSecureEnquiry } = await import('@/utils/secureFormUtils')
+      
+      // Submit contact form securely
+      const contactResult = await submitSecureContactForm({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message
+      })
 
-      // Also save to enquiries (new functionality)
-      await supabase
-        .from('enquiries')
-        .insert([{
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: `Subject: ${formData.subject}\n\n${formData.message}`,
-          source: 'contact'
-        }])
+      if (!contactResult.success) {
+        toast.error(contactResult.error || 'Failed to send message. Please try again.')
+        return
+      }
+
+      // Also save to enquiries for internal tracking
+      await submitSecureEnquiry({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: `Subject: ${formData.subject}\n\n${formData.message}`,
+        source: 'contact'
+      })
 
       toast.success('Message sent successfully! We\'ll get back to you soon.')
       setFormData({
@@ -108,6 +118,7 @@ export default function Contact() {
         message: ''
       })
     } catch (error) {
+      console.error('Contact form error:', error)
       toast.error('Failed to send message. Please try again.')
     } finally {
       setSubmitting(false)

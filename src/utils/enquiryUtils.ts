@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client'
+import { submitSecureEnquiry, type EnquiryFormData } from './secureFormUtils'
 
 export interface CreateEnquiryData {
   name: string
@@ -13,33 +14,31 @@ export interface CreateEnquiryData {
 }
 
 /**
- * Create a new enquiry and save it to the database with audit logging
+ * Create a new enquiry using secure submission method
+ * @deprecated Use submitSecureEnquiry from secureFormUtils instead for better security
  */
 export const createEnquiry = async (data: CreateEnquiryData) => {
-  try {
-    const { data: enquiry, error } = await supabase
-      .from('enquiries')
-      .insert([data])
-      .select()
-      .single()
-
-    if (error) throw error
-
-    // Log the enquiry creation for audit purposes
-    try {
-      await supabase.rpc('log_admin_action', {
-        _action: 'enquiry_created',
-        _table_name: 'enquiries',
-        _record_id: enquiry.id
-      })
-    } catch (logError) {
-      console.warn('Failed to log enquiry creation:', logError)
-    }
-    
-    return { success: true, data: enquiry }
-  } catch (error) {
-    console.error('Error creating enquiry:', error)
-    return { success: false, error }
+  console.warn('createEnquiry is deprecated. Use submitSecureEnquiry for better security.')
+  
+  // Map to secure form format
+  const secureData: EnquiryFormData = {
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    message: data.message,
+    source: data.source,
+    source_id: data.source_id,
+    destination: data.destination,
+    travel_date: data.travel_date,
+    travelers: data.travelers
+  }
+  
+  const result = await submitSecureEnquiry(secureData)
+  
+  if (result.success) {
+    return { success: true, data: { id: 'created' } }
+  } else {
+    return { success: false, error: result.error }
   }
 }
 
