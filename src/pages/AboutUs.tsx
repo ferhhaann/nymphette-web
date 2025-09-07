@@ -97,7 +97,7 @@ const AboutUs = () => {
       
       <main>
         {/* Hero Section */}
-        <section className="relative pt-20 pb-16 overflow-hidden">
+        <section className="relative pt-4 pb-16 overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroImage})` }}

@@ -205,14 +205,14 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       <div className="min-h-screen bg-background">
       <Navigation />
       {/* Breadcrumbs */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-primary transition-colors flex items-center">
             <Home className="h-4 w-4 mr-1" />
             Home
           </Link>
           <ChevronRight className="h-4 w-4" />
-          <Link to="/" className="hover:text-primary transition-colors">Regions</Link>
+          <Link to="/packages" className="hover:text-primary transition-colors">Packages</Link>
           <ChevronRight className="h-4 w-4" />
           <span className="text-foreground font-medium">{region}</span>
         </nav>
