@@ -97,13 +97,9 @@ export default function BlogPost() {
           .update({ views_count: (postData.views_count || 0) + 1 })
           .eq('id', postData.id)
 
-        // Fetch comments - exclude email addresses for security
+        // Fetch comments using secure function that excludes email addresses
         const { data: commentsData } = await supabase
-          .from('blog_comments')
-          .select('id, post_id, author_name, content, created_at, status')
-          .eq('post_id', postData.id)
-          .eq('status', 'approved')
-          .order('created_at', { ascending: false })
+          .rpc('get_blog_comments_public', { blog_post_id: postData.id })
 
         if (commentsData) {
           setComments(commentsData)

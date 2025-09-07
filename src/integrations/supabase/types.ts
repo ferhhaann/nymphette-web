@@ -1410,6 +1410,17 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_blog_comments_public: {
+        Args: { blog_post_id: string }
+        Returns: {
+          author_name: string
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+          status: string
+        }[]
+      }
       get_group_tour_image_url: {
         Args: { image_path: string }
         Returns: string
