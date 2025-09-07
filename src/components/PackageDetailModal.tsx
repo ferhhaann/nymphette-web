@@ -145,7 +145,7 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    
     toast({
       title: "Enquiry Sent!",
       description: "We'll get back to you within 24 hours.",

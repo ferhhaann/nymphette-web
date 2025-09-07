@@ -84,8 +84,6 @@ export const useStaticSEO = () => {
           script.textContent = JSON.stringify(seoSettings.structured_data);
         }
 
-        // Log success for debugging
-        console.log('SEO settings applied successfully for:', currentPath);
 
       } catch (error) {
         console.warn('Failed to update static SEO:', error);
@@ -113,18 +111,7 @@ export const triggerSEOUpdate = async (pageUrl: string = '/') => {
     }
 
     if (seoSettings) {
-      console.log('SEO Settings for', pageUrl, ':', {
-        title: seoSettings.meta_title,
-        description: seoSettings.meta_description,
-        keywords: seoSettings.meta_keywords,
-        ogImage: seoSettings.og_image,
-        canonicalUrl: seoSettings.canonical_url
-      });
-      
-      // Log what would be visible in view source
-      console.log('Current document title:', document.title);
-      console.log('Current meta description:', 
-        document.querySelector('meta[name="description"]')?.getAttribute('content'));
+      // SEO settings applied
     }
     
     return seoSettings;

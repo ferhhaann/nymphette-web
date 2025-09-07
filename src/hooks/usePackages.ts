@@ -45,7 +45,7 @@ export const usePackages = (region?: string) => {
       
     } catch (err: any) {
       setError(err.message)
-      console.error('Error loading packages:', err)
+      
     } finally {
       setLoading(false)
     }
@@ -64,20 +64,14 @@ export const usePackageById = (packageId: string) => {
   }, [packageId])
 
   const loadPackage = async () => {
-    console.log('usePackageById: Loading package with ID:', packageId);
-    console.log('usePackageById: supabase available =', !!supabase);
-    console.log('usePackageById: supabase =', !!supabase);
     try {
       setLoading(true)
       setError(null)
       
       // If Supabase is not configured, use local JSON data
       if (!supabase) {
-        console.log('usePackageById: Using local data, packagesData =', packagesData);
         const allRegions = Object.values(packagesData).flat()
-        console.log('usePackageById: allRegions =', allRegions);
         const foundPackage = allRegions.find(pkg => pkg.id === packageId)
-        console.log('usePackageById: foundPackage =', foundPackage);
         setPackageData(foundPackage || null)
         setLoading(false)
         return
@@ -89,21 +83,18 @@ export const usePackageById = (packageId: string) => {
         .eq('id', packageId)
         .maybeSingle()
       
-      console.log('usePackageById: Supabase response:', { data, error });
       
-      if (error) throw error
+      if (error) throw error;
       
       if (data) {
-        console.log('usePackageById: Transforming data:', data);
         setPackageData(transformDatabasePackage(data))
       } else {
-        console.log('usePackageById: No data found for packageId:', packageId);
         setPackageData(null)
       }
       
     } catch (err: any) {
       setError(err.message)
-      console.error('Error loading package:', err)
+      
     } finally {
       setLoading(false)
     }

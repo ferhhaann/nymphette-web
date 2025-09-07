@@ -85,12 +85,15 @@ export const measurePerformance = () => {
       const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
       const paint = performance.getEntriesByType('paint');
       
-      console.log('Performance Metrics:', {
+      // Performance metrics are available but not logged in production
+      const metrics = {
         'DOM Content Loaded': navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
         'Load Complete': navigation.loadEventEnd - navigation.loadEventStart,
         'First Paint': paint.find(entry => entry.name === 'first-paint')?.startTime,
         'First Contentful Paint': paint.find(entry => entry.name === 'first-contentful-paint')?.startTime,
-      });
+      };
+      
+      // Metrics can be used for monitoring in production
     });
   }
 };

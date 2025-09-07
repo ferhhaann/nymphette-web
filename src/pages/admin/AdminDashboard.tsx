@@ -44,42 +44,33 @@ const AdminDashboard = () => {
   }, [])
 
   const checkAuth = async () => {
-    console.log('AdminDashboard: Starting auth check...')
     try {
       const { data: { session } } = await supabase.auth.getSession()
-      console.log('AdminDashboard: Session check result:', !!session?.user)
       
       if (session?.user) {
         setIsAuthenticated(true)
         
-        // Check if user has admin role - handle gracefully if function doesn't exist
+        // Check if user has admin role
         try {
-          console.log('AdminDashboard: Calling is_admin RPC...')
           const { data: isAdminResult, error } = await supabase
             .rpc('is_admin')
           
-          console.log('AdminDashboard: is_admin result:', { isAdminResult, error })
-          
           if (error) {
-            console.error('Admin check error:', error)
-            // For now, if there's an error with the RPC, treat as non-admin
+            // For production, if there's an error with the RPC, treat as non-admin
             setIsAdmin(false)
           } else {
             setIsAdmin(isAdminResult || false)
           }
         } catch (rpcError) {
-          console.error('RPC call failed:', rpcError)
-          // Fallback: if RPC fails, check if user exists (temporary admin access)
-          setIsAdmin(true) // Temporary fallback for debugging
+          // Fallback: if RPC fails completely
+          setIsAdmin(false)
         }
       } else {
         setIsAuthenticated(false)
         setIsAdmin(false)
       }
       setLoading(false)
-      console.log('AdminDashboard: Auth check completed')
     } catch (error) {
-      console.error('Auth check error:', error)
       setLoading(false)
     }
   }
