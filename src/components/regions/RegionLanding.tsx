@@ -226,7 +226,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
           <CarouselContent>
             {heroImages.map((img, idx) => (
               <CarouselItem key={idx}>
-                 <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] m-2 sm:m-4 lg:m-6 rounded-lg overflow-hidden">
+                 <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] mx-2 sm:mx-4 lg:mx-6 mb-2 sm:mb-4 lg:mb-6 rounded-lg overflow-hidden">
                    <OptimizedImage 
                      src={img} 
                      alt={`${title} hero ${idx+1}`} 
