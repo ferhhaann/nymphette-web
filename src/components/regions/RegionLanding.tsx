@@ -187,14 +187,9 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
     const q = query.trim().toLowerCase();
     return packages.filter(p => {
       const matchesQuery = !q || p.title.toLowerCase().includes(q) || p.country.toLowerCase().includes(q) || p.highlights.some(h => h.toLowerCase().includes(q));
-      
-      // Budget filter - extract price and compare with selected budget
-      const packagePrice = toUSD(p);
-      const matchesBudget = packagePrice <= budgetMax;
-      
-      return matchesQuery && matchesBudget;
+      return matchesQuery;
     });
-  }, [packages, query, budgetMax]);
+  }, [packages, query]);
 
   // JSON-LD basic
   useEffect(() => {
