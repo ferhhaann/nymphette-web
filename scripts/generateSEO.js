@@ -11,6 +11,9 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Get base URL from environment or default to relative paths
+const baseUrl = process.env.VITE_SITE_URL ? process.env.VITE_SITE_URL.replace(/\/$/, '') : '';
+
 // Initialize Supabase client
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL,
@@ -41,12 +44,19 @@ async function generateSEO() {
     const metaInjectionPoint = '<meta name="viewport"';
     const headEndPoint = '</head>';
 
-    // Generate meta tags for each page
-    for (const [path, seo] of Object.entries(seoMap)) {
-      // Skip if it's not the homepage (we'll handle other pages differently)
-      if (path !== '/') continue;
+    // Remove any existing meta tags to prevent duplication
+    indexContent = indexContent.replace(/<meta\s+property="og:url".*?>/g, '');
+    indexContent = indexContent.replace(/<meta\s+name="twitter:url".*?>/g, '');
+    indexContent = indexContent.replace(/<link\s+rel="canonical".*?>/g, '');
 
-      // Update title
+    // Generate meta tags for each page
+    for (const [pagePath, seo] of Object.entries(seoMap)) {
+      // Skip if it's not the homepage (we'll handle other pages differently)
+      if (pagePath !== '/') continue;
+
+      const canonicalUrl = pagePath === '/' ? baseUrl : `${baseUrl}${pagePath}`;
+
+      // Add canonical and social URLs
       indexContent = indexContent.replace(
         /<title>.*?<\/title>/,
         `<title>${seo.meta_title}</title>`
@@ -57,18 +67,18 @@ async function generateSEO() {
     <meta name="description" content="${seo.meta_description}" />
     <meta name="keywords" content="${seo.meta_keywords}" />
     <meta name="robots" content="${seo.robots_meta || 'index,follow'}" />
-    <link rel="canonical" href="${seo.canonical_url || 'https://nymphettetours.com' + path}" />
+    <link rel="canonical" href="${seo.canonical_url || canonicalUrl}" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="${seo.canonical_url || 'https://nymphettetours.com' + path}" />
+    <meta property="og:url" content="${seo.canonical_url || canonicalUrl}" />
     <meta property="og:title" content="${seo.og_title || seo.meta_title}" />
     <meta property="og:description" content="${seo.og_description || seo.meta_description}" />
     <meta property="og:image" content="${seo.og_image}" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="${seo.canonical_url || 'https://nymphettetours.com' + path}" />
+    <meta name="twitter:url" content="${seo.canonical_url || canonicalUrl}" />
     <meta name="twitter:title" content="${seo.og_title || seo.meta_title}" />
     <meta name="twitter:description" content="${seo.og_description || seo.meta_description}" />
     <meta name="twitter:image" content="${seo.og_image}" />
@@ -103,6 +113,8 @@ async function generateSEO() {
       // Copy and modify index.html for this page
       let pageContent = indexContent;
 
+      const pageCanonicalUrl = baseUrl ? `${baseUrl}${pagePath}` : pagePath;
+
       // Update meta tags for this page
       pageContent = pageContent.replace(
         /<title>.*?<\/title>/,
@@ -113,6 +125,15 @@ async function generateSEO() {
       ).replace(
         /<meta name="keywords".*?>/,
         `<meta name="keywords" content="${seo.meta_keywords}" />`
+      ).replace(
+        /<link rel="canonical".*?>/,
+        `<link rel="canonical" href="${seo.canonical_url || pageCanonicalUrl}" />`
+      ).replace(
+        /<meta property="og:url".*?>/,
+        `<meta property="og:url" content="${seo.canonical_url || pageCanonicalUrl}" />`
+      ).replace(
+        /<meta name="twitter:url".*?>/,
+        `<meta name="twitter:url" content="${seo.canonical_url || pageCanonicalUrl}" />`
       );
 
       // Update OG tags

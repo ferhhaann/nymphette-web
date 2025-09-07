@@ -27,7 +27,15 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const queryClient = new QueryClient();
 
+declare global {
+  interface Window {
+    __STATIC_PROPS__: Record<string, any>;
+  }
+}
+
 const App = () => {
+  // Access static props if available (SSG mode)
+  const staticProps = window.__STATIC_PROPS__ || {};
   useImageOptimization();
   
   return (

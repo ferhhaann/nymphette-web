@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "node scripts/generateSEO.js && vite build",
-    "build:dev": "vite build --mode development",
+    "dev": "vite --mode development",
+    "build": "NODE_ENV=production node scripts/generateSEO.js && vite build --mode production && node scripts/prerender.js",
+    "build:dev": "NODE_ENV=development node scripts/generateSEO.js && vite build --mode development && node scripts/prerender.js",
+    "build:ssg": "NODE_ENV=production node scripts/generateSEO.js && vite build --mode production && node scripts/prerender.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-seo": "node scripts/generateSEO.js"
@@ -46,7 +47,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
-    "dotenv": "^17.2.2",
     "embla-carousel-react": "^8.3.0",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.462.0",
@@ -75,8 +75,10 @@
     "@types/node": "^22.5.5",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^5.0.2",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
+    "dotenv": "^17.2.2",
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
@@ -87,6 +89,8 @@
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vite-plugin-ssr": "^0.4.142",
+    "vite-plugin-static-copy": "^3.1.2"
   }
 }
