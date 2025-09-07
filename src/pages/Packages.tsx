@@ -186,7 +186,7 @@ const Packages = () => {
           {/* Hero Section */}
           <main>
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
-              <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-16 sm:top-20 md:top-24 rounded-2xl sm:rounded-3xl overflow-hidden">
+              <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
                 <div className="absolute inset-0">
                   <div 
                     className="w-full h-full bg-cover bg-center bg-no-repeat scale-105"
