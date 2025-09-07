@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Package, FileText, Settings, Database, Globe, Users, BookOpen, MessageSquare } from "lucide-react"
+import { Plus, Package, FileText, Settings, Database, Globe, Users, BookOpen, MessageSquare, ClipboardList } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { AdminOverview } from "@/components/admin/AdminOverview"
 import { PackageManager } from "@/components/admin/PackageManager"
@@ -12,6 +12,7 @@ import { CountryManager } from "@/components/admin/CountryManager"
 import GroupTourManager from "@/components/admin/GroupTourManager"
 import { BlogManager } from "@/components/admin/BlogManager"
 import { ContactManager } from "@/components/admin/ContactManager"
+import { EnquiryManager } from "@/components/admin/EnquiryManager"
 import SEOManager from "@/components/admin/SEOManager"
 
 const AdminDashboard = () => {
@@ -75,7 +76,7 @@ const AdminDashboard = () => {
           </div>
 
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-8">
+            <TabsList className="grid w-full grid-cols-9">
               <TabsTrigger value="overview" className="flex items-center gap-2">
                 <Database className="h-4 w-4" />
                 Overview
@@ -95,6 +96,10 @@ const AdminDashboard = () => {
               <TabsTrigger value="contact" className="flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
                 Contact
+              </TabsTrigger>
+              <TabsTrigger value="enquiries" className="flex items-center gap-2">
+                <ClipboardList className="h-4 w-4" />
+                Enquiries
               </TabsTrigger>
               <TabsTrigger value="content" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
@@ -132,6 +137,10 @@ const AdminDashboard = () => {
 
             <TabsContent value="contact">
               <ContactManager />
+            </TabsContent>
+
+            <TabsContent value="enquiries">
+              <EnquiryManager />
             </TabsContent>
 
             <TabsContent value="content">

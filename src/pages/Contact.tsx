@@ -82,9 +82,21 @@ export default function Contact() {
     setSubmitting(true)
 
     try {
+      // Save to contact_submissions (existing functionality)
       await supabase
         .from('contact_submissions')
         .insert([formData])
+
+      // Also save to enquiries (new functionality)
+      await supabase
+        .from('enquiries')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: `Subject: ${formData.subject}\n\n${formData.message}`,
+          source: 'contact'
+        }])
 
       toast.success('Message sent successfully! We\'ll get back to you soon.')
       setFormData({
