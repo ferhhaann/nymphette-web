@@ -48,53 +48,43 @@ All colors MUST be HSL.
     
     /* Visual tokens */
     --hero-gradient: linear-gradient(180deg, hsl(var(--foreground) / 0.4), hsl(var(--foreground) / 0.6));
-    --card-gradient: linear-gradient(145deg, hsl(var(--secondary)), hsl(var(--pale-blue)));
-    --ocean-gradient: linear-gradient(180deg, hsl(var(--secondary)), hsl(var(--pale-blue)));
+    --subtle-gradient: linear-gradient(135deg, hsl(var(--secondary) / 0.5), hsl(var(--secondary) / 0.8));
+    --glass-effect: hsl(var(--background) / 0.7);
     
-    /* Shadows */
-    --shadow-travel: 0 10px 30px -12px hsl(var(--foreground) / 0.15);
-    --shadow-card: 0 6px 16px -6px hsl(var(--foreground) / 0.12);
-    
-    /* Animation */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Travel-specific spacing */
+    --section-padding: 4rem;
+    --card-padding: 2rem;
+    --hero-height: 70vh;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
+    --background: 168 18% 8%;
+    --foreground: 0 0% 98%;
+    
+    --card: 168 18% 10%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 168 18% 10%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 0 0% 98%;
+    --primary-foreground: 168 18% 8%;
+    
+    --secondary: 168 18% 12%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 168 18% 12%;
+    --muted-foreground: 0 0% 60%;
+    
+    --accent: 0 0% 98%;
+    --accent-foreground: 168 18% 8%;
+    
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 168 18% 15%;
+    --input: 168 18% 15%;
+    --ring: 0 0% 90%;
   }
 }
 
@@ -102,64 +92,266 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
-
+  
   body {
-    @apply bg-background text-foreground font-sans;
-    /* Performance optimizations */
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply bg-background text-foreground font-geologica;
+    /* Improve mobile touch targets */
+    -webkit-tap-highlight-color: transparent;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+    /* Smooth scrolling for mobile */
+    -webkit-overflow-scrolling: touch;
   }
 
-  /* Image optimization */
+  /* Mobile-first responsive typography */
+  h1 {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight;
+  }
+  
+  h2 {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight;
+  }
+  
+  h3 {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium leading-tight;
+  }
+  
+  h4 {
+    @apply text-base sm:text-lg md:text-xl font-medium leading-tight;
+  }
+  
+  p {
+    @apply text-sm sm:text-base leading-relaxed;
+  }
+
+  /* Enhanced mobile touch targets */
+  button, a, input, textarea, select {
+    min-height: 44px; /* Apple's recommended minimum touch target */
+    touch-action: manipulation; /* Prevents zoom on double-tap */
+  }
+
+  /* Responsive container utilities */
+  .container {
+    @apply w-full mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 1280px;
+  }
+  
+  .container-fluid {
+    @apply w-full mx-auto px-2 sm:px-4 lg:px-6;
+  }
+
+  /* Mobile-optimized spacing */
+  .section-padding {
+    @apply py-8 sm:py-12 lg:py-16 xl:py-20;
+  }
+  
+  .card-padding {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+
+  /* Better image responsiveness */
   img {
-    max-width: 100%;
-    height: auto;
-    /* Lazy loading performance */
-    loading: lazy;
-    decoding: async;
+    @apply max-w-full h-auto;
+  }
+  
+  .responsive-image {
+    @apply w-full h-auto object-cover;
+  }
+  
+  .hero-image {
+    @apply w-full h-64 sm:h-80 md:h-96 lg:h-screen max-h-[800px] object-cover;
+  }
+}
+
+@layer components {
+  /* Mobile-first card components */
+  .mobile-card {
+    @apply bg-card text-card-foreground rounded-lg border shadow-sm;
+    @apply p-4 sm:p-6;
+    @apply mb-4 sm:mb-6;
+  }
+  
+  /* Responsive button variants */
+  .btn-mobile {
+    @apply px-4 py-3 sm:px-6 sm:py-4;
+    @apply text-sm sm:text-base;
+    @apply rounded-lg;
+    @apply min-h-[44px];
+    @apply touch-manipulation;
+  }
+  
+  /* Mobile-optimized navigation */
+  .nav-mobile {
+    @apply flex flex-col sm:flex-row;
+    @apply space-y-2 sm:space-y-0 sm:space-x-4;
+    @apply p-4 sm:p-0;
+  }
+  
+  /* Responsive grid layouts */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+    @apply gap-4 sm:gap-6 lg:gap-8;
+  }
+  
+  .grid-packages {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+    @apply gap-4 sm:gap-6 lg:gap-8;
+  }
+  
+  /* Mobile modal improvements */
+  .modal-mobile {
+    @apply fixed inset-0 z-50;
+    @apply bg-background/95 backdrop-blur-sm;
+    @apply p-4 sm:p-6;
+    @apply overflow-y-auto;
+  }
+  
+  .modal-content {
+    @apply bg-card rounded-lg;
+    @apply max-w-lg sm:max-w-xl lg:max-w-3xl;
+    @apply mx-auto my-8;
+    @apply p-4 sm:p-6 lg:p-8;
   }
 
-  /* Critical images should load eagerly */
-  img[data-priority="high"] {
-    loading: eager;
+  /* Responsive text utilities */
+  .text-responsive {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+  
+  .text-hero {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
+    @apply font-bold leading-tight;
+  }
+  
+  .text-subtitle {
+    @apply text-base sm:text-lg md:text-xl lg:text-2xl;
+    @apply leading-relaxed;
   }
 
-  /* SEO and performance optimizations */
-  .line-clamp-1 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
+  /* Mobile-first animations */
+  .animate-mobile-slide-up {
+    animation: mobileSlideUp 0.3s ease-out;
+  }
+  
+  @keyframes mobileSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+  /* Accessibility improvements */
+  .focus-visible-enhanced {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .high-contrast {
+      @apply border-2 border-foreground;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-mobile-slide-up,
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* Travel-specific components */
+  .travel-card {
+    @apply bg-card rounded-xl shadow-lg border border-border/50;
+    @apply hover:shadow-xl transition-all duration-300;
+    @apply p-4 sm:p-6;
+  }
+  
+  .hero-section {
+    @apply relative min-h-[50vh] sm:min-h-[60vh] lg:min-h-[70vh];
+    @apply flex items-center justify-center;
+    @apply bg-gradient-to-b from-primary/20 to-primary/40;
+  }
+  
+  .package-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+    @apply gap-4 sm:gap-6 lg:gap-8;
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+}
+
+@layer utilities {
+  /* Safe area utilities for mobile devices */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
   }
 
-  .line-clamp-3 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+  /* Mobile-specific utilities */
+  .mobile-only {
+    @apply block sm:hidden;
+  }
+  
+  .desktop-only {
+    @apply hidden sm:block;
+  }
+  
+  .tablet-up {
+    @apply hidden md:block;
   }
 
-  /* Performance: Reduce layout shifts */
-  .lazy {
-    opacity: 0;
-    transition: opacity 0.3s;
+  /* Touch-friendly utilities */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  .scroll-smooth-mobile {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .lazy.loaded {
-    opacity: 1;
+  /* Performance utilities */
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
   }
 
-  /* Critical resource optimization */
-  .preload-critical {
-    content-visibility: auto;
-    contain-intrinsic-size: 200px;
+  /* Mobile breakpoint utilities */
+  .mobile-landscape {
+    @media (max-height: 500px) and (orientation: landscape) {
+      @apply block;
+    }
+  }
+  
+  .mobile-portrait {
+    @media (orientation: portrait) {
+      @apply block;
+    }
   }
 }
