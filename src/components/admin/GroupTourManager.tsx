@@ -647,12 +647,12 @@ const GroupTourManager = () => {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="basic" className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="basic">Basic Info</TabsTrigger>
-                <TabsTrigger value="details">Details</TabsTrigger>
-                <TabsTrigger value="content">Content</TabsTrigger>
-                <TabsTrigger value="pricing">Pricing</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 gap-1 h-auto">
+                <TabsTrigger value="basic" className="p-3 text-xs sm:text-sm">Basic Info</TabsTrigger>
+                <TabsTrigger value="details" className="p-3 text-xs sm:text-sm">Details</TabsTrigger>
+                <TabsTrigger value="content" className="p-3 text-xs sm:text-sm">Content</TabsTrigger>
+                <TabsTrigger value="pricing" className="p-3 text-xs sm:text-sm">Pricing</TabsTrigger>
+                <TabsTrigger value="settings" className="p-3 text-xs sm:text-sm">Settings</TabsTrigger>
               </TabsList>
               
               <TabsContent value="basic" className="space-y-4">

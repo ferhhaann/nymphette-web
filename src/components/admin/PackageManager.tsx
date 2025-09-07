@@ -211,12 +211,12 @@ export const PackageManager = () => {
           </div>
         </div>
 
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="packages" className="flex items-center gap-2">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 gap-1 h-auto mb-6">
+          <TabsTrigger value="packages" className="flex items-center justify-center gap-2 p-3 text-sm">
             <Package className="h-4 w-4" />
             Manage Packages
           </TabsTrigger>
-          <TabsTrigger value="bulk-upload" className="flex items-center gap-2">
+          <TabsTrigger value="bulk-upload" className="flex items-center justify-center gap-2 p-3 text-sm">
             <Upload className="h-4 w-4" />
             Bulk Upload
           </TabsTrigger>
@@ -525,16 +525,16 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="basic" className="flex items-center gap-2">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 h-auto">
+          <TabsTrigger value="basic" className="flex items-center justify-center gap-2 p-3 text-sm">
             <Package className="h-4 w-4" />
             Basic Info
           </TabsTrigger>
-          <TabsTrigger value="content" className="flex items-center gap-2">
+          <TabsTrigger value="content" className="flex items-center justify-center gap-2 p-3 text-sm">
             <Settings className="h-4 w-4" />
             Content & Details
           </TabsTrigger>
-          <TabsTrigger value="itinerary" className="flex items-center gap-2">
+          <TabsTrigger value="itinerary" className="flex items-center justify-center gap-2 p-3 text-sm">
             <Calendar className="h-4 w-4" />
             Itinerary
           </TabsTrigger>

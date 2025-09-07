@@ -194,10 +194,10 @@ export const CountryManager = () => {
       </div>
 
       <Tabs defaultValue="countries" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="countries">Countries Overview</TabsTrigger>
-          <TabsTrigger value="sections">Content Sections</TabsTrigger>
-          <TabsTrigger value="content">Attractions & Content</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 h-auto">
+          <TabsTrigger value="countries" className="p-3 text-sm">Countries Overview</TabsTrigger>
+          <TabsTrigger value="sections" className="p-3 text-sm">Content Sections</TabsTrigger>
+          <TabsTrigger value="content" className="p-3 text-sm">Attractions & Content</TabsTrigger>
         </TabsList>
         
         <TabsContent value="countries" className="space-y-6">

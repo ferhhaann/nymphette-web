@@ -161,81 +161,110 @@ const AdminDashboard = () => {
             </Button>
           </div>
 
-          <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-4">
-            <div className="bg-card rounded-lg border shadow-sm p-1">
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-1 bg-transparent">
-                <TabsTrigger value="overview" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <Database className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Overview</span>
+          <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
+            <div className="bg-card rounded-lg border shadow-sm p-2">
+              <TabsList className="grid w-full h-auto gap-1 bg-transparent p-1" style={{
+                gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))'
+              }}>
+                <TabsTrigger 
+                  value="overview" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Database className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Overview</span>
                 </TabsTrigger>
-                <TabsTrigger value="packages" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <Package className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Packages</span>
+                <TabsTrigger 
+                  value="packages" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Package className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Packages</span>
                 </TabsTrigger>
-                <TabsTrigger value="group-tours" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <Users className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Tours</span>
+                <TabsTrigger 
+                  value="group-tours" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Users className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Tours</span>
                 </TabsTrigger>
-                <TabsTrigger value="blog" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <BookOpen className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Blog</span>
+                <TabsTrigger 
+                  value="blog" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <BookOpen className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Blog</span>
                 </TabsTrigger>
-                <TabsTrigger value="contact" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Contact</span>
+                <TabsTrigger 
+                  value="contact" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <MessageSquare className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Contact</span>
                 </TabsTrigger>
-                <TabsTrigger value="enquiries" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <ClipboardList className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Enquiries</span>
+                <TabsTrigger 
+                  value="enquiries" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <ClipboardList className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Enquiries</span>
                 </TabsTrigger>
-                <TabsTrigger value="content" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Content</span>
+                <TabsTrigger 
+                  value="content" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <FileText className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Content</span>
                 </TabsTrigger>
-                <TabsTrigger value="countries" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Countries</span>
+                <TabsTrigger 
+                  value="countries" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Globe className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Countries</span>
                 </TabsTrigger>
-                <TabsTrigger value="seo" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
-                  <Settings className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">SEO</span>
+                <TabsTrigger 
+                  value="seo" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Settings className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">SEO</span>
                 </TabsTrigger>
               </TabsList>
             </div>
 
-            <TabsContent value="overview">
+            <TabsContent value="overview" className="mt-6">
               <AdminOverview />
             </TabsContent>
 
-            <TabsContent value="packages">
+            <TabsContent value="packages" className="mt-6">
               <PackageManager />
             </TabsContent>
 
-            <TabsContent value="group-tours">
+            <TabsContent value="group-tours" className="mt-6">
               <GroupTourManager />
             </TabsContent>
 
-            <TabsContent value="countries">
+            <TabsContent value="countries" className="mt-6">
               <CountryManager />
             </TabsContent>
 
-            <TabsContent value="blog">
+            <TabsContent value="blog" className="mt-6">
               <BlogManager />
             </TabsContent>
 
-            <TabsContent value="contact">
+            <TabsContent value="contact" className="mt-6">
               <ContactManager />
             </TabsContent>
 
-            <TabsContent value="enquiries">
+            <TabsContent value="enquiries" className="mt-6">
               <EnquiryManager />
             </TabsContent>
 
-            <TabsContent value="content">
+            <TabsContent value="content" className="mt-6">
               <ContentManager />
             </TabsContent>
 
-            <TabsContent value="seo" className="space-y-4">
+            <TabsContent value="seo" className="mt-6">
               <SEOManager />
             </TabsContent>
           </Tabs>
