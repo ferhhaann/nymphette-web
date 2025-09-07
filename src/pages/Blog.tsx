@@ -153,10 +153,14 @@ export default function Blog() {
       </header>
       
       <main>
-        <section className="relative bg-gradient-to-r from-primary/90 to-primary/70 text-white py-20">
-          <div className="container mx-auto px-4 text-center">
+        {/* Hero Section */}
+        <section className="relative h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
+            <div className="w-full h-full bg-gradient-to-r from-primary/90 to-primary/70"></div>
+          </div>
+          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
             <h1 className="text-5xl font-bold mb-6 animate-fade-in">Travel Stories & Expert Insights</h1>
-            <p className="text-xl max-w-2xl mx-auto opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
+            <p className="text-xl opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
               Discover hidden gems, travel tips, and inspiring stories from around the world by our expert writers
             </p>
           </div>
