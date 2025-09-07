@@ -79,18 +79,12 @@ export const useStaticSEO = () => {
           script.textContent = JSON.stringify(seoSettings.structured_data);
         }
 
-        // Add a small delay and force a browser refresh of meta tags
-        setTimeout(() => {
-          // Trigger browser to re-read meta tags for social sharing
-          if (navigator.userAgent.includes('facebookexternalhit') || 
-              navigator.userAgent.includes('Twitterbot') ||
-              navigator.userAgent.includes('LinkedInBot')) {
-            window.location.reload();
-          }
-        }, 100);
+        // Log success for debugging
+        console.log('SEO settings applied successfully for:', currentPath);
 
       } catch (error) {
         console.warn('Failed to update static SEO:', error);
+        // Don't fail silently, but also don't break the app
       }
     };
 

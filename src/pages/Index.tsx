@@ -14,8 +14,13 @@ import { useEffect } from "react";
 import heroImage from "@/assets/hero-mountain-road.jpg";
 import regionsImage from "@/assets/regions-world.jpg";
 const Index = () => {
-  useStaticSEO(); // This will fetch and apply SEO settings from database
-  usePerformanceOptimization();
+  // Add error boundary for hooks
+  try {
+    useStaticSEO(); // This will fetch and apply SEO settings from database
+    usePerformanceOptimization();
+  } catch (error) {
+    console.error('Hook error:', error);
+  }
   
   useEffect(() => {
     // Preload critical images for faster loading
