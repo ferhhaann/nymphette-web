@@ -4,6 +4,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
 import App from './App.tsx'
 import './index.css'
+import { runNetworkDiagnostics } from './utils/network-diagnostics'
+
+// Run network diagnostics for international users
+if (typeof window !== 'undefined') {
+  runNetworkDiagnostics();
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {

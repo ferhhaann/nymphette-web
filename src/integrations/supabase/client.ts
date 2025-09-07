@@ -13,5 +13,46 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
+  },
+  global: {
+    headers: {
+      'x-client-info': 'travel-agency-app/1.0.0',
+    },
+    fetch: async (url, options = {}) => {
+      // Add timeout and retry logic for international users
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      
+      try {
+        const response = await fetch(url, {
+          ...options,
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        
+        // Log successful requests for debugging
+        console.log(`Supabase request: ${response.status} ${url}`);
+        return response;
+      } catch (error) {
+        clearTimeout(timeoutId);
+        console.error(`Supabase request failed for ${url}:`, error);
+        
+        // Add geographic info for debugging
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              console.log('User location for debugging:', {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                timestamp: new Date().toISOString()
+              });
+            },
+            () => console.log('Location unavailable for debugging')
+          );
+        }
+        
+        throw error;
+      }
+    }
   }
 });

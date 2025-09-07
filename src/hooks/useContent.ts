@@ -31,24 +31,57 @@ export const useContent = (section?: string) => {
         query = query.eq('section', section)
       }
       
-      // Add timeout and retry logic for production
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Request timeout')), 10000)
-      )
+      // Multiple retry attempts for different regions
+      let lastError;
+      const maxRetries = 3;
       
-      const queryPromise = query.order('key', { ascending: true })
-      
-      const { data, error } = await Promise.race([queryPromise, timeoutPromise]) as any
-      
-      if (error) {
-        console.error('Supabase error:', error)
-        throw error
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          console.log(`Attempt ${attempt} to load content for section: ${section || 'all'}`);
+          
+          // Shorter timeout for each attempt
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error(`Request timeout (attempt ${attempt})`)), 8000)
+          )
+          
+          const queryPromise = query.order('key', { ascending: true })
+          
+          const { data, error } = await Promise.race([queryPromise, timeoutPromise]) as any
+          
+          if (error) {
+            console.error(`Supabase error (attempt ${attempt}):`, error)
+            lastError = error;
+            
+            // If it's a network error, try again
+            if (attempt < maxRetries && (error.message?.includes('fetch') || error.message?.includes('network'))) {
+              console.log(`Retrying in ${attempt * 1000}ms...`);
+              await new Promise(resolve => setTimeout(resolve, attempt * 1000));
+              continue;
+            }
+            throw error;
+          }
+          
+          console.log(`Successfully loaded ${data?.length || 0} content items`);
+          setContent(data || [])
+          return; // Success - exit retry loop
+          
+        } catch (err: any) {
+          lastError = err;
+          console.error(`Attempt ${attempt} failed:`, err);
+          
+          if (attempt < maxRetries) {
+            console.log(`Waiting ${attempt * 2000}ms before retry...`);
+            await new Promise(resolve => setTimeout(resolve, attempt * 2000));
+          }
+        }
       }
-      setContent(data || [])
+      
+      // All attempts failed
+      throw lastError;
       
     } catch (err: any) {
-      console.error('Error loading content:', err)
-      setError(err.message)
+      console.error('All content loading attempts failed:', err)
+      setError(`Failed to load content: ${err.message}. Please check your internet connection and try again.`)
       // In production, use fallback content if available
       setContent([])
     } finally {
