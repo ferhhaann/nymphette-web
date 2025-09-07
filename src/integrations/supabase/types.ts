@@ -953,7 +953,6 @@ export type Database = {
           rating: number | null
           region: string
           reviews: number | null
-          slug: string
           title: string
           updated_at: string | null
         }
@@ -983,7 +982,6 @@ export type Database = {
           rating?: number | null
           region: string
           reviews?: number | null
-          slug: string
           title: string
           updated_at?: string | null
         }
@@ -1013,7 +1011,6 @@ export type Database = {
           rating?: number | null
           region?: string
           reviews?: number | null
-          slug?: string
           title?: string
           updated_at?: string | null
         }
