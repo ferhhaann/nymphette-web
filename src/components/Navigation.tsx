@@ -297,7 +297,7 @@ const Navigation = () => {
       </nav>
 
       {/* Spacer to account for fixed navigation */}
-      <div className="h-16"></div>
+      <div className="h-12"></div>
     </>
   );
 };

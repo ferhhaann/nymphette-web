@@ -50,7 +50,7 @@ const Hero = () => {
   return (
     <div className="relative">
       {/* Hero Image Section */}
-      <section className="relative min-h-[70vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
           <div className="absolute inset-0">
