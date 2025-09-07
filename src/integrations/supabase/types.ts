@@ -704,6 +704,116 @@ export type Database = {
           },
         ]
       }
+      enquiries: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          destination: string | null
+          email: string
+          id: string
+          message: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          priority: string | null
+          source: string
+          source_id: string | null
+          status: string | null
+          travel_date: string | null
+          travelers: number | null
+          updated_at: string
+          whatsapp_sent: boolean | null
+          whatsapp_sent_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          destination?: string | null
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          priority?: string | null
+          source: string
+          source_id?: string | null
+          status?: string | null
+          travel_date?: string | null
+          travelers?: number | null
+          updated_at?: string
+          whatsapp_sent?: boolean | null
+          whatsapp_sent_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          destination?: string | null
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          priority?: string | null
+          source?: string
+          source_id?: string | null
+          status?: string | null
+          travel_date?: string | null
+          travelers?: number | null
+          updated_at?: string
+          whatsapp_sent?: boolean | null
+          whatsapp_sent_at?: string | null
+        }
+        Relationships: []
+      }
+      enquiry_logs: {
+        Row: {
+          action: string
+          created_at: string
+          enquiry_id: string | null
+          id: string
+          ip_address: string | null
+          new_values: Json | null
+          notes: string | null
+          old_values: Json | null
+          performed_by: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          enquiry_id?: string | null
+          id?: string
+          ip_address?: string | null
+          new_values?: Json | null
+          notes?: string | null
+          old_values?: Json | null
+          performed_by?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          enquiry_id?: string | null
+          id?: string
+          ip_address?: string | null
+          new_values?: Json | null
+          notes?: string | null
+          old_values?: Json | null
+          performed_by?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enquiry_logs_enquiry_id_fkey"
+            columns: ["enquiry_id"]
+            isOneToOne: false
+            referencedRelation: "enquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       essential_tips: {
         Row: {
           country_id: string | null
