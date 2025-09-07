@@ -1338,6 +1338,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_author_for_blog: {
+        Args: { author_id: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          id: string
+          name: string
+          social_links: Json
+        }[]
+      }
       get_author_public_info: {
         Args: { author_id: string }
         Returns: {
