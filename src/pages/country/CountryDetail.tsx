@@ -18,6 +18,7 @@ import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import { CountryBreadcrumb } from '@/components/regions/CountryBreadcrumb'
 import { CountryStats } from '@/components/regions/CountryStats'
+import { CountryQuickInfo } from '@/components/regions/CountryQuickInfo'
 import { CountryPackagesList } from '@/components/regions/CountryPackagesList'
 import {
   Accordion,
@@ -357,39 +358,29 @@ const CountryDetail = () => {
           </div>
         </section>
 
-        {/* Quick Facts & Tips */}
-        <section className="grid lg:grid-cols-4 gap-6 my-8">
-          <Card className="p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <MapPin className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">Capital</h3>
-            </div>
-            <p className="text-muted-foreground">{countryData.capital || 'N/A'}</p>
-          </Card>
+        {/* Country Info & Stats */}
+        <section className="grid lg:grid-cols-3 gap-8 my-8">
+          {/* Essential Information - Left Side */}
+          <div className="lg:col-span-2">
+            <CountryQuickInfo
+              currency={countryData.currency}
+              bestSeason={countryData.best_season}
+              languages={countryData.languages}
+              climate={countryData.climate}
+            />
+          </div>
           
-          <Card className="p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <Globe className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">Currency</h3>
+          {/* Visitor Statistics - Right Side */}
+          {(countryData.annual_visitors || travelPurposes.length > 0) && (
+            <div className="lg:col-span-1">
+              <CountryStats
+                annualVisitors={countryData.annual_visitors}
+                genderMalePercentage={countryData.gender_male_percentage}
+                genderFemalePercentage={countryData.gender_female_percentage}
+                travelPurposes={travelPurposes}
+              />
             </div>
-            <p className="text-muted-foreground">{countryData.currency || 'N/A'}</p>
-          </Card>
-          
-          <Card className="p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <Clock className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">Best Season</h3>
-            </div>
-            <p className="text-muted-foreground">{countryData.best_season || 'Year-round'}</p>
-          </Card>
-          
-          <Card className="p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <Users className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">Languages</h3>
-            </div>
-            <p className="text-muted-foreground">{countryData.languages?.join(', ') || 'N/A'}</p>
-          </Card>
+          )}
         </section>
 
         {/* Essential Tips */}
@@ -418,15 +409,6 @@ const CountryDetail = () => {
           </section>
         )}
 
-        {/* Visitor Statistics */}
-        {(countryData.annual_visitors || travelPurposes.length > 0) && (
-          <CountryStats
-            annualVisitors={countryData.annual_visitors}
-            genderMalePercentage={countryData.gender_male_percentage}
-            genderFemalePercentage={countryData.gender_female_percentage}
-            travelPurposes={travelPurposes}
-          />
-        )}
 
         {/* Overview & Contents */}
         {overviewSection && (
