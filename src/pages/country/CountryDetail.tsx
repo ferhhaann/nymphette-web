@@ -378,6 +378,7 @@ const CountryDetail = () => {
                 genderMalePercentage={countryData.gender_male_percentage}
                 genderFemalePercentage={countryData.gender_female_percentage}
                 travelPurposes={travelPurposes}
+                topOriginCities={countryData?.visitor_statistics && typeof countryData.visitor_statistics === 'object' ? (countryData.visitor_statistics as any).topOrigins : undefined}
               />
             </div>
           )}

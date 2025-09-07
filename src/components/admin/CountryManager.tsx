@@ -349,14 +349,31 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
   const [languages, setLanguages] = useState<string>(
     country?.languages ? country.languages.join(', ') : ''
   )
+  const [topOriginCities, setTopOriginCities] = useState<string>(() => {
+    if (country?.visitor_statistics && typeof country.visitor_statistics === 'object' && country.visitor_statistics !== null) {
+      const stats = country.visitor_statistics as any
+      return stats.topOrigins ? stats.topOrigins.join(', ') : ''
+    }
+    return ''
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
+    const topOrigins = topOriginCities.split(',').map(city => city.trim()).filter(Boolean)
+    
+    const currentStats = formData.visitor_statistics && typeof formData.visitor_statistics === 'object' 
+      ? formData.visitor_statistics as any 
+      : {}
+    
     const dataToSave = {
       ...formData,
       languages: languages.split(',').map(lang => lang.trim()).filter(Boolean),
-      slug: formData.slug || formData.name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
+      slug: formData.slug || formData.name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-'),
+      visitor_statistics: {
+        ...currentStats,
+        topOrigins
+      }
     }
     
     onSave(dataToSave)
@@ -503,6 +520,16 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
             onChange={(e) => updateField('gender_female_percentage', parseInt(e.target.value) || null)}
           />
         </div>
+      </div>
+
+      <div>
+        <Label htmlFor="top_origin_cities">Top Origin Cities (comma-separated)</Label>
+        <Input
+          id="top_origin_cities"
+          value={topOriginCities}
+          onChange={(e) => setTopOriginCities(e.target.value)}
+          placeholder="Mumbai, Delhi, Bangalore, Chennai, Kolkata"
+        />
       </div>
 
       <div className="flex justify-end gap-2">
