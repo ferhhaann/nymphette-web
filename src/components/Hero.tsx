@@ -100,12 +100,12 @@ const Hero = () => {
         </div>
 
         {/* Floating Elements - Hidden on mobile */}
-        <div className="absolute top-20 left-10 hidden lg:block animate-float">
+        {/* <div className="absolute top-20 left-10 hidden lg:block animate-float">
           <div className="w-16 h-16 bg-white/10 rounded-full backdrop-blur-sm" />
         </div>
         <div className="absolute bottom-32 right-16 hidden lg:block animate-float" style={{ animationDelay: '1s' }}>
           <div className="w-12 h-12 bg-white/10 rounded-full backdrop-blur-sm" />
-        </div>
+        </div> */}
       </section>
 
       {/* Search and CTA Section Below Image */}
