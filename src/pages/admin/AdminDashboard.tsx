@@ -185,7 +185,7 @@ const AdminDashboard = () => {
                   className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
                 >
                   <Users className="h-4 w-4 flex-shrink-0" />
-                  <span className="text-center">Tours</span>
+                  <span className="text-center">Group Tours</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="blog" 
