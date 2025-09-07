@@ -6,9 +6,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Search, Edit, Trash2, Plus, Eye, BarChart3, TrendingUp, Globe, Target, Link as LinkIcon } from 'lucide-react';
+import { Search, Edit, Trash2, Plus, Eye, BarChart3, TrendingUp, Globe, Target, Link as LinkIcon, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useAdminAccess } from "@/hooks/useAdminAccess";
 
 interface SEOSettings {
   id?: string;
@@ -38,13 +39,23 @@ interface SEOAnalytics {
   top_keywords: string[];
 }
 
+interface SecurityRecommendation {
+  category: string;
+  recommendation: string;
+  priority: string;
+  action_required: string;
+}
+
 const SEOManager = () => {
+  const { isAdmin, logAdminAction } = useAdminAccess();
   const [seoSettings, setSeoSettings] = useState<SEOSettings[]>([]);
   const [analytics, setAnalytics] = useState<SEOAnalytics[]>([]);
+  const [securityRecommendations, setSecurityRecommendations] = useState<SecurityRecommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<SEOSettings | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('settings');
 
   const initialFormData: SEOSettings = {
     page_url: '',

@@ -94,7 +94,7 @@ All colors MUST be HSL.
   }
   
   body {
-    @apply bg-background text-foreground font-geologica;
+    @apply bg-background text-foreground;
     /* Improve mobile touch targets */
     -webkit-tap-highlight-color: transparent;
     /* Prevent horizontal scroll on mobile */

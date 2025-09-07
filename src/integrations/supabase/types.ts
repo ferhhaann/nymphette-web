@@ -1338,6 +1338,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_auth_security_compliance: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          compliant: boolean
+          current_value: string
+          recommended_value: string
+          setting_name: string
+          severity: string
+        }[]
+      }
       get_author_for_blog: {
         Args: { author_id: string }
         Returns: {
@@ -1373,6 +1383,15 @@ export type Database = {
       get_group_tour_image_url: {
         Args: { image_path: string }
         Returns: string
+      }
+      get_security_recommendations: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          action_required: string
+          category: string
+          priority: string
+          recommendation: string
+        }[]
       }
       has_role: {
         Args: {
