@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, X, Search, Phone, Mail, MapPin, Globe } from "lucide-react";
+import { Menu, Phone, Mail, MapPin } from "lucide-react";
 import { BookingModal } from "./BookingModal";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -63,15 +60,6 @@ const Navigation = () => {
     setIsOpen(false);
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/packages?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery("");
-      setShowSearch(false);
-      setIsOpen(false);
-    }
-  };
 
   return (
     <>
@@ -115,57 +103,11 @@ const Navigation = () => {
 
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center space-x-4">
-              {/* Search */}
-              <div className="relative">
-                {showSearch ? (
-                  <form onSubmit={handleSearch} className="flex items-center">
-                    <Input
-                      type="text"
-                      placeholder="Search destinations..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-48 h-10"
-                      autoFocus
-                    />
-                    <Button type="submit" size="sm" className="ml-2">
-                      Search
-                    </Button>
-                    <Button 
-                      type="button" 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={() => setShowSearch(false)}
-                      className="ml-1"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </form>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowSearch(true)}
-                    className="hover:bg-secondary"
-                  >
-                    <Search className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-              
               <BookingModal />
             </div>
 
             {/* Mobile menu button */}
             <div className="lg:hidden flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowSearch(!showSearch)}
-                className="hover:bg-secondary"
-              >
-                <Search className="h-5 w-5" />
-              </Button>
-              
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="sm" className="hover:bg-secondary">
@@ -178,19 +120,6 @@ const Navigation = () => {
                   </SheetHeader>
                   
                   <div className="mt-6 space-y-6">
-                    {/* Mobile Search */}
-                    <form onSubmit={handleSearch} className="space-y-2">
-                      <Input
-                        type="text"
-                        placeholder="Search destinations..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full"
-                      />
-                      <Button type="submit" className="w-full">
-                        Search
-                      </Button>
-                    </form>
 
                     {/* Main Navigation */}
                     <div className="space-y-2">
@@ -267,32 +196,6 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Mobile Search Bar */}
-          {showSearch && (
-            <div className="lg:hidden border-t bg-background/95 backdrop-blur-sm p-4">
-              <form onSubmit={handleSearch} className="flex space-x-2">
-                <Input
-                  type="text"
-                  placeholder="Search destinations..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1"
-                  autoFocus
-                />
-                <Button type="submit" size="sm">
-                  Search
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => setShowSearch(false)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </form>
-            </div>
-          )}
         </div>
       </nav>
 
