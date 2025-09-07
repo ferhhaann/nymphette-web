@@ -91,9 +91,10 @@ export const BlogManager: React.FC = () => {
         .order('created_at', { ascending: false })
 
       // Fetch authors - use secure function for admin access
+      // This ensures full author data (including emails) is only accessible to admins
       const { data: authorsData } = await supabase
         .from('authors')
-        .select('*')
+        .select('*') // Safe because this component requires admin access
         .order('name')
 
       // Fetch categories

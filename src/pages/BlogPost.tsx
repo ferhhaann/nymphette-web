@@ -97,10 +97,10 @@ export default function BlogPost() {
           .update({ views_count: (postData.views_count || 0) + 1 })
           .eq('id', postData.id)
 
-        // Fetch comments
+        // Fetch comments - exclude email addresses for security
         const { data: commentsData } = await supabase
           .from('blog_comments')
-          .select('*')
+          .select('id, post_id, author_name, content, created_at, status')
           .eq('post_id', postData.id)
           .eq('status', 'approved')
           .order('created_at', { ascending: false })
