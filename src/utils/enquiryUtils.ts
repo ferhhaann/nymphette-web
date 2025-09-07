@@ -13,7 +13,7 @@ export interface CreateEnquiryData {
 }
 
 /**
- * Create a new enquiry and save it to the database
+ * Create a new enquiry and save it to the database with audit logging
  */
 export const createEnquiry = async (data: CreateEnquiryData) => {
   try {
@@ -24,6 +24,17 @@ export const createEnquiry = async (data: CreateEnquiryData) => {
       .single()
 
     if (error) throw error
+
+    // Log the enquiry creation for audit purposes
+    try {
+      await supabase.rpc('log_admin_action', {
+        _action: 'enquiry_created',
+        _table_name: 'enquiries',
+        _record_id: enquiry.id
+      })
+    } catch (logError) {
+      console.warn('Failed to log enquiry creation:', logError)
+    }
     
     return { success: true, data: enquiry }
   } catch (error) {

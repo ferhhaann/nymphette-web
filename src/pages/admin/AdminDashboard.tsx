@@ -17,6 +17,7 @@ import SEOManager from "@/components/admin/SEOManager"
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
   const [activeSection, setActiveSection] = useState("overview")
   const { toast } = useToast()
@@ -35,7 +36,23 @@ const AdminDashboard = () => {
   const checkAuth = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession()
-      setIsAuthenticated(!!session)
+      if (session?.user) {
+        setIsAuthenticated(true)
+        
+        // Check if user has admin role
+        const { data: isAdminResult, error } = await supabase
+          .rpc('is_admin')
+        
+        if (error) {
+          console.error('Admin check error:', error)
+          setIsAdmin(false)
+        } else {
+          setIsAdmin(isAdminResult || false)
+        }
+      } else {
+        setIsAuthenticated(false)
+        setIsAdmin(false)
+      }
       setLoading(false)
     } catch (error) {
       console.error('Auth check error:', error)
@@ -50,7 +67,10 @@ const AdminDashboard = () => {
         password
       })
       if (error) throw error
-      setIsAuthenticated(true)
+      
+      // Re-check authentication and admin status
+      await checkAuth()
+      
       toast({
         title: "Success",
         description: "Signed in successfully"
@@ -63,11 +83,41 @@ const AdminDashboard = () => {
     }
   }
 
+  const signOut = async () => {
+    try {
+      await supabase.auth.signOut()
+      setIsAuthenticated(false)
+      setIsAdmin(false)
+    } catch (error) {
+      console.error('Sign out error:', error)
+    }
+  }
+
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>
   }
 
-  if (isAuthenticated) {
+  if (isAuthenticated && !isAdmin) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="max-w-md w-full">
+          <CardHeader>
+            <CardTitle className="text-center text-destructive">Access Denied</CardTitle>
+            <CardDescription className="text-center">
+              You don't have admin privileges to access this dashboard.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <Button onClick={signOut} variant="outline">
+              Sign Out
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (isAuthenticated && isAdmin) {
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8">
@@ -78,7 +128,7 @@ const AdminDashboard = () => {
                 Manage your travel website content, packages, and SEO settings
               </p>
             </div>
-            <Button onClick={() => setIsAuthenticated(false)} variant="outline">
+            <Button onClick={signOut} variant="outline">
               Sign Out
             </Button>
           </div>
