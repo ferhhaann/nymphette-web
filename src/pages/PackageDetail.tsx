@@ -335,7 +335,7 @@ const PackageDetail = () => {
       <Navigation />
       
       {/* Back button */}
-      <div className="max-w-6xl mx-auto px-4 py-6 mt-16">
+      <div className="max-w-6xl mx-auto px-4 py-6">
         <Button 
           variant="outline" 
           onClick={() => navigate(-1)}
