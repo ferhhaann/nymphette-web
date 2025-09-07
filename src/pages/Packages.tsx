@@ -187,13 +187,14 @@ const Packages = () => {
           <main>
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
               <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-16 sm:top-20 md:top-24 rounded-2xl sm:rounded-3xl overflow-hidden">
-                <div 
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
-                  style={{ backgroundImage: `url(${premiumPackagesHero})` }}
-                />
+                <div className="absolute inset-0">
+                  <div 
+                    className="w-full h-full bg-cover bg-center bg-no-repeat scale-105"
+                    style={{ backgroundImage: `url(${premiumPackagesHero})` }}
+                  />
+                </div>
+                <div className="absolute inset-0 bg-foreground/50"></div>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/60 backdrop-blur-[1px]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
               
               <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
                 <h1 className="text-6xl md:text-7xl font-bold mb-6 animate-scale-in leading-tight">
