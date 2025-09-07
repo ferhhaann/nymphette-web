@@ -207,16 +207,16 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       {/* Breadcrumbs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-8" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-primary transition-colors flex items-center">
+          <Link to="/" className="hover:text-primary transition-colors flex items-center h-6">
             <Home className="h-4 w-4 mr-1" />
             <span>Home</span>
           </Link>
           <ChevronRight className="h-4 w-4 flex-shrink-0" />
-          <Link to="/packages" className="hover:text-primary transition-colors">
+          <Link to="/packages" className="hover:text-primary transition-colors flex items-center h-6">
             <span>Packages</span>
           </Link>
           <ChevronRight className="h-4 w-4 flex-shrink-0" />
-          <span className="text-foreground font-medium">{region}</span>
+          <span className="text-foreground font-medium flex items-center h-6">{region}</span>
         </nav>
       </div>
       
