@@ -109,7 +109,14 @@ const AdminDashboard = () => {
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading admin dashboard...</p>
+        </div>
+      </div>
+    )
   }
 
   if (isAuthenticated && !isAdmin) {
@@ -135,58 +142,66 @@ const AdminDashboard = () => {
   if (isAuthenticated && isAdmin) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-between mb-8">
+        <div className="container mx-auto px-4 py-4 sm:py-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
             <div>
-              <h1 className="text-4xl font-bold tracking-tight">Admin Dashboard</h1>
-              <p className="text-muted-foreground">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+                Admin Dashboard
+              </h1>
+              <p className="text-muted-foreground text-sm sm:text-base mt-1">
                 Manage your travel website content, packages, and SEO settings
               </p>
             </div>
-            <Button onClick={signOut} variant="outline">
+            <Button 
+              onClick={signOut} 
+              variant="outline" 
+              className="w-full sm:w-auto"
+            >
               Sign Out
             </Button>
           </div>
 
           <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-4">
-            <TabsList className="grid w-full grid-cols-9">
-              <TabsTrigger value="overview" className="flex items-center gap-2">
-                <Database className="h-4 w-4" />
-                Overview
-              </TabsTrigger>
-              <TabsTrigger value="packages" className="flex items-center gap-2">
-                <Package className="h-4 w-4" />
-                Packages
-              </TabsTrigger>
-              <TabsTrigger value="group-tours" className="flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                Group Tours
-              </TabsTrigger>
-              <TabsTrigger value="blog" className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                Blog
-              </TabsTrigger>
-              <TabsTrigger value="contact" className="flex items-center gap-2">
-                <MessageSquare className="h-4 w-4" />
-                Contact
-              </TabsTrigger>
-              <TabsTrigger value="enquiries" className="flex items-center gap-2">
-                <ClipboardList className="h-4 w-4" />
-                Enquiries
-              </TabsTrigger>
-              <TabsTrigger value="content" className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                Content
-              </TabsTrigger>
-              <TabsTrigger value="countries" className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
-                Countries
-              </TabsTrigger>
-              <TabsTrigger value="seo" className="flex items-center gap-2">
-                <Settings className="h-4 w-4" />
-                SEO
-              </TabsTrigger>
-            </TabsList>
+            <div className="bg-card rounded-lg border shadow-sm p-1">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-1 bg-transparent">
+                <TabsTrigger value="overview" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <Database className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Overview</span>
+                </TabsTrigger>
+                <TabsTrigger value="packages" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <Package className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Packages</span>
+                </TabsTrigger>
+                <TabsTrigger value="group-tours" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Tours</span>
+                </TabsTrigger>
+                <TabsTrigger value="blog" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <BookOpen className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Blog</span>
+                </TabsTrigger>
+                <TabsTrigger value="contact" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Contact</span>
+                </TabsTrigger>
+                <TabsTrigger value="enquiries" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <ClipboardList className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Enquiries</span>
+                </TabsTrigger>
+                <TabsTrigger value="content" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Content</span>
+                </TabsTrigger>
+                <TabsTrigger value="countries" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Countries</span>
+                </TabsTrigger>
+                <TabsTrigger value="seo" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3">
+                  <Settings className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">SEO</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="overview">
               <AdminOverview />
@@ -230,13 +245,13 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-4xl font-bold text-foreground mb-2">
             Nymphette Tours Admin
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground">
             Content Management System with SEO Tools
           </p>
         </header>
@@ -254,25 +269,31 @@ interface AuthFormProps {
 const AuthForm = ({ onSignIn }: AuthFormProps) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    onSignIn(email, password)
+    setIsLoading(true)
+    try {
+      await onSignIn(email, password)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className="max-w-md mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle>Admin Login</CardTitle>
+      <Card className="shadow-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
           <CardDescription>
             Sign in to access the admin dashboard with SEO management tools
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-medium text-foreground">
                 Email
               </label>
               <input
@@ -280,12 +301,14 @@ const AuthForm = ({ onSignIn }: AuthFormProps) => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-3 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                placeholder="Enter your admin email"
                 required
+                disabled={isLoading}
               />
             </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-1">
+            <div className="space-y-2">
+              <label htmlFor="password" className="text-sm font-medium text-foreground">
                 Password
               </label>
               <input
@@ -293,12 +316,18 @@ const AuthForm = ({ onSignIn }: AuthFormProps) => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-3 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                placeholder="Enter your password"
                 required
+                disabled={isLoading}
               />
             </div>
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button 
+              type="submit" 
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 font-medium transition-all"
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
         </CardContent>
