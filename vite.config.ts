@@ -4,14 +4,6 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { Plugin } from 'vite';
 
-// Custom SSG plugin
-const ssgPlugin = (): Plugin => ({
-  name: 'vite-plugin-ssg',
-  enforce: 'post',
-  async generateBundle() {
-    // SSG logic will be handled by our prerender script
-  }
-});
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -22,7 +14,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === 'development' && componentTagger(),
-    mode === 'production' && ssgPlugin(),
   ].filter(Boolean),
   resolve: {
     alias: {

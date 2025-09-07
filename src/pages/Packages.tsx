@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import SEOHead from "@/components/SEOHead";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import RegionPackages from "@/components/RegionPackages";
 import { Card, CardContent } from "@/components/ui/card";
@@ -165,13 +164,6 @@ const Packages = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead 
-        title="Travel Packages - Explore Destinations Worldwide | Nymphette Tours"
-        description="Browse our curated travel packages across Asia, Europe, Africa, Americas, Pacific Islands, and Middle East. Find your perfect vacation with expert travel planning and 24/7 support."
-        keywords="travel packages, Asia tours, Europe travel, Africa safari, Americas vacation, Pacific Islands, Middle East tours, group tours, custom trips"
-        url="/packages"
-        structuredData={packagesStructuredData}
-      />
       <header>
         <Navigation />
       </header>

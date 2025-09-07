@@ -1,6 +1,5 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import SEOHead from "@/components/SEOHead";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Award, Users, Globe, Heart, Target, Eye } from "lucide-react";
@@ -84,13 +83,6 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead 
-        title="About Nymphette Tours - Premier Travel Agency Since 1999"
-        description="Learn about Nymphette Tours, a premier travel agency with 25+ years of experience creating unforgettable journeys worldwide. Meet our expert team and discover our story."
-        keywords="about nymphette tours, travel agency history, travel experts, founded 1999, travel team, travel company story"
-        url="/about"
-        structuredData={structuredData}
-      />
       <header>
         <Navigation />
       </header>

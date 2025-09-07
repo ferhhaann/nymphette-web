@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import SEOHead from "@/components/SEOHead";
 import { GroupTourBookingModal } from "@/components/GroupTourBookingModal";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { Card, CardContent } from "@/components/ui/card";
@@ -139,13 +138,6 @@ const GroupTours = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead 
-        title="Group Tours - Join Fellow Travelers on Amazing Adventures | Nymphette Tours"
-        description="Discover amazing group tours and join fellow travelers on unforgettable journeys. Small groups, expert guides, authentic experiences, and new friendships worldwide."
-        keywords="group tours, join travelers, small group travel, guided tours, travel groups, adventure tours, cultural tours, travel companions, group adventures"
-        url="/group-tours"
-        structuredData={groupToursStructuredData}
-      />
       <header>
         <Navigation />
       </header>

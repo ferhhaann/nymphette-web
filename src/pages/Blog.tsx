@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Search, Clock, Tag, Eye, Calendar, ChevronRight } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
-import SEOHead from "@/components/SEOHead"
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -141,13 +140,6 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead 
-        title="Travel Blog - Stories, Tips & Destination Guides | Nymphette Tours"
-        description="Discover travel stories, destination guides, expert tips, and travel insights from our experienced writers. Get inspired for your next adventure with insider knowledge."
-        keywords="travel blog, travel stories, destination guides, travel tips, travel insights, travel experiences, travel inspiration, destination advice"
-        url="/blog"
-        structuredData={blogStructuredData}
-      />
       <header>
         <Navigation />
       </header>

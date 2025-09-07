@@ -6,7 +6,6 @@ import TopValues from "@/components/TopValues";
 import PromoBanner from "@/components/PromoBanner";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Footer from "@/components/Footer";
-import SEOHead from "@/components/SEOHead";
 import { preloadCriticalImages } from "@/hooks/useImagePreloader";
 import { useStaticSEO } from "@/hooks/useStaticSEO";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
@@ -44,12 +43,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead 
-        title="Nymphette Tours - Premium Travel Packages & Group Tours Worldwide"
-        description="Discover premium travel packages, curated group tours, and custom trips to Asia, Europe, Africa & more. Expert travel planning with 24/7 support. Book your dream vacation today!"
-        keywords="travel packages, group tours, custom trips, Asia tours, Europe travel, Africa safari, vacation packages, travel agency, international tours, luxury travel, honeymoon packages"
-        structuredData={structuredData}
-      />
       <header>
         <div className="animate-fade-in">
           <Navigation />

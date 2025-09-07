@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom'
 import { Calendar, Clock, Eye, Tag, Share2, Heart, MessageCircle, ChevronLeft, User } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
-import SEOHead from "@/components/SEOHead"
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -238,14 +237,6 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead 
-        title={`${post.meta_title || post.title} | Nymphette Tours Blog`}
-        description={post.meta_description || post.excerpt || `Read ${post.title} - expert travel insights and stories from Nymphette Tours`}
-        keywords={post.tags?.join(", ") || "travel blog, travel story, destination guide"}
-        url={`/blog/${post.slug || slug}`}
-        image={post.featured_image}
-        structuredData={blogPostStructuredData}
-      />
       <header>
         <Navigation />
       </header>

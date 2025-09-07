@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Globe, Users } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
-import SEOHead from "@/components/SEOHead"
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -146,13 +145,6 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead 
-        title="Contact Nymphette Tours - Get Expert Travel Assistance"
-        description="Contact our travel experts for personalized assistance with bookings, custom packages, and travel planning. Available 24/7 for all your travel needs worldwide."
-        keywords="contact nymphette tours, travel assistance, book travel packages, custom travel planning, travel consultation, travel support"
-        url="/contact"
-        structuredData={structuredData}
-      />
       <header>
         <Navigation />
       </header>
