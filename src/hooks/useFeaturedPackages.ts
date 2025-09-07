@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { supabase, isSupabaseConfigured, type DatabasePackage } from '@/lib/supabase'
+import { supabase } from '@/integrations/supabase/client'
+import { type DatabasePackage, isSupabaseConfigured } from '@/lib/supabase'
 import { packagesData, type TravelPackage } from '@/data/packagesData'
 
 export const useFeaturedPackages = () => {
@@ -17,7 +18,7 @@ export const useFeaturedPackages = () => {
       setError(null)
       
       // If Supabase is not configured, use local JSON data (first 3)
-      if (!isSupabaseConfigured || !supabase) {
+      if (!supabase) {
         const allRegions = Object.values(packagesData).flat()
         const featuredPackages = allRegions.slice(0, 3)
         setPackages(featuredPackages)
@@ -55,20 +56,20 @@ const transformDatabasePackage = (dbPackage: DatabasePackage): TravelPackage => 
     id: dbPackage.id,
     title: dbPackage.title,
     country: dbPackage.country,
-    countrySlug: dbPackage.country_slug,
+    countrySlug: dbPackage.country_slug || '',
     region: dbPackage.region,
     duration: dbPackage.duration,
     price: dbPackage.price,
-    originalPrice: dbPackage.original_price,
-    rating: dbPackage.rating,
-    reviews: dbPackage.reviews,
+    originalPrice: dbPackage.original_price || '',
+    rating: dbPackage.rating || 0,
+    reviews: dbPackage.reviews || 0,
     image: dbPackage.image,
-    highlights: dbPackage.highlights,
-    inclusions: dbPackage.inclusions,
-    exclusions: dbPackage.exclusions,
+    highlights: dbPackage.highlights || [],
+    inclusions: dbPackage.inclusions || [],
+    exclusions: dbPackage.exclusions || [],
     category: dbPackage.category,
-    bestTime: dbPackage.best_time,
-    groupSize: dbPackage.group_size,
+    bestTime: dbPackage.best_time || '',
+    groupSize: dbPackage.group_size || '',
     featured: dbPackage.featured || false,
     overview: dbPackage.overview_section_title ? {
       sectionTitle: dbPackage.overview_section_title,
@@ -77,6 +78,10 @@ const transformDatabasePackage = (dbPackage: DatabasePackage): TravelPackage => 
       highlightsBadgeVariant: dbPackage.overview_badge_variant || 'outline',
       highlightsBadgeStyle: dbPackage.overview_badge_style || 'border-primary text-primary'
     } : undefined,
-    itinerary: dbPackage.itinerary
+    itinerary: Array.isArray(dbPackage.itinerary) 
+      ? dbPackage.itinerary 
+      : (typeof dbPackage.itinerary === 'string' 
+          ? JSON.parse(dbPackage.itinerary) 
+          : dbPackage.itinerary || [])
   }
 }

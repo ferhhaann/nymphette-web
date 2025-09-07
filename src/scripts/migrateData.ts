@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase"
+import { supabase } from "@/integrations/supabase/client"
 import { packagesData } from "@/data/packagesData"
 import type { TravelPackage } from "@/data/packagesData"
 
@@ -46,7 +46,9 @@ export const migratePackagesToDatabase = async () => {
           overview_highlights_label: pkg.overview?.highlightsLabel,
           overview_badge_variant: pkg.overview?.highlightsBadgeVariant,
           overview_badge_style: pkg.overview?.highlightsBadgeStyle,
-          itinerary: pkg.itinerary
+          itinerary: JSON.stringify(pkg.itinerary),
+          slug: `${pkg.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${pkg.id.slice(0, 8)}`,
+          featured: false // Set default featured status
         }
 
         const { error } = await supabase

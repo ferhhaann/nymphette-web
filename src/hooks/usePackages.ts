@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { supabase, isSupabaseConfigured, type DatabasePackage } from '@/lib/supabase'
+import { supabase } from '@/integrations/supabase/client'
+import { type DatabasePackage, isSupabaseConfigured } from '@/lib/supabase'
 import { packagesData, type TravelPackage } from '@/data/packagesData'
 import type { TravelPackage as TravelPackageType } from '@/data/packagesData'
 
@@ -18,7 +19,7 @@ export const usePackages = (region?: string) => {
       setError(null)
       
       // If Supabase is not configured, use local JSON data
-      if (!isSupabaseConfigured || !supabase) {
+      if (!supabase) {
         const allRegions = Object.values(packagesData).flat()
         const filteredPackages = region 
           ? allRegions.filter(pkg => pkg.region === region)
@@ -64,14 +65,14 @@ export const usePackageById = (packageId: string) => {
 
   const loadPackage = async () => {
     console.log('usePackageById: Loading package with ID:', packageId);
-    console.log('usePackageById: isSupabaseConfigured =', isSupabaseConfigured);
+    console.log('usePackageById: supabase available =', !!supabase);
     console.log('usePackageById: supabase =', !!supabase);
     try {
       setLoading(true)
       setError(null)
       
       // If Supabase is not configured, use local JSON data
-      if (!isSupabaseConfigured || !supabase) {
+      if (!supabase) {
         console.log('usePackageById: Using local data, packagesData =', packagesData);
         const allRegions = Object.values(packagesData).flat()
         console.log('usePackageById: allRegions =', allRegions);
@@ -117,20 +118,20 @@ const transformDatabasePackage = (dbPackage: DatabasePackage): TravelPackageType
     id: dbPackage.id,
     title: dbPackage.title,
     country: dbPackage.country,
-    countrySlug: dbPackage.country_slug,
+    countrySlug: dbPackage.country_slug || '',
     region: dbPackage.region,
     duration: dbPackage.duration,
     price: dbPackage.price,
-    originalPrice: dbPackage.original_price,
-    rating: dbPackage.rating,
-    reviews: dbPackage.reviews,
+    originalPrice: dbPackage.original_price || '',
+    rating: dbPackage.rating || 0,
+    reviews: dbPackage.reviews || 0,
     image: dbPackage.image,
-    highlights: dbPackage.highlights,
-    inclusions: dbPackage.inclusions,
-    exclusions: dbPackage.exclusions,
+    highlights: dbPackage.highlights || [],
+    inclusions: dbPackage.inclusions || [],
+    exclusions: dbPackage.exclusions || [],
     category: dbPackage.category,
-    bestTime: dbPackage.best_time,
-    groupSize: dbPackage.group_size,
+    bestTime: dbPackage.best_time || '',
+    groupSize: dbPackage.group_size || '',
     featured: dbPackage.featured || false,
     overview: dbPackage.overview_section_title ? {
       sectionTitle: dbPackage.overview_section_title,

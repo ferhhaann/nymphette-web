@@ -6,43 +6,17 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 // Check if Supabase is properly configured
 export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey)
 
-// Only create Supabase client if environment variables are available
-export const supabase = isSupabaseConfigured 
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null
+// Remove duplicate client creation - use the official integration client instead
 
 // Helper function to check if Supabase is available
 export const useSupabase = () => isSupabaseConfigured
 
-// Database types
-export interface DatabasePackage {
-  id: string
-  title: string
-  country: string
-  country_slug?: string
-  region: string
-  duration: string
-  price: string
-  original_price?: string
-  rating: number
-  reviews: number
-  image: string
-  highlights: string[]
-  inclusions: string[]
-  exclusions: string[]
-  category: string
-  best_time: string
-  group_size: string
-  overview_section_title?: string
-  overview_description?: string
-  overview_highlights_label?: string
-  overview_badge_variant?: string
-  overview_badge_style?: string
-  itinerary: any[]
-  featured?: boolean
-  created_at?: string
-  updated_at?: string
-}
+// Re-export types from the official Supabase integration
+export type { Database } from '@/integrations/supabase/types'
+import type { Database } from '@/integrations/supabase/types'
+
+// Create type aliases for easier use
+export type DatabasePackage = Database['public']['Tables']['packages']['Row']
 
 export interface DatabaseContent {
   id: string
