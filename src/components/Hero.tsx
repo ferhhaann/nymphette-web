@@ -151,7 +151,7 @@ const Hero = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => navigate(destination.path)}
-                  className="border-border hover:bg-secondary transition-all duration-200 rounded-full px-3 sm:px-4 py-2 text-sm font-medium relative group"
+                  className="border-border hover:bg-secondary hover:text-foreground transition-all duration-200 rounded-full px-3 sm:px-4 py-2 text-sm font-medium relative group"
                 >
                   {destination.name}
                   {destination.popular && (
@@ -175,7 +175,7 @@ const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-2 border-border hover:bg-secondary px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto h-12 sm:h-14 rounded-xl transition-all duration-200 hover:scale-105"
+              className="border-2 border-border hover:bg-secondary hover:text-foreground px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto h-12 sm:h-14 rounded-xl transition-all duration-200 hover:scale-105"
               onClick={handlePlanCustomTrip}
             >
               {getContentValue('secondary_button', 'Plan custom trip')}
