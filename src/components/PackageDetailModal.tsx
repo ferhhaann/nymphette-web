@@ -283,6 +283,7 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                       source="package"
                       sourceId={pkg.id}
                       country={pkg.country}
+                      packageDetails={pkg}
                     />
                   </div>
                 </div>

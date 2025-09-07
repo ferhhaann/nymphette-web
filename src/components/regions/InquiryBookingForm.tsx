@@ -21,12 +21,16 @@ interface InquiryBookingFormProps {
   country?: string
   source?: 'package' | 'group_tour' | 'contact' | 'general'
   sourceId?: string
+  packageDetails?: any
+  tourDetails?: any
 }
 
 export const InquiryBookingForm = ({ 
   country = '', 
   source = 'general', 
-  sourceId 
+  sourceId,
+  packageDetails,
+  tourDetails
 }: InquiryBookingFormProps) => {
   const { toast } = useToast()
   const [formData, setFormData] = useState<InquiryFormData>({
@@ -57,11 +61,31 @@ export const InquiryBookingForm = ({
     setIsSubmitting(true)
 
     try {
+      // Prepare detailed message including package/tour information
+      let detailedMessage = `Travel Requirements: ${formData.requirements}\nCity: ${formData.city}`;
+      
+      if (packageDetails) {
+        detailedMessage += `\n\n--- Package Details ---\nPackage: ${packageDetails.title}\nCountry: ${packageDetails.country}\nDuration: ${packageDetails.duration}\nPrice: ${packageDetails.price}`;
+        if (packageDetails.category) {
+          detailedMessage += `\nCategory: ${packageDetails.category}`;
+        }
+      }
+      
+      if (tourDetails) {
+        detailedMessage += `\n\n--- Group Tour Details ---\nTour: ${tourDetails.title}\nDestination: ${tourDetails.destination}\nDuration: ${tourDetails.duration}\nStart Date: ${tourDetails.start_date}\nPrice: ₹${tourDetails.price}`;
+        if (tourDetails.group_type) {
+          detailedMessage += `\nGroup Type: ${tourDetails.group_type}`;
+        }
+        if (tourDetails.difficulty_level) {
+          detailedMessage += `\nDifficulty: ${tourDetails.difficulty_level}`;
+        }
+      }
+
       const enquiryData = {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        message: `Travel Requirements: ${formData.requirements}\nCity: ${formData.city}`,
+        message: detailedMessage,
         source,
         source_id: sourceId,
         destination: country

@@ -40,9 +40,15 @@ const GroupTourDetail = () => {
         .from('group_tours')
         .select('*, category:group_tour_categories!category_id(name, color, icon)')
         .eq('id', tourId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      
+      if (!data) {
+        setTour(null);
+        return;
+      }
+      
       setTour(data);
 
       // Set page metadata

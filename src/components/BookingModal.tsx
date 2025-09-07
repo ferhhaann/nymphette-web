@@ -7,13 +7,17 @@ interface BookingModalProps {
   source?: 'package' | 'group_tour' | 'contact' | 'general'
   sourceId?: string
   country?: string
+  packageDetails?: any
+  tourDetails?: any
 }
 
 export const BookingModal = ({ 
   trigger, 
   source = 'general',
   sourceId,
-  country
+  country,
+  packageDetails,
+  tourDetails
 }: BookingModalProps) => {
   return (
     <Dialog>
@@ -32,6 +36,8 @@ export const BookingModal = ({
           source={source} 
           sourceId={sourceId}
           country={country}
+          packageDetails={packageDetails}
+          tourDetails={tourDetails}
         />
       </DialogContent>
     </Dialog>
