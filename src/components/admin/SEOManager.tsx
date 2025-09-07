@@ -23,7 +23,7 @@ interface SEOSettings {
   og_image?: string;
   structured_data?: any;
   robots_meta?: string;
-  page_type: 'homepage' | 'packages' | 'blog' | 'about' | 'contact' | 'group-tours' | 'custom';
+  page_type: 'homepage' | 'packages' | 'blog' | 'about' | 'contact' | 'group-tours' | 'country' | 'custom';
   is_active: boolean;
 }
 
@@ -445,15 +445,16 @@ const SEOManager = () => {
                         value={formData.page_type}
                         onChange={(e) => setFormData({...formData, page_type: e.target.value as any})}
                         className="w-full p-2 border rounded-md"
-                      >
-                        <option value="homepage">Homepage</option>
-                        <option value="packages">Packages</option>
-                        <option value="blog">Blog</option>
-                        <option value="about">About</option>
-                        <option value="contact">Contact</option>
-                        <option value="group-tours">Group Tours</option>
-                        <option value="custom">Custom</option>
-                      </select>
+                       >
+                         <option value="homepage">Homepage</option>
+                         <option value="packages">Packages</option>
+                         <option value="country">Country Pages</option>
+                         <option value="blog">Blog</option>
+                         <option value="about">About</option>
+                         <option value="contact">Contact</option>
+                         <option value="group-tours">Group Tours</option>
+                         <option value="custom">Custom</option>
+                       </select>
                     </div>
                   </div>
 
