@@ -27,6 +27,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { useStaticSEO } from "@/hooks/useStaticSEO"
 
 // Import hero images
 import japanHero1 from '@/assets/hero/japan-hero-1.jpg'
@@ -112,6 +113,7 @@ interface EnquiryForm {
 }
 
 const CountryDetail = () => {
+  useStaticSEO(); // Apply SEO settings from database
   const { country } = useParams<{ country: string }>()
   const { toast } = useToast()
   const [loading, setLoading] = useState(true)
