@@ -15,7 +15,6 @@ interface RegionPackagesProps {
 const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedBudget, setSelectedBudget] = useState<string>("all");
   const [selectedPackage, setSelectedPackage] = useState<TravelPackage | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -29,39 +28,11 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
   const countries = ["all", ...Array.from(new Set(regionPackages.map(pkg => pkg.country)))];
   const categories = ["all", ...Array.from(new Set(regionPackages.map(pkg => pkg.category)))];
 
-  // Helper function to extract numeric price from string
-  const extractPrice = (priceStr: string | number): number => {
-    if (typeof priceStr === 'number') return priceStr;
-    const cleanPrice = priceStr.replace(/[₹$,]/g, '');
-    const numPrice = parseFloat(cleanPrice);
-    return isNaN(numPrice) ? 0 : numPrice;
-  };
-
-  // Budget ranges
-  const budgetRanges = [
-    { label: "All Budgets", value: "all" },
-    { label: "Budget (Under ₹50,000)", value: "budget", min: 0, max: 50000 },
-    { label: "Mid-range (₹50,000 - ₹1,00,000)", value: "mid", min: 50000, max: 100000 },
-    { label: "Premium (₹1,00,000 - ₹2,00,000)", value: "premium", min: 100000, max: 200000 },
-    { label: "Luxury (Above ₹2,00,000)", value: "luxury", min: 200000, max: Infinity }
-  ];
-
   // Filter packages based on selected filters
   const filteredPackages = regionPackages.filter(pkg => {
     const countryMatch = selectedCountry === "all" || pkg.country === selectedCountry;
     const categoryMatch = selectedCategory === "all" || pkg.category === selectedCategory;
-    
-    // Budget filter logic
-    let budgetMatch = true;
-    if (selectedBudget !== "all") {
-      const budgetRange = budgetRanges.find(range => range.value === selectedBudget);
-      if (budgetRange && budgetRange.min !== undefined && budgetRange.max !== undefined) {
-        const packagePrice = extractPrice(pkg.price);
-        budgetMatch = packagePrice >= budgetRange.min && packagePrice <= budgetRange.max;
-      }
-    }
-    
-    return countryMatch && categoryMatch && budgetMatch;
+    return countryMatch && categoryMatch;
   });
 
   // Group packages by country for better organization
@@ -116,7 +87,7 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
           <h3 className="font-semibold text-primary">Filter Packages</h3>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Country Filter */}
           <div>
             <label className="block text-sm font-medium text-primary mb-2">Country</label>
@@ -144,22 +115,6 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
               {categories.map(category => (
                 <option key={category} value={category}>
                   {category === "all" ? "All Categories" : category}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Budget Filter */}
-          <div>
-            <label className="block text-sm font-medium text-primary mb-2">Budget Range</label>
-            <select
-              value={selectedBudget}
-              onChange={(e) => setSelectedBudget(e.target.value)}
-              className="w-full p-3 border border-input rounded-lg bg-white focus:ring-2 focus:ring-accent focus:border-accent"
-            >
-              {budgetRanges.map(range => (
-                <option key={range.value} value={range.value}>
-                  {range.label}
                 </option>
               ))}
             </select>
@@ -213,7 +168,6 @@ const RegionPackages = ({ region, onBack }: RegionPackagesProps) => {
             onClick={() => {
               setSelectedCountry("all");
               setSelectedCategory("all");
-              setSelectedBudget("all");
             }}
             className="mt-4 border-accent text-accent hover:bg-accent hover:text-white"
           >
