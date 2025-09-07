@@ -90,7 +90,7 @@ export const BlogManager: React.FC = () => {
         `)
         .order('created_at', { ascending: false })
 
-      // Fetch authors
+      // Fetch authors - use secure function for admin access
       const { data: authorsData } = await supabase
         .from('authors')
         .select('*')

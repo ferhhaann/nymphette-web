@@ -18,13 +18,12 @@ export const getAuthorPublicInfo = async (authorId: string) => {
 }
 
 /**
- * Get all authors with public information only
+ * Get all authors with public information only (no emails)
  */
 export const getAllAuthorsPublic = async () => {
   try {
     const { data, error } = await supabase
-      .from('authors')
-      .select('id, name, bio, avatar_url, social_links, created_at, updated_at')
+      .rpc('get_authors_public')
 
     if (error) throw error
     return { data, error: null }
