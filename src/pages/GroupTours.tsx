@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import { GroupTourBookingModal } from "@/components/GroupTourBookingModal";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,6 +42,7 @@ interface GroupTour {
 }
 
 const GroupTours = () => {
+  const navigate = useNavigate();
   usePerformanceOptimization();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
@@ -96,11 +99,12 @@ const GroupTours = () => {
     });
   };
 
-  const handleJoinTour = async (tourId: string) => {
-    toast({
-      title: "Booking Request Sent!",
-      description: "We'll contact you soon with booking details.",
-    });
+  const [selectedTour, setSelectedTour] = useState<GroupTour | null>(null);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+
+  const handleJoinTour = (tour: GroupTour) => {
+    setSelectedTour(tour);
+    setIsBookingModalOpen(true);
   };
 
   const groupToursStructuredData = {
@@ -250,7 +254,7 @@ const GroupTours = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                         
                         {tour.featured && (
-                          <Badge className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold">
+                          <Badge className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold px-3 rounded-full border-0">
                             <Sparkles className="h-3 w-3 mr-1" />
                             Featured
                           </Badge>
@@ -297,12 +301,20 @@ const GroupTours = () => {
                             <div className="text-sm text-muted-foreground">per person</div>
                           </div>
                           
-                          <Button 
-                            className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white font-medium"
-                            onClick={() => handleJoinTour(tour.id)}
-                          >
-                            Join Group
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="outline"
+                              onClick={() => navigate(`/group-tours/${tour.id}`)}
+                            >
+                              View Details
+                            </Button>
+                            <Button 
+                              className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white font-medium"
+                              onClick={() => handleJoinTour(tour)}
+                            >
+                              Join Group
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </div>
@@ -317,6 +329,14 @@ const GroupTours = () => {
       <footer>
         <Footer />
       </footer>
+
+      {selectedTour && (
+        <GroupTourBookingModal
+          isOpen={isBookingModalOpen}
+          onClose={() => setIsBookingModalOpen(false)}
+          tour={selectedTour}
+        />
+      )}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { TravelPackage as TravelPackageType } from "@/data/packagesData";
 import { usePackageById } from "@/hooks/usePackages";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -242,21 +243,48 @@ const PackageDetail = () => {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    toast({
-      title: "Enquiry Sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
-    setFormData({
-      name: "",
-      city: "",
-      email: "",
-      phone: "",
-      countryCode: "+1",
-      message: "",
-    });
+    try {
+      const { error } = await supabase.from('enquiries').insert([{
+        name: formData.name,
+        email: formData.email,
+        phone: `${formData.countryCode}${formData.phone}`,
+        message: `Package: ${pkg.title}\n\nMessage: ${formData.message || 'No additional message'}\n\nCity: ${formData.city || 'Not specified'}`,
+        source: 'package',
+        source_id: packageId,
+        destination: pkg.country,
+        status: 'new',
+        priority: 'normal',
+        notes: `Enquiry for package: ${pkg.title}` // Store package title in notes field
+      }]);
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      toast({
+        title: "Enquiry Sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+      
+      setFormData({
+        name: "",
+        city: "",
+        email: "",
+        phone: "",
+        countryCode: "+1",
+        message: "",
+      });
+    } catch (error: any) {
+      console.error('Error submitting enquiry:', error);
+      toast({
+        title: "Error",
+        description: "Failed to submit enquiry. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
   
   const placeImages = getPackageImages(pkg);

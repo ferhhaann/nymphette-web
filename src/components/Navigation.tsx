@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { BookingModal } from "./BookingModal";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,9 +74,7 @@ const Navigation = () => {
                 )}
               </button>
             ))}
-            <Button variant="secondary" className="bg-foreground hover:bg-foreground/90 text-background">
-              Book Now
-            </Button>
+            <BookingModal />
           </div>
 
           {/* Mobile menu button */}
@@ -97,7 +96,7 @@ const Navigation = () => {
                 <button
                   key={item.name}
                   onClick={() => handleNavigation(item.href)}
-                    className={`block w-full text-left px-3 py-2 transition-colors duration-300 ${
+                  className={`block w-full text-left px-3 py-2 transition-colors duration-300 ${
                       isActive(item.href)
                         ? "text-foreground bg-secondary rounded-lg"
                         : "text-muted-foreground hover:text-foreground"
@@ -107,10 +106,14 @@ const Navigation = () => {
                   </button>
                 ))}
                 <div className="px-3 pt-2">
-                  <Button variant="secondary" className="w-full bg-foreground hover:bg-foreground/90 text-background">
-                  Book Now
-                </Button>
-              </div>
+                  <BookingModal 
+                    trigger={
+                      <Button variant="secondary" className="w-full bg-foreground hover:bg-foreground/90 text-background">
+                        Book Now
+                      </Button>
+                    }
+                  />
+                </div>
             </div>
           </div>
         )}

@@ -1,0 +1,264 @@
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { GroupTourBookingModal } from "@/components/GroupTourBookingModal";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { 
+  Calendar, 
+  MapPin, 
+  Clock, 
+  Users,
+  Star,
+  ArrowLeft,
+  Sparkles,
+} from "lucide-react";
+
+const GroupTourDetail = () => {
+  const { tourId } = useParams<{ tourId: string }>();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [tour, setTour] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadTourDetails();
+  }, [tourId]);
+
+  const loadTourDetails = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('group_tours')
+        .select('*, category:group_tour_categories!category_id(name, color, icon)')
+        .eq('id', tourId)
+        .single();
+
+      if (error) throw error;
+      setTour(data);
+
+      // Set page metadata
+      document.title = `${data.title} - Group Tour Details`;
+      const metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+      if (metaDesc) {
+        metaDesc.content = data.description || `Join our group tour to ${data.destination}. ${data.duration} journey with expert guides.`;
+      }
+    } catch (error) {
+      console.error('Error loading tour details:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load tour details",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!tour) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Tour Not Found</h1>
+            <Button onClick={() => navigate('/group-tours')}>View All Tours</Button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      
+      {/* Back button */}
+      <div className="max-w-6xl mx-auto px-4 py-6 mt-16">
+        <Button 
+          variant="outline" 
+          onClick={() => navigate('/group-tours')}
+          className="border-primary text-primary hover:bg-primary hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Tours
+        </Button>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <Card className="overflow-hidden">
+          <div className="relative h-96">
+            <img
+              src={tour.image_url || '/placeholder.svg'}
+              alt={tour.title}
+              className="w-full h-full object-cover"
+            />
+            {tour.featured && (
+              <Badge className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold px-3 rounded-full border-0">
+                <Sparkles className="h-3 w-3 mr-1" />
+                Featured
+              </Badge>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <h1 className="text-4xl font-bold mb-2">{tour.title}</h1>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center">
+                  <MapPin className="h-5 w-5 mr-2" />
+                  <span className="text-xl">{tour.destination}</span>
+                </div>
+                <div className="flex items-center">
+                  <Star className="h-5 w-5 text-yellow-400 mr-1" />
+                  <span>{tour.rating} ({tour.reviews_count} reviews)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <CardContent className="p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="md:col-span-2 space-y-8">
+                {/* Tour Description */}
+                <div>
+                  <h2 className="text-2xl font-semibold mb-4">About This Tour</h2>
+                  <p className="text-muted-foreground">{tour.description}</p>
+                </div>
+
+                {/* Key Details Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="h-5 w-5 text-primary" />
+                        <div>
+                          <div className="text-sm font-medium">Start Date</div>
+                          <div className="text-sm text-muted-foreground">
+                            {formatDate(tour.start_date)}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-2">
+                        <Clock className="h-5 w-5 text-primary" />
+                        <div>
+                          <div className="text-sm font-medium">Duration</div>
+                          <div className="text-sm text-muted-foreground">{tour.duration}</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-2">
+                        <Users className="h-5 w-5 text-primary" />
+                        <div>
+                          <div className="text-sm font-medium">Group Size</div>
+                          <div className="text-sm text-muted-foreground">
+                            {tour.available_spots} spots left
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Additional Details */}
+                {tour.highlights && tour.highlights.length > 0 && (
+                  <div>
+                    <h2 className="text-2xl font-semibold mb-4">Highlights</h2>
+                    <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+                      {tour.highlights.map((highlight: string, idx: number) => (
+                        <li key={idx}>{highlight}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {/* Booking Section */}
+              <div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Book Your Spot</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div>
+                      <div className="text-3xl font-bold text-primary">
+                        ₹{tour.price.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-muted-foreground">per person</div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Available Spots</span>
+                        <span className="font-medium">{tour.available_spots}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Group Type</span>
+                        <span className="font-medium">{tour.group_type}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Difficulty Level</span>
+                        <span className="font-medium">{tour.difficulty_level}</span>
+                      </div>
+                    </div>
+
+                    <Button 
+                      className="w-full bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent"
+                      onClick={() => setIsBookingModalOpen(true)}
+                      disabled={tour.available_spots === 0}
+                    >
+                      {tour.available_spots > 0 ? 'Book Now' : 'Sold Out'}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <GroupTourBookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        tour={tour}
+      />
+
+      <Footer />
+    </div>
+  );
+};
+
+export default GroupTourDetail;

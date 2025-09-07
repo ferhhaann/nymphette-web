@@ -27,6 +27,7 @@ interface Enquiry {
   message?: string
   source: string
   source_id?: string
+  package_title?: string
   destination?: string
   travel_date?: string
   travelers?: number
@@ -390,7 +391,12 @@ export const EnquiryManager = () => {
                       </TableCell>
                       <TableCell>
                         <div>
-                          <div>{enquiry.destination}</div>
+                          <div className="font-medium">{enquiry.destination}</div>
+                          {enquiry.package_title && (
+                            <div className="text-sm text-muted-foreground">
+                              Package: {enquiry.package_title}
+                            </div>
+                          )}
                           {enquiry.travel_date && (
                             <div className="text-sm text-muted-foreground">
                               {enquiry.travel_date}
@@ -451,6 +457,10 @@ export const EnquiryManager = () => {
                                     <div>
                                       <Label>Destination</Label>
                                       <p>{selectedEnquiry.destination || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                      <Label>Package</Label>
+                                      <p>{selectedEnquiry.package_title || 'N/A'}</p>
                                     </div>
                                     <div>
                                       <Label>Travel Date</Label>

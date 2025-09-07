@@ -3,6 +3,7 @@ import { TravelPackage } from "@/data/packagesData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { BookingModal } from "./BookingModal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -273,9 +274,16 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                       <span className="text-lg text-white/70 line-through">{pkg.originalPrice}</span>
                     )}
                     <div className="text-3xl font-bold">{pkg.price}</div>
-                    <Button size="lg" className="mt-2 bg-primary hover:bg-primary/90" onClick={() => onBook?.(pkg)}>
-                      Book Now
-                    </Button>
+                    <BookingModal 
+                      trigger={
+                        <Button size="lg" className="mt-2 bg-primary hover:bg-primary/90">
+                          Book Now
+                        </Button>
+                      }
+                      source="package"
+                      sourceId={pkg.id}
+                      country={pkg.country}
+                    />
                   </div>
                 </div>
               </div>
