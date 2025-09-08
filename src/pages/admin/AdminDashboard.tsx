@@ -19,6 +19,7 @@ const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [adminCheckComplete, setAdminCheckComplete] = useState(false)
   const [activeSection, setActiveSection] = useState("overview")
   const { toast } = useToast()
 
@@ -65,12 +66,17 @@ const AdminDashboard = () => {
           // Fallback: if RPC fails completely
           setIsAdmin(false)
         }
+        setAdminCheckComplete(true)
       } else {
         setIsAuthenticated(false)
         setIsAdmin(false)
+        setAdminCheckComplete(true)
       }
       setLoading(false)
     } catch (error) {
+      setIsAuthenticated(false)
+      setIsAdmin(false)
+      setAdminCheckComplete(true)
       setLoading(false)
     }
   }
@@ -108,7 +114,7 @@ const AdminDashboard = () => {
     }
   }
 
-  if (loading) {
+  if (loading || (isAuthenticated && !adminCheckComplete)) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="text-center space-y-4">
@@ -119,7 +125,7 @@ const AdminDashboard = () => {
     )
   }
 
-  if (isAuthenticated && !isAdmin) {
+  if (isAuthenticated && adminCheckComplete && !isAdmin) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Card className="max-w-md w-full">
