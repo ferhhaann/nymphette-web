@@ -82,12 +82,12 @@ const Hero = () => {
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-sans tracking-tight mb-4 sm:mb-6 animate-fade-in leading-tight">
-              {getContentValue('title', 'Discover your next adventure')}
+              {getContentValue('title', 'Premium Travel Packages & Group Tours Worldwide')}
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-background/90 animate-slide-up leading-relaxed px-2 max-w-4xl mx-auto">
-              {getContentValue('subtitle', 'Premium travel packages, curated group tours, and custom trips to 50+ destinations worldwide. Expert planning with 24/7 support.')}
+              {getContentValue('subtitle', 'Explore handpicked travel packages across Asia, Europe, Africa, Americas & Pacific Islands. Join expertly guided group tours or create custom itineraries. Over 50 destinations worldwide with authentic experiences, professional guides, and comprehensive support from planning to return. Trusted by 10,000+ travelers for unforgettable journeys.')}
             </p>
           </div>
         </div>

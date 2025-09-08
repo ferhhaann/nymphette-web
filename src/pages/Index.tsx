@@ -5,6 +5,7 @@ import FeaturedPackages from "@/components/FeaturedPackages";
 import TopValues from "@/components/TopValues";
 import PromoBanner from "@/components/PromoBanner";
 import WhyChooseUs from "@/components/WhyChooseUs";
+import SEOContent from "@/components/SEOContent";
 import Footer from "@/components/Footer";
 import { preloadCriticalImages } from "@/hooks/useImagePreloader";
 import { useStaticSEO } from "@/hooks/useStaticSEO";
@@ -64,8 +65,11 @@ const Index = () => {
         <section className="animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
           <WhyChooseUs />
         </section>
+        <section className="animate-fade-in" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
+          <SEOContent />
+        </section>
       </main>
-      <footer className="animate-fade-in" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
+      <footer className="animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
         <Footer />
       </footer>
     </div>

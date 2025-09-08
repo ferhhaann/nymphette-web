@@ -27,6 +27,7 @@ const TopValues = () => {
   return (
     <section aria-label="Top values for you" className="border-y border-border bg-secondary/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-foreground">Why Choose Nymphette Tours</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {items.map(({ icon: Icon, title, desc }, index) => (
             <div 

@@ -1,14 +1,14 @@
 import type { SEOConfig } from '@/types/seo';
 
 export const defaultSEO: SEOConfig = {
-  title: 'Nymphette Tours - Premium Travel Packages & Group Tours Worldwide',
-  description: 'Discover premium travel packages, curated group tours, and custom trips worldwide. Expert travel planning with 24/7 support.',
+  title: 'Premium Travel Packages & Group Tours | Nymphette Tours',
+  description: 'Explore premium travel packages across Asia, Europe, Africa & more. Expert-guided group tours, custom trips, authentic experiences. 50+ destinations worldwide.',
   keywords: 'travel packages, group tours, custom trips, vacation packages, travel agency, international tours',
-  canonical: 'https://nymphettetours.com',
+  canonical: 'https://nymphettetours.lovable.app',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://nymphettetours.com',
+    url: 'https://nymphettetours.lovable.app',
     siteName: 'Nymphette Tours',
     images: [
       {
@@ -28,8 +28,8 @@ export const defaultSEO: SEOConfig = {
 
 export const routeSEO = {
   '/': {
-    title: 'Nymphette Tours - Premium Travel Packages & Group Tours Worldwide',
-    description: 'Discover premium travel packages, curated group tours, and custom trips worldwide. Expert travel planning with 24/7 support.',
+    title: 'Premium Travel Packages & Group Tours | Nymphette Tours',
+    description: 'Explore premium travel packages across Asia, Europe, Africa & more. Expert-guided group tours, custom trips, authentic experiences. 50+ destinations worldwide.',
     schema: {
       '@context': 'https://schema.org',
       '@type': 'TravelAgency',
