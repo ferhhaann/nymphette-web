@@ -1398,6 +1398,16 @@ export type Database = {
           social_links: Json
         }[]
       }
+      get_author_public_info_safe: {
+        Args: { author_id: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          id: string
+          name: string
+          social_links: Json
+        }[]
+      }
       get_authors_public: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -1411,6 +1421,17 @@ export type Database = {
         }[]
       }
       get_blog_comments_public: {
+        Args: { blog_post_id: string }
+        Returns: {
+          author_name: string
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+          status: string
+        }[]
+      }
+      get_blog_comments_safe: {
         Args: { blog_post_id: string }
         Returns: {
           author_name: string
