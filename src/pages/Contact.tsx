@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Globe, Users } from 'l
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
-import { useStaticSEO } from "@/hooks/useStaticSEO"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -35,7 +35,6 @@ interface ContactInfo {
 }
 
 export default function Contact() {
-  useStaticSEO(); // Apply SEO settings from database
   usePerformanceOptimization();
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null)
   const [loading, setLoading] = useState(true)

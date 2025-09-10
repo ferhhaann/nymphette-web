@@ -4,18 +4,6 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { Plugin } from 'vite';
 
-// SSR-like prerendering plugin
-const prerenderPlugin = (): Plugin => ({
-  name: 'prerender-routes',
-  writeBundle: {
-    sequential: true,
-    order: 'post',
-    handler() {
-      // This will be enhanced for production builds
-      console.log('🚀 Prerendering routes for SSR-like behavior');
-    }
-  }
-});
 
 
 // https://vitejs.dev/config/
@@ -27,7 +15,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === 'development' && componentTagger(),
-    mode === 'production' && prerenderPlugin(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -47,7 +34,7 @@ export default defineConfig(({ mode }) => ({
     assetsDir: 'assets',
     emptyOutDir: true,
     sourcemap: true,
-    ssr: false, // Keep as SPA but optimize for SSR-like behavior
+    ssr: false,
     rollupOptions: {
       input: path.resolve(__dirname, 'index.html'),
       output: {
