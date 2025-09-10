@@ -6,7 +6,7 @@ import { Award, Users, Globe, Heart, Target, Eye } from "lucide-react";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useStaticSEO } from "@/hooks/useStaticSEO";
 import teamPhoto from "@/assets/team-photo.jpg";
-import heroImage from "@/assets/hero-travel.jpg";
+import heroImage from "@/assets/about-us-hero.jpg";
 
 const AboutUs = () => {
   useStaticSEO(); // Apply SEO settings from database
