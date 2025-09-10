@@ -1368,6 +1368,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      audit_data_access: {
+        Args: { operation: string; table_name: string; user_id?: string }
+        Returns: undefined
+      }
       check_auth_security_compliance: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -1406,6 +1410,18 @@ export type Database = {
           id: string
           name: string
           social_links: Json
+        }[]
+      }
+      get_author_safe_info: {
+        Args: { author_id: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          created_at: string
+          id: string
+          name: string
+          social_links: Json
+          updated_at: string
         }[]
       }
       get_authors_public: {

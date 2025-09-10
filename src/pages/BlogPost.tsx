@@ -99,7 +99,7 @@ export default function BlogPost() {
 
         // Fetch comments using secure function that excludes email addresses
         const { data: commentsData } = await supabase
-          .rpc('get_blog_comments_public', { blog_post_id: postData.id })
+          .rpc('get_blog_comments_safe', { blog_post_id: postData.id })
 
         if (commentsData) {
           setComments(commentsData)
