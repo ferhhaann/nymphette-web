@@ -157,13 +157,32 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Loading screen for initial page load -->
+      <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; color: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <div style="text-align: center;">
+          <div style="border: 4px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 4px solid white; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+          <h2>Nymphette Tours</h2>
+          <p>Crafting Unforgettable Journeys...</p>
+        </div>
+      </div>
+      <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      </style>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
     
     <!-- Remove loading state after page loads -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('loaded');
+        // Remove loading screen when React mounts
+        setTimeout(() => {
+          const loadingScreen = document.querySelector('#root > div');
+          if (loadingScreen && loadingScreen.style.position === 'fixed') {
+            loadingScreen.remove();
+          }
+        }, 100);
       });
     </script>
   </body>

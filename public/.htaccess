@@ -6,11 +6,11 @@ RewriteBase /
 RewriteCond %{HTTPS} !=on
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
 
-# Handle requests for files and directories that exist
+# Handle client-side routing for SPA
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Send all other requests to index.html
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteCond %{REQUEST_URI} !^/assets/
 RewriteRule ^ index.html [QSA,L]
 
 # Browser caching for common file types
