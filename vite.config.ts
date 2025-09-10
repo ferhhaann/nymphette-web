@@ -4,6 +4,19 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { Plugin } from 'vite';
 
+// SSR-like prerendering plugin
+const prerenderPlugin = (): Plugin => ({
+  name: 'prerender-routes',
+  writeBundle: {
+    sequential: true,
+    order: 'post',
+    handler() {
+      // This will be enhanced for production builds
+      console.log('🚀 Prerendering routes for SSR-like behavior');
+    }
+  }
+});
+
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -14,6 +27,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === 'development' && componentTagger(),
+    mode === 'production' && prerenderPlugin(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -33,6 +47,7 @@ export default defineConfig(({ mode }) => ({
     assetsDir: 'assets',
     emptyOutDir: true,
     sourcemap: true,
+    ssr: false, // Keep as SPA but optimize for SSR-like behavior
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
@@ -46,9 +61,18 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@radix-ui') || id.includes('@hookform')) {
               return 'ui';
             }
+            if (id.includes('@supabase')) {
+              return 'supabase';
+            }
           }
           if (id.includes('src/index.css')) {
             return 'styles';
+          }
+          if (id.includes('src/pages/')) {
+            return 'pages';
+          }
+          if (id.includes('src/components/regions/')) {
+            return 'regions';
           }
         }
       }

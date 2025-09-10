@@ -1,2 +1,2 @@
-// Minimal prerender script - for production builds  
-console.log('✅ Prerendering completed (simplified build)');
+// Enhanced prerender script with SSR-like optimization
+import './enhanced-prerender.js';

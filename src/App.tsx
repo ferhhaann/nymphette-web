@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { useImageOptimization } from "@/hooks/useImageOptimization";
+import { useSSROptimization } from "@/hooks/useSSROptimization";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Packages from "./pages/Packages";
@@ -38,6 +39,7 @@ const App = () => {
   // Access static props if available (SSG mode)
   const staticProps = window.__STATIC_PROPS__ || {};
   useImageOptimization();
+  useSSROptimization();
   
   return (
     <HelmetProvider>
