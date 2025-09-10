@@ -3,13 +3,12 @@ import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Award, Users, Globe, Heart, Target, Eye } from "lucide-react";
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
+
 
 import teamPhoto from "@/assets/team-photo.jpg";
 import heroImage from "@/assets/about-us-hero.jpg";
 
 const AboutUs = () => {
-  usePerformanceOptimization();
   
   const structuredData = {
     "@context": "https://schema.org",

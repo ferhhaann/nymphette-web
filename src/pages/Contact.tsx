@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Globe, Users } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
+
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -35,7 +35,7 @@ interface ContactInfo {
 }
 
 export default function Contact() {
-  usePerformanceOptimization();
+  
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)

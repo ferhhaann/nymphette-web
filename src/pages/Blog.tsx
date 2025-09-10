@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Search, Clock, Tag, Eye, Calendar, ChevronRight } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
+
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"

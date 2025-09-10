@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { GroupTourBookingModal } from "@/components/GroupTourBookingModal";
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -43,7 +43,7 @@ interface GroupTour {
 
 const GroupTours = () => {
   const navigate = useNavigate();
-  usePerformanceOptimization();
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [selectedGroupType, setSelectedGroupType] = useState("all");

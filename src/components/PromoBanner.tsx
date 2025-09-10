@@ -1,6 +1,6 @@
 import bannerImage from "@/assets/regions-world.jpg";
 import { Button } from "@/components/ui/button";
-import { OptimizedImage } from "@/components/ui/optimized-image";
+
 import { useNavigate } from "react-router-dom";
 
 const PromoBanner = () => {
@@ -9,11 +9,10 @@ const PromoBanner = () => {
     <section className="relative overflow-hidden rounded-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="relative rounded-2xl overflow-hidden h-72 md:h-96">
-          <OptimizedImage 
+          <img 
             src={bannerImage} 
             alt="Scenic landscape" 
-            className="w-full h-full"
-            style={{ objectFit: 'cover', objectPosition: 'center' }}
+            className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-foreground/40" />
           <div className="absolute inset-0 flex items-center justify-center text-center px-6">

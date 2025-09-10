@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import { useImageOptimization } from "@/hooks/useImageOptimization";
+
 import ScrollToTop from "@/components/ScrollToTop";
 
 import Index from "./pages/Index";
@@ -33,7 +33,6 @@ import CookiePolicy from "./pages/CookiePolicy";
 const queryClient = new QueryClient();
 
 const App = () => {
-  useImageOptimization();
   
   return (
     <HelmetProvider>
