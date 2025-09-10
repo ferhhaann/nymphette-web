@@ -152,9 +152,9 @@ const CookiePolicy = () => {
                   If you have questions about our use of cookies, please contact us:
                 </p>
                 <div className="space-y-2 text-sm">
-                  <p><strong>Email:</strong> privacy@nymphettetours.com</p>
-                  <p><strong>Phone:</strong> +91 98765 43210</p>
-                  <p><strong>Address:</strong> 123 Travel Street, Tourism District, Mumbai, India</p>
+                  <p><strong>Email:</strong> tours.maa@nymphetteindia.com</p>
+                  <p><strong>Phone:</strong> 044-49579403, 9840109014</p>
+                  <p><strong>Address:</strong> No 81, Y Block, 6th Street, 1st Floor, Anna Nagar West, Chennai 600040</p>
                 </div>
               </CardContent>
             </Card>

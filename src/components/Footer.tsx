@@ -61,15 +61,15 @@ const Footer = () => {
             <div className="space-y-4">
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>+91 98765 43210</span>
+                <span>044-49579403, 9840109014</span>
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <Mail className="h-4 w-4" />
-                <span>info@nymphettetours.com</span>
+                <span>tours.maa@nymphetteindia.com</span>
               </div>
               <div className="flex items-start space-x-2 text-muted-foreground">
                 <MapPin className="h-4 w-4 mt-1" />
-                <span>123 Travel Street, Tourism District, Mumbai, India</span>
+                <span>No 81, Y Block, 6th Street, 1st Floor, Anna Nagar West, Chennai 600040</span>
               </div>
               
               <div className="mt-6">
