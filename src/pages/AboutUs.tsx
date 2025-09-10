@@ -101,7 +101,7 @@ const AboutUs = () => {
           </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-background">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
-            About Nymphette International EMC - Premier Travel Agency Since 2001
+            About Nymphette International EMC - Premium Travel Agency Since 2001
           </h1>
           <p className="text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
             One of India's established and most reputed company with Tours & Events under one Umbrella
