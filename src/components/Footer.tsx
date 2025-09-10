@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plane, Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -32,13 +33,12 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {["Home", "Packages", "Group Tours", "About Us", "Blog", "Contact"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    {item}
-                  </a>
-                </li>
-              ))}
+              <li><Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link></li>
+              <li><Link to="/packages" className="text-muted-foreground hover:text-foreground transition-colors">Packages</Link></li>
+              <li><Link to="/group-tours" className="text-muted-foreground hover:text-foreground transition-colors">Group Tours</Link></li>
+              <li><Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About Us</Link></li>
+              <li><Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+              <li><Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
             </ul>
           </div>
 
@@ -46,13 +46,12 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Popular Destinations</h3>
             <ul className="space-y-2">
-              {["Maldives", "Europe", "Bali", "Thailand", "Dubai", "Japan"].map((destination) => (
-                <li key={destination}>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    {destination}
-                  </a>
-                </li>
-              ))}
+              <li><Link to="/regions/asia/country/maldives" className="text-muted-foreground hover:text-foreground transition-colors">Maldives</Link></li>
+              <li><Link to="/regions/europe" className="text-muted-foreground hover:text-foreground transition-colors">Europe</Link></li>
+              <li><Link to="/regions/asia/country/indonesia" className="text-muted-foreground hover:text-foreground transition-colors">Bali</Link></li>
+              <li><Link to="/regions/asia/country/thailand" className="text-muted-foreground hover:text-foreground transition-colors">Thailand</Link></li>
+              <li><Link to="/regions/middle-east/country/uae" className="text-muted-foreground hover:text-foreground transition-colors">Dubai</Link></li>
+              <li><Link to="/regions/asia/country/japan" className="text-muted-foreground hover:text-foreground transition-colors">Japan</Link></li>
             </ul>
           </div>
 
@@ -93,9 +92,9 @@ const Footer = () => {
         <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground">© 2024 Nymphette Tours. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Terms of Service</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Cookie Policy</a>
+            <Link to="/privacy-policy" className="text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
+            <Link to="/terms-of-service" className="text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
+            <Link to="/cookie-policy" className="text-muted-foreground hover:text-foreground transition-colors">Cookie Policy</Link>
           </div>
         </div>
       </div>
