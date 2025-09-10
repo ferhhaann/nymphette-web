@@ -1,2 +1,2 @@
-// Stub file to prevent build errors - SSR functionality has been removed
-console.log('✅ Build completed - SSR prerendering disabled');
+// Enhanced prerender script with SSR-like optimization
+import './enhanced-prerender.js';

@@ -4,14 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { GroupTourBookingModal } from "@/components/GroupTourBookingModal";
-
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Clock, Star, Play, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-
+import { useStaticSEO } from "@/hooks/useStaticSEO";
 import heroVideo from "@/assets/packages-hero-bg.jpg";
 
 interface GroupTour {
@@ -43,7 +43,8 @@ interface GroupTour {
 
 const GroupTours = () => {
   const navigate = useNavigate();
-  
+  useStaticSEO(); // Apply SEO settings from database
+  usePerformanceOptimization();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [selectedGroupType, setSelectedGroupType] = useState("all");

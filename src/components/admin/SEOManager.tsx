@@ -401,8 +401,8 @@ const SEOManager = () => {
       <Tabs defaultValue="settings" className="space-y-4">
         <TabsList>
           <TabsTrigger value="settings">General SEO</TabsTrigger>
-          <TabsTrigger value="structured">Structured Content</TabsTrigger>
           <TabsTrigger value="countries">Country Pages</TabsTrigger>
+          <TabsTrigger value="categories">Categories</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="tools">SEO Tools</TabsTrigger>
         </TabsList>
@@ -553,53 +553,21 @@ const SEOManager = () => {
                           </select>
                         </div>
 
-                         <div>
-                           <label className="text-sm font-medium">Structured Data (JSON-LD)</label>
-                           <Textarea
-                             value={JSON.stringify(formData.structured_data || {}, null, 2)}
-                             onChange={(e) => {
-                               try {
-                                 const parsed = JSON.parse(e.target.value);
-                                 setFormData({...formData, structured_data: parsed});
-                               } catch (error) {
-                                 // Invalid JSON, store as is for editing
-                                 setFormData({...formData, structured_data: e.target.value});
-                               }
-                             }}
-                             placeholder="Enter valid JSON-LD structured data"
-                             rows={8}
-                             className="font-mono text-sm"
-                           />
-                           <div className="flex gap-2 mt-2">
-                             <Button
-                               type="button"
-                               variant="outline"
-                               size="sm"
-                               onClick={() => {
-                                 const structuredData = generateStructuredData(formData.page_type);
-                                 setFormData({...formData, structured_data: structuredData});
-                                 toast.success('Structured data generated');
-                               }}
-                             >
-                               Generate for {formData.page_type}
-                             </Button>
-                             <Button
-                               type="button"
-                               variant="outline"
-                               size="sm"
-                               onClick={() => {
-                                 try {
-                                   JSON.parse(JSON.stringify(formData.structured_data));
-                                   toast.success('Valid JSON structure');
-                                 } catch (error) {
-                                   toast.error('Invalid JSON structure');
-                                 }
-                               }}
-                             >
-                               Validate JSON
-                             </Button>
-                           </div>
-                         </div>
+                        <div>
+                          <label className="text-sm font-medium">Generate Structured Data</label>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              const structuredData = generateStructuredData(formData.page_type);
+                              setFormData({...formData, structured_data: structuredData});
+                              toast.success('Structured data generated');
+                            }}
+                            className="w-full mt-2"
+                          >
+                            Generate for {formData.page_type}
+                          </Button>
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
@@ -722,116 +690,6 @@ const SEOManager = () => {
               </Card>
             ))}
           </div>
-        </TabsContent>
-
-        <TabsContent value="structured" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Structured Content Manager</CardTitle>
-              <p className="text-muted-foreground">
-                Manage structured data and content that appears across the site
-              </p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Button 
-                      variant="outline" 
-                      onClick={() => {
-                        const organizationSchema = {
-                          "@context": "https://schema.org",
-                          "@type": "TravelAgency",
-                          "name": "Nymphette Tours",
-                          "description": "Premium travel agency offering curated experiences worldwide",
-                          "url": "https://nymphettetours.com",
-                          "telephone": "+1-555-0123",
-                          "email": "info@nymphettetours.com",
-                          "address": {
-                            "@type": "PostalAddress",
-                            "streetAddress": "123 Travel Street",
-                            "addressLocality": "Tourism City",
-                            "addressRegion": "State",
-                            "postalCode": "12345",
-                            "addressCountry": "US"
-                          }
-                        };
-                        setFormData({...formData, structured_data: organizationSchema, page_type: 'homepage'});
-                        setShowForm(true);
-                        toast.success('Organization schema loaded');
-                      }}
-                    >
-                      Create Organization Schema
-                    </Button>
-                    
-                    <Button 
-                      variant="outline"
-                      onClick={() => {
-                        const packageSchema = {
-                          "@context": "https://schema.org",
-                          "@type": "TouristTrip",
-                          "name": "Premium Travel Package",
-                          "description": "Experience the best of travel with our curated packages",
-                          "provider": {
-                            "@type": "TravelAgency",
-                            "name": "Nymphette Tours"
-                          },
-                          "offers": {
-                            "@type": "Offer",
-                            "priceCurrency": "USD",
-                            "price": "999"
-                          }
-                        };
-                        setFormData({...formData, structured_data: packageSchema, page_type: 'packages'});
-                        setShowForm(true);
-                        toast.success('Package schema loaded');
-                      }}
-                    >
-                      Create Package Schema
-                    </Button>
-                    
-                    <Button 
-                      variant="outline"
-                      onClick={() => {
-                        const breadcrumbSchema = {
-                          "@context": "https://schema.org",
-                          "@type": "BreadcrumbList",
-                          "itemListElement": [
-                            {
-                              "@type": "ListItem",
-                              "position": 1,
-                              "name": "Home",
-                              "item": "https://nymphettetours.com"
-                            }
-                          ]
-                        };
-                        setFormData({...formData, structured_data: breadcrumbSchema, page_type: 'custom'});
-                        setShowForm(true);
-                        toast.success('Breadcrumb schema loaded');
-                      }}
-                    >
-                      Create Breadcrumb Schema
-                    </Button>
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Content Templates</h3>
-                  <div className="text-sm text-muted-foreground">
-                    All structured content can be edited through the SEO settings above. Use the "Structured Content" tab to:
-                    <ul className="list-disc list-inside mt-2 space-y-1">
-                      <li>Edit organization information (contact details, address, etc.)</li>
-                      <li>Customize package and tour structured data</li>
-                      <li>Manage breadcrumb navigation schemas</li>
-                      <li>Add FAQ schemas for better search visibility</li>
-                      <li>Create custom structured data for any page</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
 
         <TabsContent value="countries" className="space-y-4">
@@ -991,6 +849,29 @@ const SEOManager = () => {
           </div>
         </TabsContent>
 
+        <TabsContent value="categories" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Category SEO Management</CardTitle>
+              <p className="text-muted-foreground">
+                Manage SEO settings for package categories, blog categories, and tour categories.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <div className="text-muted-foreground mb-4">
+                  Category SEO management coming soon. This will include:
+                </div>
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li>• Package category SEO optimization</li>
+                  <li>• Blog category meta tags</li>
+                  <li>• Tour category descriptions</li>
+                  <li>• Automatic category page generation</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="tools" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">

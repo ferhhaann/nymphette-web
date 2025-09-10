@@ -4,6 +4,18 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { Plugin } from 'vite';
 
+// SSR-like prerendering plugin
+const prerenderPlugin = (): Plugin => ({
+  name: 'prerender-routes',
+  writeBundle: {
+    sequential: true,
+    order: 'post',
+    handler() {
+      // This will be enhanced for production builds
+      console.log('🚀 Prerendering routes for SSR-like behavior');
+    }
+  }
+});
 
 
 // https://vitejs.dev/config/
@@ -15,6 +27,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === 'development' && componentTagger(),
+    mode === 'production' && prerenderPlugin(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -34,18 +47,12 @@ export default defineConfig(({ mode }) => ({
     assetsDir: 'assets',
     emptyOutDir: true,
     sourcemap: true,
-    ssr: false,
+    ssr: false, // Keep as SPA but optimize for SSR-like behavior
     rollupOptions: {
-      input: path.resolve(__dirname, 'index.html'),
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
       output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name?.endsWith('.css')) {
-            return 'assets/[name]-[hash][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        },
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {

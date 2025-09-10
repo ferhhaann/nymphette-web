@@ -1,9 +1,9 @@
 import { Shield, Award, Headphones, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
+import { useContent } from "@/hooks/useContent";
 
 const WhyChooseUs = () => {
-  const getContentValue = (key: string, defaultValue: string) => defaultValue;
+  const { getContentValue } = useContent('why-choose-us');
   
   const features = [
     {

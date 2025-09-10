@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import RegionPackages from "@/components/RegionPackages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,10 +29,11 @@ import middleEast1 from "@/assets/regions/middle-east-1.jpg";
 import middleEast2 from "@/assets/regions/middle-east-2.jpg";
 import middleEast3 from "@/assets/regions/middle-east-3.jpg";
 import { usePackages } from "@/hooks/usePackages";
-
+import { useStaticSEO } from "@/hooks/useStaticSEO";
 
 const Packages = () => {
-  
+  useStaticSEO(); // Apply SEO settings from database
+  usePerformanceOptimization();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);

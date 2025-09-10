@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Search, Clock, Tag, Eye, Calendar, ChevronRight } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
-
-
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
+import { useStaticSEO } from "@/hooks/useStaticSEO"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -42,6 +42,7 @@ interface BlogCategory {
 }
 
 export default function Blog() {
+  useStaticSEO(); // Apply SEO settings from database
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [categories, setCategories] = useState<BlogCategory[]>([])
   const [featuredPost, setFeaturedPost] = useState<BlogPost | null>(null)

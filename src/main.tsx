@@ -4,13 +4,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
 import App from './App.tsx'
 import './index.css'
-// Network diagnostics moved to non-blocking background task
+import { runNetworkDiagnostics } from './utils/network-diagnostics'
+
+// Run network diagnostics for international users
 if (typeof window !== 'undefined') {
-  setTimeout(() => {
-    import('./utils/network-diagnostics').then(({ runNetworkDiagnostics }) => {
-      runNetworkDiagnostics().catch(console.warn);
-    });
-  }, 1000);
+  runNetworkDiagnostics();
 }
 
 const queryClient = new QueryClient({
@@ -22,18 +20,12 @@ const queryClient = new QueryClient({
   },
 })
 
-console.log('Starting React app...');
-try {
-  createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </HelmetProvider>
-    </React.StrictMode>,
-  );
-  console.log('React app rendered successfully');
-} catch (error) {
-  console.error('Failed to render React app:', error);
-}
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </HelmetProvider>
+  </React.StrictMode>,
+);
