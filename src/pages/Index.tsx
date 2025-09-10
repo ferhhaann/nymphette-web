@@ -12,8 +12,10 @@ import { useEffect } from "react";
 const Index = () => {
   useEffect(() => {
     // Simple effect for initialization
-    console.log('Index page loaded');
+    console.log('Index page loaded and mounted');
   }, []);
+
+  console.log('Index component rendering...');
 
   const structuredData = {
     "@context": "https://schema.org",

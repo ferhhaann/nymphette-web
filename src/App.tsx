@@ -29,6 +29,7 @@ import CookiePolicy from "./pages/CookiePolicy";
 
 
 const App = () => {
+  console.log('App component rendering...');
   
   return (
     <TooltipProvider>
