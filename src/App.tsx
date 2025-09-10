@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { useImageOptimization } from "@/hooks/useImageOptimization";
-import { useSSROptimization } from "@/hooks/useSSROptimization";
 import ScrollToTop from "@/components/ScrollToTop";
+import SSRProvider from "@/components/SSRProvider";
 import Index from "./pages/Index";
 import Packages from "./pages/Packages";
 import GroupTours from "./pages/GroupTours";
@@ -39,7 +39,6 @@ const App = () => {
   // Access static props if available (SSG mode)
   const staticProps = window.__STATIC_PROPS__ || {};
   useImageOptimization();
-  useSSROptimization();
   
   return (
     <HelmetProvider>
@@ -48,7 +47,8 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <ScrollToTop />
+            <SSRProvider>
+              <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/packages" element={<Packages />} />
@@ -76,6 +76,7 @@ const App = () => {
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </SSRProvider>
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>
