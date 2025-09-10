@@ -1470,6 +1470,10 @@ export type Database = {
         Args: { _action: string; _record_id?: string; _table_name: string }
         Returns: undefined
       }
+      validate_admin_access: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
