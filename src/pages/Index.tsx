@@ -7,18 +7,12 @@ import PromoBanner from "@/components/PromoBanner";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import SEOContent from "@/components/SEOContent";
 import Footer from "@/components/Footer";
-import { preloadCriticalImages } from "@/hooks/useImagePreloader";
-
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useEffect } from "react";
-import heroImage from "@/assets/hero-mountain-road.jpg";
-import regionsImage from "@/assets/regions-world.jpg";
+
 const Index = () => {
-  usePerformanceOptimization();
-  
   useEffect(() => {
-    // Preload critical images for faster loading
-    preloadCriticalImages([heroImage, regionsImage]);
+    // Simple effect for initialization
+    console.log('Index page loaded');
   }, []);
 
   const structuredData = {

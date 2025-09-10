@@ -4,15 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Search, MapPin, Users, Calendar, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useContent } from "@/hooks/useContent";
-import { OptimizedImage } from "@/components/ui/optimized-image";
 import heroImage from "@/assets/hero-mountain-road.jpg";
 
 const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
-  const { getContentValue } = useContent('hero');
+  
+  const getContentValue = (key: string, defaultValue: string) => defaultValue;
 
   useEffect(() => {
     setIsVisible(true);
@@ -54,12 +53,10 @@ const Hero = () => {
         {/* Background Image */}
         <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
           <div className="absolute inset-0">
-            <OptimizedImage
+            <img
               src={heroImage}
               alt="Travel destinations hero image"
-              priority={true}
-              className="w-full h-full"
-              style={{ objectFit: 'cover', objectPosition: 'center' }}
+              className="w-full h-full object-cover object-center"
             />
           </div>
           <div className="absolute inset-0 bg-foreground/50"></div>
