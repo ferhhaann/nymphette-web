@@ -1486,6 +1486,15 @@ export type Database = {
         Args: { _action: string; _record_id?: string; _table_name: string }
         Returns: undefined
       }
+      secure_blog_comment_insert: {
+        Args: {
+          author_email: string
+          author_name: string
+          content: string
+          post_id: string
+        }
+        Returns: Json
+      }
       validate_admin_access: {
         Args: Record<PropertyKey, never>
         Returns: boolean
