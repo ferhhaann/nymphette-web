@@ -101,10 +101,10 @@ const AboutUs = () => {
           </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-background">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
-            About Nymphette Tours - Premier Travel Agency Since 1999
+            About Nymphette International EMC - Premier Travel Agency Since 2001
           </h1>
           <p className="text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
-            Creating unforgettable travel experiences for over 25 years with passion, expertise, and dedication
+            One of India's established and most reputed company with Tours & Events under one Umbrella
           </p>
         </div>
       </section>
@@ -120,7 +120,7 @@ const AboutUs = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-primary mb-4">Our Mission</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  To make travel accessible, enjoyable, and transformative for everyone, creating connections between cultures and unforgettable memories that last a lifetime.
+                  A dream becomes a goal when action is taken toward its achievement. Our dream is to make a difference in the world by creating magical dream moments for each special occasion. Our goal is to give pleasure to the soul of a person for him to cherish than the most expensive gift.
                 </p>
               </CardContent>
             </Card>
@@ -132,7 +132,7 @@ const AboutUs = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-primary mb-4">Our Vision</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  To be the world's most trusted travel partner, inspiring people to explore, discover, and connect with the beauty and diversity of our planet.
+                  To transform visions into exceptional experiences, creating magical moments where the pleasure we give to the soul is more cherished than the most expensive gift.
                 </p>
               </CardContent>
             </Card>
@@ -144,7 +144,7 @@ const AboutUs = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-primary mb-4">Our Values</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Excellence, integrity, safety, and customer satisfaction guide everything we do. We believe in sustainable tourism that benefits local communities.
+                  Personalized "hands-on" approach with highly skilled, multi-lingual staff providing guidance and care for travellers from all corners of the world.
                 </p>
               </CardContent>
             </Card>
@@ -159,13 +159,13 @@ const AboutUs = () => {
             <div className="animate-fade-in">
               <h2 className="text-4xl font-bold text-primary mb-6">Our Journey</h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                Founded in 1999 by travel enthusiast Rajesh Sharma, Nymphette Tours began as a small family business with a simple dream: to help people discover the world's most beautiful destinations.
+                Founded in 2001, Nymphette International EMC's legacy, in-depth experience and commitment towards quality service and product development has earned it a solid and respected reputation.
               </p>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                What started as organizing local tours has grown into a comprehensive travel company serving thousands of travelers annually. Our commitment to personalized service, attention to detail, and creating meaningful travel experiences has remained unchanged.
+                Because Nymphette International is privately owned and operated, its principals bring a truly personalized "hands-on" approach to the business. Highly skilled, multi-lingual staff with an intimate knowledge of all countries of the World are on hand from start to finish, providing guidance and care for the safety and well-being of travellers from all corners of the world.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Today, we're proud to be one of India's most trusted travel partners, offering everything from intimate honeymoon packages to large group adventures across six continents.
+                We are the First Tour operator to Embarked our clients with more than 400 Passengers on a Indigo 6E Chartered Flight to Phuket, The Journey was smooth within flight gourmet Meals. With our events you can transform your vision into exceptional experience, since our mission is to create magical moments.
               </p>
             </div>
             
