@@ -4,11 +4,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
 import App from './App.tsx'
 import './index.css'
-import { runNetworkDiagnostics } from './utils/network-diagnostics'
-
-// Run network diagnostics for international users
+// Network diagnostics moved to non-blocking background task
 if (typeof window !== 'undefined') {
-  runNetworkDiagnostics();
+  setTimeout(() => {
+    import('./utils/network-diagnostics').then(({ runNetworkDiagnostics }) => {
+      runNetworkDiagnostics().catch(console.warn);
+    });
+  }, 1000);
 }
 
 const queryClient = new QueryClient({

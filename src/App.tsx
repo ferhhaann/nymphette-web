@@ -1,9 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from 'react-helmet-async';
 
 import ScrollToTop from "@/components/ScrollToTop";
 
@@ -30,14 +28,10 @@ import TermsOfService from "./pages/TermsOfService";
 import CookiePolicy from "./pages/CookiePolicy";
 
 
-const queryClient = new QueryClient();
-
 const App = () => {
   
   return (
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
+    <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -75,8 +69,6 @@ const App = () => {
             
           </BrowserRouter>
         </TooltipProvider>
-      </QueryClientProvider>
-    </HelmetProvider>
   );
 };
 
