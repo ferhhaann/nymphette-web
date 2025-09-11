@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { Calendar, Clock, Eye, Tag, Share2, Heart, MessageCircle, ChevronLeft, User } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -50,7 +50,7 @@ interface Comment {
 }
 
 export default function BlogPost() {
-  usePerformanceOptimization();
+  
   const { slug } = useParams<{ slug: string }>()
   const [post, setPost] = useState<BlogPost | null>(null)
   const [comments, setComments] = useState<Comment[]>([])

@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { useImageOptimization } from "@/hooks/useImageOptimization";
 import ScrollToTop from "@/components/ScrollToTop";
-import SSRProvider from "@/components/SSRProvider";
 import Index from "./pages/Index";
 import Packages from "./pages/Packages";
 import GroupTours from "./pages/GroupTours";
@@ -57,8 +56,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <SSRProvider>
-              <ScrollToTop />
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/packages" element={<Packages />} />
@@ -89,7 +87,6 @@ const App = () => {
               <Route path="/cookie-policy" element={<CookiePolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-            </SSRProvider>
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>

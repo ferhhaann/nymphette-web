@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
+
 import RegionPackages from "@/components/RegionPackages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +33,6 @@ import { useStaticSEO } from "@/hooks/useStaticSEO";
 
 const Packages = () => {
   useStaticSEO(); // Apply SEO settings from database
-  usePerformanceOptimization();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);

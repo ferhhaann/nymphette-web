@@ -9,20 +9,18 @@ import SEOContent from "@/components/SEOContent";
 import Footer from "@/components/Footer";
 import { preloadCriticalImages } from "@/hooks/useImagePreloader";
 import { useStaticSEO } from "@/hooks/useStaticSEO";
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useEffect } from "react";
 import heroImage from "@/assets/hero-mountain-road.jpg";
 import regionsImage from "@/assets/regions-world.jpg";
 const Index = () => {
   console.log('Index component rendering...');
   
-  // Add error boundary for hooks
+  // Initialize SEO settings
   try {
     useStaticSEO(); // This will fetch and apply SEO settings from database
-    usePerformanceOptimization();
-    console.log('Hooks initialized successfully');
+    console.log('SEO initialized successfully');
   } catch (error) {
-    console.error('Hook error:', error);
+    console.error('SEO error:', error);
   }
   
   useEffect(() => {
