@@ -205,61 +205,65 @@ const AdminDashboard = () => {
     }
 
     return (
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full bg-background">
-          <AdminSidebar 
-            activeSection={activeSection}
-            onSectionChange={setActiveSection}
-            onSignOut={signOut}
-          />
-          
-          <SidebarInset className="flex-1">
-            {/* Header */}
-            <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-4 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/95 px-6 shadow-sm">
-              <SidebarTrigger className="-ml-1 h-8 w-8 hover:bg-muted rounded-lg transition-colors" />
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-col">
-                  <h1 className="text-xl font-bold text-foreground truncate">
-                    {getSectionTitle()}
-                  </h1>
-                  <p className="text-sm text-muted-foreground truncate hidden sm:block">
-                    {getSectionDescription()}
-                  </p>
+      <div className="dark">
+        <SidebarProvider>
+          <div className="min-h-screen flex w-full bg-background dark:bg-background">
+            <AdminSidebar 
+              activeSection={activeSection}
+              onSectionChange={setActiveSection}
+              onSignOut={signOut}
+            />
+            
+            <SidebarInset className="flex-1">
+              {/* Header */}
+              <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-4 border-b border-border bg-card/95 dark:bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/95 px-6 shadow-sm">
+                <SidebarTrigger className="-ml-1 h-8 w-8 hover:bg-muted/80 rounded-lg transition-colors" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col">
+                    <h1 className="text-xl font-bold text-foreground truncate">
+                      {getSectionTitle()}
+                    </h1>
+                    <p className="text-sm text-muted-foreground truncate hidden sm:block">
+                      {getSectionDescription()}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                  Online
+                <div className="flex items-center gap-2">
+                  <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400"></div>
+                    <span className="text-foreground/80">Online</span>
+                  </div>
                 </div>
-              </div>
-            </header>
+              </header>
 
-            {/* Main Content */}
-            <main className="flex-1 p-6 md:p-8 space-y-6 bg-background min-h-screen">
-              <div className="min-h-0 max-w-7xl mx-auto">
-                {renderActiveContent()}
-              </div>
-            </main>
-          </SidebarInset>
-        </div>
-      </SidebarProvider>
+              {/* Main Content */}
+              <main className="flex-1 p-6 md:p-8 space-y-6 bg-background dark:bg-background min-h-screen">
+                <div className="min-h-0 max-w-7xl mx-auto">
+                  {renderActiveContent()}
+                </div>
+              </main>
+            </SidebarInset>
+          </div>
+        </SidebarProvider>
+      </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">
-            Nymphette Tours Admin
-          </h1>
-          <p className="text-muted-foreground">
-            Content Management System with SEO Tools
-          </p>
-        </header>
-        
-        <AuthForm onSignIn={signIn} />
+    <div className="dark">
+      <div className="min-h-screen bg-background dark:bg-background">
+        <div className="container mx-auto px-4 py-8">
+          <header className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-foreground mb-2">
+              Nymphette Tours Admin
+            </h1>
+            <p className="text-muted-foreground">
+              Content Management System with SEO Tools
+            </p>
+          </header>
+          
+          <AuthForm onSignIn={signIn} />
+        </div>
       </div>
     </div>
   )
@@ -286,7 +290,7 @@ const AuthForm = ({ onSignIn }: AuthFormProps) => {
 
   return (
     <div className="max-w-md mx-auto">
-      <Card className="shadow-lg">
+      <Card className="shadow-lg bg-card dark:bg-card border-border">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
           <CardDescription>
@@ -327,7 +331,7 @@ const AuthForm = ({ onSignIn }: AuthFormProps) => {
             </div>
             <Button 
               type="submit" 
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 font-medium transition-all"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 font-medium transition-all shadow-lg"
               disabled={isLoading}
             >
               {isLoading ? "Signing in..." : "Sign In"}
