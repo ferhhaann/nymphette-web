@@ -147,43 +147,26 @@ const AdminDashboard = () => {
 
   if (isAuthenticated && isAdmin) {
     const renderActiveContent = () => {
-      // Route all submenu items to their parent components with proper context
-      if (activeSection.startsWith("country") || activeSection === "countries" || activeSection === "travel-purposes") {
-        return <CountryManager />
-      }
-      
-      if (activeSection.startsWith("package") || activeSection === "packages") {
-        return <PackageManager />
-      }
-      
-      if (activeSection.startsWith("tour") || activeSection === "group-tours") {
-        return <GroupTourManager />
-      }
-      
-      if (activeSection.startsWith("blog") || activeSection === "blog") {
-        return <BlogManager />
-      }
-      
-      if (activeSection.startsWith("content") || activeSection === "content") {
-        return <ContentManager />
-      }
-      
-      if (activeSection.startsWith("seo") || activeSection === "seo") {
-        return <SEOManager />
-      }
-      
-      if (activeSection.startsWith("contact") || activeSection === "contact") {
-        return <ContactManager />
-      }
-      
-      if (activeSection.startsWith("enquiries") || activeSection === "enquiries") {
-        return <EnquiryManager />
-      }
-
-      // Default cases
       switch (activeSection) {
         case "overview":
           return <AdminOverview />
+        case "countries":
+          return <CountryManager />
+        case "packages":
+        case "package-bulk-upload":
+          return <PackageManager />
+        case "group-tours":
+          return <GroupTourManager />
+        case "blog":
+          return <BlogManager />
+        case "content":
+          return <ContentManager />
+        case "seo":
+          return <SEOManager />
+        case "contact":
+          return <ContactManager />
+        case "enquiries":
+          return <EnquiryManager />
         default:
           return <AdminOverview />
       }
@@ -191,120 +174,32 @@ const AdminDashboard = () => {
 
     const getSectionTitle = () => {
       const titles = {
-        // Main Dashboard
         "overview": "Dashboard Overview",
-        
-        // Countries Management
         "countries": "Countries Management",
-        "country-statistics": "Country Statistics",
-        "country-attractions": "Attractions Management",
-        "country-content": "Country Content",
-        "travel-purposes": "Travel Purposes",
-        
-        // Package Management
         "packages": "Travel Packages",
-        "featured-packages": "Featured Packages",
-        "package-categories": "Package Categories",
         "package-bulk-upload": "Bulk Package Upload",
-        "package-analytics": "Package Analytics",
-        
-        // Group Tours
         "group-tours": "Group Tours",
-        "tour-categories": "Tour Categories",
-        "tour-schedules": "Tour Schedules",
-        "tour-bookings": "Tour Bookings",
-        
-        // Content Management
         "blog": "Blog Management",
-        "blog-categories": "Blog Categories",
-        "blog-featured": "Featured Posts",
-        "blog-drafts": "Draft Posts",
-        "blog-comments": "Comments Management",
-        
         "content": "Content Management",
-        "content-homepage": "Homepage Content",
-        "content-about": "About Page Content",
-        "content-contact": "Contact Page Content",
-        "content-static": "Static Pages",
-        "content-footer": "Footer Content",
-        
         "seo": "SEO Management",
-        "seo-meta": "Meta Tags",
-        "seo-urls": "URL Management",
-        "seo-sitemap": "Sitemaps",
-        "seo-analytics": "SEO Analytics",
-        
-        // Customer Support
         "contact": "Contact Management",
-        "contact-unread": "Unread Messages",
-        "contact-support": "Support Tickets",
-        "contact-feedback": "Customer Feedback",
-        
-        "enquiries": "Customer Enquiries",
-        "enquiries-pending": "Pending Enquiries",
-        "enquiries-progress": "In Progress",
-        "enquiries-resolved": "Resolved Enquiries",
-        "enquiries-followup": "Follow-up Required"
+        "enquiries": "Customer Enquiries"
       }
       return titles[activeSection as keyof typeof titles] || "Dashboard"
     }
 
     const getSectionDescription = () => {
       const descriptions = {
-        // Main Dashboard
         "overview": "Monitor your travel website performance and key metrics",
-        
-        // Countries Management
         "countries": "Manage destination information and travel content",
-        "country-statistics": "View and analyze country visitor statistics",
-        "country-attractions": "Manage tourist attractions and points of interest",
-        "country-content": "Edit country-specific content and descriptions",
-        "travel-purposes": "Manage travel purpose categories and data",
-        
-        // Package Management
         "packages": "Create and manage travel packages for customers",
-        "featured-packages": "Highlight and promote special travel packages",
-        "package-categories": "Organize packages into categories",
         "package-bulk-upload": "Upload multiple packages at once",
-        "package-analytics": "Analyze package performance and bookings",
-        
-        // Group Tours
         "group-tours": "Organize and manage group tour experiences",
-        "tour-categories": "Categorize different types of group tours",
-        "tour-schedules": "Manage tour dates and availability",
-        "tour-bookings": "Handle group tour reservations",
-        
-        // Content Management
         "blog": "Write and manage blog posts to engage your audience",
-        "blog-categories": "Organize blog posts into categories",
-        "blog-featured": "Manage featured and highlighted posts",
-        "blog-drafts": "Work on unpublished blog content",
-        "blog-comments": "Moderate and respond to blog comments",
-        
         "content": "Update website content and information",
-        "content-homepage": "Edit homepage content and layout",
-        "content-about": "Manage about page information",
-        "content-contact": "Update contact page details",
-        "content-static": "Manage static page content",
-        "content-footer": "Edit footer content and links",
-        
         "seo": "Optimize your website for search engines",
-        "seo-meta": "Manage meta titles and descriptions",
-        "seo-urls": "Configure URL structure and redirects",
-        "seo-sitemap": "Generate and manage XML sitemaps",
-        "seo-analytics": "Monitor SEO performance metrics",
-        
-        // Customer Support
         "contact": "Handle customer contact form submissions",
-        "contact-unread": "Review new messages from customers",
-        "contact-support": "Manage customer support tickets",
-        "contact-feedback": "Review customer feedback and suggestions",
-        
-        "enquiries": "Manage customer travel enquiries and bookings",
-        "enquiries-pending": "Review new enquiries awaiting response",
-        "enquiries-progress": "Track enquiries currently being handled",
-        "enquiries-resolved": "View completed enquiry resolutions",
-        "enquiries-followup": "Handle enquiries requiring follow-up"
+        "enquiries": "Manage customer travel enquiries and bookings"
       }
       return descriptions[activeSection as keyof typeof descriptions] || "Welcome to your admin dashboard"
     }
