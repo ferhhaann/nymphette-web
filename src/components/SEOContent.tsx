@@ -41,26 +41,6 @@ const SEOContent = () => {
           </div>
         </div>
 
-        {/* Destinations Grid */}
-        <div className="mb-16">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8 text-foreground">
-            Popular Travel Destinations
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {destinations.map((destination, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardContent className="p-4 text-center">
-                  <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <MapPin className="h-8 w-8 text-primary" />
-                  </div>
-                  <h4 className="font-semibold text-foreground mb-1">{destination.name}</h4>
-                  <p className="text-sm text-muted-foreground mb-2">{destination.region}</p>
-                  <p className="text-xs text-primary font-medium">{destination.packages} packages</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
 
         {/* Travel Types */}
         <div className="mb-16">

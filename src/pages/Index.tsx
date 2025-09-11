@@ -1,8 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
-
 import FeaturedPackages from "@/components/FeaturedPackages";
-
+import PopularDestinations from "@/components/PopularDestinations";
 import PromoBanner from "@/components/PromoBanner";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import SEOContent from "@/components/SEOContent";
@@ -57,6 +56,9 @@ const Index = () => {
         </div>
         <section className="animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
           <FeaturedPackages />
+        </section>
+        <section className="animate-fade-in" style={{ animationDelay: '0.45s', animationFillMode: 'both' }}>
+          <PopularDestinations />
         </section>
         <section className="animate-fade-in" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
           <PromoBanner />

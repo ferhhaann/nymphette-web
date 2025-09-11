@@ -24,7 +24,8 @@ export const ContentManager = () => {
 
   const sections = [
     { value: "about", label: "About Us" },
-    { value: "contact", label: "Contact" }
+    { value: "contact", label: "Contact" },
+    { value: "popular-destinations", label: "Popular Destinations" }
   ]
 
   useEffect(() => {
@@ -276,8 +277,8 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     onSave(section, key, value)
   }
 
-  // Only handle about and contact sections
-  if (!['about', 'contact'].includes(section)) {
+  // Handle about, contact, and popular-destinations sections
+  if (!['about', 'contact', 'popular-destinations'].includes(section)) {
     return <div className="p-4 text-center text-muted-foreground">Section not available for editing</div>
   }
 
