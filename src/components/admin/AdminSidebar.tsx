@@ -56,8 +56,10 @@ const mainMenuItems = [
     description: "Manage destinations",
     subItems: [
       { title: "All Countries", value: "countries" },
-      { title: "Country Content", value: "country-content" },
-      { title: "Attractions", value: "country-attractions" }
+      { title: "Country Statistics", value: "country-statistics" },
+      { title: "Attractions Management", value: "country-attractions" },
+      { title: "Content Sections", value: "country-content" },
+      { title: "Travel Purposes", value: "travel-purposes" }
     ]
   },
   {
@@ -67,8 +69,10 @@ const mainMenuItems = [
     description: "Travel packages",
     subItems: [
       { title: "All Packages", value: "packages" },
+      { title: "Featured Packages", value: "featured-packages" },
       { title: "Package Categories", value: "package-categories" },
-      { title: "Bulk Upload", value: "package-bulk" }
+      { title: "Bulk Upload", value: "package-bulk-upload" },
+      { title: "Package Analytics", value: "package-analytics" }
     ]
   },
   {
@@ -78,7 +82,9 @@ const mainMenuItems = [
     description: "Group activities",
     subItems: [
       { title: "All Tours", value: "group-tours" },
-      { title: "Tour Categories", value: "tour-categories" }
+      { title: "Tour Categories", value: "tour-categories" },
+      { title: "Tour Schedules", value: "tour-schedules" },
+      { title: "Tour Bookings", value: "tour-bookings" }
     ]
   }
 ]
@@ -91,8 +97,10 @@ const contentMenuItems = [
     description: "Articles & posts",
     subItems: [
       { title: "All Posts", value: "blog" },
-      { title: "Categories", value: "blog-categories" },
-      { title: "Featured Posts", value: "blog-featured" }
+      { title: "Blog Categories", value: "blog-categories" },
+      { title: "Featured Posts", value: "blog-featured" },
+      { title: "Draft Posts", value: "blog-drafts" },
+      { title: "Comments", value: "blog-comments" }
     ]
   },
   {
@@ -101,9 +109,11 @@ const contentMenuItems = [
     icon: FileText,
     description: "Page content",
     subItems: [
-      { title: "Page Content", value: "content" },
-      { title: "Homepage", value: "content-homepage" },
-      { title: "About Page", value: "content-about" }
+      { title: "Homepage Content", value: "content-homepage" },
+      { title: "About Page", value: "content-about" },
+      { title: "Contact Page", value: "content-contact" },
+      { title: "Static Pages", value: "content-static" },
+      { title: "Footer Content", value: "content-footer" }
     ]
   },
   {
@@ -114,7 +124,9 @@ const contentMenuItems = [
     subItems: [
       { title: "SEO Settings", value: "seo" },
       { title: "Meta Tags", value: "seo-meta" },
-      { title: "Sitemaps", value: "seo-sitemap" }
+      { title: "URL Management", value: "seo-urls" },
+      { title: "Sitemaps", value: "seo-sitemap" },
+      { title: "Analytics", value: "seo-analytics" }
     ]
   }
 ]
@@ -128,8 +140,10 @@ const customerMenuItems = [
     badge: "New",
     subItems: [
       { title: "All Enquiries", value: "enquiries" },
-      { title: "Pending", value: "enquiries-pending" },
-      { title: "Resolved", value: "enquiries-resolved" }
+      { title: "Pending Review", value: "enquiries-pending" },
+      { title: "In Progress", value: "enquiries-progress" },
+      { title: "Resolved", value: "enquiries-resolved" },
+      { title: "Follow-up Required", value: "enquiries-followup" }
     ]
   },
   {
@@ -139,7 +153,9 @@ const customerMenuItems = [
     description: "Contact messages",
     subItems: [
       { title: "All Messages", value: "contact" },
-      { title: "Unread", value: "contact-unread" }
+      { title: "Unread Messages", value: "contact-unread" },
+      { title: "Support Tickets", value: "contact-support" },
+      { title: "Feedback", value: "contact-feedback" }
     ]
   }
 ]
