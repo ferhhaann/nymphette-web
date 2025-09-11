@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { supabase } from "@/integrations/supabase/client"
 import { useToast } from "@/hooks/use-toast"
-import { Plus, Edit, Trash2, Globe, MapPin, Star } from "lucide-react"
+import { Plus, Edit, Trash2, Globe, MapPin, Star, Search } from "lucide-react"
 import { ImageUpload } from "./ImageUpload"
 import { CountryContentManager } from "./CountryContentManager"
 import { ContentSectionsManager } from "./ContentSectionsManager"
@@ -190,140 +190,218 @@ export const CountryManager = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header Section */}
-      <div className="border-b border-border pb-6">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Countries Management</h1>
-            <p className="text-muted-foreground max-w-2xl">
-              Manage country profiles, visitor statistics, content sections, and attractions. 
-              All country data is organized and easily accessible through dedicated sections.
-            </p>
+    <div className="space-y-8">
+      {/* Welcome Section for Beginners */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 border border-blue-200 dark:border-blue-800">
+        <div className="flex items-start gap-4">
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+              <Globe className="w-6 h-6 text-white" />
+            </div>
           </div>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button size="lg" onClick={() => setEditingCountry(createEmptyCountry())} className="min-w-[150px]">
-                <Plus className="h-4 w-4 mr-2" />
-                Add New Country
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="text-2xl">
-                  {editingCountry?.id ? 'Edit Country' : 'Add New Country'}
-                </DialogTitle>
-              </DialogHeader>
-              <CountryForm 
-                country={editingCountry!} 
-                onSave={saveCountry}
-                onCancel={() => {
-                  setIsDialogOpen(false)
-                  setEditingCountry(null)
-                }}
-              />
-            </DialogContent>
-          </Dialog>
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+              🌍 Countries Management Center
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+              Welcome to the countries management center! Here you can add new destinations, update country information, 
+              manage visitor statistics, and organize all the content that appears on your destination pages.
+            </p>
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                Add new countries and destinations
+              </div>
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                Manage visitor statistics and data
+              </div>
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                Update content sections and attractions
+              </div>
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                Organize by regions for easy browsing
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Management Tabs */}
-      <Tabs defaultValue="overview" className="space-y-6">
-        <div className="bg-muted/30 p-1 rounded-lg">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-1 bg-transparent">
-            <TabsTrigger 
-              value="overview" 
-              className="data-[state=active]:bg-background data-[state=active]:shadow-sm px-6 py-3"
-            >
-              <Globe className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Countries</span>
-              <span className="sm:hidden">List</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="statistics" 
-              className="data-[state=active]:bg-background data-[state=active]:shadow-sm px-6 py-3"
-            >
-              <Star className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Statistics</span>
-              <span className="sm:hidden">Stats</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="content" 
-              className="data-[state=active]:bg-background data-[state=active]:shadow-sm px-6 py-3"
-            >
-              <Edit className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Content</span>
-              <span className="sm:hidden">Content</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="attractions" 
-              className="data-[state=active]:bg-background data-[state=active]:shadow-sm px-6 py-3"
-            >
-              <MapPin className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Attractions</span>
-              <span className="sm:hidden">Places</span>
-            </TabsTrigger>
-          </TabsList>
+      {/* Action Header */}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200">Quick Actions</h3>
+          <p className="text-slate-600 dark:text-slate-400">Get started with managing your countries</p>
         </div>
-        
-        <TabsContent value="overview" className="space-y-6">
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Countries</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{countries.length}</div>
-                <p className="text-xs text-muted-foreground">Across all regions</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Popular Destinations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{countries.filter(c => c.is_popular).length}</div>
-                <p className="text-xs text-muted-foreground">Featured countries</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Regions Covered</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{new Set(countries.map(c => c.region)).size}</div>
-                <p className="text-xs text-muted-foreground">Geographic regions</p>
-              </CardContent>
-            </Card>
-          </div>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button 
+              size="lg" 
+              onClick={() => setEditingCountry(createEmptyCountry())} 
+              className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 min-w-[200px]"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Add New Country
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-2xl flex items-center gap-2">
+                <Globe className="h-6 w-6" />
+                {editingCountry?.id ? 'Edit Country Details' : 'Add New Country'}
+              </DialogTitle>
+            </DialogHeader>
+            <CountryForm 
+              country={editingCountry!} 
+              onSave={saveCountry}
+              onCancel={() => {
+                setIsDialogOpen(false)
+                setEditingCountry(null)
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+      </div>
 
-          {/* Search and Filter Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Search & Filter Countries</CardTitle>
-              <CardDescription>Find and manage countries by name, capital, or region</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <GenericFilter
-                searchValue={searchTerm}
-                onSearchChange={setSearchTerm}
-                selectedCountry=""
-                onCountryChange={() => {}}
-                selectedRegion={selectedRegion}
-                onRegionChange={setSelectedRegion}
-                totalItems={countries.length}
-                filteredItems={filteredCountries.length}
-                onClearFilters={() => {
-                  setSearchTerm("")
-                  setSelectedRegion("all")
-                }}
-                searchPlaceholder="Search by country name or capital city..."
-                showCountryFilter={false}
-                showRegionFilter={true}
-              />
-            </CardContent>
-          </Card>
+      {/* Management Tabs */}
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700">
+        <Tabs defaultValue="overview" className="w-full">
+          <div className="border-b border-slate-200 dark:border-slate-700 p-6 pb-0">
+            <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">Management Sections</h4>
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 bg-slate-100 dark:bg-slate-700 p-1 rounded-xl">
+              <TabsTrigger 
+                value="overview" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 px-4 py-3 rounded-lg font-medium transition-all"
+              >
+                <Globe className="h-4 w-4 mr-2" />
+                <div className="flex flex-col items-start">
+                  <span className="text-sm">Countries List</span>
+                  <span className="text-xs opacity-70">View & Edit</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="statistics" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-green-600 px-4 py-3 rounded-lg font-medium transition-all"
+              >
+                <Star className="h-4 w-4 mr-2" />
+                <div className="flex flex-col items-start">
+                  <span className="text-sm">Statistics</span>
+                  <span className="text-xs opacity-70">Visitor Data</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="content" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-purple-600 px-4 py-3 rounded-lg font-medium transition-all"
+              >
+                <Edit className="h-4 w-4 mr-2" />
+                <div className="flex flex-col items-start">
+                  <span className="text-sm">Content</span>
+                  <span className="text-xs opacity-70">Page Sections</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="attractions" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-orange-600 px-4 py-3 rounded-lg font-medium transition-all"
+              >
+                <MapPin className="h-4 w-4 mr-2" />
+                <div className="flex flex-col items-start">
+                  <span className="text-sm">Attractions</span>
+                  <span className="text-xs opacity-70">Places & POIs</span>
+                </div>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+        
+          <TabsContent value="overview" className="p-6 space-y-6">
+            {/* Beginner Guide */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+              <h5 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">💡 Quick Guide for Beginners</h5>
+              <p className="text-sm text-blue-700 dark:text-blue-300 mb-3">
+                This section shows all your countries organized by region. You can search, filter, and manage each country easily.
+              </p>
+              <div className="grid md:grid-cols-2 gap-2 text-xs text-blue-600 dark:text-blue-400">
+                <div>🔍 Use the search box to find specific countries</div>
+                <div>🌍 Filter by region to focus on specific areas</div>
+                <div>✏️ Click "Edit" on any country card to modify details</div>
+                <div>➕ Use "Add New Country" to create new destinations</div>
+              </div>
+            </div>
+
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-800">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-300 flex items-center gap-2">
+                    <Globe className="h-4 w-4" />
+                    Total Countries
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-blue-800 dark:text-blue-200">{countries.length}</div>
+                  <p className="text-sm text-blue-600 dark:text-blue-400">Destinations available</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 border-yellow-200 dark:border-yellow-800">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-yellow-700 dark:text-yellow-300 flex items-center gap-2">
+                    <Star className="h-4 w-4" />
+                    Popular Destinations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-yellow-800 dark:text-yellow-200">{countries.filter(c => c.is_popular).length}</div>
+                  <p className="text-sm text-yellow-600 dark:text-yellow-400">Featured countries</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-800">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-green-700 dark:text-green-300 flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    Regions Covered
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-green-800 dark:text-green-200">{new Set(countries.map(c => c.region)).size}</div>
+                  <p className="text-sm text-green-600 dark:text-green-400">Geographic regions</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Search and Filter Section */}
+            <Card className="shadow-lg border-slate-200 dark:border-slate-700">
+              <CardHeader className="bg-slate-50 dark:bg-slate-800 rounded-t-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                    <Search className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">Search & Filter Countries</CardTitle>
+                    <CardDescription>Find and manage countries by name, capital, or region</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6">
+                <GenericFilter
+                  searchValue={searchTerm}
+                  onSearchChange={setSearchTerm}
+                  selectedCountry=""
+                  onCountryChange={() => {}}
+                  selectedRegion={selectedRegion}
+                  onRegionChange={setSelectedRegion}
+                  totalItems={countries.length}
+                  filteredItems={filteredCountries.length}
+                  onClearFilters={() => {
+                    setSearchTerm("")
+                    setSelectedRegion("all")
+                  }}
+                  searchPlaceholder="🔍 Search by country name or capital city..."
+                  showCountryFilter={false}
+                  showRegionFilter={true}
+                />
+              </CardContent>
+            </Card>
 
           {/* Countries Grid */}
           {selectedRegion === "all" ? (
@@ -511,7 +589,8 @@ export const CountryManager = () => {
           </div>
           <AttractionsContentManager />
         </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   )
 }

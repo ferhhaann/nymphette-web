@@ -212,21 +212,29 @@ const AdminDashboard = () => {
           
           <SidebarInset className="flex-1">
             {/* Header */}
-            <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
-              <SidebarTrigger className="-ml-1" />
+            <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center gap-4 border-b bg-gradient-to-r from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 shadow-sm">
+              <SidebarTrigger className="-ml-1 h-8 w-8 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" />
               <div className="flex-1 min-w-0">
                 <div className="flex flex-col">
-                  <h1 className="text-lg font-semibold truncate">{getSectionTitle()}</h1>
-                  <p className="text-sm text-muted-foreground truncate hidden sm:block">
+                  <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-200 truncate">
+                    {getSectionTitle()}
+                  </h1>
+                  <p className="text-base text-slate-600 dark:text-slate-400 truncate hidden sm:block">
                     {getSectionDescription()}
                   </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="hidden md:flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                  <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                  Online
                 </div>
               </div>
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 p-4 md:p-6 space-y-6">
-              <div className="min-h-0">
+            <main className="flex-1 p-6 md:p-8 space-y-8 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 min-h-screen">
+              <div className="min-h-0 max-w-7xl mx-auto">
                 {renderActiveContent()}
               </div>
             </main>
