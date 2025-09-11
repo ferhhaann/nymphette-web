@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ChevronLeft, ChevronRight, MapPin, Sparkles } from "lucide-react";
 import { useContent } from "@/hooks/useContent";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface CountryWithPackages {
   id: string;
@@ -98,23 +100,24 @@ const PopularDestinations = () => {
 
   if (loading) {
     return (
-      <section className="section-padding bg-secondary/30">
+      <section className="section-padding bg-background">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-hero font-geo mb-4 text-foreground">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold font-geo text-foreground mb-4">
               Popular Travel Destinations
             </h2>
-            <p className="text-subtitle text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Loading amazing destinations...
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[...Array(4)].map((_, index) => (
-              <Card key={index} className="overflow-hidden animate-pulse">
-                <div className="aspect-[4/3] bg-muted"></div>
+              <Card key={index} className="overflow-hidden border border-border bg-card">
+                <div className="aspect-[5/4] bg-muted animate-pulse"></div>
                 <CardContent className="p-6">
-                  <div className="h-4 bg-muted rounded mb-2"></div>
-                  <div className="h-3 bg-muted rounded w-20"></div>
+                  <div className="h-6 bg-muted rounded mb-3 animate-pulse"></div>
+                  <div className="h-4 bg-muted rounded w-24 mb-2 animate-pulse"></div>
+                  <div className="h-4 bg-muted rounded w-20 animate-pulse"></div>
                 </CardContent>
               </Card>
             ))}
@@ -125,21 +128,31 @@ const PopularDestinations = () => {
   }
 
   return (
-    <section className="section-padding bg-secondary/30">
+    <section className="section-padding bg-background">
       <div className="container">
-        <div className="text-center mb-12">
-          <h2 className="text-hero font-geo mb-4 text-foreground animate-fade-in">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Sparkles className="h-6 w-6 text-primary" />
+            <span className="text-sm font-medium text-primary uppercase tracking-wider">
+              Discover
+            </span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold font-geo text-foreground mb-4 animate-fade-in">
             {getContentValue('title', 'Popular Travel Destinations')}
           </h2>
-          <p className="text-subtitle text-muted-foreground max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
             {getContentValue('subtitle', 'Discover our most loved destinations with carefully curated travel packages')}
           </p>
         </div>
 
         {destinations.length === 0 ? (
-          <div className="text-center py-12">
-            <MapPin className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No destinations available at the moment.</p>
+          <div className="text-center py-20">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-secondary/50 flex items-center justify-center">
+              <MapPin className="h-12 w-12 text-muted-foreground" />
+            </div>
+            <h3 className="text-xl font-semibold text-foreground mb-2">No destinations available</h3>
+            <p className="text-muted-foreground">Check back soon for exciting travel opportunities.</p>
           </div>
         ) : (
           <div className="relative">
@@ -149,62 +162,82 @@ const PopularDestinations = () => {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm hover:bg-background"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/95 backdrop-blur-sm border-border hover:bg-secondary shadow-lg -ml-6"
                   onClick={prevSlide}
                   disabled={currentIndex === 0}
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronLeft className="h-5 w-5" />
                 </Button>
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm hover:bg-background"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/95 backdrop-blur-sm border-border hover:bg-secondary shadow-lg -mr-6"
                   onClick={nextSlide}
                   disabled={currentIndex + itemsPerView >= destinations.length}
                 >
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-5 w-5" />
                 </Button>
               </>
             )}
 
             {/* Destinations Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {visibleDestinations.map((destination, index) => (
                 <Card 
                   key={destination.id}
-                  className="group overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 travel-card"
+                  className="group overflow-hidden cursor-pointer border border-border bg-card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-fade-in"
                   onClick={() => handleDestinationClick(destination)}
+                  style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                  <div className="relative aspect-[5/4] overflow-hidden">
                     {destination.hero_image_url ? (
-                      <img
+                      <OptimizedImage
                         src={destination.hero_image_url}
-                        alt={destination.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        loading="lazy"
+                        alt={`${destination.name} destination`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
-                        <MapPin className="h-12 w-12 text-primary" />
+                      <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                        <MapPin className="h-12 w-12 text-muted-foreground/50" />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent group-hover:from-black/70 transition-all duration-300" />
+                    
+                    {/* Overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent group-hover:from-black/40 transition-all duration-300" />
                     
                     {/* Package Count Badge */}
-                    <div className="absolute top-3 right-3">
-                      <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium shadow-lg">
+                    <div className="absolute top-4 right-4">
+                      <Badge 
+                        variant="secondary" 
+                        className="bg-background/90 text-foreground font-medium shadow-sm backdrop-blur-sm border border-border/50"
+                      >
                         {destination.package_count} {destination.package_count === 1 ? 'Package' : 'Packages'}
-                      </div>
+                      </Badge>
                     </div>
                   </div>
                   
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors duration-200">
-                      {destination.name}
-                    </h3>
-                    <p className="text-muted-foreground text-sm capitalize">
-                      {destination.region}
-                    </p>
+                    <div className="space-y-3">
+                      <div>
+                        <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200 mb-1">
+                          {destination.name}
+                        </h3>
+                        <p className="text-muted-foreground text-sm capitalize font-medium">
+                          {destination.region}
+                        </p>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <MapPin className="h-3 w-3" />
+                          <span>Explore destination</span>
+                        </div>
+                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200">
+                          <ChevronRight className="h-3 w-3 text-primary" />
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -212,14 +245,14 @@ const PopularDestinations = () => {
 
             {/* Pagination Dots */}
             {destinations.length > itemsPerView && (
-              <div className="flex justify-center mt-8 space-x-2">
+              <div className="flex justify-center mt-12 space-x-2">
                 {Array.from({ length: Math.ceil(destinations.length / itemsPerView) }).map((_, index) => (
                   <button
                     key={index}
-                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
                       Math.floor(currentIndex / itemsPerView) === index
-                        ? 'bg-primary'
-                        : 'bg-border hover:bg-primary/50'
+                        ? 'bg-primary w-8'
+                        : 'bg-border hover:bg-muted-foreground'
                     }`}
                     onClick={() => setCurrentIndex(index * itemsPerView)}
                   />
