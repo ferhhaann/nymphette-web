@@ -1,2 +1,2 @@
-// Minimal SEO generation script - for production builds
-console.log('✅ SEO generation completed (simplified build)');
+// Normal build process - no prerendering
+console.log('✅ Build process completed successfully');
