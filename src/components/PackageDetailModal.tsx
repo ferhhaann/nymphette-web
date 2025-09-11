@@ -204,7 +204,7 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
         <Card className="w-full max-w-6xl max-h-[90vh] overflow-hidden bg-background">
           {/* Header with Hero Image */}
           <CardHeader className="relative p-0">
-            <div className="relative h-80 overflow-hidden">
+            <div className="relative h-80 overflow-hidden rounded-t-lg">
               <img
                 src={placeImages[currentImageIndex].src}
                 alt={placeImages[currentImageIndex].alt}

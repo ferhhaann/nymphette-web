@@ -102,7 +102,7 @@ const PackageDetailView = ({ package: pkg, onClose }: PackageDetailViewProps) =>
       <Card className="w-full max-w-6xl max-h-[90vh] overflow-hidden bg-background">
         <CardHeader className="relative p-0">
           {/* Image Gallery */}
-          <div className="relative h-64 md:h-80 overflow-hidden">
+          <div className="relative h-64 md:h-80 overflow-hidden rounded-t-lg">
             <img
               src={placeImages[currentImageIndex].src}
               alt={placeImages[currentImageIndex].alt}

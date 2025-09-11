@@ -238,7 +238,7 @@ const GroupTours = () => {
                     style={{ animationDelay: (index * 150) + 'ms' }}
                   >
                     <div className="relative">
-                      <div className="relative overflow-hidden h-64">
+                      <div className="relative overflow-hidden h-64 rounded-t-lg">
                         <img
                           src={getImageUrl(tour.image_url)}
                           alt={tour.title}

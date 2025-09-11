@@ -41,7 +41,7 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
   return (
     <Card className="group overflow-hidden hover:shadow-card-soft transition-all duration-300 cursor-pointer"
           onClick={() => onViewDetails(pkg.id)}>
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden rounded-t-lg">
         <OptimizedImage
           src={packageImage}
           alt={pkg.title}

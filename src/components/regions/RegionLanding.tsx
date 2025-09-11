@@ -292,7 +292,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
               <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300" 
                     style={{animationDelay:`${index*60}ms`}}
                      onClick={() => navigate(`/package/${pkg.id}`)}>
-                 <div className={`relative overflow-hidden ${optimizedSettings.cardHeight}`}>
+                 <div className={`relative overflow-hidden rounded-t-lg ${optimizedSettings.cardHeight}`}>
                    <OptimizedImage 
                      src={packageImage} 
                      alt={pkg.title} 
