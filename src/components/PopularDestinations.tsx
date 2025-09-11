@@ -76,9 +76,8 @@ const PopularDestinations = () => {
         })
       );
 
-      // Filter countries that have packages and sort by package count
+      // Sort by package count and show all popular destinations
       const popularDestinations = destinationsWithCounts
-        .filter(dest => dest.package_count > 0)
         .sort((a, b) => b.package_count - a.package_count)
         .slice(0, 12); // Show top 12 destinations
 
