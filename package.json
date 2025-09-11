@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
-    "build": "NODE_ENV=production node scripts/generateSEO.js && vite build --mode production && node scripts/prerender.js",
-    "build:dev": "NODE_ENV=development node scripts/generateSEO.js && vite build --mode development && node scripts/prerender.js",
-    "build:ssg": "NODE_ENV=production node scripts/generateSEO.js && vite build --mode production && node scripts/prerender.js",
+    "build": "vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "build:ssg": "vite build --mode production",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "generate-seo": "node scripts/generateSEO.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
