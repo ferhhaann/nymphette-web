@@ -460,8 +460,28 @@ const CountryDetail = () => {
             </section>
           )}
 
-          {/* Fun Facts */}
-          {funFactsSection && funFactsSection.content?.facts && (
+          {/* Fun Facts from countries table */}
+          {countryData.fun_facts && Array.isArray(countryData.fun_facts) && countryData.fun_facts.length > 0 && (
+            <section id="fun_facts" className="my-8">
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold mb-6 flex items-center">
+                  <Star className="h-6 w-6 mr-2 text-primary" />
+                  Fun Facts About {countryData.name}
+                </h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {countryData.fun_facts.map((fact: string, index: number) => (
+                    <div key={index} className="flex items-start gap-3 p-4 bg-secondary/50 rounded-lg">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
+                      <p className="text-sm">{fact}</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </section>
+          )}
+
+          {/* Fun Facts from sections table (fallback) */}
+          {(!countryData.fun_facts || countryData.fun_facts.length === 0) && funFactsSection && funFactsSection.content?.facts && (
             <section id="fun_facts" className="my-8">
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-6 flex items-center">
@@ -480,8 +500,28 @@ const CountryDetail = () => {
             </section>
           )}
 
-          {/* Before You Go */}
-          {beforeYouGoSection && beforeYouGoSection.content?.tips && (
+          {/* Before You Go Tips from countries table */}
+          {countryData.before_you_go_tips && Array.isArray(countryData.before_you_go_tips) && countryData.before_you_go_tips.length > 0 && (
+            <section id="before_you_go" className="my-8">
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold mb-6 flex items-center">
+                  <AlertCircle className="h-6 w-6 mr-2 text-primary" />
+                  Before You Go to {countryData.name}
+                </h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {countryData.before_you_go_tips.map((tip: string, index: number) => (
+                    <div key={index} className="flex items-start gap-3 p-4 border rounded-lg">
+                      <Lightbulb className="h-5 w-5 text-primary mt-0.5" />
+                      <p className="text-sm">{tip}</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </section>
+          )}
+
+          {/* Before You Go from sections table (fallback) */}
+          {(!countryData.before_you_go_tips || countryData.before_you_go_tips.length === 0) && beforeYouGoSection && beforeYouGoSection.content?.tips && (
             <section id="before_you_go" className="my-8">
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-6 flex items-center">
@@ -496,6 +536,41 @@ const CountryDetail = () => {
                     </div>
                   ))}
                 </div>
+              </Card>
+            </section>
+          )}
+
+          {/* Reasons to Visit from countries table */}
+          {countryData.reasons_to_visit && Array.isArray(countryData.reasons_to_visit) && countryData.reasons_to_visit.length > 0 && (
+            <section id="reasons_to_visit" className="my-8">
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold mb-6 flex items-center">
+                  <Heart className="h-6 w-6 mr-2 text-primary" />
+                  Why Visit {countryData.name}
+                </h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {countryData.reasons_to_visit.map((reason: string, index: number) => (
+                    <div key={index} className="flex items-start gap-3 p-4 bg-primary/5 rounded-lg border">
+                      <Heart className="h-5 w-5 text-primary mt-0.5" />
+                      <p className="text-sm">{reason}</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </section>
+          )}
+
+          {/* Reasons from sections table (fallback) */}
+          {(!countryData.reasons_to_visit || countryData.reasons_to_visit.length === 0) && reasonsSection && (
+            <section id="reasons_to_visit" className="my-8">
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold mb-4 flex items-center">
+                  <Heart className="h-6 w-6 mr-2 text-primary" />
+                  {reasonsSection.title}
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  {reasonsSection.content?.content}
+                </p>
               </Card>
             </section>
           )}
@@ -540,8 +615,23 @@ const CountryDetail = () => {
             </section>
           )}
 
-          {/* Food & Shopping */}
-          {foodShoppingSection && (
+          {/* Food & Shopping from countries table */}
+          {countryData.food_shopping_content && (
+            <section id="food_shopping" className="my-8">
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold mb-4 flex items-center">
+                  <Utensils className="h-6 w-6 mr-2 text-primary" />
+                  Food & Shopping in {countryData.name}
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  {countryData.food_shopping_content}
+                </p>
+              </Card>
+            </section>
+          )}
+
+          {/* Food & Shopping from sections table (fallback) */}
+          {!countryData.food_shopping_content && foodShoppingSection && (
             <section id="food_shopping" className="my-8">
               <div className="grid lg:grid-cols-2 gap-6">
                 <Card className="p-6">
@@ -567,8 +657,49 @@ const CountryDetail = () => {
             </section>
           )}
 
-          {/* Dos and Don'ts */}
-          {dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
+          {/* Do's and Don'ts from countries table */}
+          {countryData.dos_donts && typeof countryData.dos_donts === 'object' && !Array.isArray(countryData.dos_donts) && (
+            <section id="dos_donts" className="my-8">
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold mb-6 flex items-center">
+                  <AlertCircle className="h-6 w-6 mr-2 text-primary" />
+                  Do's and Don'ts in {countryData.name}
+                </h2>
+                <div className="grid lg:grid-cols-2 gap-6">
+                  {(countryData.dos_donts as any).dos && (countryData.dos_donts as any).dos.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 text-green-600">Do's</h3>
+                      <div className="space-y-3">
+                        {(countryData.dos_donts as any).dos.map((item: string, index: number) => (
+                          <div key={index} className="flex items-start gap-3">
+                            <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
+                            <p className="text-sm">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {(countryData.dos_donts as any).donts && (countryData.dos_donts as any).donts.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 text-red-600">Don'ts</h3>
+                      <div className="space-y-3">
+                        {(countryData.dos_donts as any).donts.map((item: string, index: number) => (
+                          <div key={index} className="flex items-start gap-3">
+                            <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+                            <p className="text-sm">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </section>
+          )}
+
+          {/* Do's and Don'ts from sections table (fallback) */}
+          {(!countryData.dos_donts || (typeof countryData.dos_donts === 'object' && (!((countryData.dos_donts as any).dos) || !((countryData.dos_donts as any).donts)))) && dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
             <section id="dos_donts" className="my-8">
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-6 flex items-center">
@@ -608,8 +739,23 @@ const CountryDetail = () => {
             </section>
           )}
 
-          {/* Art & Culture */}
-          {artCultureSection && (
+          {/* Art & Culture from countries table */}
+          {countryData.art_culture_content && (
+            <section id="art_culture" className="my-8">
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold mb-4 flex items-center">
+                  <Palette className="h-6 w-6 mr-2 text-primary" />
+                  Art & Culture in {countryData.name}
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  {countryData.art_culture_content}
+                </p>
+              </Card>
+            </section>
+          )}
+
+          {/* Art & Culture from sections table (fallback) */}
+          {!countryData.art_culture_content && artCultureSection && (
             <section id="art_culture" className="my-8">
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-4 flex items-center">
