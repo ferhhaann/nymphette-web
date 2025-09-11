@@ -16,6 +16,7 @@ import { CountryContentManager } from "./CountryContentManager"
 import { ContentSectionsManager } from "./ContentSectionsManager"
 import { AttractionsContentManager } from "./AttractionsContentManager"
 import { CountrySectionManager } from "./CountrySectionManager"
+import { TravelPurposeManager } from "./TravelPurposeManager"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { GenericFilter } from "./GenericFilter"
 import type { Database } from "@/integrations/supabase/types"
@@ -39,10 +40,35 @@ const createEmptyCountry = (): Partial<Country> => ({
   languages: [],
   speciality: '',
   culture: '',
+  description: '',
+  hero_image_url: '',
   annual_visitors: null,
   gender_male_percentage: null,
   gender_female_percentage: null,
+  overview_description: '',
+  about_content: '',
+  best_time_content: '',
+  food_shopping_content: '',
+  art_culture_content: '',
+  travel_tips: '',
   is_popular: false,
+  visitor_statistics: {
+    annual: null,
+    gender: { male: null, female: null },
+    purposes: [],
+    topOrigins: []
+  },
+  hero_images: [],
+  fun_facts: [],
+  before_you_go_tips: [],
+  reasons_to_visit: [],
+  dos_donts: [],
+  contact_info: {
+    email: "hello@nymphettetours.com",
+    phone: "+1 (555) 123-4567",
+    address: "",
+    whatsapp: ""
+  },
   created_at: null,
   updated_at: null
 })
@@ -196,8 +222,9 @@ export const CountryManager = () => {
       </div>
 
       <Tabs defaultValue="countries" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 h-auto">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-4 gap-1 h-auto">
           <TabsTrigger value="countries" className="p-3 text-sm">Countries Overview</TabsTrigger>
+          <TabsTrigger value="statistics" className="p-3 text-sm">Visitor Statistics</TabsTrigger>
           <TabsTrigger value="sections" className="p-3 text-sm">Content Sections</TabsTrigger>
           <TabsTrigger value="content" className="p-3 text-sm">Attractions & Content</TabsTrigger>
         </TabsList>
@@ -344,6 +371,10 @@ export const CountryManager = () => {
           )}
         </TabsContent>
         
+        <TabsContent value="statistics">
+          <TravelPurposeManager />
+        </TabsContent>
+        
         <TabsContent value="sections">
           <ContentSectionsManager />
         </TabsContent>
@@ -374,11 +405,42 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
     }
     return ''
   })
+  const [funFacts, setFunFacts] = useState<string>(
+    country?.fun_facts && Array.isArray(country.fun_facts) ? country.fun_facts.join('\n') : ''
+  )
+  const [beforeYouGoTips, setBeforeYouGoTips] = useState<string>(
+    country?.before_you_go_tips && Array.isArray(country.before_you_go_tips) ? country.before_you_go_tips.join('\n') : ''
+  )
+  const [reasonsToVisit, setReasonsToVisit] = useState<string>(
+    country?.reasons_to_visit && Array.isArray(country.reasons_to_visit) ? country.reasons_to_visit.join('\n') : ''
+  )
+  const [dosAndDonts, setDosAndDonts] = useState<string>(() => {
+    if (country?.dos_donts && typeof country.dos_donts === 'object' && !Array.isArray(country.dos_donts)) {
+      const dosData = country.dos_donts as any
+      const dos = dosData.dos || []
+      const donts = dosData.donts || []
+      return `DOS:\n${dos.join('\n')}\n\nDON'TS:\n${donts.join('\n')}`
+    }
+    return ''
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
     const topOrigins = topOriginCities.split(',').map(city => city.trim()).filter(Boolean)
+    
+    // Parse dos and don'ts
+    const dosAndDontsLines = dosAndDonts.split('\n')
+    const dosIndex = dosAndDontsLines.findIndex(line => line.toUpperCase().includes('DOS:'))
+    const dontsIndex = dosAndDontsLines.findIndex(line => line.toUpperCase().includes("DON'TS:"))
+    
+    let dos: string[] = []
+    let donts: string[] = []
+    
+    if (dosIndex !== -1 && dontsIndex !== -1) {
+      dos = dosAndDontsLines.slice(dosIndex + 1, dontsIndex).filter(line => line.trim())
+      donts = dosAndDontsLines.slice(dontsIndex + 1).filter(line => line.trim())
+    }
     
     const currentStats = formData.visitor_statistics && typeof formData.visitor_statistics === 'object' 
       ? formData.visitor_statistics as any 
@@ -387,10 +449,22 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
     const dataToSave = {
       ...formData,
       languages: languages.split(',').map(lang => lang.trim()).filter(Boolean),
-      slug: formData.slug || formData.name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-'),
+      slug: formData.slug || formData.name?.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-'),
       visitor_statistics: {
         ...currentStats,
+        annual: formData.annual_visitors,
+        gender: {
+          male: formData.gender_male_percentage,
+          female: formData.gender_female_percentage
+        },
         topOrigins
+      },
+      fun_facts: funFacts.split('\n').filter(fact => fact.trim()),
+      before_you_go_tips: beforeYouGoTips.split('\n').filter(tip => tip.trim()),
+      reasons_to_visit: reasonsToVisit.split('\n').filter(reason => reason.trim()),
+      dos_donts: {
+        dos,
+        donts
       }
     }
     
@@ -402,171 +476,325 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="name">Country Name</Label>
-          <Input
-            id="name"
-            value={formData.name}
-            onChange={(e) => updateField('name', e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="slug">Slug</Label>
-          <Input
-            id="slug"
-            value={formData.slug}
-            onChange={(e) => updateField('slug', e.target.value)}
-            placeholder="Auto-generated from name"
-          />
-        </div>
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <Tabs defaultValue="basic" className="w-full">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="basic">Basic Info</TabsTrigger>
+          <TabsTrigger value="statistics">Statistics</TabsTrigger>
+          <TabsTrigger value="content">Content</TabsTrigger>
+          <TabsTrigger value="tips">Tips & Facts</TabsTrigger>
+        </TabsList>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="region">Region</Label>
-          <Select value={formData.region} onValueChange={(value) => updateField('region', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select region" />
-            </SelectTrigger>
-            <SelectContent>
-              {["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"].map(region => (
-                <SelectItem key={region} value={region}>{region}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label htmlFor="capital">Capital</Label>
-          <Input
-            id="capital"
-            value={formData.capital || ''}
-            onChange={(e) => updateField('capital', e.target.value)}
-          />
-        </div>
-      </div>
+        <TabsContent value="basic" className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="name">Country Name</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => updateField('name', e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="slug">Slug</Label>
+              <Input
+                id="slug"
+                value={formData.slug}
+                onChange={(e) => updateField('slug', e.target.value)}
+                placeholder="Auto-generated from name"
+              />
+            </div>
+          </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="currency">Currency</Label>
-          <Input
-            id="currency"
-            value={formData.currency || ''}
-            onChange={(e) => updateField('currency', e.target.value)}
-          />
-        </div>
-        <div>
-          <Label htmlFor="best_season">Best Season</Label>
-          <Input
-            id="best_season"
-            value={formData.best_season || ''}
-            onChange={(e) => updateField('best_season', e.target.value)}
-          />
-        </div>
-      </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="region">Region</Label>
+              <Select value={formData.region} onValueChange={(value) => updateField('region', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select region" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"].map(region => (
+                    <SelectItem key={region} value={region}>{region}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="capital">Capital</Label>
+              <Input
+                id="capital"
+                value={formData.capital || ''}
+                onChange={(e) => updateField('capital', e.target.value)}
+              />
+            </div>
+          </div>
 
-      <div>
-        <Label htmlFor="climate">Climate</Label>
-        <Input
-          id="climate"
-          value={formData.climate || ''}
-          onChange={(e) => updateField('climate', e.target.value)}
-        />
-      </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="currency">Currency</Label>
+              <Input
+                id="currency"
+                value={formData.currency || ''}
+                onChange={(e) => updateField('currency', e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="best_season">Best Season</Label>
+              <Input
+                id="best_season"
+                value={formData.best_season || ''}
+                onChange={(e) => updateField('best_season', e.target.value)}
+              />
+            </div>
+          </div>
 
-      <div>
-        <Label htmlFor="languages">Languages (comma-separated)</Label>
-        <Input
-          id="languages"
-          value={languages}
-          onChange={(e) => setLanguages(e.target.value)}
-          placeholder="English, Hindi, etc."
-        />
-      </div>
+          <div>
+            <Label htmlFor="climate">Climate</Label>
+            <Input
+              id="climate"
+              value={formData.climate || ''}
+              onChange={(e) => updateField('climate', e.target.value)}
+            />
+          </div>
 
-      <div>
-        <Label htmlFor="speciality">Speciality</Label>
-        <Textarea
-          id="speciality"
-          value={formData.speciality || ''}
-          onChange={(e) => updateField('speciality', e.target.value)}
-          placeholder="What makes this country special?"
-        />
-      </div>
+          <div>
+            <Label htmlFor="languages">Languages (comma-separated)</Label>
+            <Input
+              id="languages"
+              value={languages}
+              onChange={(e) => setLanguages(e.target.value)}
+              placeholder="English, Hindi, etc."
+            />
+          </div>
 
-      <div>
-        <Label htmlFor="culture">Culture</Label>
-        <Textarea
-          id="culture"
-          value={formData.culture || ''}
-          onChange={(e) => updateField('culture', e.target.value)}
-          placeholder="Cultural highlights and traditions"
-        />
-      </div>
+          <div>
+            <Label htmlFor="hero_image_url">Hero Image URL</Label>
+            <Input
+              id="hero_image_url"
+              value={formData.hero_image_url || ''}
+              onChange={(e) => updateField('hero_image_url', e.target.value)}
+              placeholder="URL for the main hero image"
+            />
+          </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <Label htmlFor="annual_visitors">Annual Visitors</Label>
-          <Input
-            id="annual_visitors"
-            type="number"
-            value={formData.annual_visitors || ''}
-            onChange={(e) => updateField('annual_visitors', parseInt(e.target.value) || null)}
-          />
-        </div>
-        <div>
-          <Label htmlFor="gender_male_percentage">Male Visitors %</Label>
-          <Input
-            id="gender_male_percentage"
-            type="number"
-            min="0"
-            max="100"
-            value={formData.gender_male_percentage || ''}
-            onChange={(e) => updateField('gender_male_percentage', parseInt(e.target.value) || null)}
-          />
-        </div>
-        <div>
-          <Label htmlFor="gender_female_percentage">Female Visitors %</Label>
-          <Input
-            id="gender_female_percentage"
-            type="number"
-            min="0"
-            max="100"
-            value={formData.gender_female_percentage || ''}
-            onChange={(e) => updateField('gender_female_percentage', parseInt(e.target.value) || null)}
-          />
-        </div>
-      </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="is_popular"
+              checked={formData.is_popular || false}
+              onCheckedChange={(checked) => updateField('is_popular', checked)}
+            />
+            <Label htmlFor="is_popular" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Mark as Popular Destination (will appear on homepage)
+            </Label>
+          </div>
+        </TabsContent>
 
-      <div>
-        <Label htmlFor="top_origin_cities">Top Origin Cities (comma-separated)</Label>
-        <Input
-          id="top_origin_cities"
-          value={topOriginCities}
-          onChange={(e) => setTopOriginCities(e.target.value)}
-          placeholder="Mumbai, Delhi, Bangalore, Chennai, Kolkata"
-        />
-      </div>
+        <TabsContent value="statistics" className="space-y-4">
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <Label htmlFor="annual_visitors">Annual Visitors</Label>
+              <Input
+                id="annual_visitors"
+                type="number"
+                value={formData.annual_visitors || ''}
+                onChange={(e) => updateField('annual_visitors', parseInt(e.target.value) || null)}
+                placeholder="e.g., 5000000"
+              />
+            </div>
+            <div>
+              <Label htmlFor="gender_male_percentage">Male Visitors %</Label>
+              <Input
+                id="gender_male_percentage"
+                type="number"
+                min="0"
+                max="100"
+                value={formData.gender_male_percentage || ''}
+                onChange={(e) => updateField('gender_male_percentage', parseInt(e.target.value) || null)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="gender_female_percentage">Female Visitors %</Label>
+              <Input
+                id="gender_female_percentage"
+                type="number"
+                min="0"
+                max="100"
+                value={formData.gender_female_percentage || ''}
+                onChange={(e) => updateField('gender_female_percentage', parseInt(e.target.value) || null)}
+              />
+            </div>
+          </div>
 
-      <div className="flex items-center space-x-2">
-        <Checkbox 
-          id="is_popular"
-          checked={formData.is_popular || false}
-          onCheckedChange={(checked) => updateField('is_popular', checked)}
-        />
-        <Label htmlFor="is_popular" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Mark as Popular Destination (will appear on homepage)
-        </Label>
-      </div>
+          <div>
+            <Label htmlFor="top_origin_cities">Top Origin Cities (comma-separated)</Label>
+            <Input
+              id="top_origin_cities"
+              value={topOriginCities}
+              onChange={(e) => setTopOriginCities(e.target.value)}
+              placeholder="Mumbai, Delhi, Bangalore, Chennai, Kolkata"
+            />
+          </div>
+        </TabsContent>
 
-      <div className="flex justify-end gap-2">
+        <TabsContent value="content" className="space-y-4">
+          <div>
+            <Label htmlFor="description">Main Description</Label>
+            <Textarea
+              id="description"
+              value={formData.description || ''}
+              onChange={(e) => updateField('description', e.target.value)}
+              placeholder="Brief description of the country"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="speciality">Speciality</Label>
+            <Textarea
+              id="speciality"
+              value={formData.speciality || ''}
+              onChange={(e) => updateField('speciality', e.target.value)}
+              placeholder="What makes this country special?"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="culture">Culture</Label>
+            <Textarea
+              id="culture"
+              value={formData.culture || ''}
+              onChange={(e) => updateField('culture', e.target.value)}
+              placeholder="Cultural highlights and traditions"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="overview_description">Overview Description</Label>
+            <Textarea
+              id="overview_description"
+              value={formData.overview_description || ''}
+              onChange={(e) => updateField('overview_description', e.target.value)}
+              placeholder="Detailed overview for the country page"
+              rows={4}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="about_content">About Content</Label>
+            <Textarea
+              id="about_content"
+              value={formData.about_content || ''}
+              onChange={(e) => updateField('about_content', e.target.value)}
+              placeholder="About this destination content"
+              rows={4}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="best_time_content">Best Time to Visit Content</Label>
+            <Textarea
+              id="best_time_content"
+              value={formData.best_time_content || ''}
+              onChange={(e) => updateField('best_time_content', e.target.value)}
+              placeholder="Detailed information about the best time to visit"
+              rows={4}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="food_shopping_content">Food & Shopping Content</Label>
+            <Textarea
+              id="food_shopping_content"
+              value={formData.food_shopping_content || ''}
+              onChange={(e) => updateField('food_shopping_content', e.target.value)}
+              placeholder="Information about local food and shopping"
+              rows={4}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="art_culture_content">Art & Culture Content</Label>
+            <Textarea
+              id="art_culture_content"
+              value={formData.art_culture_content || ''}
+              onChange={(e) => updateField('art_culture_content', e.target.value)}
+              placeholder="Information about art and culture"
+              rows={4}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="travel_tips">Travel Tips</Label>
+            <Textarea
+              id="travel_tips"
+              value={formData.travel_tips || ''}
+              onChange={(e) => updateField('travel_tips', e.target.value)}
+              placeholder="General travel tips for this destination"
+              rows={4}
+            />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="tips" className="space-y-4">
+          <div>
+            <Label htmlFor="fun_facts">Fun Facts (one per line)</Label>
+            <Textarea
+              id="fun_facts"
+              value={funFacts}
+              onChange={(e) => setFunFacts(e.target.value)}
+              placeholder="Enter fun facts, one per line"
+              rows={6}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="before_you_go_tips">Before You Go Tips (one per line)</Label>
+            <Textarea
+              id="before_you_go_tips"
+              value={beforeYouGoTips}
+              onChange={(e) => setBeforeYouGoTips(e.target.value)}
+              placeholder="Enter before you go tips, one per line"
+              rows={6}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="reasons_to_visit">Reasons to Visit (one per line)</Label>
+            <Textarea
+              id="reasons_to_visit"
+              value={reasonsToVisit}
+              onChange={(e) => setReasonsToVisit(e.target.value)}
+              placeholder="Enter reasons to visit, one per line"
+              rows={6}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="dos_donts">Do's and Don'ts</Label>
+            <Textarea
+              id="dos_donts"
+              value={dosAndDonts}
+              onChange={(e) => setDosAndDonts(e.target.value)}
+              placeholder={`DOS:\nRespect local customs\nTry local food\n\nDON'TS:\nDon't litter\nDon't be loud in temples`}
+              rows={8}
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Format: Start with "DOS:" followed by items, then "DON'TS:" followed by items, one per line
+            </p>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      <div className="flex justify-end gap-2 pt-4 border-t">
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
         <Button type="submit">
-          {formData.id ? 'Update' : 'Create'}
+          {formData.id ? 'Update Country' : 'Create Country'}
         </Button>
       </div>
     </form>
