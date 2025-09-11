@@ -14,15 +14,19 @@ import { useEffect } from "react";
 import heroImage from "@/assets/hero-mountain-road.jpg";
 import regionsImage from "@/assets/regions-world.jpg";
 const Index = () => {
+  console.log('Index component rendering...');
+  
   // Add error boundary for hooks
   try {
     useStaticSEO(); // This will fetch and apply SEO settings from database
     usePerformanceOptimization();
+    console.log('Hooks initialized successfully');
   } catch (error) {
     console.error('Hook error:', error);
   }
   
   useEffect(() => {
+    console.log('Index useEffect - preloading images');
     // Preload critical images for faster loading
     preloadCriticalImages([heroImage, regionsImage]);
   }, []);
