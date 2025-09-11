@@ -56,7 +56,13 @@ All colors MUST be HSL.
     /* Visual tokens */
     --hero-gradient: linear-gradient(180deg, hsl(var(--foreground) / 0.4), hsl(var(--foreground) / 0.6));
     --subtle-gradient: linear-gradient(135deg, hsl(var(--secondary) / 0.5), hsl(var(--secondary) / 0.8));
+    --card-gradient: linear-gradient(135deg, hsl(var(--card)), hsl(var(--muted) / 0.5));
+    --ocean-gradient: linear-gradient(180deg, hsl(var(--primary) / 0.8), hsl(var(--accent) / 0.6));
     --glass-effect: hsl(var(--background) / 0.7);
+    
+    /* Shadow tokens */
+    --shadow-travel: 0 4px 6px -1px hsl(var(--primary) / 0.1), 0 2px 4px -1px hsl(var(--primary) / 0.06);
+    --shadow-card: 0 1px 3px 0 hsl(var(--foreground) / 0.1), 0 1px 2px 0 hsl(var(--foreground) / 0.06);
     
     /* Travel-specific spacing */
     --section-padding: 4rem;
@@ -65,40 +71,40 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Dark Blue Admin Theme */
-    --background: 220 30% 8%;
-    --foreground: 220 10% 95%;
+    /* Dark Blue Admin Theme - Improved contrast */
+    --background: 220 30% 6%;              /* Darker background for better contrast */
+    --foreground: 220 10% 98%;             /* Almost white text */
     
-    --card: 220 30% 12%;
-    --card-foreground: 220 10% 95%;
+    --card: 220 30% 10%;                   /* Darker cards */
+    --card-foreground: 220 10% 98%;       /* White text on cards */
     
-    --popover: 220 30% 12%;
-    --popover-foreground: 220 10% 95%;
+    --popover: 220 30% 10%;
+    --popover-foreground: 220 10% 98%;
     
-    --primary: 220 90% 65%;
-    --primary-foreground: 220 30% 8%;
+    --primary: 220 90% 65%;                /* Bright blue primary */
+    --primary-foreground: 220 30% 6%;     /* Dark text on primary */
     
-    --secondary: 220 30% 15%;
-    --secondary-foreground: 220 10% 95%;
+    --secondary: 220 30% 16%;              /* Lighter secondary for better contrast */
+    --secondary-foreground: 220 10% 95%;  /* White text on secondary */
     
-    --muted: 220 30% 15%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 220 30% 14%;                  /* Muted backgrounds */
+    --muted-foreground: 220 10% 75%;      /* Better contrast for muted text */
     
-    --accent: 210 80% 70%;
-    --accent-foreground: 220 30% 8%;
+    --accent: 210 80% 70%;                 /* Bright accent */
+    --accent-foreground: 220 30% 6%;      /* Dark text on accent */
     
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 220 10% 95%;
+    --destructive: 0 65% 55%;              /* Brighter destructive color */
+    --destructive-foreground: 220 10% 98%;
     
-    --border: 220 30% 18%;
-    --input: 220 30% 18%;
+    --border: 220 30% 20%;                 /* More visible borders */
+    --input: 220 30% 18%;                  /* Input backgrounds */
     --ring: 220 90% 65%;
     
     /* Dark admin colors */
     --admin-blue: 220 90% 65%;
     --admin-blue-dark: 220 90% 55%;
-    --admin-blue-light: 220 40% 25%;
-    --admin-sidebar: 220 30% 12%;
+    --admin-blue-light: 220 40% 30%;      /* Better contrast */
+    --admin-sidebar: 220 30% 10%;         /* Darker sidebar */
     --admin-accent: 210 80% 70%;
   }
 }
@@ -110,6 +116,8 @@ All colors MUST be HSL.
   
   body {
     @apply bg-background text-foreground;
+    /* Force high contrast for better text visibility */
+    color-scheme: dark;
     /* Improve mobile touch targets */
     -webkit-tap-highlight-color: transparent;
     /* Prevent horizontal scroll on mobile */
@@ -293,6 +301,41 @@ All colors MUST be HSL.
     @apply relative min-h-[50vh] sm:min-h-[60vh] lg:min-h-[70vh];
     @apply flex items-center justify-center;
     @apply bg-gradient-to-b from-primary/20 to-primary/40;
+  }
+  
+  /* Admin Panel Specific Styles */
+  .admin-panel {
+    @apply bg-background text-foreground;
+    min-height: 100vh;
+  }
+  
+  .admin-panel * {
+    @apply text-foreground;
+  }
+  
+  .admin-panel .text-muted-foreground {
+    @apply text-muted-foreground;
+    opacity: 0.8;
+  }
+  
+  /* Force text visibility in dark mode */
+  .dark .admin-panel {
+    color-scheme: dark;
+  }
+  
+  .dark .admin-panel h1,
+  .dark .admin-panel h2, 
+  .dark .admin-panel h3,
+  .dark .admin-panel h4,
+  .dark .admin-panel p,
+  .dark .admin-panel span,
+  .dark .admin-panel label {
+    @apply text-foreground;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  .dark .admin-panel .text-muted-foreground {
+    color: hsl(var(--muted-foreground)) !important;
   }
   
   .package-grid {

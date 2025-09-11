@@ -155,7 +155,7 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
   }
 
   return (
-    <Sidebar collapsible="icon" className="border-r bg-card dark:bg-card border-border">
+    <Sidebar collapsible="icon" className="border-r bg-card border-border admin-panel">
       <SidebarHeader className="border-b border-border bg-gradient-to-r from-primary/90 to-accent/90 text-primary-foreground">
         <div className="flex items-center gap-3 px-2 py-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
@@ -170,7 +170,7 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="gap-0 py-4 bg-muted/20 dark:bg-background/40">
+      <SidebarContent className="gap-0 py-4 bg-muted/20 admin-panel">
         {/* Main Section */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-3">
@@ -355,7 +355,7 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border bg-muted/20 dark:bg-background/40">
+      <SidebarFooter className="border-t border-border bg-muted/20 admin-panel">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
