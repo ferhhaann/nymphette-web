@@ -116,12 +116,10 @@ const AdminDashboard = () => {
 
   if (loading || (isAuthenticated && !adminCheckComplete)) {
     return (
-      <div className="dark">
-        <div className="flex items-center justify-center min-h-screen bg-background">
-          <div className="text-center space-y-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="text-foreground font-medium">Loading admin dashboard...</p>
-          </div>
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading admin dashboard...</p>
         </div>
       </div>
     )
@@ -129,22 +127,20 @@ const AdminDashboard = () => {
 
   if (isAuthenticated && adminCheckComplete && !isAdmin) {
     return (
-      <div className="dark">
-        <div className="min-h-screen bg-background flex items-center justify-center">
-          <Card className="max-w-md w-full bg-card border-border">
-            <CardHeader>
-              <CardTitle className="text-center text-destructive">Access Denied</CardTitle>
-              <CardDescription className="text-center text-muted-foreground">
-                You don't have admin privileges to access this dashboard.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center">
-              <Button onClick={signOut} variant="outline" className="text-foreground">
-                Sign Out
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="max-w-md w-full">
+          <CardHeader>
+            <CardTitle className="text-center text-destructive">Access Denied</CardTitle>
+            <CardDescription className="text-center">
+              You don't have admin privileges to access this dashboard.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <Button onClick={signOut} variant="outline">
+              Sign Out
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     )
   }
@@ -209,9 +205,9 @@ const AdminDashboard = () => {
     }
 
     return (
-      <div className="dark admin-panel">
+      <div className="dark">
         <SidebarProvider>
-          <div className="min-h-screen flex w-full bg-background admin-panel">
+          <div className="min-h-screen flex w-full bg-background dark:bg-background">
             <AdminSidebar 
               activeSection={activeSection}
               onSectionChange={setActiveSection}
@@ -220,7 +216,7 @@ const AdminDashboard = () => {
             
             <SidebarInset className="flex-1">
               {/* Header */}
-              <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-4 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/95 px-6 shadow-sm admin-panel">
+              <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-4 border-b border-border bg-card/95 dark:bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/95 px-6 shadow-sm">
                 <SidebarTrigger className="-ml-1 h-8 w-8 hover:bg-muted/80 rounded-lg transition-colors" />
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col">
@@ -241,7 +237,7 @@ const AdminDashboard = () => {
               </header>
 
               {/* Main Content */}
-              <main className="flex-1 p-6 md:p-8 space-y-6 bg-background min-h-screen admin-panel">
+              <main className="flex-1 p-6 md:p-8 space-y-6 bg-background dark:bg-background min-h-screen">
                 <div className="min-h-0 max-w-7xl mx-auto">
                   {renderActiveContent()}
                 </div>
@@ -254,8 +250,8 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="dark admin-panel">
-      <div className="min-h-screen bg-background admin-panel">
+    <div className="dark">
+      <div className="min-h-screen bg-background dark:bg-background">
         <div className="container mx-auto px-4 py-8">
           <header className="text-center mb-8">
             <h1 className="text-4xl font-bold text-foreground mb-2">
@@ -294,10 +290,10 @@ const AuthForm = ({ onSignIn }: AuthFormProps) => {
 
   return (
     <div className="max-w-md mx-auto">
-      <Card className="shadow-lg bg-card border-border">
+      <Card className="shadow-lg bg-card dark:bg-card border-border">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-foreground">Admin Login</CardTitle>
-          <CardDescription className="text-muted-foreground">
+          <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
+          <CardDescription>
             Sign in to access the admin dashboard with SEO management tools
           </CardDescription>
         </CardHeader>
