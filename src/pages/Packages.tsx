@@ -260,7 +260,7 @@ const Packages = () => {
                 style={{ animationDelay: `${index * 100}ms` }}
                 onClick={() => handleRegionClick(region.name)}
               >
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden rounded-lg">
                   <ImageSlideshow
                     images={region.images}
                     alt={`${region.name} travel destinations and highlights`}
