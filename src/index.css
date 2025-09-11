@@ -314,7 +314,7 @@ All colors MUST be HSL.
   }
   
   .admin-panel .text-muted-foreground {
-    @apply text-muted-foreground;
+    color: hsl(var(--muted-foreground));
     opacity: 0.8;
   }
   
@@ -330,7 +330,6 @@ All colors MUST be HSL.
   .dark .admin-panel p,
   .dark .admin-panel span,
   .dark .admin-panel label {
-    @apply text-foreground;
     color: hsl(var(--foreground)) !important;
   }
   
