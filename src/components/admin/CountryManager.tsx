@@ -168,11 +168,11 @@ export const CountryManager = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-foreground">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Countries Management</h1>
+          <h1 className="text-2xl font-bold text-foreground">Countries Management</h1>
           <p className="text-muted-foreground">Manage all destination countries and their information</p>
         </div>
         <Button onClick={() => { setEditingCountry(createEmptyCountry()); setIsDialogOpen(true) }}>
@@ -207,7 +207,7 @@ export const CountryManager = () => {
 
       {/* Tabs Navigation */}
       <Tabs defaultValue="countries" className="w-full">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-2 items-stretch justify-items-stretch [&>button]:w-full">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-2 items-stretch justify-items-stretch [&>button]:w-full bg-muted p-1 rounded-lg text-muted-foreground">
           <TabsTrigger value="countries" className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
             Countries
@@ -236,7 +236,7 @@ export const CountryManager = () => {
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
                         <div className="space-y-1">
-                          <CardTitle className="text-base">{country.name}</CardTitle>
+                          <CardTitle className="text-base text-foreground">{country.name}</CardTitle>
                           <CardDescription>{country.capital} • {country.region}</CardDescription>
                         </div>
                         {country.is_popular && (
