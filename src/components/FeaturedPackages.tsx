@@ -47,13 +47,13 @@ const FeaturedPackages = () => {
               className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
               style={{ animationDelay: `${index * 200}ms` }}
             >
-              <div className="relative overflow-hidden rounded-t-lg">
+              <div className="relative overflow-hidden rounded-t-lg h-64">
                 <OptimizedImage
                   src={pkg.image}
                   alt={`${pkg.title} - ${pkg.country} travel package`}
                   priority={index < 3}
                   preloadSources={packages?.slice(index + 1, index + 3).map(p => p.image) || []}
-                  className="w-full h-64 object-cover"
+                  className="w-full h-full object-cover"
                 />
                 <div className="absolute top-4 left-4">
                   <Badge variant="secondary" className="bg-foreground text-background">
