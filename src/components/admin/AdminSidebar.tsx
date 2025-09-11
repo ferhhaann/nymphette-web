@@ -164,17 +164,37 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
   const { state } = useSidebar()
   const location = useLocation()
   const isCollapsed = state === "collapsed"
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
+    // Auto-expand groups based on active section
+    "countries": activeSection.startsWith("country"),
+    "packages": activeSection.startsWith("package"),
+    "group-tours": activeSection.startsWith("tour") || activeSection === "group-tours",
+    "blog": activeSection.startsWith("blog"),
+    "content": activeSection.startsWith("content"),
+    "seo": activeSection.startsWith("seo"),
+    "enquiries": activeSection.startsWith("enquiries"),
+    "contact": activeSection.startsWith("contact")
+  })
 
   const isActive = (value: string) => activeSection === value
   const isSubItemActive = (parentValue: string, subItems: any[]) => 
-    subItems.some(sub => isActive(sub.value))
+    subItems.some(sub => isActive(sub.value)) || isActive(parentValue)
 
   const toggleGroup = (groupValue: string) => {
     setExpandedGroups(prev => ({
       ...prev,
       [groupValue]: !prev[groupValue]
     }))
+  }
+
+  const handleMenuClick = (item: any) => {
+    if (item.subItems.length > 0) {
+      toggleGroup(item.value)
+      // If group has subitems, also navigate to the main section
+      onSectionChange(item.value)
+    } else {
+      onSectionChange(item.value)
+    }
   }
 
   return (
@@ -206,13 +226,7 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                   <div>
                     <SidebarMenuButton
                       isActive={isActive(item.value) || isSubItemActive(item.value, item.subItems)}
-                      onClick={() => {
-                        if (item.subItems.length === 0) {
-                          onSectionChange(item.value)
-                        } else {
-                          toggleGroup(item.value)
-                        }
-                      }}
+                      onClick={() => handleMenuClick(item)}
                       tooltip={isCollapsed ? item.title : undefined}
                       className={`rounded-lg transition-all duration-200 w-full ${
                         isActive(item.value) || isSubItemActive(item.value, item.subItems)
@@ -272,13 +286,7 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                   <div>
                     <SidebarMenuButton
                       isActive={isActive(item.value) || isSubItemActive(item.value, item.subItems)}
-                      onClick={() => {
-                        if (item.subItems.length === 0) {
-                          onSectionChange(item.value)
-                        } else {
-                          toggleGroup(item.value)
-                        }
-                      }}
+                      onClick={() => handleMenuClick(item)}
                       tooltip={isCollapsed ? item.title : undefined}
                       className={`rounded-lg transition-all duration-200 w-full ${
                         isActive(item.value) || isSubItemActive(item.value, item.subItems)
@@ -338,13 +346,7 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                   <div>
                     <SidebarMenuButton
                       isActive={isActive(item.value) || isSubItemActive(item.value, item.subItems)}
-                      onClick={() => {
-                        if (item.subItems.length === 0) {
-                          onSectionChange(item.value)
-                        } else {
-                          toggleGroup(item.value)
-                        }
-                      }}
+                      onClick={() => handleMenuClick(item)}
                       tooltip={isCollapsed ? item.title : undefined}
                       className={`rounded-lg transition-all duration-200 w-full ${
                         isActive(item.value) || isSubItemActive(item.value, item.subItems)

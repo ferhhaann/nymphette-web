@@ -147,71 +147,43 @@ const AdminDashboard = () => {
 
   if (isAuthenticated && isAdmin) {
     const renderActiveContent = () => {
+      // Route all submenu items to their parent components with proper context
+      if (activeSection.startsWith("country") || activeSection === "countries" || activeSection === "travel-purposes") {
+        return <CountryManager />
+      }
+      
+      if (activeSection.startsWith("package") || activeSection === "packages") {
+        return <PackageManager />
+      }
+      
+      if (activeSection.startsWith("tour") || activeSection === "group-tours") {
+        return <GroupTourManager />
+      }
+      
+      if (activeSection.startsWith("blog") || activeSection === "blog") {
+        return <BlogManager />
+      }
+      
+      if (activeSection.startsWith("content") || activeSection === "content") {
+        return <ContentManager />
+      }
+      
+      if (activeSection.startsWith("seo") || activeSection === "seo") {
+        return <SEOManager />
+      }
+      
+      if (activeSection.startsWith("contact") || activeSection === "contact") {
+        return <ContactManager />
+      }
+      
+      if (activeSection.startsWith("enquiries") || activeSection === "enquiries") {
+        return <EnquiryManager />
+      }
+
+      // Default cases
       switch (activeSection) {
-        // Main Dashboard
         case "overview":
           return <AdminOverview />
-        
-        // Countries Management
-        case "countries":
-        case "country-statistics":
-        case "country-attractions":
-        case "country-content":
-        case "travel-purposes":
-          return <CountryManager />
-        
-        // Package Management
-        case "packages":
-        case "featured-packages":
-        case "package-categories":
-        case "package-bulk-upload":
-        case "package-analytics":
-          return <PackageManager />
-        
-        // Group Tours
-        case "group-tours":
-        case "tour-categories":
-        case "tour-schedules":
-        case "tour-bookings":
-          return <GroupTourManager />
-        
-        // Content Management
-        case "blog":
-        case "blog-categories":
-        case "blog-featured":
-        case "blog-drafts":
-        case "blog-comments":
-          return <BlogManager />
-        
-        case "content":
-        case "content-homepage":
-        case "content-about":
-        case "content-contact":
-        case "content-static":
-        case "content-footer":
-          return <ContentManager />
-        
-        case "seo":
-        case "seo-meta":
-        case "seo-urls":
-        case "seo-sitemap":
-        case "seo-analytics":
-          return <SEOManager />
-        
-        // Customer Support
-        case "contact":
-        case "contact-unread":
-        case "contact-support":
-        case "contact-feedback":
-          return <ContactManager />
-        
-        case "enquiries":
-        case "enquiries-pending":
-        case "enquiries-progress":
-        case "enquiries-resolved":
-        case "enquiries-followup":
-          return <EnquiryManager />
-        
         default:
           return <AdminOverview />
       }

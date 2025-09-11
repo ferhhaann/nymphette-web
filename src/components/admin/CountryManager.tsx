@@ -433,23 +433,65 @@ export const CountryManager = () => {
         </TabsContent>
 
         <TabsContent value="statistics" className="mt-6">
-          <div className="text-center p-8 text-muted-foreground">
-            <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <h3 className="text-lg font-medium mb-2">Visitor Statistics</h3>
-            <p>Select a country to view detailed statistics.</p>
+          <div className="bg-card rounded-lg p-6 border border-border">
+            <div className="text-center space-y-4">
+              <Users className="h-12 w-12 mx-auto text-muted-foreground opacity-50" />
+              <h3 className="text-lg font-medium text-foreground">Visitor Statistics</h3>
+              <p className="text-muted-foreground">
+                Select a specific country from the Countries tab to view and manage detailed visitor statistics, 
+                demographics, and travel purpose data.
+              </p>
+              <Button 
+                onClick={() => {}} // This would switch to countries tab
+                variant="outline"
+                className="mt-4"
+              >
+                Go to Countries Management
+              </Button>
+            </div>
           </div>
         </TabsContent>
 
         <TabsContent value="content-sections" className="mt-6">
-          <ContentSectionsManager />
+          <div className="bg-card rounded-lg p-6 border border-border">
+            <div className="text-center space-y-4 mb-6">
+              <FileText className="h-12 w-12 mx-auto text-muted-foreground opacity-50" />
+              <h3 className="text-lg font-medium text-foreground">Content Sections</h3>
+              <p className="text-muted-foreground">
+                Manage page sections, content blocks, and structured information for your website.
+                This includes homepage content, about sections, and other static content areas.
+              </p>
+            </div>
+            <ContentSectionsManager />
+          </div>
         </TabsContent>
 
         <TabsContent value="attractions" className="mt-6">
-          <AttractionsContentManager />
+          <div className="bg-card rounded-lg p-6 border border-border">
+            <div className="text-center space-y-4 mb-6">
+              <MapPin className="h-12 w-12 mx-auto text-muted-foreground opacity-50" />
+              <h3 className="text-lg font-medium text-foreground">Attractions Management</h3>
+              <p className="text-muted-foreground">
+                Manage tourist attractions, famous places, and points of interest for all countries.
+                Add descriptions, images, and categorize attractions by type and popularity.
+              </p>
+            </div>
+            <AttractionsContentManager />
+          </div>
         </TabsContent>
 
         <TabsContent value="purposes" className="mt-6">
-          <TravelPurposeManager />
+          <div className="bg-card rounded-lg p-6 border border-border">
+            <div className="text-center space-y-4 mb-6">
+              <BookOpen className="h-12 w-12 mx-auto text-muted-foreground opacity-50" />
+              <h3 className="text-lg font-medium text-foreground">Travel Purposes</h3>
+              <p className="text-muted-foreground">
+                Manage travel purpose categories and statistics. Define why people visit different countries
+                and track visitor motivations for data analysis and marketing insights.
+              </p>
+            </div>
+            <TravelPurposeManager />
+          </div>
         </TabsContent>
       </Tabs>
 
@@ -503,11 +545,13 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="basic">Basic Info</TabsTrigger>
           <TabsTrigger value="details">Details</TabsTrigger>
           <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="media">Media</TabsTrigger>
+          <TabsTrigger value="media">Media & Contact</TabsTrigger>
+          <TabsTrigger value="lists">Lists & Facts</TabsTrigger>
+          <TabsTrigger value="advanced">Advanced</TabsTrigger>
         </TabsList>
 
         <TabsContent value="basic" className="space-y-4">
@@ -588,6 +632,25 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
                 placeholder="Enter best season to visit"
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="annual_visitors">Annual Visitors</Label>
+              <Input
+                id="annual_visitors"
+                type="number"
+                value={formData.annual_visitors || ''}
+                onChange={(e) => updateField('annual_visitors', parseInt(e.target.value) || null)}
+                placeholder="Number of annual visitors"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="languages">Languages</Label>
+              <Input
+                id="languages"
+                value={Array.isArray(formData.languages) ? formData.languages.join(', ') : ''}
+                onChange={(e) => updateField('languages', e.target.value.split(',').map(lang => lang.trim()))}
+                placeholder="Languages spoken (comma separated)"
+              />
+            </div>
           </div>
           
           <div className="space-y-2">
@@ -599,17 +662,83 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
               placeholder="What makes this country special?"
             />
           </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="culture">Culture</Label>
+            <Textarea
+              id="culture"
+              value={formData.culture || ''}
+              onChange={(e) => updateField('culture', e.target.value)}
+              placeholder="Describe the culture"
+              rows={3}
+            />
+          </div>
         </TabsContent>
 
         <TabsContent value="content" className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">General Description</Label>
             <Textarea
               id="description"
               value={formData.description || ''}
               onChange={(e) => updateField('description', e.target.value)}
               placeholder="Enter country description"
               rows={4}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="overview_description">Overview Description</Label>
+            <Textarea
+              id="overview_description"
+              value={formData.overview_description || ''}
+              onChange={(e) => updateField('overview_description', e.target.value)}
+              placeholder="Enter overview description"
+              rows={3}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="about_content">About Content</Label>
+            <Textarea
+              id="about_content"
+              value={formData.about_content || ''}
+              onChange={(e) => updateField('about_content', e.target.value)}
+              placeholder="Enter about content"
+              rows={4}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="best_time_content">Best Time to Visit</Label>
+            <Textarea
+              id="best_time_content"
+              value={formData.best_time_content || ''}
+              onChange={(e) => updateField('best_time_content', e.target.value)}
+              placeholder="Enter best time to visit information"
+              rows={3}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="food_shopping_content">Food & Shopping</Label>
+            <Textarea
+              id="food_shopping_content"
+              value={formData.food_shopping_content || ''}
+              onChange={(e) => updateField('food_shopping_content', e.target.value)}
+              placeholder="Enter food and shopping information"
+              rows={3}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="art_culture_content">Art & Culture</Label>
+            <Textarea
+              id="art_culture_content"
+              value={formData.art_culture_content || ''}
+              onChange={(e) => updateField('art_culture_content', e.target.value)}
+              placeholder="Enter art and culture information"
+              rows={3}
             />
           </div>
           
@@ -626,14 +755,217 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
         </TabsContent>
 
         <TabsContent value="media" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="hero_image_url">Hero Image URL</Label>
+              <Input
+                id="hero_image_url"
+                value={formData.hero_image_url || ''}
+                onChange={(e) => updateField('hero_image_url', e.target.value)}
+                placeholder="Enter hero image URL"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="map_outline_url">Map Outline URL</Label>
+              <Input
+                id="map_outline_url"
+                value={formData.map_outline_url || ''}
+                onChange={(e) => updateField('map_outline_url', e.target.value)}
+                placeholder="Enter map outline URL"
+              />
+            </div>
+          </div>
+          
           <div className="space-y-2">
-            <Label htmlFor="hero_image_url">Hero Image URL</Label>
-            <Input
-              id="hero_image_url"
-              value={formData.hero_image_url || ''}
-              onChange={(e) => updateField('hero_image_url', e.target.value)}
-              placeholder="Enter hero image URL"
-            />
+            <Label>Contact Information</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg">
+              <div className="space-y-2">
+                <Label htmlFor="contact_email">Email</Label>
+                <Input
+                  id="contact_email"
+                  value={formData.contact_email || ''}
+                  onChange={(e) => updateField('contact_email', e.target.value)}
+                  placeholder="Contact email"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contact_phone">Phone</Label>
+                <Input
+                  id="contact_phone"
+                  value={formData.contact_phone || ''}
+                  onChange={(e) => updateField('contact_phone', e.target.value)}
+                  placeholder="Contact phone"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Visitor Demographics</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg">
+              <div className="space-y-2">
+                <Label htmlFor="gender_male_percentage">Male Visitors (%)</Label>
+                <Input
+                  id="gender_male_percentage"
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={formData.gender_male_percentage || ''}
+                  onChange={(e) => updateField('gender_male_percentage', parseInt(e.target.value) || null)}
+                  placeholder="Male percentage"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="gender_female_percentage">Female Visitors (%)</Label>
+                <Input
+                  id="gender_female_percentage"
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={formData.gender_female_percentage || ''}
+                  onChange={(e) => updateField('gender_female_percentage', parseInt(e.target.value) || null)}
+                  placeholder="Female percentage"
+                />
+              </div>
+            </div>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="lists" className="space-y-4">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Fun Facts</Label>
+              <div className="space-y-2 p-4 border rounded-lg">
+                <p className="text-sm text-muted-foreground">Add interesting facts about the country (JSON array format)</p>
+                <Textarea
+                  value={JSON.stringify(formData.fun_facts || [], null, 2)}
+                  onChange={(e) => {
+                    try {
+                      const parsed = JSON.parse(e.target.value)
+                      updateField('fun_facts', parsed)
+                    } catch (error) {
+                      // Handle JSON parsing error
+                    }
+                  }}
+                  placeholder='["Fact 1", "Fact 2", "Fact 3"]'
+                  rows={4}
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Before You Go Tips</Label>
+              <div className="space-y-2 p-4 border rounded-lg">
+                <p className="text-sm text-muted-foreground">Important tips for travelers (JSON array format)</p>
+                <Textarea
+                  value={JSON.stringify(formData.before_you_go_tips || [], null, 2)}
+                  onChange={(e) => {
+                    try {
+                      const parsed = JSON.parse(e.target.value)
+                      updateField('before_you_go_tips', parsed)
+                    } catch (error) {
+                      // Handle JSON parsing error
+                    }
+                  }}
+                  placeholder='["Tip 1", "Tip 2", "Tip 3"]'
+                  rows={4}
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Reasons to Visit</Label>
+              <div className="space-y-2 p-4 border rounded-lg">
+                <p className="text-sm text-muted-foreground">Top reasons to visit this country (JSON array format)</p>
+                <Textarea
+                  value={JSON.stringify(formData.reasons_to_visit || [], null, 2)}
+                  onChange={(e) => {
+                    try {
+                      const parsed = JSON.parse(e.target.value)
+                      updateField('reasons_to_visit', parsed)
+                    } catch (error) {
+                      // Handle JSON parsing error
+                    }
+                  }}
+                  placeholder='["Reason 1", "Reason 2", "Reason 3"]'
+                  rows={4}
+                />
+              </div>
+            </div>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="advanced" className="space-y-4">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="slug">URL Slug</Label>
+              <Input
+                id="slug"
+                value={formData.slug || ''}
+                onChange={(e) => updateField('slug', e.target.value)}
+                placeholder="country-url-slug"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Dos and Don'ts</Label>
+              <div className="space-y-2 p-4 border rounded-lg">
+                <p className="text-sm text-muted-foreground">Cultural dos and don'ts (JSON object format)</p>
+                <Textarea
+                  value={JSON.stringify(formData.dos_donts || {}, null, 2)}
+                  onChange={(e) => {
+                    try {
+                      const parsed = JSON.parse(e.target.value)
+                      updateField('dos_donts', parsed)
+                    } catch (error) {
+                      // Handle JSON parsing error
+                    }
+                  }}
+                  placeholder='{"dos": ["Do this", "Do that"], "donts": ["Dont do this", "Dont do that"]}'
+                  rows={6}
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Hero Images</Label>
+              <div className="space-y-2 p-4 border rounded-lg">
+                <p className="text-sm text-muted-foreground">Multiple hero images (JSON array format)</p>
+                <Textarea
+                  value={JSON.stringify(formData.hero_images || [], null, 2)}
+                  onChange={(e) => {
+                    try {
+                      const parsed = JSON.parse(e.target.value)
+                      updateField('hero_images', parsed)
+                    } catch (error) {
+                      // Handle JSON parsing error
+                    }
+                  }}
+                  placeholder='[{"url": "image1.jpg", "alt": "Description"}, {"url": "image2.jpg", "alt": "Description"}]'
+                  rows={4}
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Visitor Statistics</Label>
+              <div className="space-y-2 p-4 border rounded-lg">
+                <p className="text-sm text-muted-foreground">Complete visitor statistics (JSON object format)</p>
+                <Textarea
+                  value={JSON.stringify(formData.visitor_statistics || {}, null, 2)}
+                  onChange={(e) => {
+                    try {
+                      const parsed = JSON.parse(e.target.value)
+                      updateField('visitor_statistics', parsed)
+                    } catch (error) {
+                      // Handle JSON parsing error
+                    }
+                  }}
+                  placeholder='{"annual": 1000000, "gender": {"male": 45, "female": 55}, "purposes": [], "topOrigins": []}'
+                  rows={6}
+                />
+              </div>
+            </div>
           </div>
         </TabsContent>
       </Tabs>
