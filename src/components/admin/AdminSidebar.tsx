@@ -46,25 +46,40 @@ const mainMenuItems = [
     title: "Dashboard",
     value: "overview",
     icon: Home,
-    description: "Overview & analytics"
+    description: "Overview & analytics",
+    subItems: []
   },
   {
     title: "Countries",
     value: "countries", 
     icon: Globe,
-    description: "Manage destinations"
+    description: "Manage destinations",
+    subItems: [
+      { title: "All Countries", value: "countries" },
+      { title: "Country Content", value: "country-content" },
+      { title: "Attractions", value: "country-attractions" }
+    ]
   },
   {
     title: "Packages",
     value: "packages",
     icon: Package,
-    description: "Travel packages"
+    description: "Travel packages",
+    subItems: [
+      { title: "All Packages", value: "packages" },
+      { title: "Package Categories", value: "package-categories" },
+      { title: "Bulk Upload", value: "package-bulk" }
+    ]
   },
   {
     title: "Group Tours",
     value: "group-tours",
     icon: Users,
-    description: "Group activities"
+    description: "Group activities",
+    subItems: [
+      { title: "All Tours", value: "group-tours" },
+      { title: "Tour Categories", value: "tour-categories" }
+    ]
   }
 ]
 
@@ -73,19 +88,34 @@ const contentMenuItems = [
     title: "Blog",
     value: "blog",
     icon: BookOpen,
-    description: "Articles & posts"
+    description: "Articles & posts",
+    subItems: [
+      { title: "All Posts", value: "blog" },
+      { title: "Categories", value: "blog-categories" },
+      { title: "Featured Posts", value: "blog-featured" }
+    ]
   },
   {
     title: "Content",
     value: "content",
     icon: FileText,
-    description: "Page content"
+    description: "Page content",
+    subItems: [
+      { title: "Page Content", value: "content" },
+      { title: "Homepage", value: "content-homepage" },
+      { title: "About Page", value: "content-about" }
+    ]
   },
   {
     title: "SEO",
     value: "seo",
     icon: Settings,
-    description: "Search optimization"
+    description: "Search optimization",
+    subItems: [
+      { title: "SEO Settings", value: "seo" },
+      { title: "Meta Tags", value: "seo-meta" },
+      { title: "Sitemaps", value: "seo-sitemap" }
+    ]
   }
 ]
 
@@ -95,13 +125,22 @@ const customerMenuItems = [
     value: "enquiries",
     icon: ClipboardList,
     description: "Customer queries",
-    badge: "New"
+    badge: "New",
+    subItems: [
+      { title: "All Enquiries", value: "enquiries" },
+      { title: "Pending", value: "enquiries-pending" },
+      { title: "Resolved", value: "enquiries-resolved" }
+    ]
   },
   {
     title: "Contact",
     value: "contact",
     icon: MessageSquare,
-    description: "Contact messages"
+    description: "Contact messages",
+    subItems: [
+      { title: "All Messages", value: "contact" },
+      { title: "Unread", value: "contact-unread" }
+    ]
   }
 ]
 
@@ -109,12 +148,22 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
   const { state } = useSidebar()
   const location = useLocation()
   const isCollapsed = state === "collapsed"
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
 
   const isActive = (value: string) => activeSection === value
+  const isSubItemActive = (parentValue: string, subItems: any[]) => 
+    subItems.some(sub => isActive(sub.value))
+
+  const toggleGroup = (groupValue: string) => {
+    setExpandedGroups(prev => ({
+      ...prev,
+      [groupValue]: !prev[groupValue]
+    }))
+  }
 
   return (
-    <Sidebar collapsible="icon" className="border-r bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
-      <SidebarHeader className="border-b border-sidebar-border bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+    <Sidebar collapsible="icon" className="border-r bg-card dark:bg-card">
+      <SidebarHeader className="border-b border-border bg-gradient-to-r from-primary to-accent text-primary-foreground">
         <div className="flex items-center gap-3 px-2 py-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
             <Building className="h-5 w-5 text-white" />
@@ -122,35 +171,71 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
           {!isCollapsed && (
             <div className="flex flex-col">
               <span className="text-lg font-bold text-white">Nymphette Tours</span>
-              <span className="text-sm text-blue-100">Admin Dashboard</span>
+              <span className="text-sm text-primary-foreground/80">Admin Dashboard</span>
             </div>
           )}
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="gap-0 py-4">
+      <SidebarContent className="gap-0 py-4 bg-muted/30">
         {/* Main Section */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-            🏠 Main Dashboard
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-3">
+            Main Dashboard
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1">
               {mainMenuItems.map((item) => (
                 <SidebarMenuItem key={item.value}>
-                  <SidebarMenuButton
-                    isActive={isActive(item.value)}
-                    onClick={() => onSectionChange(item.value)}
-                    tooltip={isCollapsed ? item.title : undefined}
-                    className={`rounded-lg transition-all duration-200 ${
-                      isActive(item.value) 
-                        ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md hover:from-blue-600 hover:to-indigo-600' 
-                        : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    <span className="font-medium">{item.title}</span>
-                  </SidebarMenuButton>
+                  <div>
+                    <SidebarMenuButton
+                      isActive={isActive(item.value) || isSubItemActive(item.value, item.subItems)}
+                      onClick={() => {
+                        if (item.subItems.length === 0) {
+                          onSectionChange(item.value)
+                        } else {
+                          toggleGroup(item.value)
+                        }
+                      }}
+                      tooltip={isCollapsed ? item.title : undefined}
+                      className={`rounded-lg transition-all duration-200 w-full ${
+                        isActive(item.value) || isSubItemActive(item.value, item.subItems)
+                          ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90' 
+                          : 'hover:bg-muted text-foreground hover:text-primary'
+                      }`}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      <span className="font-medium">{item.title}</span>
+                      {item.subItems.length > 0 && !isCollapsed && (
+                        <div className={`ml-auto transition-transform duration-200 ${
+                          expandedGroups[item.value] ? 'rotate-180' : ''
+                        }`}>
+                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      )}
+                    </SidebarMenuButton>
+                    
+                    {/* Submenu */}
+                    {!isCollapsed && item.subItems.length > 0 && expandedGroups[item.value] && (
+                      <div className="ml-6 mt-1 space-y-1 border-l border-border pl-3">
+                        {item.subItems.map((subItem) => (
+                          <button
+                            key={subItem.value}
+                            onClick={() => onSectionChange(subItem.value)}
+                            className={`w-full text-left px-3 py-2 text-sm rounded-md transition-all duration-200 ${
+                              isActive(subItem.value)
+                                ? 'bg-primary/10 text-primary font-medium border-l-2 border-primary'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                            }`}
+                          >
+                            {subItem.title}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -161,26 +246,62 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
 
         {/* Content Management */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-            📝 Content Management
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-3">
+            Content Management
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1">
               {contentMenuItems.map((item) => (
                 <SidebarMenuItem key={item.value}>
-                  <SidebarMenuButton
-                    isActive={isActive(item.value)}
-                    onClick={() => onSectionChange(item.value)}
-                    tooltip={isCollapsed ? item.title : undefined}
-                    className={`rounded-lg transition-all duration-200 ${
-                      isActive(item.value) 
-                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md hover:from-green-600 hover:to-emerald-600' 
-                        : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    <span className="font-medium">{item.title}</span>
-                  </SidebarMenuButton>
+                  <div>
+                    <SidebarMenuButton
+                      isActive={isActive(item.value) || isSubItemActive(item.value, item.subItems)}
+                      onClick={() => {
+                        if (item.subItems.length === 0) {
+                          onSectionChange(item.value)
+                        } else {
+                          toggleGroup(item.value)
+                        }
+                      }}
+                      tooltip={isCollapsed ? item.title : undefined}
+                      className={`rounded-lg transition-all duration-200 w-full ${
+                        isActive(item.value) || isSubItemActive(item.value, item.subItems)
+                          ? 'bg-accent text-accent-foreground shadow-md hover:bg-accent/90' 
+                          : 'hover:bg-muted text-foreground hover:text-accent'
+                      }`}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      <span className="font-medium">{item.title}</span>
+                      {item.subItems.length > 0 && !isCollapsed && (
+                        <div className={`ml-auto transition-transform duration-200 ${
+                          expandedGroups[item.value] ? 'rotate-180' : ''
+                        }`}>
+                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      )}
+                    </SidebarMenuButton>
+                    
+                    {/* Submenu */}
+                    {!isCollapsed && item.subItems.length > 0 && expandedGroups[item.value] && (
+                      <div className="ml-6 mt-1 space-y-1 border-l border-border pl-3">
+                        {item.subItems.map((subItem) => (
+                          <button
+                            key={subItem.value}
+                            onClick={() => onSectionChange(subItem.value)}
+                            className={`w-full text-left px-3 py-2 text-sm rounded-md transition-all duration-200 ${
+                              isActive(subItem.value)
+                                ? 'bg-accent/10 text-accent font-medium border-l-2 border-accent'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                            }`}
+                          >
+                            {subItem.title}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -191,31 +312,67 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
 
         {/* Customer Management */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-            👥 Customer Support
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-3">
+            Customer Support
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1">
               {customerMenuItems.map((item) => (
                 <SidebarMenuItem key={item.value}>
-                  <SidebarMenuButton
-                    isActive={isActive(item.value)}
-                    onClick={() => onSectionChange(item.value)}
-                    tooltip={isCollapsed ? item.title : undefined}
-                    className={`rounded-lg transition-all duration-200 ${
-                      isActive(item.value) 
-                        ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md hover:from-orange-600 hover:to-red-600' 
-                        : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    <span className="font-medium">{item.title}</span>
-                    {item.badge && !isCollapsed && (
-                      <Badge variant="secondary" className="ml-auto text-xs bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-100">
-                        {item.badge}
-                      </Badge>
+                  <div>
+                    <SidebarMenuButton
+                      isActive={isActive(item.value) || isSubItemActive(item.value, item.subItems)}
+                      onClick={() => {
+                        if (item.subItems.length === 0) {
+                          onSectionChange(item.value)
+                        } else {
+                          toggleGroup(item.value)
+                        }
+                      }}
+                      tooltip={isCollapsed ? item.title : undefined}
+                      className={`rounded-lg transition-all duration-200 w-full ${
+                        isActive(item.value) || isSubItemActive(item.value, item.subItems)
+                          ? 'bg-destructive text-destructive-foreground shadow-md hover:bg-destructive/90' 
+                          : 'hover:bg-muted text-foreground hover:text-destructive'
+                      }`}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      <span className="font-medium">{item.title}</span>
+                      {item.badge && !isCollapsed && (
+                        <Badge variant="secondary" className="ml-auto text-xs bg-destructive/10 text-destructive">
+                          {item.badge}
+                        </Badge>
+                      )}
+                      {item.subItems.length > 0 && !isCollapsed && !item.badge && (
+                        <div className={`ml-auto transition-transform duration-200 ${
+                          expandedGroups[item.value] ? 'rotate-180' : ''
+                        }`}>
+                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      )}
+                    </SidebarMenuButton>
+                    
+                    {/* Submenu */}
+                    {!isCollapsed && item.subItems.length > 0 && expandedGroups[item.value] && (
+                      <div className="ml-6 mt-1 space-y-1 border-l border-border pl-3">
+                        {item.subItems.map((subItem) => (
+                          <button
+                            key={subItem.value}
+                            onClick={() => onSectionChange(subItem.value)}
+                            className={`w-full text-left px-3 py-2 text-sm rounded-md transition-all duration-200 ${
+                              isActive(subItem.value)
+                                ? 'bg-destructive/10 text-destructive font-medium border-l-2 border-destructive'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                            }`}
+                          >
+                            {subItem.title}
+                          </button>
+                        ))}
+                      </div>
                     )}
-                  </SidebarMenuButton>
+                  </div>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -223,13 +380,13 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border bg-slate-50 dark:bg-slate-900">
+      <SidebarFooter className="border-t border-border bg-muted/30">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={onSignOut}
               tooltip={isCollapsed ? "Sign Out" : undefined}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 font-medium"
+              className="text-destructive hover:text-destructive/80 hover:bg-destructive/10 rounded-lg transition-all duration-200 font-medium"
             >
               <LogOut className="h-4 w-4" />
               <span>Sign Out</span>
@@ -239,15 +396,15 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
         
         {!isCollapsed && (
           <div className="px-2 py-2">
-            <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 p-3 border">
-              <Avatar className="h-8 w-8 ring-2 ring-white dark:ring-slate-600">
-                <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-bold">
+            <div className="flex items-center gap-3 rounded-xl bg-card border border-border p-3 shadow-sm">
+              <Avatar className="h-8 w-8 ring-2 ring-primary/20">
+                <AvatarFallback className="bg-primary text-primary-foreground text-sm font-bold">
                   A
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col flex-1 min-w-0">
-                <span className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">Admin User</span>
-                <span className="text-xs text-slate-600 dark:text-slate-400">Administrator</span>
+                <span className="text-sm font-semibold text-foreground truncate">Admin User</span>
+                <span className="text-xs text-muted-foreground">Administrator</span>
               </div>
             </div>
           </div>
