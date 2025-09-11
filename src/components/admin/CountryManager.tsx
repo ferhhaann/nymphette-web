@@ -191,64 +191,141 @@ export const CountryManager = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">🌍 Countries Management</h2>
-          <p className="text-muted-foreground">Manage country details, places, and information - organized by region</p>
+      {/* Header Section */}
+      <div className="border-b border-border pb-6">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">Countries Management</h1>
+            <p className="text-muted-foreground max-w-2xl">
+              Manage country profiles, visitor statistics, content sections, and attractions. 
+              All country data is organized and easily accessible through dedicated sections.
+            </p>
+          </div>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button size="lg" onClick={() => setEditingCountry(createEmptyCountry())} className="min-w-[150px]">
+                <Plus className="h-4 w-4 mr-2" />
+                Add New Country
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="text-2xl">
+                  {editingCountry?.id ? 'Edit Country' : 'Add New Country'}
+                </DialogTitle>
+              </DialogHeader>
+              <CountryForm 
+                country={editingCountry!} 
+                onSave={saveCountry}
+                onCancel={() => {
+                  setIsDialogOpen(false)
+                  setEditingCountry(null)
+                }}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setEditingCountry(createEmptyCountry())}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Country
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {editingCountry?.id ? 'Edit Country' : 'Add New Country'}
-              </DialogTitle>
-            </DialogHeader>
-            <CountryForm 
-              country={editingCountry!} 
-              onSave={saveCountry}
-              onCancel={() => {
-                setIsDialogOpen(false)
-                setEditingCountry(null)
-              }}
-            />
-          </DialogContent>
-        </Dialog>
       </div>
 
-      <Tabs defaultValue="countries" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-4 gap-1 h-auto">
-          <TabsTrigger value="countries" className="p-3 text-sm">Countries Overview</TabsTrigger>
-          <TabsTrigger value="statistics" className="p-3 text-sm">Visitor Statistics</TabsTrigger>
-          <TabsTrigger value="sections" className="p-3 text-sm">Content Sections</TabsTrigger>
-          <TabsTrigger value="content" className="p-3 text-sm">Attractions & Content</TabsTrigger>
-        </TabsList>
+      {/* Management Tabs */}
+      <Tabs defaultValue="overview" className="space-y-6">
+        <div className="bg-muted/30 p-1 rounded-lg">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-1 bg-transparent">
+            <TabsTrigger 
+              value="overview" 
+              className="data-[state=active]:bg-background data-[state=active]:shadow-sm px-6 py-3"
+            >
+              <Globe className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Countries</span>
+              <span className="sm:hidden">List</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="statistics" 
+              className="data-[state=active]:bg-background data-[state=active]:shadow-sm px-6 py-3"
+            >
+              <Star className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Statistics</span>
+              <span className="sm:hidden">Stats</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="content" 
+              className="data-[state=active]:bg-background data-[state=active]:shadow-sm px-6 py-3"
+            >
+              <Edit className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Content</span>
+              <span className="sm:hidden">Content</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="attractions" 
+              className="data-[state=active]:bg-background data-[state=active]:shadow-sm px-6 py-3"
+            >
+              <MapPin className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Attractions</span>
+              <span className="sm:hidden">Places</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
         
-        <TabsContent value="countries" className="space-y-6">
-          <GenericFilter
-            searchValue={searchTerm}
-            onSearchChange={setSearchTerm}
-            selectedCountry=""
-            onCountryChange={() => {}}
-            selectedRegion={selectedRegion}
-            onRegionChange={setSelectedRegion}
-            totalItems={countries.length}
-            filteredItems={filteredCountries.length}
-            onClearFilters={() => {
-              setSearchTerm("")
-              setSelectedRegion("all")
-            }}
-            searchPlaceholder="Search by name or capital..."
-            showCountryFilter={false}
-            showRegionFilter={true}
-          />
+        <TabsContent value="overview" className="space-y-6">
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Total Countries</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{countries.length}</div>
+                <p className="text-xs text-muted-foreground">Across all regions</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Popular Destinations</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{countries.filter(c => c.is_popular).length}</div>
+                <p className="text-xs text-muted-foreground">Featured countries</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Regions Covered</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{new Set(countries.map(c => c.region)).size}</div>
+                <p className="text-xs text-muted-foreground">Geographic regions</p>
+              </CardContent>
+            </Card>
+          </div>
 
-          {/* Countries organized by Region */}
+          {/* Search and Filter Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Search & Filter Countries</CardTitle>
+              <CardDescription>Find and manage countries by name, capital, or region</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <GenericFilter
+                searchValue={searchTerm}
+                onSearchChange={setSearchTerm}
+                selectedCountry=""
+                onCountryChange={() => {}}
+                selectedRegion={selectedRegion}
+                onRegionChange={setSelectedRegion}
+                totalItems={countries.length}
+                filteredItems={filteredCountries.length}
+                onClearFilters={() => {
+                  setSearchTerm("")
+                  setSelectedRegion("all")
+                }}
+                searchPlaceholder="Search by country name or capital city..."
+                showCountryFilter={false}
+                showRegionFilter={true}
+              />
+            </CardContent>
+          </Card>
+
+          {/* Countries Grid */}
           {selectedRegion === "all" ? (
             <div className="space-y-8">
               {regions.map(region => {
@@ -256,130 +333,182 @@ export const CountryManager = () => {
                 if (regionCountries.length === 0) return null
                 
                 return (
-                  <div key={region} className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-xl font-semibold">{region}</h3>
-                      <Badge variant="secondary">{regionCountries.length} countries</Badge>
-                    </div>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {regionCountries.map((country) => (
-              <Card key={country.id}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Globe className="h-5 w-5" />
-                    {country.name}
-                    {country.is_popular && (
-                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                    )}
-                  </CardTitle>
-                  <CardDescription>
-                    <MapPin className="h-4 w-4 inline mr-1" />
-                    {country.region} • {country.capital}
-                    {country.is_popular && (
-                      <Badge variant="secondary" className="ml-2 text-xs">
-                        Popular
-                      </Badge>
-                    )}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center">
-                    <div className="text-sm text-muted-foreground">
-                      <p>Currency: {country.currency}</p>
-                      <p>Best Season: {country.best_season}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setEditingCountry(country)
-                          setIsDialogOpen(true)
-                        }}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => deleteCountry(country.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-                      </Card>
-                      ))}
-                    </div>
-                  </div>
+                  <Card key={region}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                          <MapPin className="h-5 w-5" />
+                          {region}
+                        </CardTitle>
+                        <Badge variant="outline" className="font-medium">
+                          {regionCountries.length} {regionCountries.length === 1 ? 'country' : 'countries'}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        {regionCountries.map((country) => (
+                          <Card key={country.id} className="hover:shadow-md transition-shadow">
+                            <CardHeader className="pb-3">
+                              <div className="flex items-start justify-between">
+                                <div className="space-y-1">
+                                  <CardTitle className="flex items-center gap-2 text-base">
+                                    <Globe className="h-4 w-4" />
+                                    {country.name}
+                                    {country.is_popular && (
+                                      <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
+                                    )}
+                                  </CardTitle>
+                                  <CardDescription className="text-sm">
+                                    <MapPin className="h-3 w-3 inline mr-1" />
+                                    {country.capital}
+                                  </CardDescription>
+                                </div>
+                                {country.is_popular && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    Popular
+                                  </Badge>
+                                )}
+                              </div>
+                            </CardHeader>
+                            <CardContent className="pt-0">
+                              <div className="space-y-3">
+                                <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                                  <div>Currency: {country.currency || 'N/A'}</div>
+                                  <div>Best: {country.best_season || 'N/A'}</div>
+                                </div>
+                                <div className="flex gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="flex-1"
+                                    onClick={() => {
+                                      setEditingCountry(country)
+                                      setIsDialogOpen(true)
+                                    }}
+                                  >
+                                    <Edit className="h-3 w-3 mr-1" />
+                                    Edit
+                                  </Button>
+                                  <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={() => deleteCountry(country.id)}
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
                 )
               })}
             </div>
-          ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredCountries.map((country) => (
-                <Card key={country.id}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Globe className="h-5 w-5" />
-                      {country.name}
-                      {country.is_popular && (
-                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                      )}
-                    </CardTitle>
-                    <CardDescription>
-                      <MapPin className="h-4 w-4 inline mr-1" />
-                      {country.region} • {country.capital}
-                      {country.is_popular && (
-                        <Badge variant="secondary" className="ml-2 text-xs">
-                          Popular
-                        </Badge>
-                      )}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center">
-                      <div className="text-sm text-muted-foreground">
-                        <p>Currency: {country.currency}</p>
-                        <p>Best Season: {country.best_season}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            setEditingCountry(country)
-                            setIsDialogOpen(true)
-                          }}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => deleteCountry(country.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+           ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5" />
+                  {selectedRegion} Countries
+                </CardTitle>
+                <CardDescription>
+                  Showing {filteredCountries.length} countries in {selectedRegion}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {filteredCountries.map((country) => (
+                    <Card key={country.id} className="hover:shadow-md transition-shadow">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <CardTitle className="flex items-center gap-2 text-base">
+                              <Globe className="h-4 w-4" />
+                              {country.name}
+                              {country.is_popular && (
+                                <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
+                              )}
+                            </CardTitle>
+                            <CardDescription className="text-sm">
+                              <MapPin className="h-3 w-3 inline mr-1" />
+                              {country.capital}
+                            </CardDescription>
+                          </div>
+                          {country.is_popular && (
+                            <Badge variant="secondary" className="text-xs">
+                              Popular
+                            </Badge>
+                          )}
+                        </div>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                            <div>Currency: {country.currency || 'N/A'}</div>
+                            <div>Best: {country.best_season || 'N/A'}</div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1"
+                              onClick={() => {
+                                setEditingCountry(country)
+                                setIsDialogOpen(true)
+                              }}
+                            >
+                              <Edit className="h-3 w-3 mr-1" />
+                              Edit
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => deleteCountry(country.id)}
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+           )}
         </TabsContent>
         
-        <TabsContent value="statistics">
+        <TabsContent value="statistics" className="space-y-6">
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">Visitor Statistics & Travel Purposes</h3>
+            <p className="text-muted-foreground">
+              Manage visitor statistics, travel purposes, and demographic data for countries.
+            </p>
+          </div>
           <TravelPurposeManager />
         </TabsContent>
         
-        <TabsContent value="sections">
+        <TabsContent value="content" className="space-y-6">
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">Content Sections Management</h3>
+            <p className="text-muted-foreground">
+              Create and manage content sections for country pages including hero content, descriptions, and custom sections.
+            </p>
+          </div>
           <ContentSectionsManager />
         </TabsContent>
         
-        <TabsContent value="content">
+        <TabsContent value="attractions" className="space-y-6">
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">Attractions & Places</h3>
+            <p className="text-muted-foreground">
+              Manage tourist attractions, famous places, must-visit locations, and other country-specific content.
+            </p>
+          </div>
           <AttractionsContentManager />
         </TabsContent>
       </Tabs>
