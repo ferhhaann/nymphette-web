@@ -203,7 +203,7 @@ const PopularDestinations = () => {
                   onClick={() => handleDestinationClick(destination)}
                   style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
                 >
-                  <div className="relative aspect-[5/4] overflow-hidden">
+                  <div className="relative aspect-[4/3] overflow-hidden">
                     {destination.display_image ? (
                       <OptimizedImage
                         src={destination.display_image}
