@@ -309,9 +309,7 @@ All colors MUST be HSL.
     min-height: 100vh;
   }
   
-  .admin-panel * {
-    @apply text-foreground;
-  }
+  /* Removed universal text override to prevent conflicts */
   
   .admin-panel .text-muted-foreground {
     color: hsl(var(--muted-foreground));
