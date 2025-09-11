@@ -15,6 +15,7 @@ interface CountryWithPackages {
   slug: string;
   region: string;
   hero_image_url: string | null;
+  display_image: string | null;
   package_count: number;
 }
 
@@ -36,17 +37,21 @@ const PopularDestinations = () => {
     try {
       setLoading(true);
       
-      // Fetch countries with package counts
+      // Fetch countries marked as popular with package counts and their hero images
       const { data: countriesData, error: countriesError } = await supabase
         .from('countries')
-        .select('id, name, slug, region, hero_image_url')
+        .select(`
+          id, name, slug, region, hero_image_url,
+          country_hero_images(image_url, alt_text)
+        `)
+        .eq('is_popular', true)
         .order('name');
 
       if (countriesError) throw countriesError;
 
-      // Get package counts for each country
+      // Get package counts for each country and determine best image
       const destinationsWithCounts = await Promise.all(
-        (countriesData || []).map(async (country) => {
+        (countriesData || []).map(async (country: any) => {
           const { count, error: countError } = await supabase
             .from('packages')
             .select('*', { count: 'exact', head: true })
@@ -54,10 +59,20 @@ const PopularDestinations = () => {
 
           if (countError) {
             console.error('Error counting packages for country:', country.name, countError);
-            return { ...country, package_count: 0 };
+            return { ...country, package_count: 0, display_image: country.hero_image_url };
           }
 
-          return { ...country, package_count: count || 0 };
+          // Use hero_image_url first, then check country_hero_images if available
+          let displayImage = country.hero_image_url;
+          if (!displayImage && country.country_hero_images && country.country_hero_images.length > 0) {
+            displayImage = country.country_hero_images[0].image_url;
+          }
+
+          return { 
+            ...country, 
+            package_count: count || 0,
+            display_image: displayImage
+          };
         })
       );
 
@@ -190,9 +205,9 @@ const PopularDestinations = () => {
                   style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
                 >
                   <div className="relative aspect-[5/4] overflow-hidden">
-                    {destination.hero_image_url ? (
+                    {destination.display_image ? (
                       <OptimizedImage
-                        src={destination.hero_image_url}
+                        src={destination.display_image}
                         alt={`${destination.name} destination`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"

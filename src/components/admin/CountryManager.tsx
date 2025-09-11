@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
+import { Checkbox } from "@/components/ui/checkbox"
 import { supabase } from "@/integrations/supabase/client"
 import { useToast } from "@/hooks/use-toast"
-import { Plus, Edit, Trash2, Globe, MapPin } from "lucide-react"
+import { Plus, Edit, Trash2, Globe, MapPin, Star } from "lucide-react"
 import { ImageUpload } from "./ImageUpload"
 import { CountryContentManager } from "./CountryContentManager"
 import { ContentSectionsManager } from "./ContentSectionsManager"
@@ -41,6 +42,7 @@ const createEmptyCountry = (): Partial<Country> => ({
   annual_visitors: null,
   gender_male_percentage: null,
   gender_female_percentage: null,
+  is_popular: false,
   created_at: null,
   updated_at: null
 })
@@ -239,10 +241,18 @@ export const CountryManager = () => {
                   <CardTitle className="flex items-center gap-2">
                     <Globe className="h-5 w-5" />
                     {country.name}
+                    {country.is_popular && (
+                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                    )}
                   </CardTitle>
                   <CardDescription>
                     <MapPin className="h-4 w-4 inline mr-1" />
                     {country.region} • {country.capital}
+                    {country.is_popular && (
+                      <Badge variant="secondary" className="ml-2 text-xs">
+                        Popular
+                      </Badge>
+                    )}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -287,10 +297,18 @@ export const CountryManager = () => {
                     <CardTitle className="flex items-center gap-2">
                       <Globe className="h-5 w-5" />
                       {country.name}
+                      {country.is_popular && (
+                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                      )}
                     </CardTitle>
                     <CardDescription>
                       <MapPin className="h-4 w-4 inline mr-1" />
                       {country.region} • {country.capital}
+                      {country.is_popular && (
+                        <Badge variant="secondary" className="ml-2 text-xs">
+                          Popular
+                        </Badge>
+                      )}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -530,6 +548,17 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
           onChange={(e) => setTopOriginCities(e.target.value)}
           placeholder="Mumbai, Delhi, Bangalore, Chennai, Kolkata"
         />
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Checkbox 
+          id="is_popular"
+          checked={formData.is_popular || false}
+          onCheckedChange={(checked) => updateField('is_popular', checked)}
+        />
+        <Label htmlFor="is_popular" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          Mark as Popular Destination (will appear on homepage)
+        </Label>
       </div>
 
       <div className="flex justify-end gap-2">

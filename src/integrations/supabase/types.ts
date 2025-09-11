@@ -371,6 +371,7 @@ export type Database = {
           hero_image_url: string | null
           hero_images: Json | null
           id: string
+          is_popular: boolean | null
           languages: string[] | null
           map_outline_url: string | null
           name: string
@@ -407,6 +408,7 @@ export type Database = {
           hero_image_url?: string | null
           hero_images?: Json | null
           id?: string
+          is_popular?: boolean | null
           languages?: string[] | null
           map_outline_url?: string | null
           name: string
@@ -443,6 +445,7 @@ export type Database = {
           hero_image_url?: string | null
           hero_images?: Json | null
           id?: string
+          is_popular?: boolean | null
           languages?: string[] | null
           map_outline_url?: string | null
           name?: string
