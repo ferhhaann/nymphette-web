@@ -47,7 +47,7 @@ const FeaturedPackages = () => {
               className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
               style={{ animationDelay: `${index * 200}ms` }}
             >
-              <div className="relative overflow-hidden rounded-t-lg h-64">
+              <div className="relative overflow-hidden rounded-lg h-64">
                 <OptimizedImage
                   src={pkg.image}
                   alt={`${pkg.title} - ${pkg.country} travel package`}
