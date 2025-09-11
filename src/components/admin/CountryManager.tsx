@@ -207,7 +207,7 @@ export const CountryManager = () => {
 
       {/* Tabs Navigation */}
       <Tabs defaultValue="countries" className="w-full">
-        <TabsList className="grid grid-cols-3 w-full">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-2 items-stretch justify-items-stretch [&>button]:w-full">
           <TabsTrigger value="countries" className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
             Countries
