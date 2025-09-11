@@ -155,8 +155,8 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
   }
 
   return (
-    <Sidebar collapsible="icon" className="border-r bg-card dark:bg-card border-border">
-      <SidebarHeader className="border-b border-border bg-gradient-to-r from-primary/90 to-accent/90 text-primary-foreground">
+    <Sidebar collapsible="icon" className="border-r bg-card dark:bg-card">
+      <SidebarHeader className="border-b border-border bg-gradient-to-r from-primary to-accent text-primary-foreground">
         <div className="flex items-center gap-3 px-2 py-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
             <Building className="h-5 w-5 text-white" />
@@ -164,13 +164,13 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
           {!isCollapsed && (
             <div className="flex flex-col">
               <span className="text-lg font-bold text-white">Nymphette Tours</span>
-              <span className="text-sm text-white/80">Admin Dashboard</span>
+              <span className="text-sm text-primary-foreground/80">Admin Dashboard</span>
             </div>
           )}
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="gap-0 py-4 bg-muted/20 dark:bg-background/40">
+      <SidebarContent className="gap-0 py-4 bg-muted/30">
         {/* Main Section */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-3">
@@ -187,8 +187,8 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                       tooltip={isCollapsed ? item.title : undefined}
                       className={`rounded-lg transition-all duration-200 w-full ${
                         isActive(item.value) || isSubItemActive(item.value, item.subItems)
-                          ? 'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90' 
-                          : 'hover:bg-muted/80 text-foreground hover:text-primary'
+                          ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90' 
+                          : 'hover:bg-muted text-foreground hover:text-primary'
                       }`}
                     >
                       <item.icon className="h-4 w-4" />
@@ -206,15 +206,15 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                     
                     {/* Submenu */}
                     {!isCollapsed && item.subItems.length > 0 && expandedGroups[item.value] && (
-                      <div className="ml-6 mt-1 space-y-1 border-l-2 border-primary/30 pl-3">
+                      <div className="ml-6 mt-1 space-y-1 border-l border-border pl-3">
                         {item.subItems.map((subItem) => (
                           <button
                             key={subItem.value}
                             onClick={() => onSectionChange(subItem.value)}
                             className={`w-full text-left px-3 py-2 text-sm rounded-md transition-all duration-200 ${
                               isActive(subItem.value)
-                                ? 'bg-primary/20 text-primary font-medium border-l-2 border-primary'
-                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                                ? 'bg-primary/10 text-primary font-medium border-l-2 border-primary'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                             }`}
                           >
                             {subItem.title}
@@ -247,8 +247,8 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                       tooltip={isCollapsed ? item.title : undefined}
                       className={`rounded-lg transition-all duration-200 w-full ${
                         isActive(item.value) || isSubItemActive(item.value, item.subItems)
-                          ? 'bg-accent text-accent-foreground shadow-lg hover:bg-accent/90' 
-                          : 'hover:bg-muted/80 text-foreground hover:text-accent'
+                          ? 'bg-accent text-accent-foreground shadow-md hover:bg-accent/90' 
+                          : 'hover:bg-muted text-foreground hover:text-accent'
                       }`}
                     >
                       <item.icon className="h-4 w-4" />
@@ -266,15 +266,15 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                     
                     {/* Submenu */}
                     {!isCollapsed && item.subItems.length > 0 && expandedGroups[item.value] && (
-                      <div className="ml-6 mt-1 space-y-1 border-l-2 border-accent/30 pl-3">
+                      <div className="ml-6 mt-1 space-y-1 border-l border-border pl-3">
                         {item.subItems.map((subItem) => (
                           <button
                             key={subItem.value}
                             onClick={() => onSectionChange(subItem.value)}
                             className={`w-full text-left px-3 py-2 text-sm rounded-md transition-all duration-200 ${
                               isActive(subItem.value)
-                                ? 'bg-accent/20 text-accent font-medium border-l-2 border-accent'
-                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                                ? 'bg-accent/10 text-accent font-medium border-l-2 border-accent'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                             }`}
                           >
                             {subItem.title}
@@ -307,14 +307,14 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                       tooltip={isCollapsed ? item.title : undefined}
                       className={`rounded-lg transition-all duration-200 w-full ${
                         isActive(item.value) || isSubItemActive(item.value, item.subItems)
-                          ? 'bg-destructive/80 text-destructive-foreground shadow-lg hover:bg-destructive/90' 
-                          : 'hover:bg-muted/80 text-foreground hover:text-destructive'
+                          ? 'bg-destructive text-destructive-foreground shadow-md hover:bg-destructive/90' 
+                          : 'hover:bg-muted text-foreground hover:text-destructive'
                       }`}
                     >
                       <item.icon className="h-4 w-4" />
                       <span className="font-medium">{item.title}</span>
                       {item.badge && !isCollapsed && (
-                        <Badge variant="secondary" className="ml-auto text-xs bg-destructive/20 text-destructive font-medium">
+                        <Badge variant="secondary" className="ml-auto text-xs bg-destructive/10 text-destructive">
                           {item.badge}
                         </Badge>
                       )}
@@ -331,15 +331,15 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
                     
                     {/* Submenu */}
                     {!isCollapsed && item.subItems.length > 0 && expandedGroups[item.value] && (
-                      <div className="ml-6 mt-1 space-y-1 border-l-2 border-destructive/30 pl-3">
+                      <div className="ml-6 mt-1 space-y-1 border-l border-border pl-3">
                         {item.subItems.map((subItem) => (
                           <button
                             key={subItem.value}
                             onClick={() => onSectionChange(subItem.value)}
                             className={`w-full text-left px-3 py-2 text-sm rounded-md transition-all duration-200 ${
                               isActive(subItem.value)
-                                ? 'bg-destructive/20 text-destructive font-medium border-l-2 border-destructive'
-                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                                ? 'bg-destructive/10 text-destructive font-medium border-l-2 border-destructive'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                             }`}
                           >
                             {subItem.title}
@@ -355,13 +355,13 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border bg-muted/20 dark:bg-background/40">
+      <SidebarFooter className="border-t border-border bg-muted/30">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={onSignOut}
               tooltip={isCollapsed ? "Sign Out" : undefined}
-              className="text-destructive hover:text-destructive/80 hover:bg-destructive/20 rounded-lg transition-all duration-200 font-medium"
+              className="text-destructive hover:text-destructive/80 hover:bg-destructive/10 rounded-lg transition-all duration-200 font-medium"
             >
               <LogOut className="h-4 w-4" />
               <span>Sign Out</span>
@@ -371,9 +371,9 @@ export function AdminSidebar({ activeSection, onSectionChange, onSignOut }: Admi
         
         {!isCollapsed && (
           <div className="px-2 py-2">
-            <div className="flex items-center gap-3 rounded-xl bg-card/80 border border-border/60 p-3 shadow-sm backdrop-blur-sm">
-              <Avatar className="h-8 w-8 ring-2 ring-primary/30">
-                <AvatarFallback className="bg-primary/20 text-primary text-sm font-bold">
+            <div className="flex items-center gap-3 rounded-xl bg-card border border-border p-3 shadow-sm">
+              <Avatar className="h-8 w-8 ring-2 ring-primary/20">
+                <AvatarFallback className="bg-primary text-primary-foreground text-sm font-bold">
                   A
                 </AvatarFallback>
               </Avatar>

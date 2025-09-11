@@ -424,15 +424,6 @@ interface SectionFormProps {
 }
 
 const extractContentFields = (content: any) => {
-  if (!content || typeof content !== 'object') {
-    return {
-      description: '',
-      subtitle: '',
-      points: [''],
-      highlight: ''
-    }
-  }
-  
   return {
     description: content.description || '',
     subtitle: content.subtitle || '',
@@ -442,23 +433,13 @@ const extractContentFields = (content: any) => {
 }
 
 const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
-  const [formData, setFormData] = useState<Partial<CountrySection>>(section || {})
-  const [contentFields, setContentFields] = useState(() => {
-    const defaultFields = {
-      description: '',
-      subtitle: '',
-      points: [''],
-      highlight: ''
-    }
-    
-    if (!section || !section.content) {
-      return defaultFields
-    }
-    
-    return {
-      ...defaultFields,
-      ...extractContentFields(section.content)
-    }
+  const [formData, setFormData] = useState<Partial<CountrySection>>(section)
+  const [contentFields, setContentFields] = useState({
+    description: '',
+    subtitle: '',
+    points: [''],
+    highlight: '',
+    ...extractContentFields(section.content || {})
   })
 
   const handleSubmit = (e: React.FormEvent) => {
