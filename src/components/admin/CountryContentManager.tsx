@@ -153,10 +153,10 @@ export const CountryContentManager = () => {
 
             {selectedCountryId && (
               <Tabs defaultValue="attractions" className="w-full">
-              <TabsList className="w-full flex items-stretch gap-2 rounded-lg bg-muted p-1 text-muted-foreground [&>button]:flex-1 [&>button]:basis-1/2 [&>button]:justify-center [&>button]:h-10">
-                <TabsTrigger value="attractions">Attractions & Places</TabsTrigger>
-                <TabsTrigger value="content">Page Content</TabsTrigger>
-              </TabsList>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="attractions">Attractions & Places</TabsTrigger>
+                  <TabsTrigger value="content">Page Content</TabsTrigger>
+                </TabsList>
                 
                 <TabsContent value="attractions" className="space-y-6">
                   <CountryAttractionsManager 
