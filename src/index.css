@@ -8,47 +8,41 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Warm Neutral Theme */
-    --primary-dark: 210 20% 20%;       /* Dark charcoal */
-    --warm-orange: 25 95% 53%;         /* Warm orange */
-    --soft-gray: 0 0% 95%;             /* Light gray surfaces */
-    --pale-gray: 0 0% 98%;             /* Very light gray */
-    
-    /* Admin Semantic Colors */
-    --admin-orange: 25 95% 53%;        /* Primary admin orange */
-    --admin-orange-dark: 25 85% 45%;   /* Darker admin orange */
-    --admin-orange-light: 25 60% 85%;  /* Light admin orange */
-    --admin-sidebar: 0 0% 98%;         /* Sidebar background */
-    --admin-accent: 35 80% 60%;        /* Accent amber */
+    /* Minimalist Travel Brand (Monochrome) */
+    --primary-dark: 168 18% 10%;       /* ~#101E1B */
+    --deep-blue: 0 0% 10%;             /* Repurposed as neutral dark */
+    --bright-blue: 0 0% 10%;           /* Unified dark for buttons */
+    --soft-blue: 0 0% 96%;             /* Light gray surfaces */
+    --pale-blue: 0 0% 98%;             /* Very light gray */
     
     /* Semantic Design System */
     --background: 0 0% 100%;
-    --foreground: 0 0% 15%;
-
+    --foreground: 168 18% 10%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 15%;
-
+    --card-foreground: 168 18% 10%;
+    
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 15%;
-
-    --primary: 25 95% 53%;             /* Orange primary */
-    --primary-foreground: 0 0% 100%;   /* White text on orange */
-
-    --secondary: 0 0% 95%;             /* Light gray blocks */
-    --secondary-foreground: 0 0% 15%;
-
+    --popover-foreground: 168 18% 10%;
+    
+    --primary: 168 18% 10%;            /* Dark interactive */
+    --primary-foreground: 0 0% 100%;    /* White text on dark */
+    
+    --secondary: 0 0% 98%;             /* Pale gray blocks */
+    --secondary-foreground: 168 18% 10%;
+    
     --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-
-    --accent: 35 80% 60%;              /* Amber accent */
+    --muted-foreground: 0 0% 40%;       /* ~#666 */
+    
+    --accent: 168 18% 10%;              /* Use dark as accent */
     --accent-foreground: 0 0% 100%;
-
+    
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 85%;
+    
+    --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 25 95% 53%;
+    --ring: 0 0% 10%;
     
     --radius: 0.75rem;
     
@@ -64,41 +58,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Dark Neutral Theme */
-    --background: 0 0% 8%;
-    --foreground: 0 0% 95%;
+    --background: 168 18% 8%;
+    --foreground: 0 0% 98%;
     
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 168 18% 10%;
+    --card-foreground: 0 0% 98%;
     
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 168 18% 10%;
+    --popover-foreground: 0 0% 98%;
     
-    --primary: 25 95% 65%;
-    --primary-foreground: 0 0% 8%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 168 18% 8%;
     
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 168 18% 12%;
+    --secondary-foreground: 0 0% 98%;
     
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 168 18% 12%;
+    --muted-foreground: 0 0% 60%;
     
-    --accent: 35 80% 70%;
-    --accent-foreground: 0 0% 8%;
+    --accent: 0 0% 98%;
+    --accent-foreground: 168 18% 8%;
     
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive-foreground: 0 0% 98%;
     
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 25 95% 65%;
-    
-    /* Dark admin colors */
-    --admin-orange: 25 95% 65%;
-    --admin-orange-dark: 25 85% 55%;
-    --admin-orange-light: 0 0% 25%;
-    --admin-sidebar: 0 0% 12%;
-    --admin-accent: 35 80% 70%;
+    --border: 168 18% 15%;
+    --input: 168 18% 15%;
+    --ring: 0 0% 90%;
   }
 }
 

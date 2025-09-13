@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Plus, Package, FileText, Settings, Database, Globe, Users, BookOpen, MessageSquare, ClipboardList } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { AdminOverview } from "@/components/admin/AdminOverview"
 import { PackageManager } from "@/components/admin/PackageManager"
@@ -13,7 +14,6 @@ import { BlogManager } from "@/components/admin/BlogManager"
 import { ContactManager } from "@/components/admin/ContactManager"
 import { EnquiryManager } from "@/components/admin/EnquiryManager"
 import SEOManager from "@/components/admin/SEOManager"
-import { AdminSidebar } from "@/components/admin/AdminSidebar"
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -146,104 +146,136 @@ const AdminDashboard = () => {
   }
 
   if (isAuthenticated && isAdmin) {
-    const renderActiveContent = () => {
-      switch (activeSection) {
-        case "overview":
-          return <AdminOverview />
-        case "countries":
-          return <CountryManager />
-        case "packages":
-        case "package-bulk-upload":
-          return <PackageManager />
-        case "group-tours":
-          return <GroupTourManager />
-        case "blog":
-          return <BlogManager />
-        case "content":
-          return <ContentManager />
-        case "seo":
-          return <SEOManager />
-        case "contact":
-          return <ContactManager />
-        case "enquiries":
-          return <EnquiryManager />
-        default:
-          return <AdminOverview />
-      }
-    }
-
-    const getSectionTitle = () => {
-      const titles = {
-        "overview": "Dashboard Overview",
-        "countries": "Countries Management",
-        "packages": "Travel Packages",
-        "package-bulk-upload": "Bulk Package Upload",
-        "group-tours": "Group Tours",
-        "blog": "Blog Management",
-        "content": "Content Management",
-        "seo": "SEO Management",
-        "contact": "Contact Management",
-        "enquiries": "Customer Enquiries"
-      }
-      return titles[activeSection as keyof typeof titles] || "Dashboard"
-    }
-
-    const getSectionDescription = () => {
-      const descriptions = {
-        "overview": "Monitor your travel website performance and key metrics",
-        "countries": "Manage destination information and travel content",
-        "packages": "Create and manage travel packages for customers",
-        "package-bulk-upload": "Upload multiple packages at once",
-        "group-tours": "Organize and manage group tour experiences",
-        "blog": "Write and manage blog posts to engage your audience",
-        "content": "Update website content and information",
-        "seo": "Optimize your website for search engines",
-        "contact": "Handle customer contact form submissions",
-        "enquiries": "Manage customer travel enquiries and bookings"
-      }
-      return descriptions[activeSection as keyof typeof descriptions] || "Welcome to your admin dashboard"
-    }
-
     return (
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full bg-background">
-          <AdminSidebar 
-            activeSection={activeSection}
-            onSectionChange={setActiveSection}
-            onSignOut={signOut}
-          />
-          
-          <SidebarInset className="flex-1">
-            {/* Header */}
-            <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-4 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/95 px-6 shadow-sm">
-              <SidebarTrigger className="-ml-1 h-8 w-8 hover:bg-muted rounded-lg transition-colors" />
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-col">
-                  <h1 className="text-xl font-bold text-foreground truncate">
-                    {getSectionTitle()}
-                  </h1>
-                  <p className="text-sm text-muted-foreground truncate hidden sm:block">
-                    {getSectionDescription()}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                  Online
-                </div>
-              </div>
-            </header>
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-4 sm:py-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+                Admin Dashboard
+              </h1>
+              <p className="text-muted-foreground text-sm sm:text-base mt-1">
+                Manage your travel website content, packages, and SEO settings
+              </p>
+            </div>
+            <Button 
+              onClick={signOut} 
+              variant="outline" 
+              className="w-full sm:w-auto"
+            >
+              Sign Out
+            </Button>
+          </div>
 
-            {/* Main Content */}
-            <main className="flex-1 p-6 md:p-8 space-y-6 bg-background min-h-screen">
-              <div className="min-h-0 max-w-7xl mx-auto">
-                {renderActiveContent()}
-              </div>
-            </main>
-          </SidebarInset>
+          <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
+            <div className="bg-card rounded-lg border shadow-sm p-2">
+              <TabsList className="grid w-full h-auto gap-1 bg-transparent p-1" style={{
+                gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))'
+              }}>
+                <TabsTrigger 
+                  value="overview" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Database className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Overview</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="packages" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Package className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Packages</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="group-tours" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Users className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Group Tours</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="blog" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <BookOpen className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Blog</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="contact" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <MessageSquare className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Contact</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="enquiries" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <ClipboardList className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Enquiries</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="content" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <FileText className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Content</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="countries" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Globe className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">Countries</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="seo" 
+                  className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm p-3 min-h-[60px] sm:min-h-[48px] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
+                >
+                  <Settings className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-center">SEO</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            <TabsContent value="overview" className="mt-6">
+              <AdminOverview />
+            </TabsContent>
+
+            <TabsContent value="packages" className="mt-6">
+              <PackageManager />
+            </TabsContent>
+
+            <TabsContent value="group-tours" className="mt-6">
+              <GroupTourManager />
+            </TabsContent>
+
+            <TabsContent value="countries" className="mt-6">
+              <CountryManager />
+            </TabsContent>
+
+            <TabsContent value="blog" className="mt-6">
+              <BlogManager />
+            </TabsContent>
+
+            <TabsContent value="contact" className="mt-6">
+              <ContactManager />
+            </TabsContent>
+
+            <TabsContent value="enquiries" className="mt-6">
+              <EnquiryManager />
+            </TabsContent>
+
+            <TabsContent value="content" className="mt-6">
+              <ContentManager />
+            </TabsContent>
+
+            <TabsContent value="seo" className="mt-6">
+              <SEOManager />
+            </TabsContent>
+          </Tabs>
         </div>
-      </SidebarProvider>
+      </div>
     )
   }
 

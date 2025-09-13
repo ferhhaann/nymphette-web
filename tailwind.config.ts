@@ -65,9 +65,10 @@ export default {
 						foreground: 'hsl(var(--card-foreground))'
 					},
 					// Travel brand colors
-					'warm-orange': 'hsl(var(--warm-orange))',
-					'soft-gray': 'hsl(var(--soft-gray))',
-					'pale-gray': 'hsl(var(--pale-gray))'
+					'deep-blue': 'hsl(var(--deep-blue))',
+					'bright-blue': 'hsl(var(--bright-blue))',
+					'soft-blue': 'hsl(var(--soft-blue))',
+					'pale-blue': 'hsl(var(--pale-blue))'
 				},
 				backgroundImage: {
 					'hero-gradient': 'var(--hero-gradient)',
