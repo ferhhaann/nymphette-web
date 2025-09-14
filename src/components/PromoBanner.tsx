@@ -8,6 +8,8 @@ import { useOptimizedContentValue } from "@/hooks/useOptimizedContent"
 const PromoBanner = () => {
   const navigate = useNavigate();
   const { data: promoDescription } = useOptimizedContentValue('homepage', 'promo_description', 'Discover curated destinations and exclusive offers designed just for you')
+  
+  console.log('PromoBanner - promoDescription:', promoDescription)
   return (
     <section className="section-padding bg-gradient-to-br from-background via-secondary/10 to-background">
       <div className="container">

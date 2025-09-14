@@ -15,6 +15,9 @@ const Hero = () => {
   
   const { data: heroTitle } = useOptimizedContentValue('homepage', 'hero_title', 'Discover Amazing Travel Destinations')
   const { data: journeyDescription } = useOptimizedContentValue('homepage', 'journey_description', 'Contact us today and let our expert travel consultants help you plan the perfect trip tailored to your preferences and budget.')
+  
+  console.log('Hero component - heroTitle:', heroTitle)
+  console.log('Hero component - journeyDescription:', journeyDescription)
 
   useEffect(() => {
     setIsVisible(true);
