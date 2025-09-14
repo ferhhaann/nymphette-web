@@ -125,6 +125,48 @@ export const ContentManager = () => {
     setIsAddDialogOpen(false)
   }
 
+  const initializeHomepageContent = async () => {
+    const defaultHomepageContent = [
+      { key: "hero_title", value: "Discover Amazing Destinations" },
+      { key: "hero_subtitle", value: "Your journey to extraordinary places starts here" },
+      { key: "trust_badge_1", value: "1000+ Happy Travelers" },
+      { key: "trust_badge_2", value: "50+ Countries" },
+      { key: "trust_badge_3", value: "24/7 Support" },
+      { key: "search_section_badge", value: "Find Your Adventure" },
+      { key: "search_section_title", value: "Where do you want to go?" },
+      { key: "search_section_description", value: "Search from thousands of destinations and find your perfect trip" },
+      { key: "search_placeholder", value: "Enter destination..." },
+      { key: "search_button_text", value: "Search Destinations" },
+      { key: "popular_destinations_title", value: "Popular Destinations" },
+      { key: "trust_indicator_1", value: "Trusted by 10,000+ travelers" },
+      { key: "trust_indicator_2", value: "Award-winning service" },
+      { key: "trust_indicator_3", value: "Best price guarantee" },
+      { key: "promo_badge", value: "Special Offer" },
+      { key: "promo_title", value: "Premium Travel Experiences Worldwide" },
+      { key: "promo_description", value: "Discover luxury accommodations, exclusive tours, and unforgettable experiences" },
+      { key: "promo_button_text", value: "Explore Premium Packages" }
+    ]
+
+    try {
+      for (const item of defaultHomepageContent) {
+        const existing = content.find(c => c.section === 'homepage' && c.key === item.key)
+        if (!existing) {
+          await saveContent('homepage', item.key, item.value)
+        }
+      }
+      toast({
+        title: "Success",
+        description: "Homepage content initialized successfully"
+      })
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to initialize homepage content: " + error.message,
+        variant: "destructive"
+      })
+    }
+  }
+
   const getSectionContent = (section: string) => {
     return content.filter(c => c.section === section)
   }
@@ -145,53 +187,61 @@ export const ContentManager = () => {
           <h2 className="text-2xl font-bold">Content Manager</h2>
           <p className="text-muted-foreground">Edit contact page and about us page content</p>
         </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Content
+        <div className="flex gap-2">
+          {selectedSection === 'homepage' && getSectionContent('homepage').length === 0 && (
+            <Button onClick={initializeHomepageContent} variant="outline">
+              <Package className="h-4 w-4 mr-2" />
+              Initialize Homepage Content
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add New Content Item</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="section">Section: {sections.find(s => s.value === selectedSection)?.label}</Label>
-                <p className="text-sm text-muted-foreground">Adding to section: {selectedSection}</p>
+          )}
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Content
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Content Item</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="section">Section: {sections.find(s => s.value === selectedSection)?.label}</Label>
+                  <p className="text-sm text-muted-foreground">Adding to section: {selectedSection}</p>
+                </div>
+                <div>
+                  <Label htmlFor="key">Content Key</Label>
+                  <Input
+                    id="key"
+                    value={newContentKey}
+                    onChange={(e) => setNewContentKey(e.target.value)}
+                    placeholder="e.g., title, description, subtitle"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="value">Content Value</Label>
+                  <Textarea
+                    id="value"
+                    value={newContentValue}
+                    onChange={(e) => setNewContentValue(e.target.value)}
+                    placeholder="Enter the content value..."
+                    rows={3}
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={addNewContent}>
+                    <Save className="h-4 w-4 mr-2" />
+                    Add Content
+                  </Button>
+                </div>
               </div>
-              <div>
-                <Label htmlFor="key">Content Key</Label>
-                <Input
-                  id="key"
-                  value={newContentKey}
-                  onChange={(e) => setNewContentKey(e.target.value)}
-                  placeholder="e.g., title, description, subtitle"
-                />
-              </div>
-              <div>
-                <Label htmlFor="value">Content Value</Label>
-                <Textarea
-                  id="value"
-                  value={newContentValue}
-                  onChange={(e) => setNewContentValue(e.target.value)}
-                  placeholder="Enter the content value..."
-                  rows={3}
-                />
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={addNewContent}>
-                  <Save className="h-4 w-4 mr-2" />
-                  Add Content
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <div className="grid grid-cols-4 gap-6">
@@ -282,243 +332,75 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     return <div className="p-4 text-center text-muted-foreground">Section not available for editing</div>
   }
 
-  const renderContentItem = (item: DatabaseContent) => {
-    const isJson = typeof item.value === 'object' && item.value !== null
-    
+  if (content.length === 0) {
     return (
-      <Card key={item.id} className="space-y-4">
-        <CardHeader className="pb-3">
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="text-sm font-medium">{item.key}</CardTitle>
-              <CardDescription className="text-xs">
-                Type: {isJson ? 'Object/Array' : typeof item.value}
-              </CardDescription>
-            </div>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => onDelete(item.id)}
-              className="text-red-600 hover:text-red-700"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-0">
-          {isJson ? (
-            <div className="space-y-4">
-              <div className="grid gap-4">
-                {Object.entries(item.value as Record<string, any>).map(([fieldKey, fieldValue]) => (
-                  <div key={fieldKey} className="space-y-2">
-                    <Label className="text-sm font-medium capitalize">{fieldKey.replace(/_/g, ' ')}</Label>
-                    {Array.isArray(fieldValue) ? (
-                      <div className="space-y-2">
-                        {fieldValue.map((arrayItem, index) => (
-                          <div key={index} className="flex gap-2">
-                            {typeof arrayItem === 'object' && arrayItem !== null ? (
-                              <Textarea
-                                value={JSON.stringify(arrayItem, null, 2)}
-                                onChange={(e) => {
-                                  try {
-                                    const newArray = [...fieldValue]
-                                    newArray[index] = JSON.parse(e.target.value)
-                                    const currentJson = { ...(item.value as Record<string, any>) }
-                                    currentJson[fieldKey] = newArray
-                                    setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                                  } catch (err) {
-                                    // Invalid JSON, keep as string for now
-                                    const newArray = [...fieldValue]
-                                    newArray[index] = e.target.value
-                                    const currentJson = { ...(item.value as Record<string, any>) }
-                                    currentJson[fieldKey] = newArray
-                                    setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                                  }
-                                }}
-                                onBlur={(e) => {
-                                  try {
-                                    const newArray = [...fieldValue]
-                                    newArray[index] = JSON.parse(e.target.value)
-                                    const currentJson = { ...(item.value as Record<string, any>) }
-                                    currentJson[fieldKey] = newArray
-                                    handleSave(item.key, currentJson)
-                                  } catch (err) {
-                                    // Invalid JSON, save as string
-                                    const newArray = [...fieldValue]
-                                    newArray[index] = e.target.value
-                                    const currentJson = { ...(item.value as Record<string, any>) }
-                                    currentJson[fieldKey] = newArray
-                                    handleSave(item.key, currentJson)
-                                  }
-                                }}
-                                className="text-sm font-mono"
-                                placeholder={`${fieldKey} ${index + 1} (JSON)`}
-                                rows={3}
-                              />
-                            ) : (
-                              <Input
-                                value={String(arrayItem || '')}
-                                onChange={(e) => {
-                                  const newArray = [...fieldValue]
-                                  newArray[index] = e.target.value
-                                  const currentJson = { ...(item.value as Record<string, any>) }
-                                  currentJson[fieldKey] = newArray
-                                  setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                                }}
-                                onBlur={(e) => {
-                                  const newArray = [...fieldValue]
-                                  newArray[index] = e.target.value
-                                  const currentJson = { ...(item.value as Record<string, any>) }
-                                  currentJson[fieldKey] = newArray
-                                  handleSave(item.key, currentJson)
-                                }}
-                                className="text-sm"
-                                placeholder={`${fieldKey} ${index + 1}`}
-                              />
-                            )}
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                const newArray = fieldValue.filter((_, i) => i !== index)
-                                const currentJson = { ...(item.value as Record<string, any>) }
-                                currentJson[fieldKey] = newArray
-                                setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                                handleSave(item.key, currentJson)
-                              }}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const newArray = [...fieldValue, '']
-                            const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = newArray
-                            setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                            handleSave(item.key, currentJson)
-                          }}
-                          className="w-full"
-                        >
-                          <Plus className="h-4 w-4 mr-1" />
-                          Add {fieldKey.slice(0, -1)}
-                        </Button>
-                      </div>
-                    ) : typeof fieldValue === 'object' && fieldValue !== null ? (
-                      <Textarea
-                        value={JSON.stringify(fieldValue, null, 2)}
-                        onChange={(e) => {
-                          try {
-                            const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = JSON.parse(e.target.value)
-                            setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                          } catch (err) {
-                            // Invalid JSON, keep as string for now
-                            const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = e.target.value
-                            setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                          }
-                        }}
-                        onBlur={(e) => {
-                          try {
-                            const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = JSON.parse(e.target.value)
-                            handleSave(item.key, currentJson)
-                          } catch (err) {
-                            // Invalid JSON, save as string
-                            const currentJson = { ...(item.value as Record<string, any>) }
-                            currentJson[fieldKey] = e.target.value
-                            handleSave(item.key, currentJson)
-                          }
-                        }}
-                        rows={6}
-                        className="text-sm font-mono"
-                        placeholder={`Enter ${fieldKey} (JSON format)`}
-                      />
-                    ) : typeof fieldValue === 'string' && fieldValue.length > 50 ? (
-                      <Textarea
-                        value={fieldValue}
-                        onChange={(e) => {
-                          const currentJson = { ...(item.value as Record<string, any>) }
-                          currentJson[fieldKey] = e.target.value
-                          setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                        }}
-                        onBlur={(e) => {
-                          const currentJson = { ...(item.value as Record<string, any>) }
-                          currentJson[fieldKey] = e.target.value
-                          handleSave(item.key, currentJson)
-                        }}
-                        rows={3}
-                        className="text-sm"
-                        placeholder={`Enter ${fieldKey}`}
-                      />
-                    ) : (
-                      <Input
-                        value={String(fieldValue || '')}
-                        onChange={(e) => {
-                          const currentJson = { ...(item.value as Record<string, any>) }
-                          currentJson[fieldKey] = e.target.value
-                          setFormData(prev => ({ ...prev, [item.key]: currentJson }))
-                        }}
-                        onBlur={(e) => {
-                          const currentJson = { ...(item.value as Record<string, any>) }
-                          currentJson[fieldKey] = e.target.value
-                          handleSave(item.key, currentJson)
-                        }}
-                        className="text-sm"
-                        placeholder={`Enter ${fieldKey}`}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <Label className="text-sm">{item.key}</Label>
-              {typeof item.value === 'string' && item.value.length > 100 ? (
-                <Textarea
-                  value={formData[item.key] !== undefined ? formData[item.key] : item.value}
-                  onChange={(e) => setFormData(prev => ({ ...prev, [item.key]: e.target.value }))}
-                  onBlur={(e) => handleSave(item.key, e.target.value)}
-                  rows={4}
-                  className="text-sm"
-                />
-              ) : (
-                <Input
-                  value={formData[item.key] !== undefined ? 
-                    (typeof formData[item.key] === 'object' ? JSON.stringify(formData[item.key]) : String(formData[item.key])) : 
-                    (typeof item.value === 'object' ? JSON.stringify(item.value) : String(item.value))}
-                  onChange={(e) => setFormData(prev => ({ ...prev, [item.key]: e.target.value }))}
-                  onBlur={(e) => handleSave(item.key, e.target.value)}
-                  className="text-sm"
-                />
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <div className="text-center py-8 text-muted-foreground">
+        <AlertCircle className="h-8 w-8 mx-auto mb-2" />
+        <p>No content found for this section.</p>
+        {section === 'homepage' && (
+          <p className="text-sm mt-2">Click "Initialize Homepage Content" to add default content items.</p>
+        )}
+      </div>
     )
   }
 
   return (
-    <div className="space-y-4">
-      {content.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-          <p>No content items found for this section.</p>
-          <p className="text-sm">Click "Add Content" to create the first item.</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {content.map(renderContentItem)}
-        </div>
-      )}
+    <div className="space-y-6">
+      {content.map((item) => (
+        <Card key={item.id} className="space-y-4">
+          <CardHeader className="pb-3">
+            <div className="flex justify-between items-center">
+              <div>
+                <CardTitle className="text-sm font-medium">{item.key}</CardTitle>
+                <CardDescription className="text-xs">
+                  Type: {typeof item.value}
+                </CardDescription>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onDelete(item.id)}
+                className="text-red-600 hover:text-red-700"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium capitalize">
+                {item.key.replace(/_/g, ' ')}
+              </Label>
+              {String(item.value).length > 100 ? (
+                <Textarea
+                  value={String(formData[item.key] || item.value || '')}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
+                  }}
+                  onBlur={(e) => {
+                    handleSave(item.key, e.target.value)
+                  }}
+                  className="text-sm"
+                  placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
+                  rows={4}
+                />
+              ) : (
+                <Input
+                  value={String(formData[item.key] || item.value || '')}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
+                  }}
+                  onBlur={(e) => {
+                    handleSave(item.key, e.target.value)
+                  }}
+                  className="text-sm"
+                  placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
+                />
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   )
 }
