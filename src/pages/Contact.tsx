@@ -162,7 +162,7 @@ export default function Contact() {
       
       <main>
         {/* Hero Section */}
-        <section className="relative h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
+        <section className="relative h-[70vh] sm:h-[80vh] md:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
           <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
             <img 
               src="/src/assets/contact-hero.jpg" 
@@ -171,16 +171,16 @@ export default function Contact() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
           </div>
-          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-            <h1 className="text-5xl font-bold mb-6 animate-fade-in">Contact Nymphette Tours - Get Expert Travel Assistance</h1>
-            <p className="text-xl opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
+          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 sm:px-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 animate-fade-in">Contact Nymphette Tours - Get Expert Travel Assistance</h1>
+            <p className="text-base sm:text-lg md:text-xl opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
               Ready to start your next adventure? We're here to help!
             </p>
           </div>
         </section>
 
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-3 gap-12">
+      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div className="grid lg:grid-cols-3 gap-8 sm:gap-12">
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <Card className="shadow-lg">
@@ -191,8 +191,8 @@ export default function Contact() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium mb-2">Name *</label>
                       <Input
@@ -214,7 +214,7 @@ export default function Contact() {
                     </div>
                   </div>
                   
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium mb-2">Phone</label>
                       <Input
@@ -255,7 +255,7 @@ export default function Contact() {
                   <Button 
                     type="submit" 
                     disabled={submitting}
-                    className="w-full md:w-auto px-8"
+                    className="w-full sm:w-auto px-6 sm:px-8"
                   >
                     <Send className="w-4 h-4 mr-2" />
                     {submitting ? 'Sending...' : 'Send Message'}
@@ -266,7 +266,7 @@ export default function Contact() {
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Contact Details */}
             <Card className="shadow-lg">
               <CardHeader>
@@ -395,10 +395,10 @@ export default function Contact() {
       </main>
 
       {/* Map Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Visit Our Office</h2>
-          <div className="bg-white rounded-lg overflow-hidden shadow-lg h-96">
+      <section className="py-12 sm:py-16 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">Visit Our Office</h2>
+          <div className="bg-white rounded-lg overflow-hidden shadow-lg h-64 sm:h-80 md:h-96">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2219901290355!2d-74.00369368400567!3d40.71312937933185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316e18a7df%3A0xb9df1f7387a94119!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s"
               width="100%"

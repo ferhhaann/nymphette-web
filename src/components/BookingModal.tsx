@@ -28,7 +28,7 @@ export const BookingModal = ({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-[890px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[95vw] sm:max-w-[890px] max-h-[90vh] overflow-y-auto mx-2 sm:mx-4">
         <DialogHeader>
           <DialogTitle className="text-2xl">Book Your Travel Experience</DialogTitle>
         </DialogHeader>

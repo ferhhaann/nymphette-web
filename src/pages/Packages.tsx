@@ -178,7 +178,7 @@ const Packages = () => {
         <>
           {/* Hero Section */}
           <main>
-            <section className="relative h-[calc(100vh-3rem)] flex items-center justify-center overflow-hidden">
+            <section className="relative h-[70vh] sm:h-[80vh] md:h-[calc(100vh-3rem)] flex items-center justify-center overflow-hidden">
               <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
                 <div className="absolute inset-0">
                   <div 
@@ -189,50 +189,50 @@ const Packages = () => {
                 <div className="absolute inset-0 bg-foreground/50"></div>
               </div>
               
-              <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-                <h1 className="text-6xl md:text-7xl font-bold mb-6 animate-scale-in leading-tight">
+              <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 sm:px-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 animate-scale-in leading-tight">
                   Explore Our Premium Travel Packages
                 </h1>
-                <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in leading-relaxed" style={{ animationDelay: '0.3s' }}>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 opacity-90 animate-fade-in leading-relaxed" style={{ animationDelay: '0.3s' }}>
                   Discover amazing destinations across the globe with our carefully curated travel packages
                 </p>
                 
                 {/* Show search filters if any */}
                 {(searchDestination || searchDate || searchTravelers) && (
-                  <div className="mb-8 bg-white/20 backdrop-blur-md rounded-xl p-4 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.6s' }}>
-                    <p className="text-white/80 mb-2">Search Results for:</p>
-                    <div className="flex flex-wrap gap-2 justify-center">
+                  <div className="mb-6 sm:mb-8 bg-white/20 backdrop-blur-md rounded-xl p-3 sm:p-4 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.6s' }}>
+                    <p className="text-white/80 mb-2 text-sm sm:text-base">Search Results for:</p>
+                    <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
                       {searchDestination && (
-                        <Badge className="bg-accent text-white">Destination: {searchDestination}</Badge>
+                        <Badge className="bg-accent text-white text-xs sm:text-sm">Destination: {searchDestination}</Badge>
                       )}
                       {searchDate && (
-                        <Badge className="bg-accent text-white">Date: {searchDate}</Badge>
+                        <Badge className="bg-accent text-white text-xs sm:text-sm">Date: {searchDate}</Badge>
                       )}
                       {searchTravelers && (
-                        <Badge className="bg-accent text-white">Travelers: {searchTravelers}</Badge>
+                        <Badge className="bg-accent text-white text-xs sm:text-sm">Travelers: {searchTravelers}</Badge>
                       )}
                     </div>
                   </div>
                 )}
                 
                 {/* Quick Stats */}
-                <div className="grid grid-cols-3 gap-8 mt-16 opacity-80 animate-fade-in" style={{ animationDelay: '0.9s' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mt-12 sm:mt-16 opacity-80 animate-fade-in" style={{ animationDelay: '0.9s' }}>
                   <div className="text-center">
-                    <div className="text-3xl font-bold mb-2">{filteredRegions.length}</div>
-                    <div className="text-sm opacity-80">Regions</div>
+                    <div className="text-2xl sm:text-3xl font-bold mb-2">{filteredRegions.length}</div>
+                    <div className="text-xs sm:text-sm opacity-80">Regions</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold mb-2">{allPackages?.length || 0}+</div>
-                    <div className="text-sm opacity-80">Packages</div>
+                    <div className="text-2xl sm:text-3xl font-bold mb-2">{allPackages?.length || 0}+</div>
+                    <div className="text-xs sm:text-sm opacity-80">Packages</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold mb-2">50+</div>
-                    <div className="text-sm opacity-80">Countries</div>
+                    <div className="text-2xl sm:text-3xl font-bold mb-2">50+</div>
+                    <div className="text-xs sm:text-sm opacity-80">Countries</div>
                   </div>
                 </div>
               </div>
 
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+              <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block">
                 <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
                   <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
                 </div>
@@ -240,11 +240,11 @@ const Packages = () => {
             </section>
 
           {/* Regions Grid */}
-          <section className="py-20">
+          <section className="py-12 sm:py-16 md:py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-primary mb-4">Choose Your Destination</h2>
-                <p className="text-xl text-muted-foreground">
+              <div className="text-center mb-12 sm:mb-16">
+                <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-4">Choose Your Destination</h2>
+                <p className="text-lg sm:text-xl text-muted-foreground">
                   {searchDestination ? 
                     `Found ${filteredRegions.length} region${filteredRegions.length !== 1 ? 's' : ''} matching "${searchDestination}"` :
                     "Explore packages organized by regions around the world"
@@ -252,7 +252,7 @@ const Packages = () => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {filteredRegions.map((region, index) => (
               <Card 
                 key={region.name}
@@ -266,7 +266,7 @@ const Packages = () => {
                     alt={`${region.name} travel destinations and highlights`}
                     width="400"
                     height="192"
-                    className="w-full h-48 group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-40 sm:h-48 group-hover:scale-110 transition-transform duration-500"
                     hoverToPlay={false}
                   />
                   <div className="absolute inset-0 bg-primary-dark/40 group-hover:bg-primary-dark/30 transition-colors pointer-events-none"></div>

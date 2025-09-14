@@ -45,14 +45,14 @@ const WhyChooseUs = () => {
       
       <div className="relative container">
         {/* Top feature badges using semantic tokens */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-8 sm:mb-12">
           {topFeatures.map((feature, index) => (
             <div 
               key={feature.text}
-              className="flex items-center gap-3 px-6 py-3 rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground font-medium shadow-lg hover:bg-primary-foreground/20 transition-all duration-300 hover:scale-105 animate-fade-in"
+              className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground font-medium shadow-lg hover:bg-primary-foreground/20 transition-all duration-300 hover:scale-105 animate-fade-in text-xs sm:text-sm md:text-base"
               style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
             >
-              <feature.icon className="h-5 w-5" />
+              <feature.icon className="h-4 w-4 sm:h-5 sm:w-5" />
               {feature.text}
             </div>
           ))}
@@ -67,7 +67,7 @@ const WhyChooseUs = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
           {features.map((feature, index) => (
             <Card 
               key={index}
@@ -89,22 +89,22 @@ const WhyChooseUs = () => {
         <div className="relative">
           <div className="absolute inset-0 bg-primary-foreground/5 rounded-3xl backdrop-blur-sm"></div>
           <div className="relative card-padding">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               <div className="text-center animate-scale-in" style={{ animationDelay: '1200ms', animationFillMode: 'both' }}>
-                <div className="text-5xl md:text-6xl font-bold text-primary-foreground mb-2">50,000+</div>
-                <div className="text-primary-foreground/80 text-lg font-medium">Happy Travelers</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-2">50,000+</div>
+                <div className="text-primary-foreground/80 text-sm sm:text-base md:text-lg font-medium">Happy Travelers</div>
               </div>
               <div className="text-center animate-scale-in" style={{ animationDelay: '1350ms', animationFillMode: 'both' }}>
-                <div className="text-5xl md:text-6xl font-bold text-primary-foreground mb-2">500+</div>
-                <div className="text-primary-foreground/80 text-lg font-medium">Destinations</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-2">500+</div>
+                <div className="text-primary-foreground/80 text-sm sm:text-base md:text-lg font-medium">Destinations</div>
               </div>
               <div className="text-center animate-scale-in" style={{ animationDelay: '1500ms', animationFillMode: 'both' }}>
-                <div className="text-5xl md:text-6xl font-bold text-primary-foreground mb-2">98%</div>
-                <div className="text-primary-foreground/80 text-lg font-medium">Satisfaction Rate</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-2">98%</div>
+                <div className="text-primary-foreground/80 text-sm sm:text-base md:text-lg font-medium">Satisfaction Rate</div>
               </div>
               <div className="text-center animate-scale-in" style={{ animationDelay: '1650ms', animationFillMode: 'both' }}>
-                <div className="text-5xl md:text-6xl font-bold text-primary-foreground mb-2">25+</div>
-                <div className="text-primary-foreground/80 text-lg font-medium">Years Experience</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-2">25+</div>
+                <div className="text-primary-foreground/80 text-sm sm:text-base md:text-lg font-medium">Years Experience</div>
               </div>
             </div>
           </div>

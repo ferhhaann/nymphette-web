@@ -50,7 +50,7 @@ const Hero = () => {
   return (
     <div className="relative">
       {/* Hero Image Section */}
-      <section className="relative h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-[80vh] sm:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
           <div className="absolute inset-0">
@@ -67,7 +67,7 @@ const Hero = () => {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 text-center text-background max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12">
+        <div className="relative z-10 text-center text-background max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-12">
           <div className={`transform transition-all duration-1000 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
@@ -81,12 +81,12 @@ const Hero = () => {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-sans tracking-tight mb-4 sm:mb-6 animate-fade-in leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold font-sans tracking-tight mb-3 sm:mb-4 md:mb-6 animate-fade-in leading-tight">
               {getContentValue('title', 'Premium Travel Packages & Group Tours Worldwide')}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-background/90 animate-slide-up leading-relaxed px-2 max-w-4xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-4 sm:mb-6 md:mb-8 text-background/90 animate-slide-up leading-relaxed px-1 sm:px-2 max-w-4xl mx-auto">
               {getContentValue('subtitle', 'Explore handpicked travel packages across Asia, Europe, Africa, Americas & Pacific Islands. Join expertly guided group tours or create custom itineraries. Over 50 destinations worldwide with authentic experiences, professional guides, and comprehensive support from planning to return. Trusted by 10,000+ travelers for unforgettable journeys.')}
             </p>
           </div>
@@ -115,26 +115,25 @@ const Hero = () => {
           {/* Enhanced Search Bar */}
           <div className="mb-6 sm:mb-8 animate-scale-in">
             <form onSubmit={handleSearch} className="max-w-4xl mx-auto">
-              <div className="bg-white shadow-2xl rounded-2xl p-4 sm:p-6 border border-border">
-                <div className="flex flex-col lg:flex-row gap-4">
+              <div className="bg-white shadow-2xl rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-border">
+                <div className="flex flex-col gap-3 sm:gap-4">
                   <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
                     <Input
                       type="text"
-                      placeholder="Where do you want to go? (e.g., Japan, Europe, Bali)"
+                      placeholder="Where do you want to go?"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-12 h-12 sm:h-14 bg-white border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary text-base sm:text-lg rounded-xl"
+                      className="pl-10 sm:pl-12 h-10 sm:h-12 md:h-14 bg-white border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl"
                     />
                   </div>
                   <Button 
                     type="submit" 
                     size="lg" 
-                    className="h-12 sm:h-14 px-6 sm:px-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-base sm:text-lg transition-all duration-200 hover:scale-105 shadow-lg"
+                    className="h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base md:text-lg transition-all duration-200 hover:scale-105 shadow-lg w-full"
                   >
-                    <span className="hidden sm:inline">Search Packages</span>
-                    <span className="sm:hidden">Search</span>
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <span>Search Packages</span>
+                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                   </Button>
                 </div>
               </div>
@@ -142,20 +141,20 @@ const Hero = () => {
           </div>
 
           {/* Quick Destinations */}
-          <div className="mb-8 sm:mb-12 animate-fade-in text-center">
-            <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base">Popular Destinations:</p>
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+          <div className="mb-6 sm:mb-8 md:mb-12 animate-fade-in text-center">
+            <p className="text-muted-foreground mb-2 sm:mb-3 md:mb-4 text-xs sm:text-sm md:text-base">Popular Destinations:</p>
+            <div className="flex flex-wrap justify-center gap-2">
               {quickDestinations.map((destination) => (
                 <Button
                   key={destination.name}
                   variant="outline"
                   size="sm"
                   onClick={() => navigate(destination.path)}
-                  className="border-border hover:bg-secondary hover:text-foreground transition-all duration-200 rounded-full px-3 sm:px-4 py-2 text-sm font-medium relative group"
+                  className="border-border hover:bg-secondary hover:text-foreground transition-all duration-200 rounded-full px-2 sm:px-3 md:px-4 py-1 sm:py-2 text-xs sm:text-sm font-medium relative group"
                 >
                   {destination.name}
                   {destination.popular && (
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
+                    <div className="absolute -top-1 -right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full animate-pulse" />
                   )}
                 </Button>
               ))}
@@ -163,19 +162,19 @@ const Hero = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-scale-in">
+          <div className="flex flex-col gap-3 justify-center animate-scale-in">
             <Button 
               size="lg" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto h-12 sm:h-14 rounded-xl transition-all duration-200 hover:scale-105 shadow-lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 sm:px-6 md:px-8 py-3 text-sm sm:text-base md:text-lg w-full h-10 sm:h-12 md:h-14 rounded-lg sm:rounded-xl transition-all duration-200 hover:scale-105 shadow-lg"
               onClick={handleExplorePackages}
             >
               {getContentValue('primary_button', 'Start your journey')}
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
             <Button 
               variant="outline" 
               size="lg"
-              className="border-2 border-border hover:bg-secondary hover:text-foreground px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto h-12 sm:h-14 rounded-xl transition-all duration-200 hover:scale-105"
+              className="border-2 border-border hover:bg-secondary hover:text-foreground px-4 sm:px-6 md:px-8 py-3 text-sm sm:text-base md:text-lg w-full h-10 sm:h-12 md:h-14 rounded-lg sm:rounded-xl transition-all duration-200 hover:scale-105"
               onClick={handlePlanCustomTrip}
             >
               {getContentValue('secondary_button', 'Plan custom trip')}

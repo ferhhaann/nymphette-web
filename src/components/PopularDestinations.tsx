@@ -124,7 +124,7 @@ const PopularDestinations = () => {
               Loading amazing destinations...
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {[...Array(4)].map((_, index) => (
               <Card key={index} className="overflow-hidden border border-border bg-card">
                 <div className="aspect-[5/4] bg-muted animate-pulse"></div>
@@ -170,13 +170,13 @@ const PopularDestinations = () => {
           </div>
         ) : (
           <div className="relative">
-            {/* Navigation Buttons */}
+            {/* Navigation Buttons - Hidden on mobile */}
             {destinations.length > itemsPerView && (
               <>
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/95 backdrop-blur-sm border-border hover:bg-secondary shadow-lg -ml-6"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/95 backdrop-blur-sm border-border hover:bg-secondary shadow-lg -ml-6 hidden lg:flex"
                   onClick={prevSlide}
                   disabled={currentIndex === 0}
                 >
@@ -185,7 +185,7 @@ const PopularDestinations = () => {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/95 backdrop-blur-sm border-border hover:bg-secondary shadow-lg -mr-6"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/95 backdrop-blur-sm border-border hover:bg-secondary shadow-lg -mr-6 hidden lg:flex"
                   onClick={nextSlide}
                   disabled={currentIndex + itemsPerView >= destinations.length}
                 >
@@ -195,7 +195,7 @@ const PopularDestinations = () => {
             )}
 
             {/* Destinations Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {visibleDestinations.map((destination, index) => (
                 <Card 
                   key={destination.id}

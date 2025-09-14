@@ -29,25 +29,25 @@ const FeaturedPackages = () => {
   }
 
   return (
-    <section className="py-20 bg-background">
+    <section className="py-12 sm:py-16 md:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold font-sans text-foreground mb-4">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-foreground mb-4">
             {getContentValue('title', 'Featured Travel Packages')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
             {getContentValue('subtitle', 'Handpicked destinations and experiences crafted for unforgettable journeys')}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {packages?.map((pkg, index) => (
             <Card 
               key={pkg.id}
               className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
               style={{ animationDelay: `${index * 200}ms` }}
             >
-              <div className="relative overflow-hidden rounded-lg h-64">
+              <div className="relative overflow-hidden rounded-lg h-48 sm:h-56 md:h-64">
                 <OptimizedImage
                   src={pkg.image}
                   alt={`${pkg.title} - ${pkg.country} travel package`}
