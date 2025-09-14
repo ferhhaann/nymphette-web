@@ -12,7 +12,7 @@ const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
-  const { getContentValue } = useContent('hero');
+  const { getContentValue } = useContent('homepage');
 
   useEffect(() => {
     setIsVisible(true);

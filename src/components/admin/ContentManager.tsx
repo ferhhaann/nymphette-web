@@ -16,17 +16,16 @@ import { useToast } from "@/hooks/use-toast"
 export const ContentManager = () => {
   const [content, setContent] = useState<DatabaseContent[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedSection, setSelectedSection] = useState<string>("about")
+  const [selectedSection, setSelectedSection] = useState<string>("homepage")
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [newContentKey, setNewContentKey] = useState("")
   const [newContentValue, setNewContentValue] = useState("")
   const { toast } = useToast()
 
   const sections = [
-    { value: "hero", label: "Hero Section" },
+    { value: "homepage", label: "Homepage" },
     { value: "about", label: "About Us" },
-    { value: "contact", label: "Contact" },
-    { value: "popular-destinations", label: "Popular Destinations" }
+    { value: "contact", label: "Contact" }
   ]
 
   useEffect(() => {
@@ -278,8 +277,8 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     onSave(section, key, value)
   }
 
-  // Handle about, contact, and popular-destinations sections
-  if (!['about', 'contact', 'popular-destinations'].includes(section)) {
+  // Handle homepage, about, and contact sections
+  if (!['homepage', 'about', 'contact'].includes(section)) {
     return <div className="p-4 text-center text-muted-foreground">Section not available for editing</div>
   }
 
