@@ -178,6 +178,7 @@ const SEOManager = () => {
     setEditingItem(item);
     setFormData(item);
     setShowForm(true);
+    // Don't scroll to top - keep edit form in place
   };
 
   const handleDelete = async (id: string) => {
@@ -203,7 +204,50 @@ const SEOManager = () => {
   };
 
   const generateStructuredData = (pageType: string) => {
-    const { generateOrganizationSchema, generatePackageSchema, generateArticleSchema, generateBreadcrumbSchema } = require('@/config/schema.config');
+    // Import schema generation functions directly (ES6 imports are handled at build time)
+    const generateOrganizationSchema = () => ({
+      "@type": "TravelAgency",
+      "name": "Nymphette Tours",
+      "url": window.location.origin,
+      "logo": `${window.location.origin}/logo.png`,
+      "sameAs": [
+        "https://www.facebook.com/nymphettetours",
+        "https://www.instagram.com/nymphettetours",
+        "https://www.twitter.com/nymphettetours"
+      ]
+    });
+
+    const generatePackageSchema = (tourPackage: any) => ({
+      "@type": "TouristTrip",
+      "name": tourPackage.title,
+      "description": tourPackage.description,
+      "offers": {
+        "@type": "Offer",
+        "price": tourPackage.price || "0",
+        "priceCurrency": "INR"
+      }
+    });
+
+    const generateArticleSchema = (article: any) => ({
+      "@type": "Article",
+      "headline": article.title,
+      "description": article.description,
+      "author": {
+        "@type": "Organization",
+        "name": "Nymphette Tours"
+      },
+      "publisher": generateOrganizationSchema()
+    });
+
+    const generateBreadcrumbSchema = (breadcrumbs: Array<{ name: string; url: string }>) => ({
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": item.name,
+        "item": item.url
+      }))
+    });
 
     const baseStructuredData = {
       "@context": "https://schema.org",
