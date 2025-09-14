@@ -302,14 +302,28 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     // Initialize form data with current content
     const data: Record<string, any> = {}
     content.forEach(item => {
-      data[item.key] = item.value
+      // Handle objects by converting to JSON string for editing
+      data[item.key] = typeof item.value === 'object' && item.value !== null 
+        ? JSON.stringify(item.value, null, 2) 
+        : item.value
     })
     setFormData(data)
   }, [content])
 
   const handleSave = (key: string, value: any) => {
+    // Try to parse JSON if it looks like JSON
+    let processedValue = value
+    if (typeof value === 'string' && (value.trim().startsWith('{') || value.trim().startsWith('['))) {
+      try {
+        processedValue = JSON.parse(value)
+      } catch (e) {
+        // If parsing fails, keep as string
+        processedValue = value
+      }
+    }
+    
     setFormData(prev => ({ ...prev, [key]: value }))
-    onSave(section, key, value)
+    onSave(section, key, processedValue)
   }
 
   // Handle homepage, about, and contact sections
@@ -355,23 +369,30 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
             <div className="space-y-2">
               <Label className="text-sm font-medium capitalize">
                 {item.key.replace(/_/g, ' ')}
+                {typeof item.value === 'object' && (
+                  <Badge variant="outline" className="ml-2 text-xs">JSON Object</Badge>
+                )}
               </Label>
-              {String(item.value).length > 100 ? (
+              
+              {/* Handle objects or long strings with textarea */}
+              {(typeof item.value === 'object' || String(formData[item.key] || item.value || '').length > 100) ? (
                 <Textarea
-                  value={String(formData[item.key] || item.value || '')}
+                  value={formData[item.key] || ''}
                   onChange={(e) => {
                     setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
                   }}
                   onBlur={(e) => {
                     handleSave(item.key, e.target.value)
                   }}
-                  className="text-sm"
-                  placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
-                  rows={4}
+                  className="text-sm font-mono"
+                  placeholder={typeof item.value === 'object' 
+                    ? `Enter JSON for ${item.key.replace(/_/g, ' ')}...` 
+                    : `Enter ${item.key.replace(/_/g, ' ')}...`}
+                  rows={typeof item.value === 'object' ? 8 : 4}
                 />
               ) : (
                 <Input
-                  value={String(formData[item.key] || item.value || '')}
+                  value={formData[item.key] || ''}
                   onChange={(e) => {
                     setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
                   }}
@@ -381,6 +402,13 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                   className="text-sm"
                   placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
                 />
+              )}
+              
+              {/* Show validation message for JSON objects */}
+              {typeof item.value === 'object' && (
+                <p className="text-xs text-muted-foreground">
+                  Edit as JSON. Changes are auto-saved when you click outside the field.
+                </p>
               )}
             </div>
           </CardContent>
