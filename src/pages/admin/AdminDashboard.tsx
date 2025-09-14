@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -60,30 +60,31 @@ const AdminDashboard = () => {
       const { data: { session } } = await supabase.auth.getSession()
       
       if (session?.user) {
-        setIsAuthenticated(true)
-        
-        // Check if user has admin role
+        // Check if user has admin role first before setting any auth states
         try {
           const { data: isAdminResult, error } = await supabase
             .rpc('is_admin')
           
-          if (error) {
-            // For production, if there's an error with the RPC, treat as non-admin
-            setIsAdmin(false)
-          } else {
-            setIsAdmin(isAdminResult || false)
-          }
+          const userIsAdmin = !error && (isAdminResult || false)
+          
+          // Update all states in the same render cycle
+          setIsAuthenticated(true)
+          setIsAdmin(userIsAdmin)
+          setAdminCheckComplete(true)
+          setLoading(false)
         } catch (rpcError) {
           // Fallback: if RPC fails completely
+          setIsAuthenticated(true)
           setIsAdmin(false)
+          setAdminCheckComplete(true)
+          setLoading(false)
         }
-        setAdminCheckComplete(true)
       } else {
         setIsAuthenticated(false)
         setIsAdmin(false)
         setAdminCheckComplete(true)
+        setLoading(false)
       }
-      setLoading(false)
     } catch (error) {
       setIsAuthenticated(false)
       setIsAdmin(false)
