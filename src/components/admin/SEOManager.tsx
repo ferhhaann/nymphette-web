@@ -502,20 +502,40 @@ const SEOManager = () => {
                                const structuredData = generateStructuredData(formData.page_type);
                                setFormData({...formData, structured_data: structuredData});
                                setPreviewStructuredData(structuredData);
-                               toast.success('Structured data generated');
+                               toast.success('Structured data generated successfully');
                              }}
                              className="w-full mt-2"
                            >
                              Generate for {formData.page_type}
                            </Button>
-                           {previewStructuredData && (
+                           
+                           {(previewStructuredData || formData.structured_data) && (
                              <div className="mt-4 p-4 bg-muted rounded-lg">
-                               <label className="text-sm font-medium mb-2 block">Generated Structured Data:</label>
-                               <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-40">
-                                 {JSON.stringify(previewStructuredData, null, 2)}
+                               <label className="text-sm font-medium mb-2 block">Structured Data Preview:</label>
+                               <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-60">
+                                 {JSON.stringify(previewStructuredData || formData.structured_data, null, 2)}
                                </pre>
                              </div>
                            )}
+
+                           <div className="mt-4">
+                             <label className="text-sm font-medium">Custom Structured Data (JSON)</label>
+                             <Textarea
+                               value={formData.structured_data ? JSON.stringify(formData.structured_data, null, 2) : ''}
+                               onChange={(e) => {
+                                 try {
+                                   const parsed = JSON.parse(e.target.value);
+                                   setFormData({...formData, structured_data: parsed});
+                                 } catch (err) {
+                                   // Keep the text as is for editing
+                                   setFormData({...formData, structured_data: e.target.value});
+                                 }
+                               }}
+                               placeholder="Enter custom JSON-LD structured data..."
+                               rows={8}
+                               className="font-mono text-xs"
+                             />
+                           </div>
                          </div>
                       </AccordionContent>
                     </AccordionItem>
@@ -978,20 +998,40 @@ const SEOManager = () => {
                         const structuredData = generateStructuredData(formData.page_type);
                         setFormData({...formData, structured_data: structuredData});
                         setPreviewStructuredData(structuredData);
-                        toast.success('Structured data generated');
+                        toast.success('Structured data generated successfully');
                       }}
                       className="w-full mt-2"
                     >
                       Generate for {formData.page_type}
                     </Button>
-                    {previewStructuredData && (
+                    
+                    {(previewStructuredData || formData.structured_data) && (
                       <div className="mt-4 p-4 bg-muted rounded-lg">
-                        <label className="text-sm font-medium mb-2 block">Generated Structured Data:</label>
-                        <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-40">
-                          {JSON.stringify(previewStructuredData, null, 2)}
+                        <label className="text-sm font-medium mb-2 block">Structured Data Preview:</label>
+                        <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-60">
+                          {JSON.stringify(previewStructuredData || formData.structured_data, null, 2)}
                         </pre>
                       </div>
                     )}
+
+                    <div className="mt-4">
+                      <label className="text-sm font-medium">Custom Structured Data (JSON)</label>
+                      <Textarea
+                        value={formData.structured_data ? JSON.stringify(formData.structured_data, null, 2) : ''}
+                        onChange={(e) => {
+                          try {
+                            const parsed = JSON.parse(e.target.value);
+                            setFormData({...formData, structured_data: parsed});
+                          } catch (err) {
+                            // Keep the text as is for editing
+                            setFormData({...formData, structured_data: e.target.value});
+                          }
+                        }}
+                        placeholder="Enter custom JSON-LD structured data..."
+                        rows={8}
+                        className="font-mono text-xs"
+                      />
+                    </div>
                   </div>
                 </AccordionContent>
               </AccordionItem>
