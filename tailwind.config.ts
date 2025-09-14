@@ -19,8 +19,8 @@ export default {
 		},
 				extend: {
 			fontFamily: {
-				'geo': ['"Manrope"', 'sans-serif'],
-				'sans': ['"Manrope"', 'sans-serif'],
+				'geo': ['"Outfit"', 'sans-serif'],
+				'sans': ['"Outfit"', 'sans-serif'],
 			},
 				fontWeight: {
 					normal: '400',
