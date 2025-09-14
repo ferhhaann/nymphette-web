@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Search, Edit, Trash2, Plus, Eye, BarChart3, TrendingUp, Globe, Target, Link as LinkIcon, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -42,6 +43,8 @@ const SEOManager = () => {
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<SEOSettings | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [previewStructuredData, setPreviewStructuredData] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('settings');
 
@@ -177,8 +180,7 @@ const SEOManager = () => {
   const handleEdit = (item: SEOSettings) => {
     setEditingItem(item);
     setFormData(item);
-    setShowForm(true);
-    // Don't scroll to top - keep edit form in place
+    setShowEditDialog(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -201,6 +203,8 @@ const SEOManager = () => {
     setFormData(initialFormData);
     setEditingItem(null);
     setShowForm(false);
+    setShowEditDialog(false);
+    setPreviewStructuredData(null);
   };
 
   const generateStructuredData = (pageType: string) => {
@@ -489,21 +493,30 @@ const SEOManager = () => {
                           </select>
                         </div>
 
-                        <div>
-                          <label className="text-sm font-medium">Generate Structured Data</label>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => {
-                              const structuredData = generateStructuredData(formData.page_type);
-                              setFormData({...formData, structured_data: structuredData});
-                              toast.success('Structured data generated');
-                            }}
-                            className="w-full mt-2"
-                          >
-                            Generate for {formData.page_type}
-                          </Button>
-                        </div>
+                         <div>
+                           <label className="text-sm font-medium">Generate Structured Data</label>
+                           <Button
+                             type="button"
+                             variant="outline"
+                             onClick={() => {
+                               const structuredData = generateStructuredData(formData.page_type);
+                               setFormData({...formData, structured_data: structuredData});
+                               setPreviewStructuredData(structuredData);
+                               toast.success('Structured data generated');
+                             }}
+                             className="w-full mt-2"
+                           >
+                             Generate for {formData.page_type}
+                           </Button>
+                           {previewStructuredData && (
+                             <div className="mt-4 p-4 bg-muted rounded-lg">
+                               <label className="text-sm font-medium mb-2 block">Generated Structured Data:</label>
+                               <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-40">
+                                 {JSON.stringify(previewStructuredData, null, 2)}
+                               </pre>
+                             </div>
+                           )}
+                         </div>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
@@ -826,6 +839,175 @@ const SEOManager = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Edit Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit SEO Settings</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium">Page URL</label>
+                <Input
+                  value={formData.page_url}
+                  onChange={(e) => setFormData({...formData, page_url: e.target.value})}
+                  placeholder="/example-page"
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Page Type</label>
+                <select
+                  value={formData.page_type}
+                  onChange={(e) => setFormData({...formData, page_type: e.target.value as any})}
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value="homepage">Homepage</option>
+                  <option value="packages">Packages</option>
+                  <option value="country">Country Pages</option>
+                  <option value="blog">Blog</option>
+                  <option value="about">About</option>
+                  <option value="contact">Contact</option>
+                  <option value="group-tours">Group Tours</option>
+                  <option value="custom">Custom</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Meta Title (60 chars max)</label>
+              <Input
+                value={formData.meta_title}
+                onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
+                placeholder="Optimized page title"
+                maxLength={60}
+                required
+              />
+              <div className="text-xs text-muted-foreground mt-1">
+                {formData.meta_title.length}/60 characters
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Meta Description (160 chars max)</label>
+              <Textarea
+                value={formData.meta_description}
+                onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
+                placeholder="Compelling page description"
+                maxLength={160}
+                rows={3}
+                required
+              />
+              <div className="text-xs text-muted-foreground mt-1">
+                {formData.meta_description.length}/160 characters
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Keywords (comma separated)</label>
+              <Input
+                value={formData.meta_keywords}
+                onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
+                placeholder="keyword1, keyword2, keyword3"
+              />
+            </div>
+
+            <Accordion type="single" collapsible>
+              <AccordionItem value="advanced">
+                <AccordionTrigger>Advanced SEO Settings</AccordionTrigger>
+                <AccordionContent className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium">Canonical URL</label>
+                    <Input
+                      value={formData.canonical_url || ''}
+                      onChange={(e) => setFormData({...formData, canonical_url: e.target.value})}
+                      placeholder="https://example.com/canonical-url"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">OG Title</label>
+                    <Input
+                      value={formData.og_title || ''}
+                      onChange={(e) => setFormData({...formData, og_title: e.target.value})}
+                      placeholder="Social media title"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">OG Description</label>
+                    <Textarea
+                      value={formData.og_description || ''}
+                      onChange={(e) => setFormData({...formData, og_description: e.target.value})}
+                      placeholder="Social media description"
+                      rows={2}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">OG Image URL</label>
+                    <Input
+                      value={formData.og_image || ''}
+                      onChange={(e) => setFormData({...formData, og_image: e.target.value})}
+                      placeholder="https://example.com/image.jpg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">Robots Meta</label>
+                    <select
+                      value={formData.robots_meta || 'index,follow'}
+                      onChange={(e) => setFormData({...formData, robots_meta: e.target.value})}
+                      className="w-full p-2 border rounded-md"
+                    >
+                      <option value="index,follow">Index, Follow</option>
+                      <option value="index,nofollow">Index, No Follow</option>
+                      <option value="noindex,follow">No Index, Follow</option>
+                      <option value="noindex,nofollow">No Index, No Follow</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">Generate Structured Data</label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        const structuredData = generateStructuredData(formData.page_type);
+                        setFormData({...formData, structured_data: structuredData});
+                        setPreviewStructuredData(structuredData);
+                        toast.success('Structured data generated');
+                      }}
+                      className="w-full mt-2"
+                    >
+                      Generate for {formData.page_type}
+                    </Button>
+                    {previewStructuredData && (
+                      <div className="mt-4 p-4 bg-muted rounded-lg">
+                        <label className="text-sm font-medium mb-2 block">Generated Structured Data:</label>
+                        <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-40">
+                          {JSON.stringify(previewStructuredData, null, 2)}
+                        </pre>
+                      </div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            <div className="flex justify-end space-x-2">
+              <Button type="button" variant="outline" onClick={() => setShowEditDialog(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">
+                Update SEO Settings
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
