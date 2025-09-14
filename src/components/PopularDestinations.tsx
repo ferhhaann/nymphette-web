@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, MapPin, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Sparkles, ArrowRight } from "lucide-react";
 import { useContent } from "@/hooks/useContent";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -142,21 +142,21 @@ const PopularDestinations = () => {
   }
 
   return (
-    <section className="section-padding bg-background">
+    <section className="section-padding bg-gradient-to-b from-background to-secondary/20">
       <div className="container">
-        {/* Header */}
+        {/* Modern Header */}
         <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="h-6 w-6 text-primary" />
-            <span className="text-sm font-medium text-primary uppercase tracking-wider">
-              Discover
+          <div className="inline-flex items-center justify-center gap-2 mb-6 px-4 py-2 bg-primary/10 rounded-full">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <span className="text-sm font-semibold text-primary uppercase tracking-wider">
+              Top Destinations
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold font-geo text-foreground mb-4 animate-fade-in">
-            {getContentValue('title', 'Popular Travel Destinations')}
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 animate-fade-in">
+            {getContentValue('title', 'Most Popular Destinations')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-            {getContentValue('subtitle', 'Discover our most loved destinations with carefully curated travel packages')}
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+            {getContentValue('subtitle', 'Explore our handpicked destinations loved by travelers worldwide')}
           </p>
         </div>
 
@@ -194,66 +194,60 @@ const PopularDestinations = () => {
               </>
             )}
 
-            {/* Destinations Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {/* Modern Destinations Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {visibleDestinations.map((destination, index) => (
-                <Card 
+                <div
                   key={destination.id}
-                  className="group overflow-hidden cursor-pointer border border-border bg-card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-fade-in"
+                  className="group relative cursor-pointer animate-fade-in"
                   onClick={() => handleDestinationClick(destination)}
                   style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                    {destination.display_image ? (
-                      <OptimizedImage
-                        src={destination.display_image}
-                        alt={`${destination.name} destination`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
-                        <MapPin className="h-12 w-12 text-muted-foreground/50" />
+                  {/* Card with modern design */}
+                  <div className="relative overflow-hidden rounded-2xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                    
+                    {/* Image Section */}
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      {destination.display_image ? (
+                        <OptimizedImage
+                          src={destination.display_image}
+                          alt={`${destination.name} destination`}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                          <MapPin className="h-12 w-12 text-muted-foreground/50" />
+                        </div>
+                      )}
+                      
+                      {/* Modern overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 group-hover:from-black/70 transition-all duration-300" />
+                      
+                      {/* Package count with modern badge */}
+                      <div className="absolute top-4 right-4">
+                        <div className="bg-background/95 backdrop-blur-sm text-foreground text-xs font-semibold px-3 py-1 rounded-full border border-border/50 shadow-lg">
+                          {destination.package_count} {destination.package_count === 1 ? 'Package' : 'Packages'}
+                        </div>
                       </div>
-                    )}
-                    
-                    {/* Overlay gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent group-hover:from-black/40 transition-all duration-300" />
-                    
-                    {/* Package Count Badge */}
-                    <div className="absolute top-4 right-4">
-                      <Badge 
-                        variant="secondary" 
-                        className="bg-background/90 text-foreground font-medium shadow-sm backdrop-blur-sm border border-border/50"
-                      >
-                        {destination.package_count} {destination.package_count === 1 ? 'Package' : 'Packages'}
-                      </Badge>
-                    </div>
-                  </div>
-                  
-                  <CardContent className="p-6">
-                    <div className="space-y-3">
-                      <div>
-                        <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200 mb-1">
+
+                      {/* Bottom content overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="text-xl font-bold text-white mb-1 group-hover:text-primary-foreground transition-colors duration-200">
                           {destination.name}
                         </h3>
-                        <p className="text-muted-foreground text-sm capitalize font-medium">
+                        <p className="text-white/80 text-sm font-medium capitalize">
                           {destination.region}
                         </p>
                       </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <MapPin className="h-3 w-3" />
-                          <span>Explore destination</span>
-                        </div>
-                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200">
-                          <ChevronRight className="h-3 w-3 text-primary" />
-                        </div>
-                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+
+                    {/* Hover effect indicator */}
+                    <div className="absolute bottom-4 right-4 w-10 h-10 bg-primary/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <ArrowRight className="h-5 w-5 text-primary-foreground" />
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
 

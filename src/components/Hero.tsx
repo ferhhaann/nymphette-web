@@ -81,13 +81,13 @@ const Hero = () => {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold font-sans tracking-tight mb-3 sm:mb-4 md:mb-6 animate-fade-in leading-tight">
-              {getContentValue('title', 'Premium Travel Packages & Group Tours Worldwide')}
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold font-sans tracking-tight mb-2 sm:mb-3 md:mb-4 animate-fade-in leading-tight">
+              {getContentValue('title', 'Discover Amazing Travel Destinations')}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-4 sm:mb-6 md:mb-8 text-background/90 animate-slide-up leading-relaxed px-1 sm:px-2 max-w-4xl mx-auto">
-              {getContentValue('subtitle', 'Explore handpicked travel packages across Asia, Europe, Africa, Americas & Pacific Islands. Join expertly guided group tours or create custom itineraries. Over 50 destinations worldwide with authentic experiences, professional guides, and comprehensive support from planning to return. Trusted by 10,000+ travelers for unforgettable journeys.')}
+            <p className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 text-background/90 animate-slide-up leading-relaxed px-1 sm:px-2 max-w-2xl mx-auto">
+              {getContentValue('subtitle', 'Explore handpicked travel packages and create unforgettable memories with expert guides.')}
             </p>
           </div>
         </div>
@@ -108,77 +108,102 @@ const Hero = () => {
         </div> */}
       </section>
 
-      {/* Search and CTA Section Below Image */}
-      <section className="bg-background border-t border-border py-12 sm:py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8">
+      {/* Modern Search and CTA Section */}
+      <section className="bg-gradient-to-br from-background via-background to-secondary/20 py-16 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
           
-          {/* Enhanced Search Bar */}
-          <div className="mb-6 sm:mb-8 animate-scale-in">
-            <form onSubmit={handleSearch} className="max-w-4xl mx-auto">
-              <div className="bg-white shadow-2xl rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-border">
-                <div className="flex flex-col gap-3 sm:gap-4">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      placeholder="Where do you want to go?"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 sm:pl-12 h-10 sm:h-12 md:h-14 bg-white border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl"
-                    />
+          {/* Search Section */}
+          <div className="mb-12 animate-scale-in">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+                Where would you like to go?
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                Search through our curated travel packages
+              </p>
+            </div>
+            
+            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl blur-lg group-hover:blur-xl transition-all duration-300"></div>
+                <div className="relative bg-card border border-border/50 rounded-2xl p-2 shadow-lg backdrop-blur-sm">
+                  <div className="flex gap-2">
+                    <div className="flex-1 relative">
+                      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        placeholder="Search destinations, countries, or experiences..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-12 h-12 bg-transparent border-0 text-foreground placeholder:text-muted-foreground focus:ring-0 text-base"
+                      />
+                    </div>
+                    <Button 
+                      type="submit" 
+                      className="h-12 px-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-medium transition-all duration-200 hover:scale-105 shadow-md"
+                    >
+                      Search
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
                   </div>
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base md:text-lg transition-all duration-200 hover:scale-105 shadow-lg w-full"
-                  >
-                    <span>Search Packages</span>
-                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  </Button>
                 </div>
               </div>
             </form>
           </div>
 
-          {/* Quick Destinations */}
-          <div className="mb-6 sm:mb-8 md:mb-12 animate-fade-in text-center">
-            <p className="text-muted-foreground mb-2 sm:mb-3 md:mb-4 text-xs sm:text-sm md:text-base">Popular Destinations:</p>
-            <div className="flex flex-wrap justify-center gap-2">
+          {/* Quick Destinations Grid */}
+          <div className="mb-12 animate-fade-in">
+            <h3 className="text-lg font-semibold text-foreground mb-4 text-center">
+              Popular Destinations
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-md mx-auto">
               {quickDestinations.map((destination) => (
                 <Button
                   key={destination.name}
                   variant="outline"
-                  size="sm"
                   onClick={() => navigate(destination.path)}
-                  className="border-border hover:bg-secondary hover:text-foreground transition-all duration-200 rounded-full px-2 sm:px-3 md:px-4 py-1 sm:py-2 text-xs sm:text-sm font-medium relative group"
+                  className="relative h-12 border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 rounded-xl font-medium group overflow-hidden"
                 >
-                  {destination.name}
+                  <span className="relative z-10">{destination.name}</span>
                   {destination.popular && (
-                    <div className="absolute -top-1 -right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full animate-pulse" />
+                    <div className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
                   )}
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 </Button>
               ))}
             </div>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col gap-3 justify-center animate-scale-in">
-            <Button 
-              size="lg" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 sm:px-6 md:px-8 py-3 text-sm sm:text-base md:text-lg w-full h-10 sm:h-12 md:h-14 rounded-lg sm:rounded-xl transition-all duration-200 hover:scale-105 shadow-lg"
-              onClick={handleExplorePackages}
-            >
-              {getContentValue('primary_button', 'Start your journey')}
-              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-2 border-border hover:bg-secondary hover:text-foreground px-4 sm:px-6 md:px-8 py-3 text-sm sm:text-base md:text-lg w-full h-10 sm:h-12 md:h-14 rounded-lg sm:rounded-xl transition-all duration-200 hover:scale-105"
-              onClick={handlePlanCustomTrip}
-            >
-              {getContentValue('secondary_button', 'Plan custom trip')}
-            </Button>
+          {/* Modern CTA Section */}
+          <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto animate-scale-in">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <Button 
+                size="lg" 
+                className="relative w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl font-semibold text-base transition-all duration-200 hover:scale-105 shadow-lg border-0"
+                onClick={handleExplorePackages}
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <span>{getContentValue('primary_button', 'Explore Packages')}</span>
+                  <ArrowRight className="h-5 w-5" />
+                </div>
+              </Button>
+            </div>
+            
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-secondary to-secondary/80 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="relative w-full h-14 border-2 border-border/50 hover:border-primary/50 hover:bg-primary/5 rounded-2xl font-semibold text-base transition-all duration-200 hover:scale-105"
+                onClick={handlePlanCustomTrip}
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <span>{getContentValue('secondary_button', 'Custom Trip')}</span>
+                  <Users className="h-5 w-5" />
+                </div>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

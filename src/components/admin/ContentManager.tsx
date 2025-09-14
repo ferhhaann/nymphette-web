@@ -23,6 +23,7 @@ export const ContentManager = () => {
   const { toast } = useToast()
 
   const sections = [
+    { value: "hero", label: "Hero Section" },
     { value: "about", label: "About Us" },
     { value: "contact", label: "Contact" },
     { value: "popular-destinations", label: "Popular Destinations" }
