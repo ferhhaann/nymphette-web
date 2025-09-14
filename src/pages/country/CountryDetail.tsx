@@ -305,7 +305,7 @@ const CountryDetail = () => {
         />
 
         {/* Hero Section */}
-        <section className="relative overflow-hidden rounded-2xl mb-8">
+        <section className="relative overflow-hidden rounded-2xl mb-8 mt-2">
           <div className="relative h-96 lg:h-[500px]">
             <Carousel className="w-full h-full">
               <CarouselContent>

@@ -13,7 +13,7 @@ interface UnifiedBreadcrumbProps {
 
 export const UnifiedBreadcrumb = ({ items }: UnifiedBreadcrumbProps) => {
   return (
-    <nav className="flex items-center space-x-2 text-sm text-muted-foreground mt-6" aria-label="Breadcrumb">
+    <nav className="flex items-center space-x-2 text-sm text-muted-foreground mt-2 md:mt-5" aria-label="Breadcrumb">
       <Link to="/" className="hover:text-primary transition-colors inline-flex items-center">
         <Home className="h-4 w-4 mr-1" />
         Home

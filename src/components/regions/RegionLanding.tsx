@@ -200,13 +200,12 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
     const el = document.createElement('script'); el.type = 'application/ld+json'; el.text = JSON.stringify(ld);
     document.head.appendChild(el); return () => { document.head.removeChild(el); };
   }, [filtered]);
-
   return (
-      <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <Navigation />
       {/* Breadcrumbs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mt-6" aria-label="Breadcrumb">
+        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mt-2 md:mt-5" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-primary transition-colors flex items-center h-6">
             <Home className="h-4 w-4 mr-1" />
             <span>Home</span>
@@ -219,14 +218,13 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
           <span className="text-foreground font-medium flex items-center h-6">{region}</span>
         </nav>
       </div>
-      
       {/* HERO */}
       <section className="relative">
         <Carousel>
           <CarouselContent>
             {heroImages.map((img, idx) => (
               <CarouselItem key={idx}>
-                 <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] mx-2 sm:mx-4 lg:mx-6 mb-2 sm:mb-4 lg:mb-6 rounded-lg overflow-hidden">
+                 <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] mx-2 sm:mx-4 lg:mx-6 mb-2 sm:mb-4 lg:mb-6 mt-2 rounded-lg overflow-hidden">
                    <OptimizedImage 
                      src={img} 
                      alt={`${title} hero ${idx+1}`} 
