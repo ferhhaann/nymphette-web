@@ -297,6 +297,7 @@ interface SectionEditorProps {
 
 const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: SectionEditorProps) => {
   const [formData, setFormData] = useState<Record<string, any>>({})
+  const [changedFields, setChangedFields] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     // Initialize form data with current content
@@ -305,14 +306,24 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
       data[item.key] = item.value
     })
     setFormData(data)
+    setChangedFields(new Set()) // Reset changed fields when content changes
   }, [content])
 
-  const handleSave = (key: string, value: any) => {
+  const handleFieldChange = (key: string, value: any) => {
     setFormData(prev => ({ ...prev, [key]: value }))
-    onSave(section, key, value)
+    setChangedFields(prev => new Set([...prev, key]))
   }
 
-  const handleObjectFieldSave = (key: string, fieldPath: string, value: any) => {
+  const handleSave = (key: string, value: any) => {
+    onSave(section, key, value)
+    setChangedFields(prev => {
+      const newSet = new Set(prev)
+      newSet.delete(key)
+      return newSet
+    })
+  }
+
+  const handleObjectFieldChange = (key: string, fieldPath: string, value: any) => {
     const currentObject = formData[key] || {}
     const updatedObject = { ...currentObject }
     
@@ -326,7 +337,16 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     current[pathParts[pathParts.length - 1]] = value
     
     setFormData(prev => ({ ...prev, [key]: updatedObject }))
-    onSave(section, key, updatedObject)
+    setChangedFields(prev => new Set([...prev, key]))
+  }
+
+  const handleObjectFieldSave = (key: string) => {
+    onSave(section, key, formData[key])
+    setChangedFields(prev => {
+      const newSet = new Set(prev)
+      newSet.delete(key)
+      return newSet
+    })
   }
 
   // Handle homepage, about, and contact sections
@@ -356,16 +376,37 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                 <CardTitle className="text-sm font-medium">{item.key}</CardTitle>
                 <CardDescription className="text-xs">
                   Type: {typeof item.value}
+                  {changedFields.has(item.key) && (
+                    <Badge variant="outline" className="ml-2 text-xs text-orange-600">
+                      Unsaved changes
+                    </Badge>
+                  )}
                 </CardDescription>
               </div>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => onDelete(item.id)}
-                className="text-red-600 hover:text-red-700"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-2">
+                {changedFields.has(item.key) && (
+                  <Button
+                    size="sm"
+                    onClick={() => 
+                      typeof item.value === 'object' && item.value !== null
+                        ? handleObjectFieldSave(item.key)
+                        : handleSave(item.key, formData[item.key])
+                    }
+                    className="text-green-600 hover:text-green-700"
+                  >
+                    <Save className="h-4 w-4 mr-1" />
+                    Save
+                  </Button>
+                )}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onDelete(item.id)}
+                  className="text-red-600 hover:text-red-700"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent className="pt-0">
@@ -373,7 +414,7 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
               <ObjectFieldsEditor
                 title={item.key.replace(/_/g, ' ')}
                 objectData={formData[item.key] || item.value || {}}
-                onSave={(fieldPath, value) => handleObjectFieldSave(item.key, fieldPath, value)}
+                onChange={(fieldPath, value) => handleObjectFieldChange(item.key, fieldPath, value)}
               />
             ) : (
               <div className="space-y-2">
@@ -384,12 +425,8 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                 {String(formData[item.key] || item.value || '').length > 100 ? (
                   <Textarea
                     value={String(formData[item.key] || item.value || '')}
-                    onChange={(e) => {
-                      setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
-                    }}
-                    onBlur={(e) => {
-                      handleSave(item.key, e.target.value)
-                    }}
+                    onChange={(e) => handleFieldChange(item.key, e.target.value)}
+                    onBlur={(e) => handleSave(item.key, e.target.value)}
                     className="text-sm"
                     placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
                     rows={4}
@@ -397,12 +434,8 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                 ) : (
                   <Input
                     value={String(formData[item.key] || item.value || '')}
-                    onChange={(e) => {
-                      setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
-                    }}
-                    onBlur={(e) => {
-                      handleSave(item.key, e.target.value)
-                    }}
+                    onChange={(e) => handleFieldChange(item.key, e.target.value)}
+                    onBlur={(e) => handleSave(item.key, e.target.value)}
                     className="text-sm"
                     placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
                   />
@@ -419,10 +452,10 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
 interface ObjectFieldsEditorProps {
   title: string
   objectData: Record<string, any>
-  onSave: (fieldPath: string, value: any) => void
+  onChange: (fieldPath: string, value: any) => void
 }
 
-const ObjectFieldsEditor = ({ title, objectData, onSave }: ObjectFieldsEditorProps) => {
+const ObjectFieldsEditor = ({ title, objectData, onChange }: ObjectFieldsEditorProps) => {
   const [localData, setLocalData] = useState<Record<string, any>>(objectData)
 
   useEffect(() => {
@@ -441,10 +474,7 @@ const ObjectFieldsEditor = ({ title, objectData, onSave }: ObjectFieldsEditorPro
       current[pathParts[pathParts.length - 1]] = value
       return updated
     })
-  }
-
-  const handleFieldBlur = (fieldPath: string, value: any) => {
-    onSave(fieldPath, value)
+    onChange(fieldPath, value)
   }
 
   const renderField = (key: string, value: any, path: string = key) => {
@@ -475,10 +505,6 @@ const ObjectFieldsEditor = ({ title, objectData, onSave }: ObjectFieldsEditorPro
               const arrayValue = e.target.value.split('\n').filter(item => item.trim())
               handleFieldChange(path, arrayValue)
             }}
-            onBlur={(e) => {
-              const arrayValue = e.target.value.split('\n').filter(item => item.trim())
-              handleFieldBlur(path, arrayValue)
-            }}
             className="text-sm"
             placeholder="Enter each item on a new line..."
             rows={Math.min(value.length + 2, 6)}
@@ -499,7 +525,6 @@ const ObjectFieldsEditor = ({ title, objectData, onSave }: ObjectFieldsEditorPro
           <Textarea
             value={String(getValueFromPath(localData, path) ?? value ?? '')}
             onChange={(e) => handleFieldChange(path, e.target.value)}
-            onBlur={(e) => handleFieldBlur(path, e.target.value)}
             className="text-sm"
             placeholder={`Enter ${key.replace(/_/g, ' ')}...`}
             rows={3}
@@ -508,7 +533,6 @@ const ObjectFieldsEditor = ({ title, objectData, onSave }: ObjectFieldsEditorPro
           <Input
             value={String(getValueFromPath(localData, path) ?? value ?? '')}
             onChange={(e) => handleFieldChange(path, e.target.value)}
-            onBlur={(e) => handleFieldBlur(path, e.target.value)}
             className="text-sm"
             placeholder={`Enter ${key.replace(/_/g, ' ')}...`}
           />
