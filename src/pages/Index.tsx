@@ -16,7 +16,7 @@ const Index = () => {
   console.log('Index component rendering...');
   
   // Initialize SEO settings - hooks must be called at top level
-  useStaticSEO(); // This will fetch and apply SEO settings from database
+  // useStaticSEO(); // This will fetch and apply SEO settings from database
   
   useEffect(() => {
     console.log('Index useEffect - preloading images');
