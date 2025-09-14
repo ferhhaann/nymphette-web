@@ -11,6 +11,31 @@ export const useContent = (section?: string) => {
 
   useEffect(() => {
     loadContent()
+    
+    // Set up real-time subscription for instant updates
+    if (supabase) {
+      const channel = supabase
+        .channel(`content-hook-${section || 'all'}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'content',
+            ...(section && { filter: `section=eq.${section}` })
+          },
+          (payload: any) => {
+            console.log('Real-time content change detected in useContent:', payload)
+            // Reload content immediately when changes are detected
+            loadContent()
+          }
+        )
+        .subscribe()
+
+      return () => {
+        supabase.removeChannel(channel)
+      }
+    }
   }, [section])
 
   const loadContent = async () => {

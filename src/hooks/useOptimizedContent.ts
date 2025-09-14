@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
-import { useOptimizedQuery } from './useOptimizedQuery'
+import { useOptimizedQuery, queryCache } from './useOptimizedQuery'
 
 type DatabaseContent = Database['public']['Tables']['content']['Row']
 
@@ -27,9 +27,36 @@ export const useOptimizedContent = (section?: string) => {
   }
 
   const result = useOptimizedQuery(queryKey, queryFn, {
-    staleTime: 30 * 1000, // 30 seconds - much shorter for content that can be edited
-    cacheTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: 0, // Always fresh - no stale time
+    cacheTime: 1000, // Very short cache time for instant updates
   })
+
+  // Set up real-time subscription for instant updates
+  useEffect(() => {
+    if (!supabase) return
+
+    const channel = supabase
+      .channel('content-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // Listen to all changes (INSERT, UPDATE, DELETE)
+          schema: 'public',
+          table: 'content',
+          ...(section && { filter: `section=eq.${section}` })
+        },
+        (payload) => {
+          console.log('Real-time content change detected:', payload)
+          // Invalidate cache immediately when content changes
+          queryCache.invalidate('content')
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [section])
 
   const getContentValue = (key: string, defaultValue: any = '') => {
     if (!result.data) return defaultValue
@@ -67,9 +94,42 @@ export const useOptimizedContentValue = (section: string, key: string, defaultVa
     return data?.value || defaultValue
   }
 
-  return useOptimizedQuery(queryKey, queryFn, {
+  const result = useOptimizedQuery(queryKey, queryFn, {
     enabled: !!(section && key),
-    staleTime: 30 * 1000, // 30 seconds
-    cacheTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: 0, // Always fresh
+    cacheTime: 1000, // Very short cache time
   })
+
+  // Set up real-time subscription for this specific content value
+  useEffect(() => {
+    if (!supabase || !section || !key) return
+
+    const channel = supabase
+      .channel(`content-${section}-${key}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public', 
+          table: 'content',
+          filter: `section=eq.${section}`
+        },
+        (payload: any) => {
+          console.log('Real-time content value change detected:', payload)
+          // Check if this specific key was affected
+          const newKey = payload.new?.key
+          const oldKey = payload.old?.key
+          if (newKey === key || oldKey === key) {
+            queryCache.invalidate('content')
+          }
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [section, key])
+
+  return result
 }
