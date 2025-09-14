@@ -19,8 +19,8 @@ export default {
 		},
 				extend: {
 			fontFamily: {
-				'geo': ['"DM Sans"', 'sans-serif'],
-				'sans': ['"DM Sans"', 'sans-serif'],
+				'geo': ['"Manrope"', 'sans-serif'],
+				'sans': ['"Manrope"', 'sans-serif'],
 			},
 				fontWeight: {
 					normal: '400',
