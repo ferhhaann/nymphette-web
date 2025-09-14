@@ -366,8 +366,39 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     )
   }
 
+  const saveAllChanges = () => {
+    changedFields.forEach(key => {
+      const item = content.find(c => c.key === key)
+      if (item) {
+        if (typeof item.value === 'object' && item.value !== null) {
+          handleObjectFieldSave(key)
+        } else {
+          handleSave(key, formData[key])
+        }
+      }
+    })
+  }
+
   return (
     <div className="space-y-6">
+      {changedFields.size > 0 && (
+        <Card className="bg-orange-50 border-orange-200">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-orange-600" />
+                <span className="text-sm font-medium text-orange-800">
+                  You have {changedFields.size} unsaved change{changedFields.size !== 1 ? 's' : ''}
+                </span>
+              </div>
+              <Button onClick={saveAllChanges} className="bg-green-600 hover:bg-green-700">
+                <Save className="h-4 w-4 mr-2" />
+                Save All Changes
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       {content.map((item) => (
         <Card key={item.id} className="space-y-4">
           <CardHeader className="pb-3">
