@@ -381,24 +381,30 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
 
   return (
     <div className="space-y-6">
-      {changedFields.size > 0 && (
-        <Card className="bg-orange-50 border-orange-200">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <AlertCircle className="h-5 w-5 text-orange-600" />
-                <span className="text-sm font-medium text-orange-800">
-                  You have {changedFields.size} unsaved change{changedFields.size !== 1 ? 's' : ''}
-                </span>
-              </div>
-              <Button onClick={saveAllChanges} className="bg-green-600 hover:bg-green-700">
-                <Save className="h-4 w-4 mr-2" />
-                Save All Changes
-              </Button>
+      {/* Always show save section for debugging */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Save className="h-5 w-5 text-blue-600" />
+              <span className="text-sm font-medium text-blue-800">
+                {changedFields.size > 0 
+                  ? `You have ${changedFields.size} unsaved change${changedFields.size !== 1 ? 's' : ''}`
+                  : 'All changes saved'
+                }
+              </span>
             </div>
-          </CardContent>
-        </Card>
-      )}
+            <Button 
+              onClick={saveAllChanges} 
+              disabled={changedFields.size === 0}
+              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400"
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Save All Changes {changedFields.size > 0 && `(${changedFields.size})`}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
       {content.map((item) => (
         <Card key={item.id} className="space-y-4">
           <CardHeader className="pb-3">
