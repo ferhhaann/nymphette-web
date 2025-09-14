@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { useImageOptimization } from "@/hooks/useImageOptimization";
 import ScrollToTop from "@/components/ScrollToTop";
-import Index from "./pages/Index";
+import IndexSimple from "./pages/IndexSimple";
 import Packages from "./pages/Packages";
 import GroupTours from "./pages/GroupTours";
 import GroupTourDetail from "./pages/GroupTourDetail";
@@ -59,7 +59,7 @@ const App = () => {
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<IndexSimple />} />
               <Route path="/packages" element={<Packages />} />
               <Route path="/group-tours" element={<GroupTours />} />
               <Route path="/group-tours/:tourId" element={<GroupTourDetail />} />
