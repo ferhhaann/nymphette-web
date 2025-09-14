@@ -27,8 +27,8 @@ export const useOptimizedContent = (section?: string) => {
   }
 
   const result = useOptimizedQuery(queryKey, queryFn, {
-    staleTime: 15 * 60 * 1000, // 15 minutes
-    cacheTime: 30 * 60 * 1000, // 30 minutes
+    staleTime: 30 * 1000, // 30 seconds - much shorter for content that can be edited
+    cacheTime: 2 * 60 * 1000, // 2 minutes
   })
 
   const getContentValue = (key: string, defaultValue: any = '') => {
@@ -69,7 +69,7 @@ export const useOptimizedContentValue = (section: string, key: string, defaultVa
 
   return useOptimizedQuery(queryKey, queryFn, {
     enabled: !!(section && key),
-    staleTime: 15 * 60 * 1000, // 15 minutes
-    cacheTime: 30 * 60 * 1000, // 30 minutes
+    staleTime: 30 * 1000, // 30 seconds
+    cacheTime: 2 * 60 * 1000, // 2 minutes
   })
 }

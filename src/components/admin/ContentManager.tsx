@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
+import { queryCache } from "@/hooks/useOptimizedQuery"
 
 type DatabaseContent = Database['public']['Tables']['content']['Row']
 import { Button } from "@/components/ui/button"
@@ -88,6 +89,11 @@ export const ContentManager = () => {
       }
 
       await loadContent()
+      
+      // Invalidate all content-related cache entries to force frontend refresh
+      queryCache.invalidate('content')
+      console.log('Content cache invalidated - frontend will refresh')
+      
       toast({
         title: "Success",
         description: "Content saved to database successfully"
@@ -113,6 +119,7 @@ export const ContentManager = () => {
 
       if (error) throw error
       await loadContent()
+      queryCache.invalidate('content')
       toast({
         title: "Success",
         description: "Content deleted"
@@ -167,6 +174,14 @@ export const ContentManager = () => {
         variant: "destructive"
       })
     }
+  }
+
+  const refreshFrontendCache = () => {
+    queryCache.invalidate('content')
+    toast({
+      title: "Cache Refreshed", 
+      description: "Frontend content cache has been cleared. Changes should now be visible on the website."
+    })
   }
 
   const getSectionContent = (section: string) => {
@@ -243,6 +258,10 @@ export const ContentManager = () => {
               </div>
             </DialogContent>
           </Dialog>
+          <Button onClick={refreshFrontendCache} variant="outline">
+            <FileText className="h-4 w-4 mr-2" />
+            Refresh Frontend Cache
+          </Button>
         </div>
       </div>
 
@@ -366,6 +385,19 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     })
   }
 
+  const saveAllChanges = () => {
+    changedFields.forEach(key => {
+      const item = content.find(c => c.key === key)
+      if (item) {
+        if (typeof item.value === 'object' && item.value !== null) {
+          handleObjectFieldSave(key)
+        } else {
+          handleSave(key, formData[key])
+        }
+      }
+    })
+  }
+
   // Handle homepage, about, and contact sections
   if (!['homepage', 'about', 'contact'].includes(section)) {
     return <div className="p-4 text-center text-muted-foreground">Section not available for editing</div>
@@ -383,22 +415,9 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     )
   }
 
-  const saveAllChanges = () => {
-    changedFields.forEach(key => {
-      const item = content.find(c => c.key === key)
-      if (item) {
-        if (typeof item.value === 'object' && item.value !== null) {
-          handleObjectFieldSave(key)
-        } else {
-          handleSave(key, formData[key])
-        }
-      }
-    })
-  }
-
   return (
     <div className="space-y-6">
-      {/* Always show save section for debugging */}
+      {/* Always show save section */}
       <Card className="bg-blue-50 border-blue-200">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
@@ -422,6 +441,7 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
           </div>
         </CardContent>
       </Card>
+
       {content.map((item) => (
         <Card key={item.id} className="space-y-4">
           <CardHeader className="pb-3">
