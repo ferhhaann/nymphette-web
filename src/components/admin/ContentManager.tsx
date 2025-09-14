@@ -302,28 +302,31 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     // Initialize form data with current content
     const data: Record<string, any> = {}
     content.forEach(item => {
-      // Handle objects by converting to JSON string for editing
-      data[item.key] = typeof item.value === 'object' && item.value !== null 
-        ? JSON.stringify(item.value, null, 2) 
-        : item.value
+      data[item.key] = item.value
     })
     setFormData(data)
   }, [content])
 
   const handleSave = (key: string, value: any) => {
-    // Try to parse JSON if it looks like JSON
-    let processedValue = value
-    if (typeof value === 'string' && (value.trim().startsWith('{') || value.trim().startsWith('['))) {
-      try {
-        processedValue = JSON.parse(value)
-      } catch (e) {
-        // If parsing fails, keep as string
-        processedValue = value
-      }
-    }
-    
     setFormData(prev => ({ ...prev, [key]: value }))
-    onSave(section, key, processedValue)
+    onSave(section, key, value)
+  }
+
+  const handleObjectFieldSave = (key: string, fieldPath: string, value: any) => {
+    const currentObject = formData[key] || {}
+    const updatedObject = { ...currentObject }
+    
+    // Handle nested field updates
+    const pathParts = fieldPath.split('.')
+    let current = updatedObject
+    for (let i = 0; i < pathParts.length - 1; i++) {
+      if (!current[pathParts[i]]) current[pathParts[i]] = {}
+      current = current[pathParts[i]]
+    }
+    current[pathParts[pathParts.length - 1]] = value
+    
+    setFormData(prev => ({ ...prev, [key]: updatedObject }))
+    onSave(section, key, updatedObject)
   }
 
   // Handle homepage, about, and contact sections
@@ -366,54 +369,167 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
             </div>
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="space-y-2">
-              <Label className="text-sm font-medium capitalize">
-                {item.key.replace(/_/g, ' ')}
-                {typeof item.value === 'object' && (
-                  <Badge variant="outline" className="ml-2 text-xs">JSON Object</Badge>
+            {typeof item.value === 'object' && item.value !== null ? (
+              <ObjectFieldsEditor
+                title={item.key.replace(/_/g, ' ')}
+                objectData={formData[item.key] || item.value || {}}
+                onSave={(fieldPath, value) => handleObjectFieldSave(item.key, fieldPath, value)}
+              />
+            ) : (
+              <div className="space-y-2">
+                <Label className="text-sm font-medium capitalize">
+                  {item.key.replace(/_/g, ' ')}
+                </Label>
+                
+                {String(formData[item.key] || item.value || '').length > 100 ? (
+                  <Textarea
+                    value={String(formData[item.key] || item.value || '')}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
+                    }}
+                    onBlur={(e) => {
+                      handleSave(item.key, e.target.value)
+                    }}
+                    className="text-sm"
+                    placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
+                    rows={4}
+                  />
+                ) : (
+                  <Input
+                    value={String(formData[item.key] || item.value || '')}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
+                    }}
+                    onBlur={(e) => {
+                      handleSave(item.key, e.target.value)
+                    }}
+                    className="text-sm"
+                    placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
+                  />
                 )}
-              </Label>
-              
-              {/* Handle objects or long strings with textarea */}
-              {(typeof item.value === 'object' || String(formData[item.key] || item.value || '').length > 100) ? (
-                <Textarea
-                  value={formData[item.key] || ''}
-                  onChange={(e) => {
-                    setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
-                  }}
-                  onBlur={(e) => {
-                    handleSave(item.key, e.target.value)
-                  }}
-                  className="text-sm font-mono"
-                  placeholder={typeof item.value === 'object' 
-                    ? `Enter JSON for ${item.key.replace(/_/g, ' ')}...` 
-                    : `Enter ${item.key.replace(/_/g, ' ')}...`}
-                  rows={typeof item.value === 'object' ? 8 : 4}
-                />
-              ) : (
-                <Input
-                  value={formData[item.key] || ''}
-                  onChange={(e) => {
-                    setFormData(prev => ({ ...prev, [item.key]: e.target.value }))
-                  }}
-                  onBlur={(e) => {
-                    handleSave(item.key, e.target.value)
-                  }}
-                  className="text-sm"
-                  placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
-                />
-              )}
-              
-              {/* Show validation message for JSON objects */}
-              {typeof item.value === 'object' && (
-                <p className="text-xs text-muted-foreground">
-                  Edit as JSON. Changes are auto-saved when you click outside the field.
-                </p>
-              )}
-            </div>
+              </div>
+            )}
           </CardContent>
         </Card>
       ))}
     </div>
   )
+}
+
+interface ObjectFieldsEditorProps {
+  title: string
+  objectData: Record<string, any>
+  onSave: (fieldPath: string, value: any) => void
+}
+
+const ObjectFieldsEditor = ({ title, objectData, onSave }: ObjectFieldsEditorProps) => {
+  const [localData, setLocalData] = useState<Record<string, any>>(objectData)
+
+  useEffect(() => {
+    setLocalData(objectData)
+  }, [objectData])
+
+  const handleFieldChange = (fieldPath: string, value: any) => {
+    setLocalData(prev => {
+      const updated = { ...prev }
+      const pathParts = fieldPath.split('.')
+      let current = updated
+      for (let i = 0; i < pathParts.length - 1; i++) {
+        if (!current[pathParts[i]]) current[pathParts[i]] = {}
+        current = current[pathParts[i]]
+      }
+      current[pathParts[pathParts.length - 1]] = value
+      return updated
+    })
+  }
+
+  const handleFieldBlur = (fieldPath: string, value: any) => {
+    onSave(fieldPath, value)
+  }
+
+  const renderField = (key: string, value: any, path: string = key) => {
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      return (
+        <div key={path} className="space-y-3 p-3 border rounded-lg bg-muted/30">
+          <Label className="text-sm font-medium capitalize">
+            {key.replace(/_/g, ' ')}
+          </Label>
+          <div className="space-y-2 ml-3">
+            {Object.entries(value).map(([subKey, subValue]) => 
+              renderField(subKey, subValue, `${path}.${subKey}`)
+            )}
+          </div>
+        </div>
+      )
+    }
+
+    if (Array.isArray(value)) {
+      return (
+        <div key={path} className="space-y-2">
+          <Label className="text-sm font-medium capitalize">
+            {key.replace(/_/g, ' ')} (List)
+          </Label>
+          <Textarea
+            value={value.join('\n')}
+            onChange={(e) => {
+              const arrayValue = e.target.value.split('\n').filter(item => item.trim())
+              handleFieldChange(path, arrayValue)
+            }}
+            onBlur={(e) => {
+              const arrayValue = e.target.value.split('\n').filter(item => item.trim())
+              handleFieldBlur(path, arrayValue)
+            }}
+            className="text-sm"
+            placeholder="Enter each item on a new line..."
+            rows={Math.min(value.length + 2, 6)}
+          />
+          <p className="text-xs text-muted-foreground">
+            Enter each item on a new line
+          </p>
+        </div>
+      )
+    }
+
+    return (
+      <div key={path} className="space-y-2">
+        <Label className="text-sm font-medium capitalize">
+          {key.replace(/_/g, ' ')}
+        </Label>
+        {String(value).length > 100 ? (
+          <Textarea
+            value={String(getValueFromPath(localData, path) ?? value ?? '')}
+            onChange={(e) => handleFieldChange(path, e.target.value)}
+            onBlur={(e) => handleFieldBlur(path, e.target.value)}
+            className="text-sm"
+            placeholder={`Enter ${key.replace(/_/g, ' ')}...`}
+            rows={3}
+          />
+        ) : (
+          <Input
+            value={String(getValueFromPath(localData, path) ?? value ?? '')}
+            onChange={(e) => handleFieldChange(path, e.target.value)}
+            onBlur={(e) => handleFieldBlur(path, e.target.value)}
+            className="text-sm"
+            placeholder={`Enter ${key.replace(/_/g, ' ')}...`}
+          />
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      <Label className="text-sm font-medium capitalize">
+        {title}
+        <Badge variant="outline" className="ml-2 text-xs">Object Fields</Badge>
+      </Label>
+      <div className="space-y-4 p-4 border rounded-lg bg-background">
+        {Object.entries(objectData).map(([key, value]) => renderField(key, value))}
+      </div>
+    </div>
+  )
+}
+
+const getValueFromPath = (obj: any, path: string): any => {
+  return path.split('.').reduce((current, key) => current?.[key], obj)
 }
