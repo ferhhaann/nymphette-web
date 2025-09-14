@@ -75,18 +75,18 @@ const Hero = () => {
             <div className="mb-4 sm:mb-6 animate-fade-in">
               <Badge variant="secondary" className="bg-white/10 text-white border-white/20 hover:bg-white/20 transition-colors text-sm sm:text-base px-3 py-1">
                 <Star className="h-4 w-4 mr-2 fill-yellow-400 text-yellow-400" />
-                {getContentValue('trust_badge', 'Trusted by 10,000+ Travelers')}
+                Trusted by 10,000+ Travelers
               </Badge>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold font-sans tracking-tight mb-2 sm:mb-3 md:mb-4 animate-fade-in leading-tight">
-              {getContentValue('title', 'Discover Amazing Travel Destinations')}
+              {getContentValue('hero_title', 'Discover Amazing Travel Destinations')}
             </h1>
 
             {/* Subtitle */}
             <p className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 text-background/90 animate-slide-up leading-relaxed px-1 sm:px-2 max-w-2xl mx-auto">
-              {getContentValue('subtitle', 'Explore handpicked travel packages and create unforgettable memories with expert guides.')}
+              Explore handpicked travel packages and create unforgettable memories with expert guides.
             </p>
           </div>
         </div>
@@ -132,14 +132,14 @@ const Hero = () => {
               <div className="inline-flex items-center justify-center gap-2 mb-6 px-6 py-3 bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm rounded-full border border-primary/20 shadow-lg">
                 <Search className="h-5 w-5 text-primary" />
                 <span className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                  {getContentValue('search_section_badge', 'Start Your Journey')}
+                  Start Your Journey
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text">
-                {getContentValue('search_section_title', 'Where would you like to go?')}
+                Where would you like to go?
               </h2>
               <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                {getContentValue('search_section_description', 'Discover amazing destinations through our curated travel packages')}
+                Discover amazing destinations through our curated travel packages
               </p>
             </div>
             
@@ -156,7 +156,7 @@ const Hero = () => {
                       <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 h-6 w-6 text-primary z-10" />
                       <Input
                         type="text"
-                        placeholder={getContentValue('search_placeholder', 'Search destinations, countries, or experiences...')}
+                        placeholder="Search destinations, countries, or experiences..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="relative z-10 pl-14 h-14 bg-transparent border-0 text-foreground placeholder:text-muted-foreground focus:ring-0 text-lg font-medium"
@@ -166,7 +166,7 @@ const Hero = () => {
                       type="submit" 
                       className="h-14 px-8 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border-0"
                     >
-                      {getContentValue('search_button_text', 'Search')}
+                      Search
                       <ArrowRight className="ml-3 h-5 w-5" />
                     </Button>
                   </div>
@@ -179,7 +179,7 @@ const Hero = () => {
           <div className="mb-16 animate-fade-in">
             <div className="text-center mb-8">
               <h3 className="text-xl font-bold text-foreground mb-3">
-                {getContentValue('popular_destinations_title', 'Popular Destinations')}
+                Popular Destinations
               </h3>
               <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto"></div>
             </div>
@@ -217,7 +217,7 @@ const Hero = () => {
                   {/* Button shine effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000"></div>
                   <div className="relative flex items-center justify-center gap-3">
-                    <span>{getContentValue('primary_button', 'Explore Packages')}</span>
+                    <span>Explore Packages</span>
                     <ArrowRight className="h-6 w-6" />
                   </div>
                 </Button>
@@ -235,7 +235,7 @@ const Hero = () => {
                   {/* Button shine effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000"></div>
                   <div className="relative flex items-center justify-center gap-3">
-                    <span>{getContentValue('secondary_button', 'Custom Trip')}</span>
+                    <span>Custom Trip</span>
                     <Users className="h-6 w-6" />
                   </div>
                 </Button>
@@ -245,15 +245,38 @@ const Hero = () => {
             <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <span className="font-medium">{getContentValue('trust_indicator_1', '50+ Destinations')}</span>
+                <span className="font-medium">50+ Destinations</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
-                <span className="font-medium">{getContentValue('trust_indicator_2', '10K+ Happy Travelers')}</span>
+                <span className="font-medium">10K+ Happy Travelers</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
-                <span className="font-medium">{getContentValue('trust_indicator_3', 'Expert Guides')}</span>
+                <span className="font-medium">Expert Guides</span>
+              </div>
+            </div>
+
+            {/* Ready to Start Journey Section */}
+            <div className="mt-16 bg-white/10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/20 max-w-4xl mx-auto text-center">
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Ready to Start Your Journey?</h3>
+              <p className="text-lg mb-6 text-muted-foreground max-w-2xl mx-auto">
+                {getContentValue('journey_description', 'Contact us today and let our expert travel consultants help you plan the perfect trip tailored to your preferences and budget.')}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  onClick={() => navigate('/contact')}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
+                >
+                  Contact Us
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/packages')}
+                  className="border-border/50 hover:bg-primary/10 font-semibold px-8"
+                >
+                  View All Packages
+                </Button>
               </div>
             </div>
           </div>

@@ -32,12 +32,12 @@ const PromoBanner = () => {
                <div className="inline-flex items-center justify-center gap-2 mb-6 px-4 py-2 bg-primary/20 backdrop-blur-sm rounded-full border border-primary/30">
                  <Sparkles className="h-4 w-4 text-primary-foreground" />
                  <span className="text-xs font-semibold text-primary-foreground uppercase tracking-wider">
-                   {getContentValue('promo_badge', 'Special Offer')}
+                   Special Offer
                  </span>
                </div>
                
                <h3 className="text-3xl md:text-5xl font-bold mb-6 text-background animate-fade-in leading-tight" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-                 {getContentValue('promo_title', 'Premium Travel Experiences Worldwide')}
+                 Premium Travel Experiences Worldwide
                </h3>
                <p className="text-lg md:text-xl text-background/90 mb-8 animate-fade-in leading-relaxed" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
                  {getContentValue('promo_description', 'Discover curated destinations and exclusive offers designed just for you')}
@@ -50,7 +50,7 @@ const PromoBanner = () => {
                   className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 shadow-lg border-0"
                   onClick={() => navigate('/packages')}
                  >
-                   <span>{getContentValue('promo_button_primary', 'Explore Packages')}</span>
+                   <span>Explore Packages</span>
                    <ArrowRight className="ml-2 h-5 w-5" />
                  </Button>
                  <Button 
@@ -59,7 +59,7 @@ const PromoBanner = () => {
                    className="bg-background/10 border-2 border-background/30 text-background hover:bg-background hover:text-foreground px-8 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 backdrop-blur-sm"
                    onClick={() => navigate('/blog')}
                  >
-                   {getContentValue('promo_button_secondary', 'Learn More')}
+                   Learn More
                 </Button>
               </div>
             </div>

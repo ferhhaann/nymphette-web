@@ -128,23 +128,8 @@ export const ContentManager = () => {
   const initializeHomepageContent = async () => {
     const defaultHomepageContent = [
       { key: "hero_title", value: "Discover Amazing Destinations" },
-      { key: "hero_subtitle", value: "Your journey to extraordinary places starts here" },
-      { key: "trust_badge_1", value: "1000+ Happy Travelers" },
-      { key: "trust_badge_2", value: "50+ Countries" },
-      { key: "trust_badge_3", value: "24/7 Support" },
-      { key: "search_section_badge", value: "Find Your Adventure" },
-      { key: "search_section_title", value: "Where do you want to go?" },
-      { key: "search_section_description", value: "Search from thousands of destinations and find your perfect trip" },
-      { key: "search_placeholder", value: "Enter destination..." },
-      { key: "search_button_text", value: "Search Destinations" },
-      { key: "popular_destinations_title", value: "Popular Destinations" },
-      { key: "trust_indicator_1", value: "Trusted by 10,000+ travelers" },
-      { key: "trust_indicator_2", value: "Award-winning service" },
-      { key: "trust_indicator_3", value: "Best price guarantee" },
-      { key: "promo_badge", value: "Special Offer" },
-      { key: "promo_title", value: "Premium Travel Experiences Worldwide" },
       { key: "promo_description", value: "Discover luxury accommodations, exclusive tours, and unforgettable experiences" },
-      { key: "promo_button_text", value: "Explore Premium Packages" }
+      { key: "journey_description", value: "Contact us today and let our expert travel consultants help you plan the perfect trip tailored to your preferences and budget." }
     ]
 
     try {
