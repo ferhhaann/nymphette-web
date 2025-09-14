@@ -93,13 +93,12 @@ export const ContentManager = () => {
 
       await loadContent()
       
-      // Invalidate all content-related cache entries to force frontend refresh
-      queryCache.invalidate('content')
-      console.log('Content cache invalidated - frontend will refresh')
+      // No need to manually invalidate cache - real-time updates handle this automatically
+      console.log('Content saved - real-time updates will refresh frontend automatically')
       
       toast({
         title: "Success",
-        description: "Content saved to database successfully"
+        description: "Content saved successfully - changes will appear instantly on the website"
       })
     } catch (error: any) {
       console.error('Save content error:', error)
@@ -218,13 +217,6 @@ export const ContentManager = () => {
     }
   }
 
-  const refreshFrontendCache = () => {
-    queryCache.invalidate('content')
-    toast({
-      title: "Cache Refreshed", 
-      description: "Frontend content cache has been cleared. Changes should now be visible on the website."
-    })
-  }
 
   const getSectionContent = (section: string) => {
     return content.filter(c => c.section === section)
@@ -244,7 +236,11 @@ export const ContentManager = () => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">Content Manager</h2>
-          <p className="text-muted-foreground">Edit contact page and about us page content</p>
+          <p className="text-muted-foreground">Edit website content - changes appear instantly on the frontend</p>
+          <div className="flex items-center gap-2 mt-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs text-green-600 font-medium">Real-time updates enabled</span>
+          </div>
         </div>
         <div className="flex gap-2">
           {getSectionContent(selectedSection).length === 0 && (
@@ -300,10 +296,6 @@ export const ContentManager = () => {
               </div>
             </DialogContent>
           </Dialog>
-          <Button onClick={refreshFrontendCache} variant="outline">
-            <FileText className="h-4 w-4 mr-2" />
-            Refresh Frontend Cache
-          </Button>
         </div>
       </div>
 
@@ -457,27 +449,31 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
 
   return (
     <div className="space-y-6">
-      {/* Always show save section */}
-      <Card className="bg-blue-50 border-blue-200">
+      {/* Real-time status indicator */}
+      <Card className="bg-green-50 border-green-200">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Save className="h-5 w-5 text-blue-600" />
-              <span className="text-sm font-medium text-blue-800">
-                {changedFields.size > 0 
-                  ? `You have ${changedFields.size} unsaved change${changedFields.size !== 1 ? 's' : ''}`
-                  : 'All changes saved'
-                }
+              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium text-green-800">
+                Real-time updates active - changes appear instantly on the website
               </span>
             </div>
-            <Button 
-              onClick={saveAllChanges} 
-              disabled={changedFields.size === 0}
-              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400"
-            >
-              <Save className="h-4 w-4 mr-2" />
-              Save All Changes {changedFields.size > 0 && `(${changedFields.size})`}
-            </Button>
+            <div className="flex items-center gap-2">
+              {changedFields.size > 0 && (
+                <Badge variant="outline" className="text-orange-600">
+                  {changedFields.size} unsaved change{changedFields.size !== 1 ? 's' : ''}
+                </Badge>
+              )}
+              <Button 
+                onClick={saveAllChanges} 
+                disabled={changedFields.size === 0}
+                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400"
+              >
+                <Save className="h-4 w-4 mr-2" />
+                Save All Changes {changedFields.size > 0 && `(${changedFields.size})`}
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
