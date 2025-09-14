@@ -26,7 +26,10 @@ export const ContentManager = () => {
   const sections = [
     { value: "homepage", label: "Homepage" },
     { value: "about", label: "About Us" },
-    { value: "contact", label: "Contact" }
+    { value: "contact", label: "Contact" },
+    { value: "featured-packages", label: "Featured Packages" },
+    { value: "why-choose-us", label: "Why Choose Us" },
+    { value: "popular-destinations", label: "Popular Destinations" }
   ]
 
   useEffect(() => {
@@ -176,6 +179,45 @@ export const ContentManager = () => {
     }
   }
 
+  const initializeSectionContent = async () => {
+    const defaultContents = {
+      'featured-packages': [
+        { key: "title", value: "Featured Travel Packages" },
+        { key: "subtitle", value: "Handpicked destinations and experiences crafted for unforgettable journeys" }
+      ],
+      'why-choose-us': [
+        { key: "title", value: "Why Choose Nymphette Tours?" },
+        { key: "subtitle", value: "We don't just plan trips – we create life-changing experiences that connect you with the world's most incredible destinations and cultures." }
+      ],
+      'popular-destinations': [
+        { key: "title", value: "Popular Travel Destinations" },
+        { key: "subtitle", value: "Discover our most loved destinations with carefully curated travel packages" }
+      ]
+    }
+
+    try {
+      const defaultContent = defaultContents[selectedSection as keyof typeof defaultContents]
+      if (defaultContent) {
+        for (const item of defaultContent) {
+          const existing = content.find(c => c.section === selectedSection && c.key === item.key)
+          if (!existing) {
+            await saveContent(selectedSection, item.key, item.value)
+          }
+        }
+        toast({
+          title: "Success",
+          description: `${sections.find(s => s.value === selectedSection)?.label} content initialized successfully`
+        })
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to initialize section content: " + error.message,
+        variant: "destructive"
+      })
+    }
+  }
+
   const refreshFrontendCache = () => {
     queryCache.invalidate('content')
     toast({
@@ -205,10 +247,10 @@ export const ContentManager = () => {
           <p className="text-muted-foreground">Edit contact page and about us page content</p>
         </div>
         <div className="flex gap-2">
-          {selectedSection === 'homepage' && getSectionContent('homepage').length === 0 && (
-            <Button onClick={initializeHomepageContent} variant="outline">
+          {getSectionContent(selectedSection).length === 0 && (
+            <Button onClick={selectedSection === 'homepage' ? initializeHomepageContent : initializeSectionContent} variant="outline">
               <Package className="h-4 w-4 mr-2" />
-              Initialize Homepage Content
+              Initialize {sections.find(s => s.value === selectedSection)?.label} Content
             </Button>
           )}
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
@@ -398,8 +440,8 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
     })
   }
 
-  // Handle homepage, about, and contact sections
-  if (!['homepage', 'about', 'contact'].includes(section)) {
+  // Handle all available sections
+  if (!['homepage', 'about', 'contact', 'featured-packages', 'why-choose-us', 'popular-destinations'].includes(section)) {
     return <div className="p-4 text-center text-muted-foreground">Section not available for editing</div>
   }
 
@@ -408,9 +450,7 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
       <div className="text-center py-8 text-muted-foreground">
         <AlertCircle className="h-8 w-8 mx-auto mb-2" />
         <p>No content found for this section.</p>
-        {section === 'homepage' && (
-          <p className="text-sm mt-2">Click "Initialize Homepage Content" to add default content items.</p>
-        )}
+        <p className="text-sm mt-2">Click the "Initialize Content" button to add default content items.</p>
       </div>
     )
   }
