@@ -34,17 +34,24 @@ export const ContentManager = () => {
 
   const loadContent = async () => {
     try {
+      console.log('Loading content from database...')
       const { data, error } = await supabase
         .from('content')
         .select('*')
         .order('section', { ascending: true })
 
-      if (error) throw error
+      if (error) {
+        console.error('Database error:', error)
+        throw error
+      }
+      
+      console.log('Content loaded from database:', data)
       setContent(data || [])
     } catch (error: any) {
+      console.error('Failed to load content:', error)
       toast({
         title: "Error",
-        description: "Failed to load content: " + error.message,
+        description: "Failed to load content from database: " + error.message,
         variant: "destructive"
       })
     } finally {
@@ -54,6 +61,7 @@ export const ContentManager = () => {
 
   const saveContent = async (section: string, key: string, value: any) => {
     try {
+      console.log('Saving content to database:', { section, key, value })
       const existingContent = content.find(c => c.section === section && c.key === key)
       
       if (existingContent) {
@@ -62,24 +70,33 @@ export const ContentManager = () => {
           .update({ value, updated_at: new Date().toISOString() })
           .eq('id', existingContent.id)
 
-        if (error) throw error
+        if (error) {
+          console.error('Database update error:', error)
+          throw error
+        }
+        console.log('Content updated successfully')
       } else {
         const { error } = await supabase
           .from('content')
           .insert([{ section, key, value }])
 
-        if (error) throw error
+        if (error) {
+          console.error('Database insert error:', error)
+          throw error
+        }
+        console.log('Content inserted successfully')
       }
 
       await loadContent()
       toast({
         title: "Success",
-        description: "Content saved successfully"
+        description: "Content saved to database successfully"
       })
     } catch (error: any) {
+      console.error('Save content error:', error)
       toast({
         title: "Error",
-        description: error.message,
+        description: "Failed to save to database: " + error.message,
         variant: "destructive"
       })
     }
@@ -463,7 +480,6 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                   <Textarea
                     value={String(formData[item.key] || item.value || '')}
                     onChange={(e) => handleFieldChange(item.key, e.target.value)}
-                    onBlur={(e) => handleSave(item.key, e.target.value)}
                     className="text-sm"
                     placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
                     rows={4}
@@ -472,7 +488,6 @@ const SectionEditor = ({ section, content, getContentValue, onSave, onDelete }: 
                   <Input
                     value={String(formData[item.key] || item.value || '')}
                     onChange={(e) => handleFieldChange(item.key, e.target.value)}
-                    onBlur={(e) => handleSave(item.key, e.target.value)}
                     className="text-sm"
                     placeholder={`Enter ${item.key.replace(/_/g, ' ')}...`}
                   />
