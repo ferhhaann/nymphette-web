@@ -72,11 +72,10 @@ const Hero = () => {
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
             
-            {/* Trust Badge */}
             <div className="mb-4 sm:mb-6 animate-fade-in">
               <Badge variant="secondary" className="bg-white/10 text-white border-white/20 hover:bg-white/20 transition-colors text-sm sm:text-base px-3 py-1">
                 <Star className="h-4 w-4 mr-2 fill-yellow-400 text-yellow-400" />
-                Trusted by 10,000+ Travelers
+                {getContentValue('trust_badge', 'Trusted by 10,000+ Travelers')}
               </Badge>
             </div>
 
@@ -133,14 +132,14 @@ const Hero = () => {
               <div className="inline-flex items-center justify-center gap-2 mb-6 px-6 py-3 bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm rounded-full border border-primary/20 shadow-lg">
                 <Search className="h-5 w-5 text-primary" />
                 <span className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                  Start Your Journey
+                  {getContentValue('search_section_badge', 'Start Your Journey')}
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text">
-                Where would you like to go?
+                {getContentValue('search_section_title', 'Where would you like to go?')}
               </h2>
               <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                Discover amazing destinations through our curated travel packages
+                {getContentValue('search_section_description', 'Discover amazing destinations through our curated travel packages')}
               </p>
             </div>
             
@@ -157,7 +156,7 @@ const Hero = () => {
                       <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 h-6 w-6 text-primary z-10" />
                       <Input
                         type="text"
-                        placeholder="Search destinations, countries, or experiences..."
+                        placeholder={getContentValue('search_placeholder', 'Search destinations, countries, or experiences...')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="relative z-10 pl-14 h-14 bg-transparent border-0 text-foreground placeholder:text-muted-foreground focus:ring-0 text-lg font-medium"
@@ -167,7 +166,7 @@ const Hero = () => {
                       type="submit" 
                       className="h-14 px-8 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border-0"
                     >
-                      Search
+                      {getContentValue('search_button_text', 'Search')}
                       <ArrowRight className="ml-3 h-5 w-5" />
                     </Button>
                   </div>
@@ -180,7 +179,7 @@ const Hero = () => {
           <div className="mb-16 animate-fade-in">
             <div className="text-center mb-8">
               <h3 className="text-xl font-bold text-foreground mb-3">
-                Popular Destinations
+                {getContentValue('popular_destinations_title', 'Popular Destinations')}
               </h3>
               <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto"></div>
             </div>
@@ -243,19 +242,18 @@ const Hero = () => {
               </div>
             </div>
             
-            {/* Additional trust indicators */}
             <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <span className="font-medium">50+ Destinations</span>
+                <span className="font-medium">{getContentValue('trust_indicator_1', '50+ Destinations')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
-                <span className="font-medium">10K+ Happy Travelers</span>
+                <span className="font-medium">{getContentValue('trust_indicator_2', '10K+ Happy Travelers')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
-                <span className="font-medium">Expert Guides</span>
+                <span className="font-medium">{getContentValue('trust_indicator_3', 'Expert Guides')}</span>
               </div>
             </div>
           </div>
