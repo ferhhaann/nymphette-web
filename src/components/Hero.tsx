@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Search, MapPin, Users, Calendar, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useContent } from "@/hooks/useContent";
+import { useOptimizedContentValue } from "@/hooks/useOptimizedContent"
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import heroImage from "@/assets/hero-mountain-road.jpg";
 
@@ -12,7 +12,9 @@ const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
-  const { getContentValue } = useContent('homepage');
+  
+  const { data: heroTitle } = useOptimizedContentValue('homepage', 'hero_title', 'Discover Amazing Travel Destinations')
+  const { data: journeyDescription } = useOptimizedContentValue('homepage', 'journey_description', 'Contact us today and let our expert travel consultants help you plan the perfect trip tailored to your preferences and budget.')
 
   useEffect(() => {
     setIsVisible(true);
@@ -81,7 +83,7 @@ const Hero = () => {
 
             {/* Main Headline */}
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold font-sans tracking-tight mb-2 sm:mb-3 md:mb-4 animate-fade-in leading-tight">
-              {getContentValue('hero_title', 'Discover Amazing Travel Destinations')}
+              {heroTitle}
             </h1>
 
             {/* Subtitle */}
@@ -258,10 +260,10 @@ const Hero = () => {
             </div>
 
             {/* Ready to Start Journey Section */}
-            <div className="mt-16 bg-white/10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/20 max-w-4xl mx-auto text-center">
+            <div className="mt-16 bg-card/50 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-border/50 max-w-4xl mx-auto text-center">
               <h3 className="text-2xl font-bold mb-4 text-foreground">Ready to Start Your Journey?</h3>
               <p className="text-lg mb-6 text-muted-foreground max-w-2xl mx-auto">
-                {getContentValue('journey_description', 'Contact us today and let our expert travel consultants help you plan the perfect trip tailored to your preferences and budget.')}
+                {journeyDescription}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 

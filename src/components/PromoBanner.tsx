@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useContent } from "@/hooks/useContent";
+import { useOptimizedContentValue } from "@/hooks/useOptimizedContent"
 
 const PromoBanner = () => {
   const navigate = useNavigate();
-  const { getContentValue } = useContent('homepage');
+  const { data: promoDescription } = useOptimizedContentValue('homepage', 'promo_description', 'Discover curated destinations and exclusive offers designed just for you')
   return (
     <section className="section-padding bg-gradient-to-br from-background via-secondary/10 to-background">
       <div className="container">
@@ -40,7 +40,7 @@ const PromoBanner = () => {
                  Premium Travel Experiences Worldwide
                </h3>
                <p className="text-lg md:text-xl text-background/90 mb-8 animate-fade-in leading-relaxed" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-                 {getContentValue('promo_description', 'Discover curated destinations and exclusive offers designed just for you')}
+                 {promoDescription}
                </p>
               
               {/* Modern CTA buttons */}
