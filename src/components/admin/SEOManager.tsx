@@ -862,82 +862,90 @@ const SEOManager = () => {
 
       {/* Edit Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Edit SEO Settings</DialogTitle>
+        <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] overflow-hidden flex flex-col">
+          <DialogHeader className="flex-shrink-0">
+            <DialogTitle>Edit SEO Settings - {formData.page_url}</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium">Page URL</label>
-                <Input
-                  value={formData.page_url}
-                  onChange={(e) => setFormData({...formData, page_url: e.target.value})}
-                  placeholder="/example-page"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium">Page Type</label>
-                <select
-                  value={formData.page_type}
-                  onChange={(e) => setFormData({...formData, page_type: e.target.value as any})}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="homepage">Homepage</option>
-                  <option value="packages">Packages</option>
-                  <option value="country">Country Pages</option>
-                  <option value="blog">Blog</option>
-                  <option value="about">About</option>
-                  <option value="contact">Contact</option>
-                  <option value="group-tours">Group Tours</option>
-                  <option value="custom">Custom</option>
-                </select>
-              </div>
-            </div>
+          
+          <div className="flex-1 overflow-y-auto">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Tabs defaultValue="basic" className="space-y-4">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="basic">Basic SEO</TabsTrigger>
+                  <TabsTrigger value="social">Social & Meta</TabsTrigger>
+                  <TabsTrigger value="structured">Structured Data</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="basic" className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium">Page URL</label>
+                      <Input
+                        value={formData.page_url}
+                        onChange={(e) => setFormData({...formData, page_url: e.target.value})}
+                        placeholder="/example-page"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Page Type</label>
+                      <select
+                        value={formData.page_type}
+                        onChange={(e) => setFormData({...formData, page_type: e.target.value as any})}
+                        className="w-full p-2 border rounded-md"
+                      >
+                        <option value="homepage">Homepage</option>
+                        <option value="packages">Packages</option>
+                        <option value="country">Country Pages</option>
+                        <option value="blog">Blog</option>
+                        <option value="about">About</option>
+                        <option value="contact">Contact</option>
+                        <option value="group-tours">Group Tours</option>
+                        <option value="custom">Custom</option>
+                      </select>
+                    </div>
+                  </div>
 
-            <div>
-              <label className="text-sm font-medium">Meta Title (60 chars max)</label>
-              <Input
-                value={formData.meta_title}
-                onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
-                placeholder="Optimized page title"
-                maxLength={60}
-                required
-              />
-              <div className="text-xs text-muted-foreground mt-1">
-                {formData.meta_title.length}/60 characters
-              </div>
-            </div>
+                  <div>
+                    <label className="text-sm font-medium">Meta Title (60 chars max)</label>
+                    <Input
+                      value={formData.meta_title}
+                      onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
+                      placeholder="Optimized page title"
+                      maxLength={60}
+                      required
+                    />
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {formData.meta_title.length}/60 characters
+                    </div>
+                  </div>
 
-            <div>
-              <label className="text-sm font-medium">Meta Description (160 chars max)</label>
-              <Textarea
-                value={formData.meta_description}
-                onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
-                placeholder="Compelling page description"
-                maxLength={160}
-                rows={3}
-                required
-              />
-              <div className="text-xs text-muted-foreground mt-1">
-                {formData.meta_description.length}/160 characters
-              </div>
-            </div>
+                  <div>
+                    <label className="text-sm font-medium">Meta Description (160 chars max)</label>
+                    <Textarea
+                      value={formData.meta_description}
+                      onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
+                      placeholder="Compelling page description"
+                      maxLength={160}
+                      rows={3}
+                      required
+                    />
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {formData.meta_description.length}/160 characters
+                    </div>
+                  </div>
 
-            <div>
-              <label className="text-sm font-medium">Keywords (comma separated)</label>
-              <Input
-                value={formData.meta_keywords}
-                onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
-                placeholder="keyword1, keyword2, keyword3"
-              />
-            </div>
+                  <div>
+                    <label className="text-sm font-medium">Keywords (comma separated)</label>
+                    <Input
+                      value={formData.meta_keywords}
+                      onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
+                      placeholder="keyword1, keyword2, keyword3"
+                    />
+                  </div>
+                </TabsContent>
 
-            <Accordion type="single" collapsible>
-              <AccordionItem value="advanced">
-                <AccordionTrigger>Advanced SEO Settings</AccordionTrigger>
-                <AccordionContent className="space-y-4">
+                <TabsContent value="social" className="space-y-4">
                   <div>
                     <label className="text-sm font-medium">Canonical URL</label>
                     <Input
@@ -962,7 +970,7 @@ const SEOManager = () => {
                       value={formData.og_description || ''}
                       onChange={(e) => setFormData({...formData, og_description: e.target.value})}
                       placeholder="Social media description"
-                      rows={2}
+                      rows={3}
                     />
                   </div>
 
@@ -988,7 +996,9 @@ const SEOManager = () => {
                       <option value="noindex,nofollow">No Index, No Follow</option>
                     </select>
                   </div>
+                </TabsContent>
 
+                <TabsContent value="structured" className="space-y-4">
                   <div>
                     <label className="text-sm font-medium">Generate Structured Data</label>
                     <Button
@@ -1008,7 +1018,7 @@ const SEOManager = () => {
                     {(previewStructuredData || formData.structured_data) && (
                       <div className="mt-4 p-4 bg-muted rounded-lg">
                         <label className="text-sm font-medium mb-2 block">Structured Data Preview:</label>
-                        <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-60">
+                        <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-96">
                           {JSON.stringify(previewStructuredData || formData.structured_data, null, 2)}
                         </pre>
                       </div>
@@ -1028,24 +1038,24 @@ const SEOManager = () => {
                           }
                         }}
                         placeholder="Enter custom JSON-LD structured data..."
-                        rows={8}
+                        rows={12}
                         className="font-mono text-xs"
                       />
                     </div>
                   </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+                </TabsContent>
+              </Tabs>
 
-            <div className="flex justify-end space-x-2">
-              <Button type="button" variant="outline" onClick={() => setShowEditDialog(false)}>
-                Cancel
-              </Button>
-              <Button type="submit">
-                Update SEO Settings
-              </Button>
-            </div>
-          </form>
+              <div className="flex justify-end space-x-2 pt-4 border-t">
+                <Button type="button" variant="outline" onClick={() => setShowEditDialog(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  Update SEO Settings
+                </Button>
+              </div>
+            </form>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
