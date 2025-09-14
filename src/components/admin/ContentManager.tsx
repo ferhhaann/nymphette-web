@@ -239,7 +239,6 @@ export const ContentManager = () => {
           <p className="text-muted-foreground">Edit website content - changes appear instantly on the frontend</p>
           <div className="flex items-center gap-2 mt-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-xs text-green-600 font-medium">Real-time updates enabled</span>
           </div>
         </div>
         <div className="flex gap-2">
