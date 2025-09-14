@@ -27,17 +27,6 @@ interface SEOSettings {
   is_active: boolean;
 }
 
-interface SEOAnalytics {
-  page_url: string;
-  views: number;
-  bounce_rate: number;
-  avg_session_duration: number;
-  search_impressions: number;
-  search_clicks: number;
-  ctr: number;
-  avg_position: number;
-  top_keywords: string[];
-}
 
 interface SecurityRecommendation {
   category: string;
@@ -49,7 +38,6 @@ interface SecurityRecommendation {
 const SEOManager = () => {
   const { isAdmin, logAdminAction } = useAdminAccess();
   const [seoSettings, setSeoSettings] = useState<SEOSettings[]>([]);
-  const [analytics, setAnalytics] = useState<SEOAnalytics[]>([]);
   const [securityRecommendations, setSecurityRecommendations] = useState<SecurityRecommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<SEOSettings | null>(null);
@@ -76,7 +64,6 @@ const SEOManager = () => {
 
   useEffect(() => {
     fetchSEOSettings();
-    fetchAnalytics();
   }, []);
 
   const fetchSEOSettings = async () => {
@@ -117,100 +104,6 @@ const SEOManager = () => {
     }
   };
 
-  const fetchAnalytics = async () => {
-    // Enhanced mock analytics data with realistic numbers and comprehensive page coverage
-    const mockAnalytics: SEOAnalytics[] = [
-      {
-        page_url: '/',
-        views: 28450,
-        bounce_rate: 32.8,
-        avg_session_duration: 245,
-        search_impressions: 125230,
-        search_clicks: 8870,
-        ctr: 7.1,
-        avg_position: 2.4,
-        top_keywords: ['nymphette tours', 'travel packages', 'vacation planning', 'asia travel', 'group tours']
-      },
-      {
-        page_url: '/packages',
-        views: 18950,
-        bounce_rate: 28.7,
-        avg_session_duration: 320,
-        search_impressions: 89140,
-        search_clicks: 5980,
-        ctr: 6.7,
-        avg_position: 3.1,
-        top_keywords: ['travel packages', 'asia tours', 'europe packages', 'vacation deals', 'holiday packages']
-      },
-      {
-        page_url: '/group-tours',
-        views: 12200,
-        bounce_rate: 25.2,
-        avg_session_duration: 380,
-        search_impressions: 56750,
-        search_clicks: 3125,
-        ctr: 5.5,
-        avg_position: 3.8,
-        top_keywords: ['group tours', 'small group travel', 'guided tours', 'adventure tours', 'cultural tours']
-      },
-      {
-        page_url: '/blog',
-        views: 9850,
-        bounce_rate: 45.1,
-        avg_session_duration: 195,
-        search_impressions: 34200,
-        search_clicks: 1890,
-        ctr: 5.5,
-        avg_position: 4.2,
-        top_keywords: ['travel blog', 'destination guide', 'travel tips', 'travel stories', 'vacation inspiration']
-      },
-      {
-        page_url: '/about',
-        views: 6420,
-        bounce_rate: 38.9,
-        avg_session_duration: 165,
-        search_impressions: 18750,
-        search_clicks: 890,
-        ctr: 4.7,
-        avg_position: 5.1,
-        top_keywords: ['nymphette tours about', 'travel company', 'tour operator', 'travel agency', 'who we are']
-      },
-      {
-        page_url: '/contact',
-        views: 5120,
-        bounce_rate: 22.3,
-        avg_session_duration: 95,
-        search_impressions: 12340,
-        search_clicks: 650,
-        ctr: 5.3,
-        avg_position: 4.8,
-        top_keywords: ['contact travel agency', 'book tour', 'travel inquiry', 'nymphette contact', 'tour booking']
-      },
-      {
-        page_url: '/regions/asia',
-        views: 8750,
-        bounce_rate: 35.4,
-        avg_session_duration: 285,
-        search_impressions: 45200,
-        search_clicks: 2750,
-        ctr: 6.1,
-        avg_position: 3.5,
-        top_keywords: ['asia travel', 'southeast asia tours', 'asia vacation', 'asian destinations', 'asia packages']
-      },
-      {
-        page_url: '/regions/europe',
-        views: 7890,
-        bounce_rate: 31.2,
-        avg_session_duration: 310,
-        search_impressions: 38900,
-        search_clicks: 2340,
-        ctr: 6.0,
-        avg_position: 3.2,
-        top_keywords: ['europe travel', 'european tours', 'europe vacation', 'european packages', 'europe destinations']
-      }
-    ];
-    setAnalytics(mockAnalytics);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -403,7 +296,6 @@ const SEOManager = () => {
           <TabsTrigger value="settings">General SEO</TabsTrigger>
           <TabsTrigger value="countries">Country Pages</TabsTrigger>
           <TabsTrigger value="categories">Categories</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="tools">SEO Tools</TabsTrigger>
         </TabsList>
 
@@ -644,53 +536,6 @@ const SEOManager = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="analytics" className="space-y-4">
-          <div className="grid gap-4">
-            {analytics.map((data) => (
-              <Card key={data.page_url}>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span>{data.page_url}</span>
-                    <Badge variant="outline">
-                      <TrendingUp className="h-4 w-4 mr-1" />
-                      Avg Pos: {data.avg_position}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold">{data.views.toLocaleString()}</div>
-                      <div className="text-sm text-muted-foreground">Page Views</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold">{data.ctr}%</div>
-                      <div className="text-sm text-muted-foreground">CTR</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold">{data.bounce_rate}%</div>
-                      <div className="text-sm text-muted-foreground">Bounce Rate</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold">{Math.floor(data.avg_session_duration / 60)}m</div>
-                      <div className="text-sm text-muted-foreground">Avg Duration</div>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <div className="text-sm font-medium mb-2">Top Keywords:</div>
-                    <div className="flex flex-wrap gap-1">
-                      {data.top_keywords.map((keyword, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs">
-                          {keyword}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
 
         <TabsContent value="countries" className="space-y-4">
           {/* Search Bar for Countries */}
