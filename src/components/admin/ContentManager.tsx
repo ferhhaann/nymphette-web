@@ -241,10 +241,10 @@ export const ContentManager = () => {
                   <button
                     key={section.value}
                     onClick={() => setSelectedSection(section.value)}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-muted ${
+                    className={`w-full text-left px-4 py-2 text-sm ${
                       selectedSection === section.value 
                         ? 'bg-primary text-primary-foreground' 
-                        : ''
+                        : 'hover:bg-muted'
                     }`}
                   >
                     <div className="flex justify-between items-center">
