@@ -1,9 +1,9 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { type DatabasePackage, isSupabaseConfigured } from '@/lib/supabase'
 import { packagesData, type TravelPackage } from '@/data/packagesData'
 import type { TravelPackage as TravelPackageType } from '@/data/packagesData'
-import { useOptimizedQuery } from './useOptimizedQuery'
+import { useOptimizedQuery, queryCache } from './useOptimizedQuery'
 
 const transformDatabasePackage = (dbPackage: DatabasePackage): TravelPackageType => {
   return {
@@ -68,10 +68,37 @@ export const useOptimizedPackages = (region?: string) => {
     return (data || []).map(transformDatabasePackage)
   }
 
-  return useOptimizedQuery(queryKey, queryFn, {
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 15 * 60 * 1000, // 15 minutes
+  const result = useOptimizedQuery(queryKey, queryFn, {
+    staleTime: 0, // Always fresh for admin changes
+    cacheTime: 1000, // Very short cache time for instant updates
   })
+
+  // Set up real-time subscription for packages
+  useEffect(() => {
+    if (!supabase) return
+
+    const channel = supabase
+      .channel('packages-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'packages',
+        },
+        (payload) => {
+          console.log('Real-time packages change detected:', payload)
+          queryCache.invalidate('packages')
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [region])
+
+  return result
 }
 
 export const useOptimizedPackageById = (packageId: string) => {
@@ -95,11 +122,38 @@ export const useOptimizedPackageById = (packageId: string) => {
     return data ? transformDatabasePackage(data) : null
   }
 
-  return useOptimizedQuery(queryKey, queryFn, {
+  const result = useOptimizedQuery(queryKey, queryFn, {
     enabled: !!packageId,
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    cacheTime: 30 * 60 * 1000, // 30 minutes
+    staleTime: 0, // Always fresh for admin changes
+    cacheTime: 1000, // Very short cache time for instant updates
   })
+
+  // Set up real-time subscription for this specific package
+  useEffect(() => {
+    if (!supabase || !packageId) return
+
+    const channel = supabase
+      .channel(`package-${packageId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'packages',
+        },
+        (payload) => {
+          console.log('Real-time package change detected:', payload)
+          queryCache.invalidate('packages')
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [packageId])
+
+  return result
 }
 
 export const useOptimizedFeaturedPackages = () => {
@@ -124,8 +178,35 @@ export const useOptimizedFeaturedPackages = () => {
     return (data || []).map(transformDatabasePackage)
   }
 
-  return useOptimizedQuery(queryKey, queryFn, {
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    cacheTime: 30 * 60 * 1000, // 30 minutes
+  const result = useOptimizedQuery(queryKey, queryFn, {
+    staleTime: 0, // Always fresh for admin changes
+    cacheTime: 1000, // Very short cache time for instant updates
   })
+
+  // Set up real-time subscription for featured packages
+  useEffect(() => {
+    if (!supabase) return
+
+    const channel = supabase
+      .channel('featured-packages-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'packages',
+        },
+        (payload) => {
+          console.log('Real-time featured packages change detected:', payload)
+          queryCache.invalidate('packages')
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
+  return result
 }
