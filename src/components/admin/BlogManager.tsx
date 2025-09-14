@@ -258,7 +258,13 @@ export const BlogManager: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Blog Management</h2>
+        <div>
+          <h2 className="text-2xl font-bold">Blog Management</h2>
+          <div className="flex items-center gap-2 mt-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs text-green-600 font-medium">Real-time updates enabled</span>
+          </div>
+        </div>
         <Dialog open={isEditing} onOpenChange={setIsEditing}>
           <DialogTrigger asChild>
             <Button onClick={() => {

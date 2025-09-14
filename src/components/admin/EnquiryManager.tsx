@@ -277,7 +277,13 @@ export const EnquiryManager = () => {
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Enquiry Management</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Enquiry Management</h1>
+          <div className="flex items-center gap-2 mt-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs text-green-600 font-medium">Real-time updates enabled</span>
+          </div>
+        </div>
         <div className="flex gap-2">
           <Input
             placeholder="WhatsApp Webhook URL"

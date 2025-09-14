@@ -208,6 +208,10 @@ export const PackageManager = () => {
           <div>
             <h2 className="text-2xl font-bold">📦 Travel Packages</h2>
             <p className="text-muted-foreground">Easily manage your travel packages - organized by region for better navigation</p>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-xs text-green-600 font-medium">Real-time updates enabled</span>
+            </div>
           </div>
         </div>
 
