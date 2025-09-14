@@ -18,10 +18,10 @@ export default {
 			}
 		},
 				extend: {
-				fontFamily: {
-					'geo': ['"Geologica"', 'sans-serif'],
-					'sans': ['"Geologica"', 'sans-serif'],
-				},
+			fontFamily: {
+				'geo': ['"DM Sans"', 'sans-serif'],
+				'sans': ['"DM Sans"', 'sans-serif'],
+			},
 				fontWeight: {
 					normal: '400',
 					medium: '500',
