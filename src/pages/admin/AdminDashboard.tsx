@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Package, FileText, Settings, Database, Globe, Users, BookOpen, MessageSquare, ClipboardList } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useAutoLogout } from "@/hooks/useAutoLogout"
 import { AdminOverview } from "@/components/admin/AdminOverview"
 import { PackageManager } from "@/components/admin/PackageManager"
 import { ContentManager } from "@/components/admin/ContentManager"
@@ -22,6 +23,16 @@ const AdminDashboard = () => {
   const [adminCheckComplete, setAdminCheckComplete] = useState(false)
   const [activeSection, setActiveSection] = useState("overview")
   const { toast } = useToast()
+  
+  // Auto logout after 7 minutes of inactivity
+  useAutoLogout({ 
+    timeoutMinutes: 7, 
+    warningMinutes: 1,
+    onLogout: () => {
+      setIsAuthenticated(false)
+      setIsAdmin(false)
+    }
+  })
 
   useEffect(() => {
     // Simple initialization - don't call async functions immediately
@@ -125,6 +136,7 @@ const AdminDashboard = () => {
     )
   }
 
+  // Only show access denied if we've completed the check AND user is authenticated AND not admin
   if (isAuthenticated && adminCheckComplete && !isAdmin) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -145,7 +157,8 @@ const AdminDashboard = () => {
     )
   }
 
-  if (isAuthenticated && isAdmin) {
+  // Only show admin dashboard if authenticated, admin check complete, AND user is admin
+  if (isAuthenticated && adminCheckComplete && isAdmin) {
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-4 sm:py-8">
