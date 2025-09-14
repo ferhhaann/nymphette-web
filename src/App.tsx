@@ -1,4 +1,3 @@
-import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { useImageOptimization } from "@/hooks/useImageOptimization";
 import ScrollToTop from "@/components/ScrollToTop";
-import IndexSimple from "./pages/IndexSimple";
+import Index from "./pages/Index";
 import Packages from "./pages/Packages";
 import GroupTours from "./pages/GroupTours";
 import GroupTourDetail from "./pages/GroupTourDetail";
@@ -54,12 +53,12 @@ const App = () => {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          {/* <Toaster /> */}
-          {/* <Sonner /> */}
+          <Toaster />
+          <Sonner />
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
-              <Route path="/" element={<IndexSimple />} />
+              <Route path="/" element={<Index />} />
               <Route path="/packages" element={<Packages />} />
               <Route path="/group-tours" element={<GroupTours />} />
               <Route path="/group-tours/:tourId" element={<GroupTourDetail />} />
