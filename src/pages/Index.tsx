@@ -14,13 +14,8 @@ import regionsImage from "@/assets/regions-world.jpg";
 const Index = () => {
   console.log('Index component rendering...');
   
-  // Initialize SEO settings
-  try {
-    useStaticSEO(); // This will fetch and apply SEO settings from database
-    console.log('SEO initialized successfully');
-  } catch (error) {
-    console.error('SEO error:', error);
-  }
+  // Initialize SEO settings - hooks must be called at top level
+  useStaticSEO(); // This will fetch and apply SEO settings from database
   
   useEffect(() => {
     console.log('Index useEffect - preloading images');
