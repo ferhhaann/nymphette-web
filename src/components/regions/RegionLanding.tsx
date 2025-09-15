@@ -21,8 +21,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  CarouselApi,
 } from "@/components/ui/carousel";
 import {
   Dialog,
@@ -98,9 +97,10 @@ const getPackageImage = (countrySlug?: string, title?: string) => {
 const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
-  const [budgetMax, setBudgetMax] = useState<number>(6000);
+  const [budgetMax, setBudgetMax] = useState<number>(100000);
   const [openFormFor, setOpenFormFor] = useState<any | null>(null);
   const [stickyOpen, setStickyOpen] = useState(false);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   
   // Use optimized packages hook for better performance
   const { data: packages, loading } = useOptimizedPackages(region);
@@ -176,6 +176,17 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
   // Remove the manual loading logic since we're using optimized hooks
   // The useOptimizedPackages hook handles all the loading, caching, and optimization
 
+  // Automatic slideshow effect
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const interval = setInterval(() => {
+      carouselApi.scrollNext();
+    }, 3000); // Change image every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [carouselApi]);
+
   useEffect(() => { 
     // TODO: Implement meta tag setting if needed
     // const actualCanonical = isFromPackagesPage ? `/packages/region/${regionKey}` : canonical;
@@ -204,7 +215,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
     <div className="min-h-screen bg-background">
       <Navigation />
       {/* Breadcrumbs */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">
         <nav className="flex items-center space-x-2 text-sm text-muted-foreground mt-2 md:mt-5" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-primary transition-colors flex items-center h-6">
             <Home className="h-4 w-4 mr-1" />
@@ -219,41 +230,44 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
         </nav>
       </div>
       {/* HERO */}
-      <section className="relative">
-        <Carousel>
-          <CarouselContent>
-            {heroImages.map((img, idx) => (
-              <CarouselItem key={idx}>
-                 <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] mx-2 sm:mx-4 lg:mx-6 mb-2 sm:mb-4 lg:mb-6 mt-2 rounded-lg overflow-hidden">
-                   <OptimizedImage 
-                     src={img} 
-                     alt={`${title} hero ${idx+1}`} 
-                     priority={idx===0} 
-                     preloadSources={heroImages.slice(idx + 1, idx + 3)}
-                     className="absolute inset-0 h-full w-full object-cover rounded-lg" 
-                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg" />
-                  <div className="relative z-10 max-w-7xl mx-auto h-full flex items-end px-3 sm:px-6 lg:px-8 pb-4 sm:pb-8">
-                    <div className="space-y-2 sm:space-y-4">
-                      <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary">{title}</h1>
-                      <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">{description}</p>
-                      <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-3 bg-card/90 backdrop-blur rounded-lg p-3 sm:p-4 shadow">
-                        <div className="col-span-1 sm:col-span-3 mb-2 sm:mb-0"><Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search city, country or highlight" aria-label="Search" className="text-sm sm:text-base"/></div>
-                        <div className="col-span-1 sm:col-span-1 bg-card rounded-lg p-2 border mb-2 sm:mb-0">
-                          <div className="flex items-center justify-between text-xs mb-1"><span className="text-muted-foreground flex items-center gap-1"><CircleDollarSign className="size-3"/>Budget</span><span>₹{budgetMax}</span></div>
-                          <Slider max={8000} min={500} step={100} value={[budgetMax]} onValueChange={(v)=>setBudgetMax(v[0])} />
-                        </div>
-                        <Button className="col-span-1 sm:col-span-1 text-sm sm:text-base" onClick={()=>setStickyOpen(true)}>Find Packages</Button>
-                      </div>
-                    </div>
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] mb-2 sm:mb-4 lg:mb-6 mt-2 rounded-lg overflow-hidden">
+          {/* Background Image Carousel */}
+          <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="absolute inset-0 h-full w-full">
+            <CarouselContent className="h-full">
+              {heroImages.map((img, idx) => (
+                <CarouselItem key={idx} className="h-full">
+                  <div className="relative h-full w-full">
+                    <OptimizedImage 
+                      src={img} 
+                      alt={`${title} hero ${idx+1}`} 
+                      priority={idx===0} 
+                      preloadSources={heroImages.slice(idx + 1, idx + 3)}
+                      className="h-full w-full object-cover rounded-lg" 
+                    />
                   </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          
+          {/* Static Overlay Content */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg z-10" />
+          <div className="relative z-20 h-full flex items-end px-3 sm:px-6 lg:px-8 pb-4 sm:pb-8">
+            <div className="space-y-2 sm:space-y-4">
+              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary">{title}</h1>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">{description}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-3 bg-card/90 backdrop-blur rounded-lg p-3 sm:p-4 shadow">
+                <div className="col-span-1 sm:col-span-3 mb-2 sm:mb-0"><Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search city, country or highlight" aria-label="Search" className="text-sm sm:text-base"/></div>
+                <div className="col-span-1 sm:col-span-1 bg-card rounded-lg p-2 border mb-2 sm:mb-0">
+                  <div className="flex items-center justify-between text-xs mb-1"><span className="text-muted-foreground flex items-center gap-1"><CircleDollarSign className="size-3"/>Budget</span><span>₹{budgetMax}</span></div>
+                  <Slider max={200000} min={0} step={5000} value={[budgetMax]} onValueChange={(v)=>setBudgetMax(v[0])} />
                 </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+                <Button className="col-span-1 sm:col-span-1 text-sm sm:text-base" onClick={()=>setStickyOpen(true)}>Find Packages</Button>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <CountryList region={regionKey} onCountrySelect={(slug) => navigate(`/regions/${regionKey}/country/${slug}`)} />

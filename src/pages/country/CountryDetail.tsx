@@ -26,7 +26,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/components/ui/carousel"
 import { useStaticSEO } from "@/hooks/useStaticSEO"
 
 // Import hero images
@@ -124,6 +124,7 @@ const CountryDetail = () => {
   const [travelPurposes, setTravelPurposes] = useState<TravelPurpose[]>([])
   const [faqs, setFaqs] = useState<CountryFAQ[]>([])
   const [packageCount, setPackageCount] = useState(0)
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [enquiryForm, setEnquiryForm] = useState<EnquiryForm>({
     name: '',
     email: '',
@@ -139,6 +140,17 @@ const CountryDetail = () => {
       loadCountryData(country)
     }
   }, [country])
+
+  // Automatic slideshow effect for hero images
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const interval = setInterval(() => {
+      carouselApi.scrollNext();
+    }, 3000); // Change image every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [carouselApi]);
 
   const loadCountryData = async (countrySlug: string) => {
     try {
@@ -307,7 +319,7 @@ const CountryDetail = () => {
         {/* Hero Section */}
         <section className="relative overflow-hidden rounded-2xl mb-8 mt-2">
           <div className="relative h-96 lg:h-[500px]">
-            <Carousel className="w-full h-full">
+            <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="w-full h-full">
               <CarouselContent>
                 {displayHeroImages.map((image, index) => (
                   <CarouselItem key={image.id}>
@@ -322,8 +334,6 @@ const CountryDetail = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="left-4" />
-              <CarouselNext className="right-4" />
             </Carousel>
             
             {/* Hero Content Overlay */}
