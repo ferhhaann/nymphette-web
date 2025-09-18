@@ -6,12 +6,16 @@ import { ArrowRight, Search, MapPin, Users, Calendar, Star } from "lucide-react"
 import { useNavigate } from "react-router-dom";
 import { useOptimizedContentValue } from "@/hooks/useOptimizedContent"
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import { useToast } from "@/hooks/use-toast";
+import { useSearchData } from "@/hooks/useSearchData";
 import heroImage from "@/assets/hero-mountain-road.jpg";
 
 const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { searchCountry, searchRegion, loading } = useSearchData();
   
   const { data: heroTitle } = useOptimizedContentValue('homepage', 'hero_title', 'Discover Amazing Travel Destinations')
   const { data: journeyDescription } = useOptimizedContentValue('homepage', 'journey_description', 'Contact us today and let our expert travel consultants help you plan the perfect trip tailored to your preferences and budget.')
@@ -25,9 +29,41 @@ const Hero = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/packages?search=${encodeURIComponent(searchQuery.trim())}`);
+    if (!searchQuery.trim()) return;
+
+    const query = searchQuery.trim().toLowerCase();
+    console.log('Searching for:', query);
+
+    // Check for region matches using dynamic data
+    const matchedRegion = searchRegion(query);
+    if (matchedRegion) {
+      console.log('Found region match:', matchedRegion);
+      navigate(matchedRegion.path);
+      setSearchQuery("");
+      return;
     }
+
+    // Check for country matches using dynamic data
+    const matchedCountry = searchCountry(query);
+    if (matchedCountry) {
+      console.log('Found country match:', matchedCountry);
+      // Navigate to the country detail page via region
+      navigate(`/regions/${matchedCountry.region}/country/${matchedCountry.slug}`);
+      setSearchQuery("");
+      return;
+    }
+
+    console.log('No matches found for:', query);
+    // If no matches found, show toast and fallback to packages page
+    toast({
+      title: "No packages available",
+      description: `Sorry, we don't have packages for "${searchQuery}" at the moment. Showing all available packages instead.`,
+      variant: "destructive"
+    });
+    
+    // Fallback to packages page with search query
+    navigate(`/packages?search=${encodeURIComponent(searchQuery.trim())}`);
+    setSearchQuery("");
   };
 
   const handleExplorePackages = () => {
@@ -161,17 +197,19 @@ const Hero = () => {
                       <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 h-6 w-6 text-primary z-10" />
                       <Input
                         type="text"
-                        placeholder="Search destinations, countries, or experiences..."
+                        placeholder={loading ? "Loading destinations..." : "Search destinations, countries, or experiences..."}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
+                        disabled={loading}
                         className="relative z-10 pl-14 h-14 bg-transparent border-0 text-foreground placeholder:text-muted-foreground focus:ring-0 text-lg font-medium"
                       />
                     </div>
                     <Button 
                       type="submit" 
-                      className="h-14 px-8 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border-0"
+                      disabled={loading || !searchQuery.trim()}
+                      className="h-14 px-8 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border-0 disabled:opacity-50 disabled:hover:scale-100"
                     >
-                      Search
+                      {loading ? "Loading..." : "Search"}
                       <ArrowRight className="ml-3 h-5 w-5" />
                     </Button>
                   </div>

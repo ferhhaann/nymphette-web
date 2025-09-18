@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { TravelPackage as TravelPackageType } from "@/data/packagesData";
 import { usePackageById } from "@/hooks/usePackages";
 import Navigation from "@/components/Navigation";
@@ -34,7 +34,9 @@ import {
   Mail,
   StarHalf,
   ZoomIn,
-  Heart
+  Heart,
+  ChevronRight as ChevronRightIcon,
+  Home
 } from "lucide-react";
 
 // This component now uses the database via usePackageById hook
@@ -334,8 +336,8 @@ const PackageDetail = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Back button */}
-      <div className="max-w-6xl mx-auto px-4 py-6">
+      {/* Mobile Back Button - Hidden on desktop */}
+      <div className="max-w-6xl mx-auto px-4 pt-6 pb-4 md:hidden">
         <Button 
           variant="outline" 
           onClick={() => navigate(-1)}
@@ -344,6 +346,42 @@ const PackageDetail = () => {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
+      </div>
+
+      {/* Desktop Breadcrumbs - Hidden on mobile */}
+      <div className="max-w-6xl mx-auto px-4 pt-8 pb-4 hidden md:block">
+        <nav className="flex items-center flex-wrap gap-2 text-sm text-muted-foreground leading-relaxed">
+          <Link 
+            to="/" 
+            className="flex items-center hover:text-primary transition-colors py-1"
+          >
+            <Home className="h-4 w-4 mr-1 flex-shrink-0" />
+            Home
+          </Link>
+          <ChevronRightIcon className="h-4 w-4 flex-shrink-0 self-center" />
+          <Link 
+            to="/packages" 
+            className="hover:text-primary transition-colors py-1"
+          >
+            Packages
+          </Link>
+          {pkg && (
+            <>
+              <ChevronRightIcon className="h-4 w-4 flex-shrink-0 self-center" />
+              <Link 
+                to={`/regions/${pkg.region?.toLowerCase()}`}
+                className="hover:text-primary transition-colors py-1"
+                title={pkg.region || pkg.country}
+              >
+                {pkg.region || pkg.country}
+              </Link>
+              <ChevronRightIcon className="h-4 w-4 flex-shrink-0 self-center" />
+              <span className="text-foreground font-medium py-1" title={pkg.title}>
+                {pkg.title}
+              </span>
+            </>
+          )}
+        </nav>
       </div>
 
       {/* Hero Section with Image Gallery */}
@@ -374,21 +412,6 @@ const PackageDetail = () => {
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </>
-            )}
-            
-            {/* Image indicators */}
-            {placeImages.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                {placeImages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentImageIndex ? 'bg-white' : 'bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
             )}
             
             {/* Zoom indicator */}
@@ -434,6 +457,24 @@ const PackageDetail = () => {
             </div>
           </div>
         </Card>
+        
+        {/* Image indicators - positioned below the card */}
+        {placeImages.length > 1 && (
+          <div className="flex justify-center py-3">
+            <div className="flex space-x-0.5">
+              {placeImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  style={{ width: '8px', height: '8px', minWidth: '8px', minHeight: '8px' }}
+                  className={`rounded-full transition-colors border-0 p-0 ${
+                    index === currentImageIndex ? 'bg-primary' : 'bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Content Section */}
@@ -502,23 +543,23 @@ const PackageDetail = () => {
 
             {/* Itinerary Accordion */}
             <div>
-              <h2 className="text-2xl font-semibold mb-4">Day-by-Day Itinerary</h2>
+              <h2 className="text-xl md:text-2xl font-semibold mb-4">Day-by-Day Itinerary</h2>
               <Accordion type="single" collapsible className="w-full">
                 {pkg.itinerary.map((day, idx) => (
                   <AccordionItem key={idx} value={`day-${day.day}`}>
                     <AccordionTrigger className="text-left">
-                      <div className="flex items-center space-x-3">
-                        <Badge variant="outline">Day {day.day}</Badge>
-                        <span className="font-semibold">{day.title}</span>
+                      <div className="flex items-center space-x-2 md:space-x-3">
+                        <Badge variant="outline" className="text-xs">Day {day.day}</Badge>
+                        <span className="font-semibold text-sm md:text-base">{day.title}</span>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="pt-4">
-                      <p className="text-muted-foreground mb-4">{day.description}</p>
+                      <p className="text-muted-foreground mb-4 text-sm md:text-base">{day.description}</p>
                       
                       {day.activities && day.activities.length > 0 && (
                         <div className="mb-3">
-                          <span className="font-medium text-sm">Activities: </span>
-                          <span className="text-sm text-muted-foreground">
+                          <span className="font-medium text-xs md:text-sm">Activities: </span>
+                          <span className="text-xs md:text-sm text-muted-foreground">
                             {day.activities.join(", ")}
                           </span>
                         </div>
@@ -526,8 +567,8 @@ const PackageDetail = () => {
                       
                       {day.meals && day.meals.length > 0 && (
                         <div className="mb-3">
-                          <span className="font-medium text-sm">Meals: </span>
-                          <span className="text-sm text-muted-foreground">
+                          <span className="font-medium text-xs md:text-sm">Meals: </span>
+                          <span className="text-xs md:text-sm text-muted-foreground">
                             {day.meals.join(", ")}
                           </span>
                         </div>
@@ -535,8 +576,8 @@ const PackageDetail = () => {
                       
                       {day.accommodation && (
                         <div>
-                          <span className="font-medium text-sm">Accommodation: </span>
-                          <span className="text-sm text-muted-foreground">
+                          <span className="font-medium text-xs md:text-sm">Accommodation: </span>
+                          <span className="text-xs md:text-sm text-muted-foreground">
                             {day.accommodation}
                           </span>
                         </div>
