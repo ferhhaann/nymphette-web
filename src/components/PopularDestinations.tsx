@@ -114,7 +114,7 @@ const PopularDestinations = () => {
 
   if (loading) {
     return (
-      <section className="section-padding bg-background">
+      <section className="pt-6 pb-16 sm:pt-8 sm:pb-20 md:pt-10 md:pb-24 bg-background">
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold font-geo text-foreground mb-4">
@@ -142,7 +142,7 @@ const PopularDestinations = () => {
   }
 
   return (
-    <section className="section-padding bg-gradient-to-b from-background to-secondary/20">
+    <section className="pt-6 pb-16 sm:pt-8 sm:pb-20 md:pt-10 md:pb-24 bg-gradient-to-b from-background to-secondary/20">
       <div className="container">
         {/* Modern Header */}
         <div className="text-center mb-16">
