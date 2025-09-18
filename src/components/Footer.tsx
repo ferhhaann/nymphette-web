@@ -10,11 +10,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="bg-foreground p-2 rounded-lg">
-                <Plane className="h-6 w-6 text-background" />
-              </div>
-              <span className="text-xl font-bold">Nymphette Tours</span>
+            <div className="flex items-center">
+              <img 
+                src="/lovable-uploads/55a5a12c-6872-4f3f-b1d6-da7e436ed8f1.png" 
+                alt="Nymphette Tours" 
+                className="h-12 lg:h-16 cursor-pointer hover:opacity-80 transition-opacity"
+              />
             </div>
             <p className="text-muted-foreground leading-relaxed">
               Creating unforgettable travel experiences for over 25 years. 
