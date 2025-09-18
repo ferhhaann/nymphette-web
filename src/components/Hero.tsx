@@ -91,7 +91,7 @@ const Hero = () => {
   return (
     <div className="relative">
       {/* Hero Image Section */}
-      <section className="relative h-[60vh] sm:h-[70vh] w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-[80vh] sm:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
           <div className="absolute inset-0">
@@ -149,7 +149,7 @@ const Hero = () => {
       </section>
 
       {/* Modern Enhanced Search and CTA Section */}
-      <section className="relative bg-gradient-to-br from-background via-secondary/10 to-primary/5 py-12 sm:py-16 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-background via-secondary/10 to-primary/5 py-20 sm:py-24 overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-24 -left-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
@@ -168,7 +168,7 @@ const Hero = () => {
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
           
           {/* Enhanced Search Section */}
-          <div className="mb-10 animate-scale-in">
+          <div className="mb-16 animate-scale-in">
             <div className="text-center mb-10">
               <div className="inline-flex items-center justify-center gap-2 mb-6 px-6 py-3 bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm rounded-full border border-primary/20 shadow-lg">
                 <Search className="h-5 w-5 text-primary" />
@@ -219,7 +219,7 @@ const Hero = () => {
           </div>
 
           {/* Enhanced Quick Destinations */}
-          <div className="mb-10 animate-fade-in">
+          <div className="mb-16 animate-fade-in">
             <div className="text-center mb-8">
               <h3 className="text-xl font-bold text-foreground mb-3">
                 Popular Destinations
@@ -301,7 +301,7 @@ const Hero = () => {
             </div>
 
             {/* Ready to Start Journey Section */}
-            <div className="mt-10 bg-card/50 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-border/50 max-w-4xl mx-auto text-center">
+            <div className="mt-16 bg-card/50 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-border/50 max-w-4xl mx-auto text-center">
               <h3 className="text-2xl font-bold mb-4 text-foreground">Ready to Start Your Journey?</h3>
               <p className="text-lg mb-6 text-muted-foreground max-w-2xl mx-auto">
                 {journeyDescription}
