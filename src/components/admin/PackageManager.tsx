@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
+import { useOptimizedCountries } from "@/hooks/useOptimizedCountries"
 
 type DatabasePackage = Database['public']['Tables']['packages']['Row']
 import { Button } from "@/components/ui/button"
@@ -489,6 +490,7 @@ interface PackageFormProps {
 
 const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormProps) => {
   const [formData, setFormData] = useState<Partial<DatabasePackage>>(pkg)
+  const { data: countries, loading: countriesLoading } = useOptimizedCountries()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -557,12 +559,29 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
             </div>
             <div>
               <Label htmlFor="country">Country *</Label>
-              <Input
-                id="country"
-                value={formData.country}
-                onChange={(e) => updateField('country', e.target.value)}
-                required
-              />
+              <Select 
+                value={formData.country} 
+                onValueChange={(value) => {
+                  updateField('country', value)
+                  // Auto-populate country_slug when country is selected
+                  const selectedCountry = countries?.find(c => c.name === value)
+                  if (selectedCountry?.slug) {
+                    updateField('country_slug', selectedCountry.slug)
+                  }
+                }}
+                disabled={countriesLoading}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={countriesLoading ? "Loading countries..." : "Select a country"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries?.map(country => (
+                    <SelectItem key={country.id} value={country.name}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
