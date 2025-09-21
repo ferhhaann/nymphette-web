@@ -157,23 +157,23 @@ const GroupTours = () => {
           </div>
           
           <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-6 animate-scale-in leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 animate-scale-in leading-tight">
               Join Amazing Group Tours
             </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-8 opacity-90 animate-fade-in leading-relaxed" style={{ animationDelay: '0.3s' }}>
-              Connect with fellow travelers on unforgettable journeys around the world
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg mb-3 sm:mb-4 md:mb-6 opacity-90 animate-fade-in leading-relaxed px-2" style={{ animationDelay: '0.3s' }}>
+              Connect with fellow travelers on unforgettable journeys
             </p>
-            <div className="flex flex-row gap-2 sm:gap-4 justify-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
+            <div className="flex flex-row gap-2 sm:gap-4 justify-center animate-slide-up mb-4 sm:mb-6 md:mb-8" style={{ animationDelay: '0.6s' }}>
               <Button 
                 size="sm" 
-                className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white px-3 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold"
+                className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm md:text-base font-semibold"
               >
                 Explore Tours
               </Button>
               <Button 
                 size="sm" 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-black px-3 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold bg-white/10 backdrop-blur-sm"
+                className="border-white text-white hover:bg-white hover:text-black px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm md:text-base font-semibold bg-white/10 backdrop-blur-sm"
               >
                 <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                 Watch Stories
@@ -181,25 +181,25 @@ const GroupTours = () => {
             </div>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-6 md:gap-8 mt-8 sm:mt-12 md:mt-16 opacity-80 animate-fade-in" style={{ animationDelay: '0.9s' }}>
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 lg:gap-8 opacity-80 animate-fade-in" style={{ animationDelay: '0.9s' }}>
               <div className="text-center">
-                <div className="text-lg sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">500+</div>
-                <div className="text-xs sm:text-sm opacity-80">Happy Travelers</div>
+                <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-1">500+</div>
+                <div className="text-xs opacity-80">Happy Travelers</div>
               </div>
               <div className="text-center">
-                <div className="text-lg sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">50+</div>
-                <div className="text-xs sm:text-sm opacity-80">Destinations</div>
+                <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-1">50+</div>
+                <div className="text-xs opacity-80">Destinations</div>
               </div>
               <div className="text-center">
-                <div className="text-lg sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">15+</div>
-                <div className="text-xs sm:text-sm opacity-80">Years Experience</div>
+                <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-1">15+</div>
+                <div className="text-xs opacity-80">Years Experience</div>
               </div>
             </div>
           </div>
 
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+          <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block">
+            <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white rounded-full flex justify-center">
+              <div className="w-1 h-2 sm:h-3 bg-white rounded-full mt-2 animate-pulse"></div>
             </div>
           </div>
         </section>
