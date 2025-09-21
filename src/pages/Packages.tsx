@@ -216,17 +216,17 @@ const Packages = () => {
                 )}
                 
                 {/* Quick Stats */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mt-12 sm:mt-16 opacity-80 animate-fade-in" style={{ animationDelay: '0.9s' }}>
+                <div className="grid grid-cols-3 gap-2 sm:gap-6 md:gap-8 mt-8 sm:mt-12 md:mt-16 opacity-80 animate-fade-in" style={{ animationDelay: '0.9s' }}>
                   <div className="text-center">
-                    <div className="text-2xl sm:text-3xl font-bold mb-2">{filteredRegions.length}</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">{filteredRegions.length}</div>
                     <div className="text-xs sm:text-sm opacity-80">Regions</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl sm:text-3xl font-bold mb-2">{allPackages?.length || 0}+</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">{allPackages?.length || 0}+</div>
                     <div className="text-xs sm:text-sm opacity-80">Packages</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl sm:text-3xl font-bold mb-2">50+</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">50+</div>
                     <div className="text-xs sm:text-sm opacity-80">Countries</div>
                   </div>
                 </div>
