@@ -89,7 +89,7 @@ const AboutUs = () => {
       
       <main>
         {/* Hero Section */}
-        <section className="relative h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
+        <section className="relative h-64 sm:h-[70vh] md:h-[80vh] lg:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden mt-4 sm:mt-0">
           <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
@@ -97,11 +97,11 @@ const AboutUs = () => {
             />
             <div className="absolute inset-0 bg-primary-dark/70"></div>
           </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-background">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-background flex flex-col justify-center h-full">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-6 animate-fade-in">
             About Nymphette International EMC - Premium Travel Agency Since 2001
           </h1>
-          <p className="text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
             One of India's established and most reputed company with Tours & Events under one Umbrella
           </p>
         </div>
