@@ -163,19 +163,19 @@ const GroupTours = () => {
             <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-8 opacity-90 animate-fade-in leading-relaxed" style={{ animationDelay: '0.3s' }}>
               Connect with fellow travelers on unforgettable journeys around the world
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
+            <div className="flex flex-row gap-2 sm:gap-4 justify-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
               <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white px-6 py-3 text-base font-semibold"
+                size="sm" 
+                className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white px-3 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold"
               >
                 Explore Tours
               </Button>
               <Button 
-                size="lg" 
+                size="sm" 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-black px-6 py-3 text-base font-semibold bg-white/10 backdrop-blur-sm"
+                className="border-white text-white hover:bg-white hover:text-black px-3 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold bg-white/10 backdrop-blur-sm"
               >
-                <Play className="h-4 w-4 mr-2" />
+                <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                 Watch Stories
               </Button>
             </div>
