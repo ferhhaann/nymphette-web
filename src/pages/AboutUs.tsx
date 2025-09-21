@@ -66,8 +66,8 @@ const AboutUs = () => {
   const achievements = [
     {
       icon: Award,
-      title: "Best Travel Agency 2023",
-      description: "Awarded by India Travel Awards for excellence in customer service"
+      title: "Indigo 6E Excellence Award 2021-2022",
+      description: "Received recognition from Indigo 6E for outstanding support and exceptional service"
     },
     {
       icon: Users,
