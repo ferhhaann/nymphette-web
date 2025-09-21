@@ -253,7 +253,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
           
           {/* Static Overlay Content */}
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg z-10" />
-          <div className="relative z-20 h-full flex items-end px-3 sm:px-6 lg:px-8 pb-12 sm:pb-8">
+          <div className="relative z-20 h-full flex items-end px-3 sm:px-6 lg:px-8 pb-16 sm:pb-8">
             <div className="space-y-2 sm:space-y-4">
               <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary">{title}</h1>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">{description}</p>
