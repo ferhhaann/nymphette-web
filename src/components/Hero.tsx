@@ -199,24 +199,48 @@ const Hero = () => {
             </form>
 
             {/* Quick Destinations */}
-            <div className={`grid ${optimizedSettings.gridCols} ${optimizedSettings.gap} max-w-lg mx-auto ${isMobile ? 'mb-6' : 'mb-8'}`}>
-              {quickDestinations.map((destination, index) => (
+            <div className={`${isMobile ? 'mb-4' : 'mb-8'}`}>
+              {/* Asia & Europe row */}
+              <div className={`flex ${isMobile ? 'gap-2 mb-2' : 'gap-4 mb-4'} justify-center max-w-lg mx-auto`}>
                 <Button
-                  key={destination.name}
                   variant="outline"
-                  onClick={() => navigate(destination.path)}
-                  className={`relative ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-9 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group`}
+                  onClick={() => navigate("/regions/asia")}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group relative`}
                 >
-                  <span className="relative z-10">{destination.name}</span>
-                  {destination.popular && (
-                    <div className={`absolute top-1 right-1 ${isMobile ? 'w-1 h-1' : 'w-1.5 h-1.5'} bg-primary rounded-full`} />
-                  )}
+                  <span className="relative z-10">Asia</span>
+                  <div className={`absolute top-1 right-1 ${isMobile ? 'w-1 h-1' : 'w-1.5 h-1.5'} bg-primary rounded-full`} />
                 </Button>
-              ))}
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/regions/europe")}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group relative`}
+                >
+                  <span className="relative z-10">Europe</span>
+                  <div className={`absolute top-1 right-1 ${isMobile ? 'w-1 h-1' : 'w-1.5 h-1.5'} bg-primary rounded-full`} />
+                </Button>
+              </div>
+              
+              {/* Africa & Americas row */}
+              <div className={`flex ${isMobile ? 'gap-2' : 'gap-4'} justify-center max-w-lg mx-auto`}>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/regions/africa")}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group`}
+                >
+                  <span className="relative z-10">Africa</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/regions/americas")}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group`}
+                >
+                  <span className="relative z-10">Americas</span>
+                </Button>
+              </div>
             </div>
 
             {/* Action Buttons */}
-            <div className={`flex ${isMobile ? 'flex-col gap-3' : 'flex-col sm:flex-row gap-4'} justify-center max-w-md mx-auto`}>
+            <div className={`flex ${isMobile ? 'gap-2 mb-4' : 'flex-col sm:flex-row gap-4'} justify-center max-w-md mx-auto`}>
               <Button 
                 size={isMobile ? "default" : "lg"}
                 className={`flex-1 ${optimizedSettings.buttonSize} bg-primary hover:bg-primary/90 text-primary-foreground ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-semibold transition-all duration-300 hover:scale-105`}
