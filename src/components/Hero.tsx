@@ -225,14 +225,14 @@ const Hero = () => {
                 <Button
                   variant="outline"
                   onClick={() => navigate("/regions/africa")}
-                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} bg-gradient-to-r from-orange-500/15 to-amber-500/10 border border-orange-500/30 hover:from-orange-500/25 hover:to-amber-500/20 hover:border-orange-500/50 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group shadow-sm hover:shadow-md`}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/30 hover:from-primary/20 hover:to-primary/10 hover:border-primary/50 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group shadow-sm hover:shadow-md`}
                 >
                   <span className="relative z-10">Africa</span>
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => navigate("/regions/americas")}
-                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} bg-gradient-to-r from-emerald-500/15 to-teal-500/10 border border-emerald-500/30 hover:from-emerald-500/25 hover:to-teal-500/20 hover:border-emerald-500/50 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group shadow-sm hover:shadow-md`}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/30 hover:from-primary/20 hover:to-primary/10 hover:border-primary/50 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group shadow-sm hover:shadow-md`}
                 >
                   <span className="relative z-10">Americas</span>
                 </Button>
