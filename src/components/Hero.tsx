@@ -205,7 +205,7 @@ const Hero = () => {
                 <Button
                   variant="outline"
                   onClick={() => navigate("/regions/asia")}
-                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group relative`}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/30 hover:from-primary/20 hover:to-primary/10 hover:border-primary/50 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group relative shadow-sm hover:shadow-md`}
                 >
                   <span className="relative z-10">Asia</span>
                   <div className={`absolute top-1 right-1 ${isMobile ? 'w-1 h-1' : 'w-1.5 h-1.5'} bg-primary rounded-full`} />
@@ -213,7 +213,7 @@ const Hero = () => {
                 <Button
                   variant="outline"
                   onClick={() => navigate("/regions/europe")}
-                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group relative`}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/30 hover:from-primary/20 hover:to-primary/10 hover:border-primary/50 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group relative shadow-sm hover:shadow-md`}
                 >
                   <span className="relative z-10">Europe</span>
                   <div className={`absolute top-1 right-1 ${isMobile ? 'w-1 h-1' : 'w-1.5 h-1.5'} bg-primary rounded-full`} />
@@ -225,14 +225,14 @@ const Hero = () => {
                 <Button
                   variant="outline"
                   onClick={() => navigate("/regions/africa")}
-                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group`}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} bg-gradient-to-r from-secondary/10 to-secondary/5 border border-secondary/30 hover:from-secondary/20 hover:to-secondary/10 hover:border-secondary/50 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group shadow-sm hover:shadow-md`}
                 >
                   <span className="relative z-10">Africa</span>
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => navigate("/regions/americas")}
-                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group`}
+                  className={`flex-1 max-w-32 ${optimizedSettings.minTouchTarget} ${isMobile ? 'h-8 text-xs' : 'h-10 text-sm'} bg-gradient-to-r from-secondary/10 to-secondary/5 border border-secondary/30 hover:from-secondary/20 hover:to-secondary/10 hover:border-secondary/50 transition-all duration-300 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-medium text-foreground group shadow-sm hover:shadow-md`}
                 >
                   <span className="relative z-10">Americas</span>
                 </Button>
@@ -243,7 +243,7 @@ const Hero = () => {
             <div className={`flex ${isMobile ? 'gap-2 mb-4' : 'flex-col sm:flex-row gap-4'} justify-center max-w-md mx-auto`}>
               <Button 
                 size={isMobile ? "default" : "lg"}
-                className={`flex-1 ${optimizedSettings.buttonSize} bg-primary hover:bg-primary/90 text-primary-foreground ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-semibold transition-all duration-300 hover:scale-105`}
+                className={`flex-1 ${optimizedSettings.buttonSize} bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl`}
                 onClick={handleExplorePackages}
               >
                 <span>{isMobile ? 'Packages' : 'Explore Packages'}</span>
@@ -253,7 +253,7 @@ const Hero = () => {
               <Button 
                 variant="outline" 
                 size={isMobile ? "default" : "lg"}
-                className={`flex-1 ${optimizedSettings.buttonSize} border border-border/50 hover:border-primary/50 hover:bg-primary/5 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-semibold transition-all duration-300 hover:scale-105`}
+                className={`flex-1 ${optimizedSettings.buttonSize} bg-gradient-to-r from-background to-secondary/10 border border-primary/30 hover:from-primary/10 hover:to-primary/5 hover:border-primary/50 ${isMobile ? 'rounded-lg' : 'rounded-xl'} font-semibold transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md`}
                 onClick={handlePlanCustomTrip}
               >
                 <span>{isMobile ? 'Custom' : 'Custom Trip'}</span>
