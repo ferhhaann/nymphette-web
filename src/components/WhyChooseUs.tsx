@@ -40,65 +40,83 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className={`relative ${optimizedSettings.mobileLayout.sectionPadding || 'section-padding'} overflow-hidden bg-primary text-primary-foreground`}>
-      {/* Subtle background pattern - Simplified on mobile */}
-      {!isMobile && (
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-dark to-primary opacity-95"></div>
-          <div className="absolute inset-0 bg-gradient-to-tr from-primary-foreground/5 via-transparent to-primary-foreground/5"></div>
-        </div>
-      )}
+    <section className={`relative ${optimizedSettings.mobileLayout.sectionPadding || 'py-16 md:py-24'} overflow-hidden`} style={{ backgroundColor: '#f5f5f5' }}>
+      {/* Modern geometric background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-br from-black/10 to-transparent"></div>
+        <div className="absolute bottom-0 right-0 w-2/3 h-2/3 bg-gradient-to-tl from-black/5 to-transparent"></div>
+        {!isMobile && (
+          <>
+            <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
+            <div className="absolute bottom-1/3 right-1/3 w-48 h-48 bg-black/3 rounded-full blur-3xl"></div>
+          </>
+        )}
+      </div>
       
-      <div className={`relative ${optimizedSettings.containerPadding || 'container'}`}>
-        {/* Top feature badges - Show only 2 on mobile */}
-        <div className={`flex flex-wrap justify-center ${optimizedSettings.gap} ${isMobile ? 'mb-4' : 'mb-8 sm:mb-12'}`}>
-          {topFeatures.slice(0, isMobile ? 2 : 4).map((feature, index) => (
-            <div 
-              key={feature.text}
-              className={`flex items-center ${optimizedSettings.gap} ${isMobile ? 'px-2 py-1.5' : 'px-3 sm:px-4 md:px-6 py-2 sm:py-3'} rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground font-medium shadow-lg hover:bg-primary-foreground/20 transition-all duration-300 hover:scale-105 animate-fade-in ${isMobile ? 'text-xs' : 'text-xs sm:text-sm md:text-base'}`}
-              style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
-            >
-              <feature.icon className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4 sm:h-5 sm:w-5'}`} />
-              {feature.text}
-            </div>
-          ))}
-        </div>
-
-        <div className={`text-center ${isMobile ? 'mb-6' : 'mb-16'}`}>
-          <h2 className={`${optimizedSettings.sectionTitle} font-geo ${isMobile ? 'mb-2' : 'mb-6'} text-primary-foreground animate-fade-in`} style={{ animationDelay: '400ms', animationFillMode: 'both' }}>
+      <div className={`relative ${optimizedSettings.containerPadding || 'container mx-auto px-4'}`}>
+        {/* Header Section */}
+        <div className={`text-center ${isMobile ? 'mb-8' : 'mb-16'}`}>
+          <div className={`inline-flex items-center gap-2 ${isMobile ? 'mb-4 px-3 py-1.5' : 'mb-6 px-4 py-2'} bg-black/10 rounded-full border border-black/20`}>
+            <Star className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} text-black`} />
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-black/80`}>
+              {isMobile ? 'Premium Service' : 'Why Choose Us'}
+            </span>
+          </div>
+          
+          <h2 className={`${optimizedSettings.sectionTitle} font-bold text-black ${isMobile ? 'mb-3' : 'mb-6'} animate-fade-in`}>
             {getContentValue('title', isMobile ? 'Why Choose Us?' : 'Why Choose Nymphette Tours?')}
           </h2>
+          
           {!isMobile && (
-            <p className="text-subtitle text-primary-foreground/90 max-w-4xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '500ms', animationFillMode: 'both' }}>
-              {getContentValue('subtitle', 'We don\'t just plan trips – we create life-changing experiences that connect you with the world\'s most incredible destinations and cultures.')}
+            <p className="text-lg text-black/70 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
+              {getContentValue('subtitle', "We don't just plan trips – we create life-changing experiences that connect you with the world's most incredible destinations.")}
             </p>
           )}
         </div>
 
-        {/* Features - Show only 2 on mobile in a simpler layout */}
-        <div className={`grid ${isMobile ? 'grid-cols-2 gap-3' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8'} ${isMobile ? 'mb-6' : 'mb-12 sm:mb-16'}`}>
+        {/* Features Grid */}
+        <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'} ${isMobile ? 'mb-8' : 'mb-16'}`}>
           {features.slice(0, isMobile ? 2 : 4).map((feature, index) => (
             <Card 
               key={index}
-              className={`group relative overflow-hidden bg-primary-foreground/5 backdrop-blur-xl border-primary-foreground/20 hover:bg-primary-foreground/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl animate-scale-in travel-card ${isMobile ? 'rounded-lg' : ''}`}
-              style={{ animationDelay: `${600 + index * 150}ms`, animationFillMode: 'both' }}
+              className={`group relative overflow-hidden bg-white/80 backdrop-blur-sm border border-black/10 hover:bg-white hover:border-black/20 transition-all duration-500 hover:scale-105 hover:shadow-xl animate-scale-in ${isMobile ? 'rounded-xl' : 'rounded-2xl'}`}
+              style={{ animationDelay: `${400 + index * 150}ms`, animationFillMode: 'both' }}
             >
-              <CardContent className={`relative ${isMobile ? 'p-3' : 'card-padding'} text-center`}>
-                <div className={`bg-accent rounded-2xl ${isMobile ? 'w-10 h-10' : 'w-20 h-20'} flex items-center justify-center mx-auto ${isMobile ? 'mb-2' : 'mb-6'} shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
-                  <feature.icon className={`${isMobile ? 'h-5 w-5' : 'h-10 w-10'} text-accent-foreground`} />
+              <CardContent className={`relative ${isMobile ? 'p-4' : 'p-6'} text-center`}>
+                <div className={`bg-black rounded-xl ${isMobile ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center mx-auto ${isMobile ? 'mb-3' : 'mb-4'} shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
+                  <feature.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'} text-white`} />
                 </div>
-                <h3 className={`${isMobile ? 'text-sm' : 'text-2xl'} font-bold ${isMobile ? 'mb-1' : 'mb-4'} text-primary-foreground group-hover:text-primary-foreground transition-colors duration-300`}>{feature.title}</h3>
-                <p className={`text-primary-foreground/80 leading-relaxed ${isMobile ? 'text-xs' : 'text-lg'} group-hover:text-primary-foreground/90 transition-colors duration-300`}>{feature.description}</p>
+                <h3 className={`${isMobile ? 'text-sm' : 'text-lg'} font-bold ${isMobile ? 'mb-1' : 'mb-3'} text-black group-hover:text-black transition-colors duration-300`}>
+                  {feature.title}
+                </h3>
+                <p className={`text-black/70 leading-relaxed ${isMobile ? 'text-xs' : 'text-sm'} group-hover:text-black/80 transition-colors duration-300`}>
+                  {feature.description}
+                </p>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        {/* Stats section - Simplified for mobile */}
+        {/* Enhanced Stats Section */}
         <div className="relative">
-          <div className={`absolute inset-0 bg-primary-foreground/5 ${isMobile ? 'rounded-xl' : 'rounded-3xl'} backdrop-blur-sm`}></div>
-          <div className={`relative ${isMobile ? 'p-4' : 'card-padding'}`}>
-            <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8'}`}>
+          <div className={`absolute inset-0 bg-black/5 ${isMobile ? 'rounded-xl' : 'rounded-3xl'} backdrop-blur-sm border border-black/10`}></div>
+          <div className={`relative ${isMobile ? 'p-6' : 'p-8 md:p-12'}`}>
+            {/* Achievement badges */}
+            <div className={`flex flex-wrap justify-center ${optimizedSettings.gap} ${isMobile ? 'mb-6' : 'mb-8'}`}>
+              {topFeatures.slice(0, isMobile ? 2 : 4).map((feature, index) => (
+                <div 
+                  key={feature.text}
+                  className={`flex items-center ${optimizedSettings.gap} ${isMobile ? 'px-3 py-2' : 'px-4 py-2'} rounded-full bg-black/10 backdrop-blur-sm border border-black/20 text-black font-medium shadow-sm hover:bg-black/15 transition-all duration-300 hover:scale-105 animate-fade-in ${isMobile ? 'text-xs' : 'text-sm'}`}
+                  style={{ animationDelay: `${800 + index * 100}ms`, animationFillMode: 'both' }}
+                >
+                  <feature.icon className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
+                  {feature.text}
+                </div>
+              ))}
+            </div>
+
+            {/* Stats Grid */}
+            <div className={`grid ${isMobile ? 'grid-cols-2 gap-6' : 'grid-cols-2 lg:grid-cols-4 gap-8'}`}>
               {[
                 { value: isMobile ? "50K+" : "50,000+", label: isMobile ? "Travelers" : "Happy Travelers" },
                 { value: "500+", label: isMobile ? "Places" : "Destinations" },
@@ -107,9 +125,13 @@ const WhyChooseUs = () => {
                   { value: "25+", label: "Years Experience" }
                 ])
               ].map((stat, index) => (
-                <div key={index} className="text-center animate-scale-in" style={{ animationDelay: `${1200 + index * 150}ms`, animationFillMode: 'both' }}>
-                  <div className={`${isMobile ? 'text-xl' : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl'} font-bold text-primary-foreground ${isMobile ? 'mb-1' : 'mb-2'}`}>{stat.value}</div>
-                  <div className={`text-primary-foreground/80 ${isMobile ? 'text-xs' : 'text-sm sm:text-base md:text-lg'} font-medium`}>{stat.label}</div>
+                <div key={index} className="text-center animate-scale-in" style={{ animationDelay: `${1000 + index * 150}ms`, animationFillMode: 'both' }}>
+                  <div className={`${isMobile ? 'text-2xl' : 'text-4xl lg:text-5xl'} font-bold text-black ${isMobile ? 'mb-1' : 'mb-2'} bg-gradient-to-br from-black to-black/80 bg-clip-text`}>
+                    {stat.value}
+                  </div>
+                  <div className={`text-black/70 ${isMobile ? 'text-xs' : 'text-sm lg:text-base'} font-medium uppercase tracking-wider`}>
+                    {stat.label}
+                  </div>
                 </div>
               ))}
             </div>
