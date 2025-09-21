@@ -88,187 +88,196 @@ const AboutUs = () => {
       </header>
       
       <main>
-        {/* Hero Section */}
-        <section className="relative h-48 sm:h-64 md:h-[70vh] lg:h-[80vh] xl:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden mt-2 sm:mt-0">
-          <div className="absolute inset-x-2 sm:inset-x-3 md:inset-x-6 lg:inset-x-8 bottom-2 sm:bottom-3 md:bottom-6 lg:bottom-8 top-2 sm:top-3 md:top-6 lg:top-8 rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden">
+        {/* Hero Section - Matching dimensions from other pages */}
+        <section className="relative h-64 sm:h-[70vh] md:h-[80vh] lg:h-[calc(100vh-3rem)] flex items-center justify-center overflow-hidden mt-4 sm:mt-0">
+          <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${heroImage})` }}
             />
             <div className="absolute inset-0 bg-primary-dark/70"></div>
           </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 text-center text-background flex flex-col justify-center h-full">
-          <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 sm:mb-3 md:mb-6 animate-fade-in leading-tight">
-            About Nymphette International EMC - Premium Travel Agency Since 2001
-          </h1>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-background/80 max-w-3xl mx-auto animate-slide-up">
-            One of India's established and most reputed company with Tours & Events under one Umbrella
-          </p>
-        </div>
-      </section>
-
-      {/* Mission & Vision */}
-      <section className="py-8 sm:py-12 md:py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            <Card className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in">
-              <CardContent className="p-4 sm:p-6 lg:p-8">
-                <div className="bg-accent/20 rounded-full w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <Target className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-accent" />
-                </div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-3 sm:mb-4">Our Mission</h3>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  A dream becomes a goal when action is taken toward its achievement. Our dream is to make a difference in the world by creating magical dream moments for each special occasion. Our goal is to give pleasure to the soul of a person for him to cherish than the most expensive gift.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in" style={{ animationDelay: '200ms' }}>
-              <CardContent className="p-4 sm:p-6 lg:p-8">
-                <div className="bg-accent/20 rounded-full w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <Eye className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-accent" />
-                </div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-3 sm:mb-4">Our Vision</h3>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  To transform visions into exceptional experiences, creating magical moments where the pleasure we give to the soul is more cherished than the most expensive gift.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in md:col-span-2 lg:col-span-1" style={{ animationDelay: '400ms' }}>
-              <CardContent className="p-4 sm:p-6 lg:p-8">
-                <div className="bg-accent/20 rounded-full w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <Heart className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-accent" />
-                </div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-3 sm:mb-4">Our Values</h3>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  Personalized "hands-on" approach with highly skilled, multi-lingual staff providing guidance and care for travellers from all corners of the world.
-                </p>
-              </CardContent>
-            </Card>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-background flex flex-col justify-center h-full">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-6 animate-fade-in leading-tight">
+              About Nymphette International EMC
+            </h1>
+            <p className="text-sm sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-8 text-background/90 max-w-3xl mx-auto animate-slide-up leading-relaxed">
+              Premium Travel Agency Since 2001 - One of India's most reputed companies
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Company Story */}
-      <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-pale-blue/30">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-center">
-            <div className="animate-fade-in order-2 lg:order-1">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-4 sm:mb-6">Our Journey</h2>
-              <p className="text-sm sm:text-base lg:text-lg text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
-                Founded in 2001, Nymphette International EMC's legacy, in-depth experience and commitment towards quality service and product development has earned it a solid and respected reputation.
-              </p>
-              <p className="text-sm sm:text-base lg:text-lg text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
-                Because Nymphette International is privately owned and operated, its principals bring a truly personalized "hands-on" approach to the business. Highly skilled, multi-lingual staff with an intimate knowledge of all countries of the World are on hand from start to finish, providing guidance and care for the safety and well-being of travellers from all corners of the world.
-              </p>
-              <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
-                We are the First Tour operator to Embarked our clients with more than 400 Passengers on a Indigo 6E Chartered Flight to Phuket, The Journey was smooth within flight gourmet Meals. With our events you can transform your vision into exceptional experience, since our mission is to create magical moments.
-              </p>
+        {/* Mission, Vision & Values - Mobile First Design */}
+        <section className="py-8 sm:py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">Our Foundation</h2>
+              <p className="text-base sm:text-lg text-muted-foreground">The values that drive our excellence</p>
             </div>
             
-            <div className="animate-slide-up order-1 lg:order-2">
-              <img 
-                src={teamPhoto}
-                alt="Nymphette Tours experienced travel team of experts and consultants working together"
-                loading="lazy"
-                className="rounded-xl sm:rounded-2xl shadow-travel w-full"
-                width="600"
-                height="400"
-              />
+            <div className="grid grid-cols-1 gap-6 sm:gap-8">
+              <Card className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in">
+                <CardContent className="p-6 sm:p-8">
+                  <div className="bg-accent/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Target className="h-8 w-8 text-accent" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-primary mb-4">Our Mission</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                    A dream becomes a goal when action is taken toward its achievement. Our dream is to make a difference in the world by creating magical dream moments for each special occasion.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                <Card className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in" style={{ animationDelay: '200ms' }}>
+                  <CardContent className="p-6 sm:p-8">
+                    <div className="bg-accent/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <Eye className="h-8 w-8 text-accent" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-primary mb-4">Our Vision</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                      To transform visions into exceptional experiences, creating magical moments where the pleasure we give to the soul is more cherished than the most expensive gift.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in" style={{ animationDelay: '400ms' }}>
+                  <CardContent className="p-6 sm:p-8">
+                    <div className="bg-accent/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <Heart className="h-8 w-8 text-accent" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-primary mb-4">Our Values</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                      Personalized "hands-on" approach with highly skilled, multi-lingual staff providing guidance and care for travellers from all corners of the world.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Timeline */}
-      <section className="py-6 sm:py-12 md:py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-6 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-2 sm:mb-4">Our Milestones</h2>
-            <p className="text-sm sm:text-lg lg:text-xl text-muted-foreground">25 years of growth, innovation, and unforgettable journeys</p>
-          </div>
-
-          <div className="space-y-2 sm:space-y-6 lg:space-y-8">
-            {milestones.map((milestone, index) => (
-              <div 
-                key={milestone.year}
-                className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 lg:space-x-6 animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="bg-accent text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg font-bold text-sm sm:text-lg min-w-[60px] sm:min-w-[80px] text-center flex-shrink-0">
-                  {milestone.year}
-                </div>
-                <div className="flex-1 bg-card-gradient p-2 sm:p-4 rounded-lg">
-                  <p className="text-xs sm:text-base text-muted-foreground leading-tight sm:leading-relaxed">{milestone.event}</p>
+        {/* Company Story - Mobile Optimized */}
+        <section className="py-8 sm:py-16 md:py-20 bg-pale-blue/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div className="animate-fade-in order-2 lg:order-1">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-6">Our Journey</h2>
+                <div className="space-y-4 text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
+                  <p>
+                    Founded in 2001, Nymphette International EMC's legacy, in-depth experience and commitment towards quality service and product development has earned it a solid and respected reputation.
+                  </p>
+                  <p>
+                    Because Nymphette International is privately owned and operated, its principals bring a truly personalized "hands-on" approach to the business. Highly skilled, multi-lingual staff with an intimate knowledge of all countries of the World are on hand from start to finish.
+                  </p>
+                  <p>
+                    We are the First Tour operator to Embarked our clients with more than 400 Passengers on a Indigo 6E Chartered Flight to Phuket, creating exceptional experiences with our mission to create magical moments.
+                  </p>
                 </div>
               </div>
-            ))}
+              
+              <div className="animate-slide-up order-1 lg:order-2">
+                <img 
+                  src={teamPhoto}
+                  alt="Nymphette Tours experienced travel team"
+                  loading="lazy"
+                  className="rounded-2xl shadow-travel w-full"
+                  width="600"
+                  height="400"
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Team Section */}
-      <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-pale-blue/30">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">Meet Our Team</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground">Passionate travel experts dedicated to creating your perfect journey</p>
+        {/* Compact Timeline for Mobile */}
+        <section className="py-8 sm:py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">Our Milestones</h2>
+              <p className="text-sm sm:text-lg text-muted-foreground">25 years of excellence</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {milestones.map((milestone, index) => (
+                <Card 
+                  key={milestone.year}
+                  className="animate-fade-in hover:shadow-travel transition-all duration-300"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="bg-accent text-white px-3 py-1 rounded-lg font-bold text-lg mb-3 text-center w-fit mx-auto">
+                      {milestone.year}
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed text-center">
+                      {milestone.event}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {teamMembers.map((member, index) => (
-              <Card 
-                key={member.name}
-                className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <CardContent className="p-4 sm:p-5 lg:p-6">
-                  <div className="w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 bg-card-gradient rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center">
-                    <Users className="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 text-accent" />
-                  </div>
-                  <h3 className="text-base sm:text-lg font-bold text-primary mb-1">{member.name}</h3>
-                  <p className="text-sm sm:text-base text-accent font-medium mb-2">{member.position}</p>
-                  <div className="space-y-1">
-                    <Badge variant="outline" className="border-soft-blue text-deep-blue text-xs sm:text-sm">
+        {/* Compact Team Section */}
+        <section className="py-8 sm:py-16 md:py-20 bg-pale-blue/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">Meet Our Team</h2>
+              <p className="text-sm sm:text-lg text-muted-foreground">Expert travel professionals</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {teamMembers.map((member, index) => (
+                <Card 
+                  key={member.name}
+                  className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in"
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="w-16 h-16 bg-card-gradient rounded-full mx-auto mb-4 flex items-center justify-center">
+                      <Users className="h-8 w-8 text-accent" />
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold text-primary mb-1">{member.name}</h3>
+                    <p className="text-sm text-accent font-medium mb-2">{member.position}</p>
+                    <Badge variant="outline" className="border-soft-blue text-deep-blue text-xs mb-2">
                       {member.experience}
                     </Badge>
-                    <p className="text-xs sm:text-sm text-muted-foreground">{member.specialization}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    <p className="text-xs text-muted-foreground">{member.specialization}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Achievements */}
-      <section className="py-8 sm:py-12 md:py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">Our Achievements</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground">Recognition for our commitment to excellence</p>
-          </div>
+        {/* Achievements */}
+        <section className="py-8 sm:py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">Our Achievements</h2>
+              <p className="text-sm sm:text-lg text-muted-foreground">Recognition for excellence</p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {achievements.map((achievement, index) => (
-              <Card 
-                key={achievement.title}
-                className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <CardContent className="p-4 sm:p-6 lg:p-8">
-                  <div className="bg-accent/20 rounded-full w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                    <achievement.icon className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-accent" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-primary mb-2 sm:mb-3">{achievement.title}</h3>
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{achievement.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              {achievements.map((achievement, index) => (
+                <Card 
+                  key={achievement.title}
+                  className="text-center hover:shadow-travel transition-all duration-300 animate-fade-in"
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  <CardContent className="p-6 sm:p-8">
+                    <div className="bg-accent/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <achievement.icon className="h-8 w-8 text-accent" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-primary mb-3">{achievement.title}</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{achievement.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       </main>
 
       <footer>
