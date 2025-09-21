@@ -6,20 +6,24 @@ import { Star, Clock, Users, MapPin } from "lucide-react";
 import { useOptimizedFeaturedPackages } from "@/hooks/useOptimizedPackages";
 import { useOptimizedContent } from "@/hooks/useOptimizedContent";
 import { useNavigate } from "react-router-dom";
+import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 
 const FeaturedPackages = () => {
   const { data: packages, loading } = useOptimizedFeaturedPackages();
   const { getContentValue } = useOptimizedContent('featured-packages');
   const navigate = useNavigate();
+  const { isMobile, optimizedSettings } = useMobileOptimization({ mobileLayoutMode: 'compact' });
   
   // Already filtered to featured packages from hook
 
 
   if (loading) {
     return (
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground">Featured Travel Packages</h2>
+      <section className={`${optimizedSettings.mobileLayout.sectionPadding || 'py-20'} bg-background`}>
+        <div className={`max-w-7xl mx-auto ${optimizedSettings.containerPadding}`}>
+          <h2 className={`${optimizedSettings.sectionTitle} font-bold text-center mb-4 text-foreground`}>
+            {isMobile ? 'Featured Packages' : 'Featured Travel Packages'}
+          </h2>
           <div className="flex justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
@@ -29,25 +33,25 @@ const FeaturedPackages = () => {
   }
 
   return (
-    <section className="pt-6 sm:pt-8 md:pt-10 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-sans text-foreground mb-4">
-            {getContentValue('title', 'Featured Travel Packages')}
+    <section className={`${optimizedSettings.mobileLayout.sectionPadding || 'pt-6 sm:pt-8 md:pt-10'} bg-background`}>
+      <div className={`max-w-7xl mx-auto ${optimizedSettings.containerPadding}`}>
+        <div className={`text-center ${isMobile ? 'mb-4' : 'mb-6 sm:mb-8'}`}>
+          <h2 className={`${optimizedSettings.sectionTitle} font-bold font-sans text-foreground ${isMobile ? 'mb-2' : 'mb-4'}`}>
+            {getContentValue('title', isMobile ? 'Featured Packages' : 'Featured Travel Packages')}
           </h2>
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-            {getContentValue('subtitle', 'Handpicked destinations and experiences crafted for unforgettable journeys')}
+          <p className={`${optimizedSettings.bodyText} text-muted-foreground max-w-2xl mx-auto`}>
+            {getContentValue('subtitle', isMobile ? 'Handpicked destinations for unforgettable journeys' : 'Handpicked destinations and experiences crafted for unforgettable journeys')}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className={`grid ${optimizedSettings.gridCols} ${optimizedSettings.gap}`}>
           {packages?.map((pkg, index) => (
             <Card 
               key={pkg.id}
               className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
               style={{ animationDelay: `${index * 200}ms` }}
             >
-              <div className="relative overflow-hidden rounded-lg h-48 sm:h-56 md:h-64">
+              <div className={`relative overflow-hidden ${isMobile ? 'rounded-lg' : 'rounded-lg'} ${optimizedSettings.cardHeight || 'h-48 sm:h-56 md:h-64'}`}>
                 <OptimizedImage
                   src={pkg.image}
                   alt={`${pkg.title} - ${pkg.country} travel package`}
@@ -55,80 +59,86 @@ const FeaturedPackages = () => {
                   preloadSources={packages?.slice(index + 1, index + 3).map(p => p.image) || []}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute top-4 left-4">
-                  <Badge variant="secondary" className="bg-foreground text-background">
+                <div className={`absolute ${isMobile ? 'top-2 left-2' : 'top-4 left-4'}`}>
+                  <Badge variant="secondary" className={`bg-foreground text-background ${isMobile ? 'text-xs px-2 py-0.5' : ''}`}>
                     {pkg.category}
                   </Badge>
                 </div>
-                <div className="absolute top-4 right-4 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1">
+                <div className={`absolute ${isMobile ? 'top-2 right-2' : 'top-4 right-4'} bg-background/90 backdrop-blur-sm rounded-full ${isMobile ? 'px-2 py-0.5' : 'px-3 py-1'}`}>
                   <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4" />
-                    <span className="text-sm font-medium">{pkg.rating}</span>
+                    <Star className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
+                    <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium`}>{pkg.rating}</span>
                   </div>
                 </div>
               </div>
 
-              <CardContent className="p-6">
-                <h3 className="text-2xl font-bold text-primary mb-2">{pkg.title}</h3>
+              <CardContent className={optimizedSettings.cardPadding}>
+                <h3 className={`${optimizedSettings.mobileLayout.titleSizes || 'text-2xl'} font-bold text-primary ${isMobile ? 'mb-1' : 'mb-2'}`}>{pkg.title}</h3>
                 
-                <div className="flex items-center text-muted-foreground mb-4">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  <span>{pkg.country}</span>
+                <div className={`flex items-center text-muted-foreground ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                  <MapPin className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
+                  <span className={optimizedSettings.mobileLayout.textSizes}>{pkg.country}</span>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
+                <div className={`flex items-center justify-between ${optimizedSettings.mobileLayout.textSizes || 'text-sm'} text-muted-foreground ${isMobile ? 'mb-1' : 'mb-2'}`}>
                   <div className="flex items-center">
-                    <Clock className="h-4 w-4 mr-1" />
+                    <Clock className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
                     {pkg.duration}
                   </div>
                   <div className="flex items-center">
-                    <Users className="h-4 w-4 mr-1" />
-                    {pkg.groupSize || 'Flexible group size'}
+                    <Users className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
+                    {isMobile ? 'Flexible' : pkg.groupSize || 'Flexible group size'}
                   </div>
                 </div>
 
-                <div className="flex items-center text-sm text-muted-foreground mb-4">
-                  <Star className="h-4 w-4 mr-1" />
-                  {pkg.rating} ({pkg.reviews} reviews)
-                </div>
+                {!isMobile && (
+                  <div className="flex items-center text-sm text-muted-foreground mb-4">
+                    <Star className="h-4 w-4 mr-1" />
+                    {pkg.rating} ({pkg.reviews} reviews)
+                  </div>
+                )}
 
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {pkg.highlights.map((highlight, idx) => (
-                    <Badge key={idx} variant="outline" className="border-soft-blue text-deep-blue">
+                {/* Show only first 2 highlights on mobile */}
+                <div className={`flex flex-wrap ${optimizedSettings.gap} ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                  {pkg.highlights.slice(0, isMobile ? 2 : pkg.highlights.length).map((highlight, idx) => (
+                    <Badge key={idx} variant="outline" className={`border-soft-blue text-deep-blue ${isMobile ? 'text-xs px-2 py-0.5' : ''}`}>
                       {highlight}
                     </Badge>
                   ))}
                 </div>
               </CardContent>
 
-              <CardFooter className="p-6 pt-0 flex items-center justify-between">
+              <CardFooter className={`${optimizedSettings.cardPadding} pt-0 flex items-center justify-between`}>
                 <div>
-                  <span className="text-sm text-muted-foreground">Starting from</span>
-                  <div className="text-2xl font-bold text-accent">
+                  <span className={`${optimizedSettings.mobileLayout.textSizes || 'text-sm'} text-muted-foreground`}>
+                    {isMobile ? 'From' : 'Starting from'}
+                  </span>
+                  <div className={`${isMobile ? 'text-lg' : 'text-2xl'} font-bold text-accent`}>
                     {typeof pkg.price === 'string' ? 
                         pkg.price.replace(/[\$,]/g, '') : 
                         pkg.price}
                   </div>
                 </div>
                 <Button 
-                  className="bg-foreground hover:bg-foreground/90 text-background"
+                  size={isMobile ? "sm" : "default"}
+                  className={`bg-foreground hover:bg-foreground/90 text-background ${optimizedSettings.minTouchTarget}`}
                   onClick={() => navigate(`/package/${pkg.id}`)}
                 >
-                  View Details
+                  {isMobile ? 'View' : 'View Details'}
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className={`text-center ${isMobile ? 'mt-6' : 'mt-12'}`}>
           <Button 
-            size="lg" 
+            size={isMobile ? "default" : "lg"}
             variant="outline" 
-            className="border-foreground text-foreground hover:bg-foreground hover:text-background"
+            className={`border-foreground text-foreground hover:bg-foreground hover:text-background ${optimizedSettings.minTouchTarget}`}
             onClick={() => navigate('/packages')}
           >
-            Explore All Packages
+            {isMobile ? 'All Packages' : 'Explore All Packages'}
           </Button>
         </div>
       </div>
