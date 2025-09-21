@@ -283,7 +283,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
         </div>
       </section>
 
-      <CountryList region={regionKey} onCountrySelect={(slug) => navigate(`/regions/${regionKey}/country/${slug}`)} />
+      <CountryList region={region} onCountrySelect={(slug) => navigate(`/regions/${regionKey}/country/${slug}`)} />
 
       {/* PACKAGES GRID */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
