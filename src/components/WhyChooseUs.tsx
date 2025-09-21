@@ -10,16 +10,6 @@ const WhyChooseUs = () => {
   // Mobile: Show only 2 key features, Desktop: Show all 4
   const features = [
     {
-      icon: Globe,
-      title: isMobile ? "500+ Places" : "500+ Destinations",
-      description: isMobile ? "Global network of trusted partners" : "Explore breathtaking locations across all continents with our extensive network of trusted partners."
-    },
-    {
-      icon: Award,
-      title: isMobile ? "25+ Years" : "25+ Years Experience", 
-      description: isMobile ? "Decades of travel expertise" : "Over two decades of crafting unforgettable travel experiences with industry expertise."
-    },
-    {
       icon: Shield,
       title: isMobile ? "100% Safe" : "100% Safe & Secure",
       description: isMobile ? "Your safety is our priority" : "Travel with confidence knowing your safety and security are our highest priorities."
@@ -28,6 +18,16 @@ const WhyChooseUs = () => {
       icon: Headphones,
       title: "24/7 Support",
       description: isMobile ? "Always here to help" : "Round-the-clock assistance wherever you are in the world, ensuring peace of mind."
+    },
+    {
+      icon: Award,
+      title: isMobile ? "Expert Team" : "Expert Travel Team", 
+      description: isMobile ? "Professional travel specialists" : "Professional travel specialists with deep destination knowledge and personalized service."
+    },
+    {
+      icon: Heart,
+      title: isMobile ? "Premium Care" : "Premium Experience",
+      description: isMobile ? "Luxury service guaranteed" : "Curated luxury experiences tailored to your preferences with attention to every detail."
     }
   ];
 
@@ -36,7 +36,7 @@ const WhyChooseUs = () => {
     { icon: Plane, text: isMobile ? "Pickup" : "Airport Pickup" },
     { icon: Star, text: isMobile ? "5-Star" : "5-Star Service" },
     { icon: MapPin, text: "Expert Guides" },
-    { icon: Heart, text: isMobile ? "Premium" : "Premium Care" }
+    { icon: Globe, text: isMobile ? "500+ Places" : "500+ Destinations" }
   ];
 
   return (
@@ -119,10 +119,10 @@ const WhyChooseUs = () => {
             <div className={`grid ${isMobile ? 'grid-cols-2 gap-6' : 'grid-cols-2 lg:grid-cols-4 gap-8'}`}>
               {[
                 { value: isMobile ? "50K+" : "50,000+", label: isMobile ? "Travelers" : "Happy Travelers" },
-                { value: "500+", label: isMobile ? "Places" : "Destinations" },
+                { value: "25+", label: isMobile ? "Years" : "Years Experience" },
                 ...(isMobile ? [] : [
                   { value: "98%", label: "Satisfaction Rate" },
-                  { value: "25+", label: "Years Experience" }
+                  { value: "150+", label: "Countries Covered" }
                 ])
               ].map((stat, index) => (
                 <div key={index} className="text-center animate-scale-in" style={{ animationDelay: `${1000 + index * 150}ms`, animationFillMode: 'both' }}>
