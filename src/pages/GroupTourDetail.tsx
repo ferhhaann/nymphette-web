@@ -109,7 +109,7 @@ const GroupTourDetail = () => {
       <Navigation />
       
       {/* Back button */}
-      <div className="max-w-6xl mx-auto px-4 py-2 sm:py-4 md:py-6 mt-12 sm:mt-14 md:mt-16">
+      <div className="max-w-6xl mx-auto px-4 py-2 sm:py-4 md:py-6">
         <Button 
           variant="outline" 
           onClick={() => navigate('/group-tours')}
