@@ -109,66 +109,67 @@ const GroupTourDetail = () => {
       <Navigation />
       
       {/* Back button */}
-      <div className="max-w-6xl mx-auto px-4 py-6 mt-16">
+      <div className="max-w-6xl mx-auto px-4 py-2 sm:py-4 md:py-6 mt-12 sm:mt-14 md:mt-16">
         <Button 
           variant="outline" 
           onClick={() => navigate('/group-tours')}
-          className="border-primary text-primary hover:bg-primary hover:text-white"
+          className="border-primary text-primary hover:bg-primary hover:text-white text-xs sm:text-sm"
+          size="sm"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
           Back to Tours
         </Button>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-2 sm:py-4 md:py-8">
         <Card className="overflow-hidden">
-          <div className="relative h-96">
+          <div className="relative h-48 sm:h-64 md:h-96">
             <img
               src={tour.image_url || '/placeholder.svg'}
               alt={tour.title}
               className="w-full h-full object-cover"
             />
             {tour.featured && (
-              <Badge className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold px-3 rounded-full border-0">
-                <Sparkles className="h-3 w-3 mr-1" />
+              <Badge className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold px-2 sm:px-3 rounded-full border-0 text-xs">
+                <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                 Featured
               </Badge>
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-              <h1 className="text-4xl font-bold mb-2">{tour.title}</h1>
-              <div className="flex items-center space-x-4">
+            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6 text-white">
+              <h1 className="text-lg sm:text-2xl md:text-4xl font-bold mb-1 sm:mb-2">{tour.title}</h1>
+              <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
                 <div className="flex items-center">
-                  <MapPin className="h-5 w-5 mr-2" />
-                  <span className="text-xl">{tour.destination}</span>
+                  <MapPin className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 mr-1 sm:mr-2" />
+                  <span className="text-sm sm:text-lg md:text-xl">{tour.destination}</span>
                 </div>
                 <div className="flex items-center">
-                  <Star className="h-5 w-5 text-yellow-400 mr-1" />
-                  <span>{tour.rating} ({tour.reviews_count} reviews)</span>
+                  <Star className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-yellow-400 mr-1" />
+                  <span className="text-xs sm:text-sm md:text-base">{tour.rating} ({tour.reviews_count} reviews)</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <CardContent className="p-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="md:col-span-2 space-y-8">
+          <CardContent className="p-3 sm:p-4 md:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+              <div className="md:col-span-2 space-y-4 sm:space-y-6 md:space-y-8">
                 {/* Tour Description */}
                 <div>
-                  <h2 className="text-2xl font-semibold mb-4">About This Tour</h2>
-                  <p className="text-muted-foreground">{tour.description}</p>
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4">About This Tour</h2>
+                  <p className="text-sm sm:text-base text-muted-foreground">{tour.description}</p>
                 </div>
 
                 {/* Key Details Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                   <Card>
-                    <CardContent className="p-4">
+                    <CardContent className="p-3 sm:p-4">
                       <div className="flex items-center space-x-2">
-                        <Calendar className="h-5 w-5 text-primary" />
+                        <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                         <div>
-                          <div className="text-sm font-medium">Start Date</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-xs sm:text-sm font-medium">Start Date</div>
+                          <div className="text-xs sm:text-sm text-muted-foreground">
                             {formatDate(tour.start_date)}
                           </div>
                         </div>
@@ -177,24 +178,24 @@ const GroupTourDetail = () => {
                   </Card>
 
                   <Card>
-                    <CardContent className="p-4">
+                    <CardContent className="p-3 sm:p-4">
                       <div className="flex items-center space-x-2">
-                        <Clock className="h-5 w-5 text-primary" />
+                        <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                         <div>
-                          <div className="text-sm font-medium">Duration</div>
-                          <div className="text-sm text-muted-foreground">{tour.duration}</div>
+                          <div className="text-xs sm:text-sm font-medium">Duration</div>
+                          <div className="text-xs sm:text-sm text-muted-foreground">{tour.duration}</div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
                   <Card>
-                    <CardContent className="p-4">
+                    <CardContent className="p-3 sm:p-4">
                       <div className="flex items-center space-x-2">
-                        <Users className="h-5 w-5 text-primary" />
+                        <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                         <div>
-                          <div className="text-sm font-medium">Group Size</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-xs sm:text-sm font-medium">Group Size</div>
+                          <div className="text-xs sm:text-sm text-muted-foreground">
                             {tour.available_spots} spots left
                           </div>
                         </div>
@@ -206,8 +207,8 @@ const GroupTourDetail = () => {
                 {/* Additional Details */}
                 {tour.highlights && tour.highlights.length > 0 && (
                   <div>
-                    <h2 className="text-2xl font-semibold mb-4">Highlights</h2>
-                    <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4">Highlights</h2>
+                    <ul className="list-disc pl-4 sm:pl-5 space-y-1 sm:space-y-2 text-sm sm:text-base text-muted-foreground">
                       {tour.highlights.map((highlight: string, idx: number) => (
                         <li key={idx}>{highlight}</li>
                       ))}
@@ -219,58 +220,58 @@ const GroupTourDetail = () => {
               {/* Booking Section */}
               <div>
                 <Card>
-                  <CardHeader>
-                    <CardTitle>Book Your Spot</CardTitle>
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-lg sm:text-xl">Book Your Spot</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-4 sm:space-y-6">
                     <div>
-                      <div className="text-3xl font-bold text-primary">
+                      <div className="text-2xl sm:text-3xl font-bold text-primary">
                         ₹{tour.price.toLocaleString()}
                       </div>
-                      <div className="text-sm text-muted-foreground">per person</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">per person</div>
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <div className="flex justify-between text-xs sm:text-sm">
                         <span>Available Spots</span>
                         <span className="font-medium">{tour.available_spots}</span>
                       </div>
-                      <div className="flex justify-between text-sm">
+                      <div className="flex justify-between text-xs sm:text-sm">
                         <span>Group Type</span>
                         <span className="font-medium">{tour.group_type}</span>
                       </div>
-                      <div className="flex justify-between text-sm">
+                      <div className="flex justify-between text-xs sm:text-sm">
                         <span>Difficulty Level</span>
                         <span className="font-medium">{tour.difficulty_level}</span>
                       </div>
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-2 sm:space-y-3">
                       <Button 
-                        className="w-full bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent"
+                        className="w-full bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-sm sm:text-base"
                         onClick={() => setIsBookingModalOpen(true)}
                         disabled={tour.available_spots === 0}
                       >
                         {tour.available_spots > 0 ? 'Book Now' : 'Sold Out'}
                       </Button>
                       
-                      <div className="grid grid-cols-3 gap-2">
-                        <Button variant="outline" size="sm" className="text-xs">
-                          <Heart className="h-3 w-3 mr-1" />
-                          Save
+                      <div className="grid grid-cols-3 gap-1 sm:gap-2">
+                        <Button variant="outline" size="sm" className="text-xs p-1 sm:p-2">
+                          <Heart className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                          <span className="hidden sm:inline">Save</span>
                         </Button>
-                        <Button variant="outline" size="sm" className="text-xs">
-                          <Share2 className="h-3 w-3 mr-1" />
-                          Share
+                        <Button variant="outline" size="sm" className="text-xs p-1 sm:p-2">
+                          <Share2 className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                          <span className="hidden sm:inline">Share</span>
                         </Button>
                         <Button 
                           variant="outline" 
                           size="sm" 
-                          className="text-xs"
+                          className="text-xs p-1 sm:p-2"
                           onClick={() => window.open(`/admin?section=group-tours&editTour=${tour.id}`, '_blank')}
                         >
-                          <Edit className="h-3 w-3 mr-1" />
-                          Edit
+                          <Edit className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                          <span className="hidden sm:inline">Edit</span>
                         </Button>
                       </div>
                     </div>
