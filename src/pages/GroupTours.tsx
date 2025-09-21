@@ -262,25 +262,25 @@ const GroupTours = () => {
                         </div>
                       </div>
 
-                      <CardContent className="p-3 sm:p-4">
-                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 group-hover:text-accent transition-colors line-clamp-1">
+                      <CardContent className="p-6">
+                        <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
                           {tour.title}
                         </h3>
                         
-                        <div className="space-y-2 mb-3">
+                        <div className="space-y-3 mb-4">
                           <div className="flex items-center text-muted-foreground">
-                            <MapPin className="h-3 w-3 mr-1.5 text-accent" />
-                            <span className="text-sm font-medium truncate">{tour.destination}</span>
+                            <MapPin className="h-4 w-4 mr-2 text-accent" />
+                            <span className="font-medium">{tour.destination}</span>
                           </div>
                           
-                          <div className="flex items-center justify-between text-xs">
+                          <div className="grid grid-cols-2 gap-3 text-sm">
                             <div className="flex items-center text-muted-foreground">
-                              <Calendar className="h-3 w-3 mr-1.5 text-accent" />
+                              <Calendar className="h-4 w-4 mr-2 text-accent" />
                               <span>{formatDate(tour.start_date)}</span>
                             </div>
                             
                             <div className="flex items-center text-muted-foreground">
-                              <Clock className="h-3 w-3 mr-1.5 text-accent" />
+                              <Clock className="h-4 w-4 mr-2 text-accent" />
                               <span>{tour.duration}</span>
                             </div>
                           </div>
@@ -288,27 +288,24 @@ const GroupTours = () => {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <span className="text-lg sm:text-xl font-bold text-accent">
+                            <span className="text-2xl font-bold text-accent">
                               ₹{tour.price.toLocaleString()}
                             </span>
-                            <div className="text-xs text-muted-foreground">per person</div>
+                            <div className="text-sm text-muted-foreground">per person</div>
                           </div>
                           
-                          <div className="flex gap-1.5">
+                          <div className="flex gap-2">
                             <Button 
                               variant="outline"
-                              size="sm"
-                              className="text-xs px-2"
                               onClick={() => navigate(`/group-tours/${tour.id}`)}
                             >
-                              Details
+                              View Details
                             </Button>
                             <Button 
-                              size="sm"
-                              className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white font-medium text-xs px-2"
+                              className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white font-medium"
                               onClick={() => handleJoinTour(tour)}
                             >
-                              Join
+                              Join Group
                             </Button>
                           </div>
                         </div>
