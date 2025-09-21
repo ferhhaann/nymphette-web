@@ -156,11 +156,11 @@ const GroupTours = () => {
             <div className="absolute inset-0 bg-foreground/50"></div>
           </div>
           
-          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 animate-scale-in leading-tight">
+          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 flex flex-col justify-center h-full">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-6 animate-scale-in leading-tight">
               Join Amazing Group Tours
             </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in leading-relaxed" style={{ animationDelay: '0.3s' }}>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-4 sm:mb-8 opacity-90 animate-fade-in leading-relaxed" style={{ animationDelay: '0.3s' }}>
               Connect with fellow travelers on unforgettable journeys around the world
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: '0.6s' }}>

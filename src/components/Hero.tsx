@@ -110,7 +110,7 @@ const Hero = () => {
         </div>
 
         {/* Hero Content */}
-        <div className={`relative z-10 text-center text-background max-w-5xl mx-auto ${optimizedSettings.containerPadding} ${isMobile ? 'py-4' : 'py-6 sm:py-8 md:py-12'}`}>
+        <div className={`relative z-10 text-center text-background max-w-5xl mx-auto ${optimizedSettings.containerPadding} ${isMobile ? 'py-4 flex flex-col justify-center h-full' : 'py-6 sm:py-8 md:py-12'}`}>
           <div className={`transform transition-all duration-1000 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>

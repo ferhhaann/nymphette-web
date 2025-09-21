@@ -37,13 +37,13 @@ export const CountryHero = ({
         {/* Hero Content */}
         <div className="absolute inset-0 flex items-center justify-center text-center text-white">
           <div className="max-w-2xl px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
               {countryName} Tour Packages
             </h1>
             {capital && (
-              <div className="flex items-center justify-center mb-4">
-                <MapPin className="h-5 w-5 mr-2" />
-                <span className="text-lg">Capital: {capital}</span>
+              <div className="flex items-center justify-center mb-3 md:mb-4">
+                <MapPin className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+                <span className="text-sm md:text-lg">Capital: {capital}</span>
               </div>
             )}
           </div>

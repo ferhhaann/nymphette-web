@@ -156,9 +156,9 @@ export default function Blog() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
           </div>
-          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-            <h1 className="text-5xl font-bold mb-6 animate-fade-in">Travel Stories & Expert Insights</h1>
-            <p className="text-xl opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
+          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 flex flex-col justify-center h-full">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-6 animate-fade-in">Travel Stories & Expert Insights</h1>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
               Discover hidden gems, travel tips, and inspiring stories from around the world by our expert writers
             </p>
           </div>

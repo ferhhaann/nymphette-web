@@ -171,9 +171,9 @@ export default function Contact() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
           </div>
-          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 sm:px-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 animate-fade-in">Contact Nymphette Tours - Get Expert Travel Assistance</h1>
-            <p className="text-base sm:text-lg md:text-xl opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
+          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 sm:px-6 flex flex-col justify-center h-full">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6 animate-fade-in">Contact Nymphette Tours - Get Expert Travel Assistance</h1>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl opacity-90 animate-fade-in" style={{animationDelay: '0.2s'}}>
               Ready to start your next adventure? We're here to help!
             </p>
           </div>
