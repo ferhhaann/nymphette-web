@@ -231,6 +231,12 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       </div>
       {/* HERO */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Title and Description - Above image on mobile, overlay on larger screens */}
+        <div className="sm:hidden mb-4 space-y-2">
+          <h1 className="text-2xl font-bold text-primary">{title}</h1>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
+        
         <div className="relative h-64 sm:h-[50vh] md:h-[60vh] lg:h-[68vh] mb-2 sm:mb-4 lg:mb-6 mt-2 rounded-lg overflow-hidden">
           {/* Background Image Carousel */}
           <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="absolute inset-0 h-full w-full">
@@ -251,14 +257,14 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
             </CarouselContent>
           </Carousel>
           
-          {/* Static Overlay Content */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg z-10" />
-          <div className="relative z-20 h-full flex items-end px-3 sm:px-6 lg:px-8 pb-4 sm:pb-8">
+          {/* Static Overlay Content - Hidden on mobile, shown on larger screens */}
+          <div className="hidden sm:block absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent rounded-lg z-10" />
+          <div className="hidden sm:flex relative z-20 h-full items-end px-3 sm:px-6 lg:px-8 pb-4 sm:pb-8">
             <div className="space-y-2 sm:space-y-4">
               <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary">{title}</h1>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">{description}</p>
               {/* Search/Filter - Hidden on mobile, shown on larger screens as overlay */}
-              <div className="hidden sm:grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-3 bg-card/90 backdrop-blur rounded-lg p-3 sm:p-4 shadow">
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-3 bg-card/90 backdrop-blur rounded-lg p-3 sm:p-4 shadow">
                 <div className="col-span-1 sm:col-span-3 mb-2 sm:mb-0"><Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search city, country or highlight" aria-label="Search" className="text-sm sm:text-base"/></div>
                 <div className="col-span-1 sm:col-span-1 bg-card rounded-lg p-2 border mb-2 sm:mb-0">
                   <div className="flex items-center justify-between text-xs mb-1"><span className="text-muted-foreground flex items-center gap-1"><CircleDollarSign className="size-3"/>Budget</span><span>₹{budgetMax}</span></div>
