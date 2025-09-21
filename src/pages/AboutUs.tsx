@@ -38,28 +38,28 @@ const AboutUs = () => {
 
   const teamMembers = [
     {
-      name: "Rajesh Sharma",
-      position: "Founder & CEO",
+      name: "Salim Abdul Vahid",
+      position: "Founder & Managing Director",
       experience: "25+ years",
-      specialization: "International Travel Planning"
+      specialization: "Strategic Leadership & Business Development"
     },
     {
-      name: "Priya Patel", 
+      name: "Beena Mathew", 
+      position: "CEO",
+      experience: "25+ years",
+      specialization: "Executive Management & Operations"
+    },
+    {
+      name: "Ajees",
       position: "Head of Operations",
       experience: "15+ years",
-      specialization: "Group Tours & Logistics"
+      specialization: "Operations Management & Logistics"
     },
     {
-      name: "Michael Johnson",
-      position: "Travel Consultant",
-      experience: "12+ years", 
-      specialization: "European Destinations"
-    },
-    {
-      name: "Sarah Williams",
-      position: "Customer Experience Manager",
-      experience: "8+ years",
-      specialization: "Customer Relations"
+      name: "Antony",
+      position: "Head of Sales",
+      experience: "15+ years", 
+      specialization: "Sales Strategy & Customer Relations"
     }
   ];
 
