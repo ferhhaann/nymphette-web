@@ -271,7 +271,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
         </div>
         
         {/* Search/Filter - Shown below image on mobile only */}
-        <div className="sm:hidden mt-4 px-4">
+        <div className="sm:hidden px-4">
           <div className="grid grid-cols-1 gap-3 bg-card/90 backdrop-blur rounded-lg p-4 shadow">
             <div><Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search city, country or highlight" aria-label="Search" className="text-sm"/></div>
             <div className="bg-card rounded-lg p-3 border">
