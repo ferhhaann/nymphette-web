@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -677,24 +678,20 @@ const GroupTourManager = () => {
                     />
                   </div>
                   
-                  <div>
-                    <Label htmlFor="category">Category</Label>
-                    <Select 
-                      value={formData.category_id || ''} 
-                      onValueChange={(value) => setFormData({ ...formData, category_id: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                   <div>
+                     <Label htmlFor="category">Category</Label>
+                     <SearchableSelect
+                       options={categories.map(category => ({
+                         value: category.id,
+                         label: category.name
+                       }))}
+                       value={formData.category_id || ''}
+                       onValueChange={(value) => setFormData({ ...formData, category_id: value })}
+                       placeholder="Select category"
+                       searchPlaceholder="Search categories..."
+                       emptyText="No categories found"
+                     />
+                   </div>
                   
                   <div>
                     <Label htmlFor="duration">Duration</Label>

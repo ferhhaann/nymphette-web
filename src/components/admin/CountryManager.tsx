@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { SearchableSelect } from "@/components/ui/searchable-select"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { supabase } from "@/integrations/supabase/client"
@@ -427,16 +428,17 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="region">Region</Label>
-          <Select value={formData.region} onValueChange={(value) => updateField('region', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select region" />
-            </SelectTrigger>
-            <SelectContent>
-              {["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"].map(region => (
-                <SelectItem key={region} value={region}>{region}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <SearchableSelect
+            options={["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"].map(region => ({
+              value: region,
+              label: region
+            }))}
+            value={formData.region}
+            onValueChange={(value) => updateField('region', value)}
+            placeholder="Select region"
+            searchPlaceholder="Search regions..."
+            emptyText="No regions found"
+          />
         </div>
         <div>
           <Label htmlFor="capital">Capital</Label>

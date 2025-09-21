@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { SearchableSelect } from "@/components/ui/searchable-select"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
@@ -559,8 +560,12 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
             </div>
             <div>
               <Label htmlFor="country">Country *</Label>
-              <Select 
-                value={formData.country} 
+              <SearchableSelect
+                options={countries?.map(country => ({
+                  value: country.name,
+                  label: country.name
+                })) || []}
+                value={formData.country}
                 onValueChange={(value) => {
                   updateField('country', value)
                   // Auto-populate country_slug when country is selected
@@ -569,19 +574,11 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
                     updateField('country_slug', selectedCountry.slug)
                   }
                 }}
+                placeholder={countriesLoading ? "Loading countries..." : "Select a country"}
+                searchPlaceholder="Search countries..."
+                emptyText="No countries found"
                 disabled={countriesLoading}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={countriesLoading ? "Loading countries..." : "Select a country"} />
-                </SelectTrigger>
-                <SelectContent>
-                  {countries?.map(country => (
-                    <SelectItem key={country.id} value={country.name}>
-                      {country.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              />
             </div>
           </div>
 
@@ -597,32 +594,34 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
             </div>
             <div>
               <Label htmlFor="region">Region *</Label>
-              <Select value={formData.region} onValueChange={(value) => updateField('region', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select region" />
-                </SelectTrigger>
-                <SelectContent>
-                  {regions.map(region => (
-                    <SelectItem key={region} value={region}>{region}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <SearchableSelect
+                options={regions.map(region => ({
+                  value: region,
+                  label: region
+                }))}
+                value={formData.region}
+                onValueChange={(value) => updateField('region', value)}
+                placeholder="Select region"
+                searchPlaceholder="Search regions..."
+                emptyText="No regions found"
+              />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="category">Category *</Label>
-              <Select value={formData.category} onValueChange={(value) => updateField('category', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map(category => (
-                    <SelectItem key={category} value={category}>{category}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <SearchableSelect
+                options={categories.map(category => ({
+                  value: category,
+                  label: category
+                }))}
+                value={formData.category}
+                onValueChange={(value) => updateField('category', value)}
+                placeholder="Select category"
+                searchPlaceholder="Search categories..."
+                emptyText="No categories found"
+              />
             </div>
             <div>
               <Label htmlFor="duration">Duration *</Label>

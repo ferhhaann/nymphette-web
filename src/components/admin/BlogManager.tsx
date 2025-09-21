@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { SearchableSelect } from "@/components/ui/searchable-select"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -353,33 +354,35 @@ export const BlogManager: React.FC = () => {
               
               <TabsContent value="settings" className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="author">Author</Label>
-                    <Select value={postForm.author_id} onValueChange={(value) => setPostForm({ ...postForm, author_id: value })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select author" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {authors.map(author => (
-                          <SelectItem key={author.id} value={author.id}>{author.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                   <div>
+                     <Label htmlFor="author">Author</Label>
+                     <SearchableSelect
+                       options={authors.map(author => ({
+                         value: author.id,
+                         label: author.name
+                       }))}
+                       value={postForm.author_id}
+                       onValueChange={(value) => setPostForm({ ...postForm, author_id: value })}
+                       placeholder="Select author"
+                       searchPlaceholder="Search authors..."
+                       emptyText="No authors found"
+                     />
+                   </div>
                   
-                  <div>
-                    <Label htmlFor="category">Category</Label>
-                    <Select value={postForm.category_id} onValueChange={(value) => setPostForm({ ...postForm, category_id: value })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map(category => (
-                          <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                   <div>
+                     <Label htmlFor="category">Category</Label>
+                     <SearchableSelect
+                       options={categories.map(category => ({
+                         value: category.id,
+                         label: category.name
+                       }))}
+                       value={postForm.category_id}
+                       onValueChange={(value) => setPostForm({ ...postForm, category_id: value })}
+                       placeholder="Select category"
+                       searchPlaceholder="Search categories..."
+                       emptyText="No categories found"
+                     />
+                   </div>
                 </div>
                 
                 <div>
@@ -462,19 +465,21 @@ export const BlogManager: React.FC = () => {
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="status">Status</Label>
-                    <Select value={postForm.status} onValueChange={(value) => setPostForm({ ...postForm, status: value })}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="published">Published</SelectItem>
-                        <SelectItem value="archived">Archived</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                   <div>
+                     <Label htmlFor="status">Status</Label>
+                     <SearchableSelect
+                       options={[
+                         { value: "draft", label: "Draft" },
+                         { value: "published", label: "Published" },
+                         { value: "archived", label: "Archived" }
+                       ]}
+                       value={postForm.status}
+                       onValueChange={(value) => setPostForm({ ...postForm, status: value })}
+                       placeholder="Select status"
+                       searchPlaceholder="Search status..."
+                       emptyText="No status found"
+                     />
+                   </div>
                   
                   <div className="flex items-center space-x-2 mt-6">
                     <Switch
