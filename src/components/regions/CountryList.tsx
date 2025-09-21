@@ -36,7 +36,7 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
       const { data: countriesData, error: countriesError } = await supabase
         .from('countries')
         .select('id, name, slug, region, capital')
-        .eq('region', region.charAt(0).toUpperCase() + region.slice(1))
+        .eq('region', region)
         .order('name')
 
       if (countriesError) throw countriesError
