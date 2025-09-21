@@ -189,7 +189,7 @@ const Packages = () => {
                 <div className="absolute inset-0 bg-foreground/50"></div>
               </div>
               
-              <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 sm:px-6 flex flex-col justify-center h-full">
+              <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 sm:px-6">
                 <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-6 animate-scale-in leading-tight">
                   Explore Our Premium Travel Packages
                 </h1>
