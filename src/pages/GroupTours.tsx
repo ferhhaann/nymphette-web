@@ -230,7 +230,7 @@ const GroupTours = () => {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
                 {tours.map((tour, index) => (
                   <Card 
                     key={tour.id}
@@ -238,7 +238,7 @@ const GroupTours = () => {
                     style={{ animationDelay: (index * 150) + 'ms' }}
                   >
                     <div className="relative">
-                      <div className="relative overflow-hidden h-64 rounded-lg">
+                      <div className="relative overflow-hidden h-48 sm:h-64 rounded-lg">
                         <img
                           src={getImageUrl(tour.image_url)}
                           alt={tour.title}
@@ -247,65 +247,70 @@ const GroupTours = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                         
                         {tour.featured && (
-                          <Badge className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold px-3 rounded-full border-0">
-                            <Sparkles className="h-3 w-3 mr-1" />
+                          <Badge className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold px-2 sm:px-3 rounded-full border-0 text-xs">
+                            <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                             Featured
                           </Badge>
                         )}
 
-                        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+                        <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 bg-white/90 backdrop-blur-sm rounded-full px-2 sm:px-3 py-0.5 sm:py-1">
                           <div className="flex items-center space-x-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm font-medium">{tour.rating}</span>
-                            <span className="text-xs text-muted-foreground">({tour.reviews_count})</span>
+                            <Star className="h-3 w-3 sm:h-4 sm:w-4 fill-yellow-400 text-yellow-400" />
+                            <span className="text-xs sm:text-sm font-medium">{tour.rating}</span>
+                            <span className="text-xs text-muted-foreground hidden sm:inline">({tour.reviews_count})</span>
                           </div>
                         </div>
                       </div>
 
-                      <CardContent className="p-6">
-                        <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
+                      <CardContent className="p-3 sm:p-6">
+                        <h3 className="text-lg sm:text-xl font-bold text-primary mb-2 sm:mb-3 group-hover:text-accent transition-colors line-clamp-1">
                           {tour.title}
                         </h3>
                         
-                        <div className="space-y-3 mb-4">
+                        <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
                           <div className="flex items-center text-muted-foreground">
-                            <MapPin className="h-4 w-4 mr-2 text-accent" />
-                            <span className="font-medium">{tour.destination}</span>
+                            <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 text-accent flex-shrink-0" />
+                            <span className="text-sm sm:text-base font-medium truncate">{tour.destination}</span>
                           </div>
                           
-                          <div className="grid grid-cols-2 gap-3 text-sm">
+                          <div className="grid grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm">
                             <div className="flex items-center text-muted-foreground">
-                              <Calendar className="h-4 w-4 mr-2 text-accent" />
-                              <span>{formatDate(tour.start_date)}</span>
+                              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-accent flex-shrink-0" />
+                              <span className="truncate">{formatDate(tour.start_date)}</span>
                             </div>
                             
                             <div className="flex items-center text-muted-foreground">
-                              <Clock className="h-4 w-4 mr-2 text-accent" />
-                              <span>{tour.duration}</span>
+                              <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-accent flex-shrink-0" />
+                              <span className="truncate">{tour.duration}</span>
                             </div>
                           </div>
                         </div>
 
                         <div className="flex items-center justify-between">
-                          <div>
-                            <span className="text-2xl font-bold text-accent">
+                          <div className="flex-shrink-0">
+                            <span className="text-lg sm:text-2xl font-bold text-accent">
                               ₹{tour.price.toLocaleString()}
                             </span>
-                            <div className="text-sm text-muted-foreground">per person</div>
+                            <div className="text-xs sm:text-sm text-muted-foreground">per person</div>
                           </div>
                           
-                          <div className="flex gap-2">
+                          <div className="flex gap-1 sm:gap-2 ml-2">
                             <Button 
                               variant="outline"
+                              size="sm"
                               onClick={() => navigate(`/group-tours/${tour.id}`)}
+                              className="text-xs sm:text-sm px-2 sm:px-4"
                             >
-                              View Details
+                              <span className="hidden sm:inline">View Details</span>
+                              <span className="sm:hidden">Details</span>
                             </Button>
                             <Button 
-                              className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white font-medium"
+                              size="sm"
+                              className="bg-gradient-to-r from-accent to-bright-blue hover:from-bright-blue hover:to-accent text-white font-medium text-xs sm:text-sm px-2 sm:px-4"
                               onClick={() => handleJoinTour(tour)}
                             >
-                              Join Group
+                              <span className="hidden sm:inline">Join Group</span>
+                              <span className="sm:hidden">Join</span>
                             </Button>
                           </div>
                         </div>
