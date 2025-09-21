@@ -21,7 +21,7 @@ export const CountryHero = ({
   return (
     <section className="relative">
       {/* Hero Banner */}
-      <div className="relative h-96 rounded-xl overflow-hidden mb-8">
+      <div className="relative h-64 md:h-96 rounded-xl overflow-hidden mb-8">
         {heroImage ? (
           <OptimizedImage
             src={heroImage} 

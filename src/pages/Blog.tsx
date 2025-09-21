@@ -147,7 +147,7 @@ export default function Blog() {
       
       <main>
         {/* Hero Section */}
-        <section className="relative h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
+        <section className="relative h-64 sm:h-[70vh] md:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden">
           <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
             <img 
               src="/src/assets/blog-hero.jpg" 

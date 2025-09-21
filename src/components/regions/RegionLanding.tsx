@@ -231,7 +231,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
       </div>
       {/* HERO */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative h-[50vh] sm:h-[60vh] lg:h-[68vh] mb-2 sm:mb-4 lg:mb-6 mt-2 rounded-lg overflow-hidden">
+        <div className="relative h-64 sm:h-[50vh] md:h-[60vh] lg:h-[68vh] mb-2 sm:mb-4 lg:mb-6 mt-2 rounded-lg overflow-hidden">
           {/* Background Image Carousel */}
           <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="absolute inset-0 h-full w-full">
             <CarouselContent className="h-full">
