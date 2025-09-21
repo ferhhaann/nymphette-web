@@ -32,6 +32,8 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
     try {
       setLoading(true)
       
+      console.log('Loading countries for region:', region)
+      
       // Get countries without package counts for cleaner UI
       const { data: countriesData, error: countriesError } = await supabase
         .from('countries')
@@ -41,6 +43,7 @@ export const CountryList = ({ region, onCountrySelect }: CountryListProps) => {
 
       if (countriesError) throw countriesError
 
+      console.log('Found countries:', countriesData)
       setCountries(countriesData || [])
     } catch (error) {
       console.error('Error loading countries:', error)
