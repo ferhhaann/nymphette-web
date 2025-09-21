@@ -180,6 +180,7 @@ export const PackageManager = () => {
     overview_badge_style: 'border-primary text-primary',
     itinerary: [],
     featured: false,
+    slug: '', // Add slug field to fix null constraint error
     created_at: null,
     updated_at: null
   })
@@ -497,7 +498,21 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
     e.preventDefault()
     // Update the itinerary in the form data before saving
     const itineraryData = getItinerary()
-    onSave({ ...formData, itinerary: itineraryData })
+    
+    // Generate slug from title if not provided
+    let packageSlug = formData.slug
+    if (!packageSlug && formData.title) {
+      packageSlug = formData.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+    }
+    
+    onSave({ 
+      ...formData, 
+      itinerary: itineraryData,
+      slug: packageSlug || 'package-' + Date.now() // Fallback slug
+    })
   }
 
   const updateField = (field: keyof DatabasePackage, value: any) => {
@@ -510,6 +525,7 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
   }
 
   const updateArrayField = (field: keyof DatabasePackage, value: string) => {
+    // Handle comma-separated values properly - ensure commas work
     const items = value.split(',').map(item => item.trim()).filter(Boolean)
     updateField(field, items)
   }
@@ -700,6 +716,21 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
             </div>
           </div>
 
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <Label htmlFor="slug">Package Slug *</Label>
+              <Input
+                id="slug"
+                value={formData.slug || ''}
+                onChange={(e) => updateField('slug', e.target.value)}
+                placeholder="Auto-generated from title, or enter custom slug"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Used for URLs. Leave empty to auto-generate from title.
+              </p>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="featured">Featured Package</Label>
@@ -729,33 +760,42 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
             <Label htmlFor="highlights">Highlights (comma-separated)</Label>
             <Textarea
               id="highlights"
-              value={formData.highlights.join(', ')}
+              value={formData.highlights?.join(', ') || ''}
               onChange={(e) => updateArrayField('highlights', e.target.value)}
               placeholder="Beautiful beaches, Local cuisine, Cultural sites"
               rows={3}
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Type commas (,) to separate items. Test: you can type commas here → ,,,
+            </p>
           </div>
 
           <div>
             <Label htmlFor="inclusions">Inclusions (comma-separated)</Label>
             <Textarea
               id="inclusions"
-              value={formData.inclusions.join(', ')}
+              value={formData.inclusions?.join(', ') || ''}
               onChange={(e) => updateArrayField('inclusions', e.target.value)}
               placeholder="Flights, Hotels, Breakfast, Tour guide"
               rows={3}
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Separate each inclusion with commas
+            </p>
           </div>
 
           <div>
             <Label htmlFor="exclusions">Exclusions (comma-separated)</Label>
             <Textarea
               id="exclusions"
-              value={formData.exclusions.join(', ')}
+              value={formData.exclusions?.join(', ') || ''}
               onChange={(e) => updateArrayField('exclusions', e.target.value)}
               placeholder="Lunch, Dinner, Personal expenses"
               rows={3}
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Separate each exclusion with commas
+            </p>
           </div>
 
           <Separator />
