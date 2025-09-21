@@ -45,19 +45,19 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
         <OptimizedImage
           src={packageImage}
           alt={pkg.title}
-          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-32 sm:h-40 md:h-48 object-cover group-hover:scale-110 transition-transform duration-500"
         />
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4">
           <Badge className="bg-foreground text-background text-xs">{pkg.category}</Badge>
         </div>
-        <div className="absolute top-4 right-4 bg-background/90 backdrop-blur-sm rounded-full px-2 py-1">
+        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 bg-background/90 backdrop-blur-sm rounded-full px-1.5 py-0.5 sm:px-2 sm:py-1">
           <div className="flex items-center space-x-1">
-            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+            <Star className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-yellow-400 text-yellow-400" />
             <span className="text-xs font-medium">{pkg.rating}</span>
           </div>
         </div>
         {pkg.originalPrice && (
-          <div className="absolute bottom-4 right-4">
+          <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 md:bottom-4 md:right-4">
             <Badge className="bg-destructive text-destructive-foreground text-xs">
               Save ₹{parseInt(pkg.originalPrice.replace('₹', '').replace(',', '')) - parseInt(pkg.price.replace('₹', '').replace(',', ''))}
             </Badge>
@@ -65,21 +65,21 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
         )}
       </div>
 
-      <CardContent className="p-4">
-        <h3 className="text-lg font-bold text-primary mb-2 line-clamp-1">{pkg.title}</h3>
+      <CardContent className="p-2 sm:p-3 md:p-4">
+        <h3 className="text-sm sm:text-base md:text-lg font-bold text-primary mb-1 sm:mb-2 line-clamp-1">{pkg.title}</h3>
         
-        <div className="flex items-center text-muted-foreground mb-3">
-          <MapPin className="h-3 w-3 mr-1" />
-          <span className="text-sm">{pkg.country}</span>
+        <div className="flex items-center text-muted-foreground mb-2 sm:mb-3">
+          <MapPin className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
+          <span className="text-xs sm:text-sm">{pkg.country}</span>
         </div>
 
-        <div className="flex items-center text-sm text-muted-foreground mb-2">
-          <Clock className="h-3 w-3 mr-1" />
+        <div className="flex items-center text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2">
+          <Clock className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
           <span>{pkg.duration}</span>
         </div>
         
-        <div className="flex items-center text-sm text-muted-foreground mb-3">
-          <Users className="h-3 w-3 mr-1" />
+        <div className="flex items-center text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
+          <Users className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
           <span>{pkg.groupSize || 'Flexible group size'}</span>
         </div>
 
@@ -88,7 +88,7 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
             {pkg.originalPrice && (
               <span className="text-xs text-muted-foreground line-through">{pkg.originalPrice}</span>
             )}
-            <div className="text-xl font-bold text-accent">{pkg.price}</div>
+            <div className="text-base sm:text-lg md:text-xl font-bold text-accent">{pkg.price}</div>
           </div>
           <Button 
             size="sm"
@@ -96,7 +96,7 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
               e.stopPropagation();
               onViewDetails(pkg.id);
             }}
-            className="bg-foreground hover:bg-foreground/90 text-background"
+            className="bg-foreground hover:bg-foreground/90 text-background text-xs sm:text-sm px-2 sm:px-3"
           >
             View Details
           </Button>
