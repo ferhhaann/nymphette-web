@@ -182,25 +182,25 @@ const AboutUs = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-8 sm:py-12 md:py-16 lg:py-20">
+      <section className="py-6 sm:py-12 md:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">Our Milestones</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground">25 years of growth, innovation, and unforgettable journeys</p>
+          <div className="text-center mb-6 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-2 sm:mb-4">Our Milestones</h2>
+            <p className="text-sm sm:text-lg lg:text-xl text-muted-foreground">25 years of growth, innovation, and unforgettable journeys</p>
           </div>
 
-          <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+          <div className="space-y-2 sm:space-y-6 lg:space-y-8">
             {milestones.map((milestone, index) => (
               <div 
                 key={milestone.year}
-                className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 lg:space-x-6 animate-fade-in"
+                className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 lg:space-x-6 animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="bg-accent text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-bold text-base sm:text-lg min-w-[70px] sm:min-w-[80px] text-center flex-shrink-0">
+                <div className="bg-accent text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg font-bold text-sm sm:text-lg min-w-[60px] sm:min-w-[80px] text-center flex-shrink-0">
                   {milestone.year}
                 </div>
-                <div className="flex-1 bg-card-gradient p-3 sm:p-4 rounded-lg">
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{milestone.event}</p>
+                <div className="flex-1 bg-card-gradient p-2 sm:p-4 rounded-lg">
+                  <p className="text-xs sm:text-base text-muted-foreground leading-tight sm:leading-relaxed">{milestone.event}</p>
                 </div>
               </div>
             ))}
