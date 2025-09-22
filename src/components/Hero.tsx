@@ -9,7 +9,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchData } from "@/hooks/useSearchData";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
-import heroImage from "@/assets/hero-mountain-road.jpg";
+// Removed hero image import - now using video
 
 const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -94,18 +94,23 @@ const Hero = () => {
     <div className="relative">
       {/* Hero Image Section */}
       <section className={`relative ${isMobile ? 'h-64' : 'h-[80vh] sm:h-[calc(100vh-3rem)]'} w-full flex items-center justify-center overflow-hidden`}>
-        {/* Background Image */}
+        {/* Background Video */}
         <div className={`absolute ${isMobile ? 'inset-2 rounded-xl' : 'inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl'} overflow-hidden`}>
           <div className="absolute inset-0">
-            <OptimizedImage
-              src={heroImage}
-              alt="Travel destinations hero image"
-              priority={true}
-              className="w-full h-full"
-              style={{ objectFit: 'cover', objectPosition: 'center' }}
-            />
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="w-full h-full object-cover"
+              poster="/hero-video-poster.jpg"
+            >
+              <source src="/hero-video.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
-          <div className="absolute inset-0 bg-foreground/50"></div>
+          <div className="absolute inset-0 bg-foreground/40"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         </div>
 
