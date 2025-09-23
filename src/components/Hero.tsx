@@ -110,8 +110,7 @@ const Hero = () => {
               Your browser does not support the video tag.
             </video>
           </div>
-          <div className="absolute inset-0 bg-foreground/40"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-foreground/20"></div>
         </div>
 
         {/* Hero Content */}
