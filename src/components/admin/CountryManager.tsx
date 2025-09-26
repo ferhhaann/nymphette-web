@@ -165,62 +165,130 @@ export const CountryManager = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">🌍 Countries Management</h2>
-          <p className="text-muted-foreground">Manage country details, places, and information - organized by region</p>
+    <div className="space-y-8">
+      {/* Header Section with Better Visual Hierarchy */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg p-6 border">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Countries Management</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {countries.length} countries across {regions.length} regions
+                </p>
+              </div>
+            </div>
+            <p className="text-muted-foreground text-sm">
+              Organize destinations, manage content, and update travel information
+            </p>
+          </div>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button 
+                onClick={() => setEditingCountry(createEmptyCountry())} 
+                size="lg"
+                className="h-12 px-6 font-medium"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Add New Country
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="text-xl">
+                  {editingCountry?.id ? 'Edit Country Details' : 'Add New Country'}
+                </DialogTitle>
+              </DialogHeader>
+              <CountryForm 
+                country={editingCountry!} 
+                onSave={saveCountry}
+                onCancel={() => {
+                  setIsDialogOpen(false)
+                  setEditingCountry(null)
+                }}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setEditingCountry(createEmptyCountry())}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Country
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {editingCountry?.id ? 'Edit Country' : 'Add New Country'}
-              </DialogTitle>
-            </DialogHeader>
-            <CountryForm 
-              country={editingCountry!} 
-              onSave={saveCountry}
-              onCancel={() => {
-                setIsDialogOpen(false)
-                setEditingCountry(null)
-              }}
-            />
-          </DialogContent>
-        </Dialog>
       </div>
 
+      {/* Navigation Tabs with Better Design */}
       <Tabs defaultValue="countries" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 h-auto">
-          <TabsTrigger value="countries" className="p-3 text-sm">Countries Overview</TabsTrigger>
-          <TabsTrigger value="sections" className="p-3 text-sm">Content Sections</TabsTrigger>
-          <TabsTrigger value="content" className="p-3 text-sm">Attractions & Content</TabsTrigger>
-        </TabsList>
+        <div className="bg-white dark:bg-gray-900 rounded-lg border p-1">
+          <TabsList className="grid w-full grid-cols-3 bg-transparent gap-1 h-auto">
+            <TabsTrigger 
+              value="countries" 
+              className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-950 dark:data-[state=active]:text-blue-300"
+            >
+              <Globe className="h-4 w-4" />
+              Countries ({countries.length})
+            </TabsTrigger>
+            <TabsTrigger 
+              value="sections" 
+              className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-950 dark:data-[state=active]:text-blue-300"
+            >
+              <Edit className="h-4 w-4" />
+              Content Sections
+            </TabsTrigger>
+            <TabsTrigger 
+              value="content" 
+              className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-950 dark:data-[state=active]:text-blue-300"
+            >
+              <MapPin className="h-4 w-4" />
+              Attractions & Content
+            </TabsTrigger>
+          </TabsList>
+        </div>
         
         <TabsContent value="countries" className="space-y-6">
-          <GenericFilter
-            searchValue={searchTerm}
-            onSearchChange={setSearchTerm}
-            selectedCountry=""
-            onCountryChange={() => {}}
-            selectedRegion={selectedRegion}
-            onRegionChange={setSelectedRegion}
-            totalItems={countries.length}
-            filteredItems={filteredCountries.length}
-            onClearFilters={() => {
-              setSearchTerm("")
-              setSelectedRegion("all")
-            }}
-            searchPlaceholder="Search by name or capital..."
-            showCountryFilter={false}
-            showRegionFilter={true}
-          />
+          {/* Enhanced Filter Section */}
+          <Card className="border-l-4 border-l-blue-500">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-lg">Filter & Search</h3>
+                  <Badge variant="outline" className="text-xs">
+                    {filteredCountries.length} of {countries.length} countries
+                  </Badge>
+                </div>
+                {(searchTerm || selectedRegion !== "all") && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSearchTerm("")
+                      setSelectedRegion("all")
+                    }}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    Clear filters
+                  </Button>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <GenericFilter
+                searchValue={searchTerm}
+                onSearchChange={setSearchTerm}
+                selectedCountry=""
+                onCountryChange={() => {}}
+                selectedRegion={selectedRegion}
+                onRegionChange={setSelectedRegion}
+                totalItems={countries.length}
+                filteredItems={filteredCountries.length}
+                onClearFilters={() => {
+                  setSearchTerm("")
+                  setSelectedRegion("all")
+                }}
+                searchPlaceholder="Search by country name or capital city..."
+                showCountryFilter={false}
+                showRegionFilter={true}
+              />
+            </CardContent>
+          </Card>
 
           {/* Countries organized by Region */}
           {selectedRegion === "all" ? (
@@ -231,59 +299,85 @@ export const CountryManager = () => {
                 
                 return (
                   <div key={region} className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-xl font-semibold">{region}</h3>
-                      <Badge variant="secondary">{regionCountries.length} countries</Badge>
+                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
+                            {region.charAt(0)}
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{region}</h3>
+                            <p className="text-sm text-muted-foreground">Explore destinations in this region</p>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="font-medium">
+                          {regionCountries.length} {regionCountries.length === 1 ? 'country' : 'countries'}
+                        </Badge>
+                      </div>
                     </div>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {regionCountries.map((country) => (
-              <Card key={country.id}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Globe className="h-5 w-5" />
-                    {country.name}
-                    {country.is_popular && (
-                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                    )}
-                  </CardTitle>
-                  <CardDescription>
-                    <MapPin className="h-4 w-4 inline mr-1" />
-                    {country.region} • {country.capital}
-                    {country.is_popular && (
-                      <Badge variant="secondary" className="ml-2 text-xs">
-                        Popular
-                      </Badge>
-                    )}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center">
-                    <div className="text-sm text-muted-foreground">
-                      <p>Currency: {country.currency}</p>
-                      <p>Best Season: {country.best_season}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setEditingCountry(country)
-                          setIsDialogOpen(true)
-                        }}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => deleteCountry(country.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-                      </Card>
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {regionCountries.map((country) => (
+                        <Card key={country.id} className="group hover:shadow-lg transition-all duration-200 border-l-4 border-l-transparent hover:border-l-blue-400">
+                          <CardHeader className="pb-3">
+                            <div className="flex items-start justify-between">
+                              <div className="space-y-1">
+                                <CardTitle className="flex items-center gap-2 text-lg group-hover:text-blue-600 transition-colors">
+                                  <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                                    <Globe className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                  </div>
+                                  {country.name}
+                                  {country.is_popular && (
+                                    <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                                  )}
+                                </CardTitle>
+                                <CardDescription className="flex items-center gap-1 text-sm">
+                                  <MapPin className="h-3 w-3" />
+                                  {country.capital ? `${country.capital}, ${country.region}` : country.region}
+                                </CardDescription>
+                              </div>
+                              {country.is_popular && (
+                                <Badge variant="secondary" className="text-xs font-medium">
+                                  ⭐ Popular
+                                </Badge>
+                              )}
+                            </div>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="grid grid-cols-2 gap-3 text-sm">
+                              <div className="space-y-1">
+                                <p className="text-muted-foreground text-xs uppercase tracking-wide">Currency</p>
+                                <p className="font-medium">{country.currency || 'Not set'}</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-muted-foreground text-xs uppercase tracking-wide">Best Season</p>
+                                <p className="font-medium">{country.best_season || 'Not set'}</p>
+                              </div>
+                            </div>
+                            <div className="flex justify-end gap-2 pt-2 border-t">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  setEditingCountry(country)
+                                  setIsDialogOpen(true)
+                                }}
+                                className="flex items-center gap-1.5"
+                              >
+                                <Edit className="h-3 w-3" />
+                                Edit
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => deleteCountry(country.id)}
+                                className="flex items-center gap-1.5"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                                Delete
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
                       ))}
                     </div>
                   </div>
@@ -291,52 +385,66 @@ export const CountryManager = () => {
               })}
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {filteredCountries.map((country) => (
-                <Card key={country.id}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Globe className="h-5 w-5" />
-                      {country.name}
+                <Card key={country.id} className="group hover:shadow-lg transition-all duration-200 border-l-4 border-l-transparent hover:border-l-blue-400">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <CardTitle className="flex items-center gap-2 text-lg group-hover:text-blue-600 transition-colors">
+                          <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                            <Globe className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          {country.name}
+                          {country.is_popular && (
+                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                          )}
+                        </CardTitle>
+                        <CardDescription className="flex items-center gap-1 text-sm">
+                          <MapPin className="h-3 w-3" />
+                          {country.capital ? `${country.capital}, ${country.region}` : country.region}
+                        </CardDescription>
+                      </div>
                       {country.is_popular && (
-                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                      )}
-                    </CardTitle>
-                    <CardDescription>
-                      <MapPin className="h-4 w-4 inline mr-1" />
-                      {country.region} • {country.capital}
-                      {country.is_popular && (
-                        <Badge variant="secondary" className="ml-2 text-xs">
-                          Popular
+                        <Badge variant="secondary" className="text-xs font-medium">
+                          ⭐ Popular
                         </Badge>
                       )}
-                    </CardDescription>
+                    </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center">
-                      <div className="text-sm text-muted-foreground">
-                        <p>Currency: {country.currency}</p>
-                        <p>Best Season: {country.best_season}</p>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs uppercase tracking-wide">Currency</p>
+                        <p className="font-medium">{country.currency || 'Not set'}</p>
                       </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            setEditingCountry(country)
-                            setIsDialogOpen(true)
-                          }}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => deleteCountry(country.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                      <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs uppercase tracking-wide">Best Season</p>
+                        <p className="font-medium">{country.best_season || 'Not set'}</p>
                       </div>
+                    </div>
+                    <div className="flex justify-end gap-2 pt-2 border-t">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setEditingCountry(country)
+                          setIsDialogOpen(true)
+                        }}
+                        className="flex items-center gap-1.5"
+                      >
+                        <Edit className="h-3 w-3" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => deleteCountry(country.id)}
+                        className="flex items-center gap-1.5"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                        Delete
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -403,172 +511,243 @@ const CountryForm = ({ country, onSave, onCancel }: CountryFormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="name">Country Name</Label>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Basic Information Section */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 pb-2 border-b">
+          <Globe className="h-4 w-4 text-blue-600" />
+          <h3 className="font-semibold text-lg">Basic Information</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="name" className="text-sm font-medium">Country Name *</Label>
+            <Input
+              id="name"
+              value={formData.name}
+              onChange={(e) => updateField('name', e.target.value)}
+              placeholder="e.g., Japan, France, India"
+              required
+              className="h-10"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="slug" className="text-sm font-medium">URL Slug</Label>
+            <Input
+              id="slug"
+              value={formData.slug}
+              onChange={(e) => updateField('slug', e.target.value)}
+              placeholder="Auto-generated from name"
+              className="h-10"
+            />
+            <p className="text-xs text-muted-foreground">Used in website URLs (will be auto-generated if empty)</p>
+          </div>
+        </div>
+      </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="region" className="text-sm font-medium">Region *</Label>
+            <SearchableSelect
+              options={["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"].map(region => ({
+                value: region,
+                label: region
+              }))}
+              value={formData.region}
+              onValueChange={(value) => updateField('region', value)}
+              placeholder="Select region"
+              searchPlaceholder="Search regions..."
+              emptyText="No regions found"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="capital" className="text-sm font-medium">Capital City</Label>
+            <Input
+              id="capital"
+              value={formData.capital || ''}
+              onChange={(e) => updateField('capital', e.target.value)}
+              placeholder="e.g., Tokyo, Paris, New Delhi"
+              className="h-10"
+            />
+          </div>
+        </div>
+
+      {/* Travel Details Section */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 pb-2 border-b">
+          <MapPin className="h-4 w-4 text-green-600" />
+          <h3 className="font-semibold text-lg">Travel Details</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="currency" className="text-sm font-medium">Currency</Label>
+            <Input
+              id="currency"
+              value={formData.currency || ''}
+              onChange={(e) => updateField('currency', e.target.value)}
+              placeholder="e.g., USD, EUR, INR, JPY"
+              className="h-10"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="best_season" className="text-sm font-medium">Best Travel Season</Label>
+            <Input
+              id="best_season"
+              value={formData.best_season || ''}
+              onChange={(e) => updateField('best_season', e.target.value)}
+              placeholder="e.g., Spring (March-May)"
+              className="h-10"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="climate" className="text-sm font-medium">Climate</Label>
           <Input
-            id="name"
-            value={formData.name}
-            onChange={(e) => updateField('name', e.target.value)}
-            required
+            id="climate"
+            value={formData.climate || ''}
+            onChange={(e) => updateField('climate', e.target.value)}
+            placeholder="e.g., Tropical, Temperate, Mediterranean"
+            className="h-10"
           />
         </div>
-        <div>
-          <Label htmlFor="slug">Slug</Label>
+
+        <div className="space-y-2">
+          <Label htmlFor="languages" className="text-sm font-medium">Languages</Label>
           <Input
-            id="slug"
-            value={formData.slug}
-            onChange={(e) => updateField('slug', e.target.value)}
-            placeholder="Auto-generated from name"
+            id="languages"
+            value={languages}
+            onChange={(e) => setLanguages(e.target.value)}
+            placeholder="English, Hindi, Japanese (comma-separated)"
+            className="h-10"
           />
+          <p className="text-xs text-muted-foreground">Separate multiple languages with commas</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="region">Region</Label>
-          <SearchableSelect
-            options={["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"].map(region => ({
-              value: region,
-              label: region
-            }))}
-            value={formData.region}
-            onValueChange={(value) => updateField('region', value)}
-            placeholder="Select region"
-            searchPlaceholder="Search regions..."
-            emptyText="No regions found"
-          />
+      {/* Cultural Information Section */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 pb-2 border-b">
+          <Star className="h-4 w-4 text-purple-600" />
+          <h3 className="font-semibold text-lg">Cultural Information</h3>
         </div>
-        <div>
-          <Label htmlFor="capital">Capital</Label>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="speciality" className="text-sm font-medium">Speciality & Highlights</Label>
+            <Textarea
+              id="speciality"
+              value={formData.speciality || ''}
+              onChange={(e) => updateField('speciality', e.target.value)}
+              placeholder="What makes this country special? Famous for food, architecture, nature, etc."
+              className="min-h-[80px]"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="culture" className="text-sm font-medium">Culture & Traditions</Label>
+            <Textarea
+              id="culture"
+              value={formData.culture || ''}
+              onChange={(e) => updateField('culture', e.target.value)}
+              placeholder="Cultural highlights, traditions, customs, and local practices"
+              className="min-h-[80px]"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Statistics & Preferences Section */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 pb-2 border-b">
+          <div className="h-4 w-4 bg-orange-500 rounded"></div>
+          <h3 className="font-semibold text-lg">Statistics & Analytics</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="annual_visitors" className="text-sm font-medium">Annual Visitors</Label>
+            <Input
+              id="annual_visitors"
+              type="number"
+              value={formData.annual_visitors || ''}
+              onChange={(e) => updateField('annual_visitors', parseInt(e.target.value) || null)}
+              placeholder="e.g., 1500000"
+              className="h-10"
+            />
+            <p className="text-xs text-muted-foreground">Total visitors per year</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gender_male_percentage" className="text-sm font-medium">Male Visitors (%)</Label>
+            <Input
+              id="gender_male_percentage"
+              type="number"
+              min="0"
+              max="100"
+              value={formData.gender_male_percentage || ''}
+              onChange={(e) => updateField('gender_male_percentage', parseInt(e.target.value) || null)}
+              placeholder="e.g., 45"
+              className="h-10"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gender_female_percentage" className="text-sm font-medium">Female Visitors (%)</Label>
+            <Input
+              id="gender_female_percentage"
+              type="number"
+              min="0"
+              max="100"
+              value={formData.gender_female_percentage || ''}
+              onChange={(e) => updateField('gender_female_percentage', parseInt(e.target.value) || null)}
+              placeholder="e.g., 55"
+              className="h-10"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="top_origin_cities" className="text-sm font-medium">Top Origin Cities</Label>
           <Input
-            id="capital"
-            value={formData.capital || ''}
-            onChange={(e) => updateField('capital', e.target.value)}
+            id="top_origin_cities"
+            value={topOriginCities}
+            onChange={(e) => setTopOriginCities(e.target.value)}
+            placeholder="Mumbai, Delhi, Bangalore, Chennai, Kolkata"
+            className="h-10"
           />
+          <p className="text-xs text-muted-foreground">Cities where most visitors come from (comma-separated)</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="currency">Currency</Label>
-          <Input
-            id="currency"
-            value={formData.currency || ''}
-            onChange={(e) => updateField('currency', e.target.value)}
-          />
+      {/* Visibility Settings */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 pb-2 border-b">
+          <div className="h-4 w-4 bg-red-500 rounded"></div>
+          <h3 className="font-semibold text-lg">Visibility Settings</h3>
         </div>
-        <div>
-          <Label htmlFor="best_season">Best Season</Label>
-          <Input
-            id="best_season"
-            value={formData.best_season || ''}
-            onChange={(e) => updateField('best_season', e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div>
-        <Label htmlFor="climate">Climate</Label>
-        <Input
-          id="climate"
-          value={formData.climate || ''}
-          onChange={(e) => updateField('climate', e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="languages">Languages (comma-separated)</Label>
-        <Input
-          id="languages"
-          value={languages}
-          onChange={(e) => setLanguages(e.target.value)}
-          placeholder="English, Hindi, etc."
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="speciality">Speciality</Label>
-        <Textarea
-          id="speciality"
-          value={formData.speciality || ''}
-          onChange={(e) => updateField('speciality', e.target.value)}
-          placeholder="What makes this country special?"
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="culture">Culture</Label>
-        <Textarea
-          id="culture"
-          value={formData.culture || ''}
-          onChange={(e) => updateField('culture', e.target.value)}
-          placeholder="Cultural highlights and traditions"
-        />
-      </div>
-
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <Label htmlFor="annual_visitors">Annual Visitors</Label>
-          <Input
-            id="annual_visitors"
-            type="number"
-            value={formData.annual_visitors || ''}
-            onChange={(e) => updateField('annual_visitors', parseInt(e.target.value) || null)}
-          />
-        </div>
-        <div>
-          <Label htmlFor="gender_male_percentage">Male Visitors %</Label>
-          <Input
-            id="gender_male_percentage"
-            type="number"
-            min="0"
-            max="100"
-            value={formData.gender_male_percentage || ''}
-            onChange={(e) => updateField('gender_male_percentage', parseInt(e.target.value) || null)}
-          />
-        </div>
-        <div>
-          <Label htmlFor="gender_female_percentage">Female Visitors %</Label>
-          <Input
-            id="gender_female_percentage"
-            type="number"
-            min="0"
-            max="100"
-            value={formData.gender_female_percentage || ''}
-            onChange={(e) => updateField('gender_female_percentage', parseInt(e.target.value) || null)}
-          />
+        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+          <div className="flex items-start space-x-3">
+            <Checkbox 
+              id="is_popular"
+              checked={formData.is_popular || false}
+              onCheckedChange={(checked) => updateField('is_popular', checked)}
+              className="mt-1"
+            />
+            <div className="space-y-1">
+              <Label htmlFor="is_popular" className="text-sm font-medium cursor-pointer">
+                ⭐ Mark as Popular Destination
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                Popular destinations will be featured prominently on the homepage and in search results
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div>
-        <Label htmlFor="top_origin_cities">Top Origin Cities (comma-separated)</Label>
-        <Input
-          id="top_origin_cities"
-          value={topOriginCities}
-          onChange={(e) => setTopOriginCities(e.target.value)}
-          placeholder="Mumbai, Delhi, Bangalore, Chennai, Kolkata"
-        />
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <Checkbox 
-          id="is_popular"
-          checked={formData.is_popular || false}
-          onCheckedChange={(checked) => updateField('is_popular', checked)}
-        />
-        <Label htmlFor="is_popular" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Mark as Popular Destination (will appear on homepage)
-        </Label>
-      </div>
-
-      <div className="flex justify-end gap-2">
-        <Button type="button" variant="outline" onClick={onCancel}>
+      {/* Action Buttons */}
+      <div className="flex justify-end gap-3 pt-6 border-t">
+        <Button type="button" variant="outline" onClick={onCancel} className="h-11 px-6">
           Cancel
         </Button>
-        <Button type="submit">
-          {formData.id ? 'Update' : 'Create'}
+        <Button type="submit" className="h-11 px-6 font-medium">
+          {formData.id ? '✓ Update Country' : '+ Create Country'}
         </Button>
       </div>
     </form>
