@@ -72,16 +72,20 @@ export const useStaticSEO = () => {
           canonical.href = seoSettings.canonical_url;
         }
 
-        // Structured Data
+        // Structured Data - Page-specific schema that enhances the static base schema
         if (seoSettings.structured_data) {
-          let script = document.querySelector('script[type="application/ld+json"]#dynamic-schema') as HTMLScriptElement;
-          if (!script) {
-            script = document.createElement('script');
-            script.type = 'application/ld+json';
-            script.id = 'dynamic-schema';
-            document.head.appendChild(script);
+          // Remove any existing dynamic schema
+          const existingDynamicSchema = document.querySelector('script[type="application/ld+json"]#dynamic-schema');
+          if (existingDynamicSchema) {
+            existingDynamicSchema.remove();
           }
+          
+          // Add new dynamic schema (keeps static schema intact)
+          const script = document.createElement('script');
+          script.type = 'application/ld+json';
+          script.id = 'dynamic-schema';
           script.textContent = JSON.stringify(seoSettings.structured_data);
+          document.head.appendChild(script);
         }
 
 

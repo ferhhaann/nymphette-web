@@ -56,21 +56,26 @@ export const useSEO = ({
         const finalUrl = propUrl || seoSettings?.canonical_url || `${defaultSEO.canonical}${currentPath}`;
         const finalStructuredData = propStructuredData || seoSettings?.structured_data || generateOrganizationSchema();
 
-        // Clear existing meta tags
+        // Clear existing meta tags (but keep static schema)
         const clearExistingMeta = () => {
           const metaSelectors = [
             'meta[name="description"]',
             'meta[name="keywords"]',
             'meta[name="robots"]',
             'meta[property^="og:"]',
-            'meta[name^="twitter:"]',
-            'script[type="application/ld+json"]'
+            'meta[name^="twitter:"]'
           ];
           
           metaSelectors.forEach(selector => {
             const elements = document.querySelectorAll(selector);
             elements.forEach(el => el.remove());
           });
+          
+          // Only remove dynamic schema, keep static schema
+          const dynamicSchema = document.querySelector('script[type="application/ld+json"]:not(#static-schema)');
+          if (dynamicSchema) {
+            dynamicSchema.remove();
+          }
         };
 
         // Update meta tags
