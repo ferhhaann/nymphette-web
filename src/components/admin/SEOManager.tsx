@@ -11,6 +11,7 @@ import { Search, Edit, Trash2, Plus, Eye, BarChart3, TrendingUp, Globe, Target, 
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
+import { validateSEOSettings } from "@/utils/seoValidator";
 
 interface SEOSettings {
   id?: string;
@@ -113,7 +114,6 @@ const SEOManager = () => {
     
     try {
       // Validate SEO settings
-      const { validateSEOSettings } = require('@/utils/seoValidator');
       const validationResults = validateSEOSettings(formData);
       
       // Check for errors
