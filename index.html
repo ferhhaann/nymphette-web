@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
-    <!-- Primary Meta Tags -->
+    <!-- SSR Head Tags -->
+    <!--ssr-head-->
+    
+    <!-- Primary Meta Tags (fallback) -->
     <title>Nymphette Tours - Premium Travel Packages & Group Tours Worldwide</title>
     <meta name="title" content="Nymphette Tours - Premium Travel Packages & Group Tours Worldwide" />
     <meta name="description" content="Discover premium travel packages, curated group tours, and custom trips to Asia, Europe, Africa & more. Expert travel planning with 24/7 support. Book your dream vacation today!" />
@@ -172,7 +175,7 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root"><!--ssr-outlet--></div>
     <script type="module" src="/src/main.tsx"></script>
     
     <!-- Remove loading state after page loads -->

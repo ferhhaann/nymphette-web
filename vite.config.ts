@@ -18,4 +18,18 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  ssr: {
+    noExternal: ['react-helmet-async', '@radix-ui/*', 'lucide-react'],
+  },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        client: './index.html',
+        server: './src/entry-server.tsx'
+      }
+    }
+  }
 }));
