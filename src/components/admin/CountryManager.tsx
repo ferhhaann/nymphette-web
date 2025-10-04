@@ -465,6 +465,10 @@ export const CountryManager = () => {
   )
 }
 
+// DEPRECATED: Country management has been moved to static JSON files in src/data/countriesData.ts
+// This component is kept for managing extended country content (sections, attractions, etc.)
+// Basic country information (name, slug, region, etc.) should be edited in countriesData.ts
+
 interface CountryFormProps {
   country: Partial<Country>
   onSave: (country: Partial<Country>) => void

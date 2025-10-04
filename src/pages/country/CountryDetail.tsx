@@ -140,6 +140,8 @@ const CountryDetail = () => {
       loadCountryData(country)
     }
   }, [country])
+  
+  // Note: Country basic info now comes from static JSON, database only used for extended content
 
   // Automatic slideshow effect for hero images
   useEffect(() => {
