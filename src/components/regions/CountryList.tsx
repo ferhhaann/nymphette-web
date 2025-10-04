@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp, MapPin } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Button } from '@/components/ui/button'
-import { getCountriesByRegion } from '@/data/countriesData'
+import { getCountriesByRegion } from '@/data/countries'
 
 interface CountryListProps {
   region: string

@@ -1,5 +1,11 @@
 import { useMemo } from 'react'
-import { getCountriesByRegion, getCountryBySlug, allCountries, type Country } from '@/data/countriesData'
+import { 
+  getCountriesByRegion, 
+  getCountryBySlug, 
+  allCountries, 
+  getBasicCountryInfo,
+  type CountryData 
+} from '@/data/countries'
 
 export const useOptimizedCountries = (region?: string) => {
   const data = useMemo(() => {

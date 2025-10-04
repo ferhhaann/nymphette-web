@@ -1,0 +1,349 @@
+{
+  "region": "Asia",
+  "countries": [
+    {
+      "id": "japan",
+      "name": "Japan",
+      "slug": "japan",
+      "region": "Asia",
+      "capital": "Tokyo",
+      "currency": "Japanese Yen (¥)",
+      "climate": "Temperate",
+      "best_season": "March to May, September to November",
+      "languages": ["Japanese"],
+      "description": "Experience ancient traditions meets modern innovation",
+      "is_popular": true,
+      "annual_visitors": 31880000,
+      "gender_male_percentage": 48,
+      "gender_female_percentage": 52,
+      "speciality": "Technology, Culture, Cuisine",
+      "culture": "Rich blend of ancient traditions and modern lifestyle",
+      "hero_images": [
+        {
+          "image_url": "/places/japan/tokyo.webp",
+          "alt_text": "Tokyo skyline",
+          "caption": "Modern Tokyo",
+          "order_index": 1
+        },
+        {
+          "image_url": "/places/japan/mount-fuji.webp",
+          "alt_text": "Mount Fuji",
+          "caption": "Iconic Mount Fuji",
+          "order_index": 2
+        },
+        {
+          "image_url": "/places/japan/fushimi-inari-shrine.jpg",
+          "alt_text": "Fushimi Inari Shrine",
+          "caption": "Traditional shrine",
+          "order_index": 3
+        }
+      ],
+      "sections": [
+        {
+          "section_name": "hero",
+          "title": "Discover Japan",
+          "content": {
+            "description": "Experience the perfect blend of ancient traditions and cutting-edge technology",
+            "highlights": ["Cherry Blossoms", "Mount Fuji", "Ancient Temples", "Modern Cities"]
+          },
+          "order_index": 1,
+          "is_enabled": true
+        },
+        {
+          "section_name": "overview",
+          "title": "Overview",
+          "content": {
+            "description": "Japan is a fascinating country where ancient traditions seamlessly blend with modern innovation. From the bustling streets of Tokyo to the serene temples of Kyoto, Japan offers a unique travel experience that captivates visitors from around the world."
+          },
+          "order_index": 2,
+          "is_enabled": true
+        },
+        {
+          "section_name": "about",
+          "title": "About Japan",
+          "content": {
+            "description": "Japan is an island nation in East Asia, known for its rich cultural heritage, technological advancements, and stunning natural beauty. With a history spanning thousands of years, Japan has preserved its traditions while becoming one of the world's most modern societies."
+          },
+          "order_index": 3,
+          "is_enabled": true
+        },
+        {
+          "section_name": "fun_facts",
+          "title": "Fun Facts",
+          "content": {
+            "facts": [
+              "Japan has more than 6,800 islands",
+              "The cherry blossom (sakura) is the national flower",
+              "Japan has the world's oldest monarchy",
+              "Tokyo is the world's most populous city",
+              "There are over 200 volcanoes in Japan",
+              "Japanese trains are famously punctual"
+            ]
+          },
+          "order_index": 4,
+          "is_enabled": true
+        },
+        {
+          "section_name": "best_time",
+          "title": "Best Time to Visit",
+          "content": {
+            "description": "The best time to visit Japan is during spring (March-May) for cherry blossoms or autumn (September-November) for fall foliage. Summer can be hot and humid, while winter offers excellent skiing opportunities."
+          },
+          "order_index": 5,
+          "is_enabled": true
+        },
+        {
+          "section_name": "reasons_to_visit",
+          "title": "Reasons to Visit",
+          "content": {
+            "reasons": [
+              "Experience unique culture and traditions",
+              "Enjoy world-class cuisine",
+              "Visit ancient temples and shrines",
+              "Explore modern cities and technology",
+              "See stunning natural landscapes",
+              "Witness cherry blossoms in spring"
+            ]
+          },
+          "order_index": 6,
+          "is_enabled": true
+        },
+        {
+          "section_name": "food_shopping",
+          "title": "Food & Shopping",
+          "content": {
+            "description": "Japan is a paradise for food lovers and shoppers. From Michelin-starred restaurants to street food stalls, Japanese cuisine is world-renowned. Shopping ranges from high-tech electronics in Akihabara to traditional crafts in Kyoto's markets."
+          },
+          "order_index": 7,
+          "is_enabled": true
+        },
+        {
+          "section_name": "dos_donts",
+          "title": "Do's and Don'ts",
+          "content": {
+            "dos": [
+              "Remove shoes when entering homes and some restaurants",
+              "Bow when greeting people",
+              "Be punctual",
+              "Respect quiet zones on trains"
+            ],
+            "donts": [
+              "Don't tip (it's considered rude)",
+              "Don't talk loudly on public transport",
+              "Don't wear shoes on tatami mats",
+              "Don't stick chopsticks upright in rice"
+            ]
+          },
+          "order_index": 8,
+          "is_enabled": true
+        },
+        {
+          "section_name": "art_culture",
+          "title": "Art & Culture",
+          "content": {
+            "description": "Japanese culture is rich with traditional arts including tea ceremony, calligraphy, ikebana (flower arrangement), and origami. Modern Japanese pop culture, including anime and manga, has also gained worldwide popularity."
+          },
+          "order_index": 9,
+          "is_enabled": true
+        }
+      ],
+      "essential_tips": [
+        {
+          "icon": "Info",
+          "title": "Language",
+          "note": "Learn basic Japanese phrases. English is limited outside major cities."
+        },
+        {
+          "icon": "MapPin",
+          "title": "Transportation",
+          "note": "Get a JR Pass for unlimited train travel. Trains are the best way to explore."
+        },
+        {
+          "icon": "Wallet",
+          "title": "Cash",
+          "note": "Japan is largely cash-based. ATMs may not accept foreign cards."
+        },
+        {
+          "icon": "Calendar",
+          "title": "Timing",
+          "note": "Avoid Golden Week (late April-early May) when everything is crowded."
+        }
+      ],
+      "travel_purposes": [
+        {
+          "name": "Leisure",
+          "display_name": "Leisure & Sightseeing",
+          "percentage": 45,
+          "color": "#8B5CF6"
+        },
+        {
+          "name": "Culture",
+          "display_name": "Cultural Experience",
+          "percentage": 30,
+          "color": "#EC4899"
+        },
+        {
+          "name": "Business",
+          "display_name": "Business",
+          "percentage": 15,
+          "color": "#10B981"
+        },
+        {
+          "name": "Food",
+          "display_name": "Culinary Tourism",
+          "percentage": 10,
+          "color": "#F59E0B"
+        }
+      ],
+      "attractions": [
+        {
+          "name": "Tokyo Tower",
+          "description": "Iconic landmark offering panoramic city views",
+          "category": "landmark",
+          "type": "attraction",
+          "image_url": "/places/japan/tokyo.webp",
+          "order_index": 1
+        },
+        {
+          "name": "Mount Fuji",
+          "description": "Japan's highest mountain and sacred symbol",
+          "category": "nature",
+          "type": "attraction",
+          "image_url": "/places/japan/mount-fuji.webp",
+          "order_index": 2
+        },
+        {
+          "name": "Fushimi Inari Shrine",
+          "description": "Famous for thousands of red torii gates",
+          "category": "cultural",
+          "type": "attraction",
+          "image_url": "/places/japan/fushimi-inari-shrine.jpg",
+          "order_index": 3
+        }
+      ],
+      "faqs": [
+        {
+          "question": "Do I need a visa to visit Japan?",
+          "answer": "Many countries have visa-free access to Japan for short stays (90 days). Check with the Japanese embassy for your specific country."
+        },
+        {
+          "question": "Is Japan expensive?",
+          "answer": "Japan can be expensive, but budget options are available. Convenience stores and local restaurants offer affordable meals."
+        },
+        {
+          "question": "What's the best way to get around?",
+          "answer": "Trains are the most efficient way to travel. Consider getting a JR Pass for unlimited travel on JR trains."
+        },
+        {
+          "question": "When is cherry blossom season?",
+          "answer": "Cherry blossoms typically bloom from late March to early May, depending on the region."
+        }
+      ],
+      "contact_info": {
+        "email": "hello@nymphettetours.com",
+        "phone": "+1 (555) 123-4567",
+        "whatsapp": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "thailand",
+      "name": "Thailand",
+      "slug": "thailand",
+      "region": "Asia",
+      "capital": "Bangkok",
+      "currency": "Thai Baht (฿)",
+      "climate": "Tropical",
+      "best_season": "November to February",
+      "languages": ["Thai"],
+      "description": "Discover stunning beaches, ancient temples, and vibrant culture",
+      "is_popular": true,
+      "annual_visitors": 39800000,
+      "gender_male_percentage": 52,
+      "gender_female_percentage": 48,
+      "speciality": "Beaches, Temples, Street Food",
+      "culture": "Warm hospitality and rich Buddhist traditions",
+      "hero_images": [
+        {
+          "image_url": "/places/thailand/bangkok.webp",
+          "alt_text": "Bangkok cityscape",
+          "caption": "Vibrant Bangkok",
+          "order_index": 1
+        },
+        {
+          "image_url": "/places/thailand/phuket.webp",
+          "alt_text": "Phuket beaches",
+          "caption": "Beautiful Phuket",
+          "order_index": 2
+        },
+        {
+          "image_url": "/places/thailand/chiang-mai.webp",
+          "alt_text": "Chiang Mai temples",
+          "caption": "Historic Chiang Mai",
+          "order_index": 3
+        }
+      ],
+      "sections": [
+        {
+          "section_name": "hero",
+          "title": "Discover Thailand",
+          "content": {
+            "description": "Experience the land of smiles with stunning beaches, ancient temples, and delicious cuisine",
+            "highlights": ["Tropical Beaches", "Buddhist Temples", "Street Food", "Island Paradise"]
+          },
+          "order_index": 1,
+          "is_enabled": true
+        },
+        {
+          "section_name": "overview",
+          "title": "Overview",
+          "content": {
+            "description": "Thailand is a Southeast Asian country known for tropical beaches, opulent royal palaces, ancient ruins and ornate temples. The bustling capital Bangkok features the Chao Phraya River and vibrant street life."
+          },
+          "order_index": 2,
+          "is_enabled": true
+        }
+      ],
+      "essential_tips": [
+        {
+          "icon": "Info",
+          "title": "Respect",
+          "note": "Dress modestly when visiting temples. Remove shoes before entering."
+        },
+        {
+          "icon": "Sun",
+          "title": "Weather",
+          "note": "Visit during cool season (Nov-Feb) for best weather."
+        }
+      ],
+      "travel_purposes": [
+        {
+          "name": "Beach",
+          "display_name": "Beach & Relaxation",
+          "percentage": 40,
+          "color": "#3B82F6"
+        },
+        {
+          "name": "Culture",
+          "display_name": "Cultural Tourism",
+          "percentage": 35,
+          "color": "#8B5CF6"
+        },
+        {
+          "name": "Adventure",
+          "display_name": "Adventure",
+          "percentage": 25,
+          "color": "#10B981"
+        }
+      ],
+      "attractions": [],
+      "faqs": [],
+      "contact_info": {
+        "email": "hello@nymphettetours.com",
+        "phone": "+1 (555) 123-4567",
+        "whatsapp": "",
+        "address": ""
+      }
+    }
+  ]
+}

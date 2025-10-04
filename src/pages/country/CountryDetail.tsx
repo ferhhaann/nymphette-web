@@ -13,7 +13,8 @@ import {
   Camera, Utensils, ShoppingBag, Heart, Palette, Info,
   ArrowRight, Star
 } from 'lucide-react'
-import { supabase } from '@/integrations/supabase/client'
+import { getCountryBySlug } from '@/data/countries'
+import type { CountryData } from '@/data/countries'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import { CountryBreadcrumb } from '@/components/regions/CountryBreadcrumb'
@@ -28,79 +29,12 @@ import {
 } from "@/components/ui/accordion"
 import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/components/ui/carousel"
 import { useStaticSEO } from "@/hooks/useStaticSEO"
+import { supabase } from '@/integrations/supabase/client'
 
 // Import hero images
 import japanHero1 from '@/assets/hero/japan-hero-1.jpg'
 import japanHero2 from '@/assets/hero/japan-hero-2.jpg'
 import japanHero3 from '@/assets/hero/japan-hero-3.jpg'
-
-interface Country {
-  id: string
-  name: string
-  slug: string
-  region: string
-  capital?: string
-  currency?: string
-  climate?: string
-  best_season?: string
-  languages?: string[]
-  annual_visitors?: number
-  gender_male_percentage?: number
-  gender_female_percentage?: number
-  culture?: string
-  speciality?: string
-  description?: string
-  hero_image_url?: string
-  overview_description?: string
-  about_content?: string
-  fun_facts?: any
-  before_you_go_tips?: any
-  best_time_content?: string
-  reasons_to_visit?: any
-  food_shopping_content?: string
-  dos_donts?: any
-  art_culture_content?: string
-  travel_tips?: string
-  contact_info?: any
-  visitor_statistics?: any
-}
-
-interface CountrySection {
-  id: string
-  section_name: string
-  title?: string
-  content: any
-  images?: any
-  order_index: number
-  is_enabled: boolean
-}
-
-interface CountryHeroImage {
-  id: string
-  image_url: string
-  alt_text?: string
-  caption?: string
-  order_index: number
-}
-
-interface EssentialTip {
-  id: string
-  title: string
-  note: string
-  icon: string
-}
-
-interface TravelPurpose {
-  id: string
-  name: string
-  percentage: number
-}
-
-interface CountryFAQ {
-  id: string
-  question: string
-  answer: string
-}
 
 interface EnquiryForm {
   name: string
@@ -117,12 +51,7 @@ const CountryDetail = () => {
   const { country } = useParams<{ country: string }>()
   const { toast } = useToast()
   const [loading, setLoading] = useState(true)
-  const [countryData, setCountryData] = useState<Country | null>(null)
-  const [sections, setSections] = useState<CountrySection[]>([])
-  const [heroImages, setHeroImages] = useState<CountryHeroImage[]>([])
-  const [essentialTips, setEssentialTips] = useState<EssentialTip[]>([])
-  const [travelPurposes, setTravelPurposes] = useState<TravelPurpose[]>([])
-  const [faqs, setFaqs] = useState<CountryFAQ[]>([])
+  const [countryData, setCountryData] = useState<CountryData | null>(null)
   const [packageCount, setPackageCount] = useState(0)
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [enquiryForm, setEnquiryForm] = useState<EnquiryForm>({
@@ -140,8 +69,6 @@ const CountryDetail = () => {
       loadCountryData(country)
     }
   }, [country])
-  
-  // Note: Country basic info now comes from static JSON, database only used for extended content
 
   // Automatic slideshow effect for hero images
   useEffect(() => {
@@ -158,42 +85,26 @@ const CountryDetail = () => {
     try {
       setLoading(true)
 
-      // Load country basic data
-      const { data: countryInfo, error: countryError } = await supabase
-        .from('countries')
-        .select('*')
-        .eq('slug', countrySlug)
-        .single()
-
-      if (countryError) throw countryError
-      setCountryData(countryInfo)
-
-      if (countryInfo) {
-        setEnquiryForm(prev => ({ ...prev, destination: countryInfo.name }))
-
-        // Load package count
-        const { count } = await supabase
-          .from('packages')
-          .select('*', { count: 'exact', head: true })
-          .eq('country_slug', countrySlug)
-        
-        setPackageCount(count || 0)
-
-        // Load all related data in parallel
-        const [sectionsResult, heroImagesResult, tipsResult, purposesResult, faqResult] = await Promise.all([
-          supabase.from('country_sections').select('*').eq('country_id', countryInfo.id).eq('is_enabled', true).order('order_index'),
-          supabase.from('country_hero_images').select('*').eq('country_id', countryInfo.id).order('order_index'),
-          supabase.from('country_essential_tips').select('*').eq('country_id', countryInfo.id).order('order_index'),
-          supabase.from('travel_purposes').select('*').eq('country_id', countryInfo.id).order('percentage', { ascending: false }),
-          supabase.from('country_faqs').select('*').eq('country_id', countryInfo.id)
-        ])
-
-        setSections(sectionsResult.data || [])
-        setHeroImages(heroImagesResult.data || [])
-        setEssentialTips(tipsResult.data || [])
-        setTravelPurposes(purposesResult.data || [])
-        setFaqs(faqResult.data || [])
+      // Load country data from JSON
+      const countryInfo = getCountryBySlug(countrySlug)
+      
+      if (!countryInfo) {
+        setCountryData(null)
+        setLoading(false)
+        return
       }
+
+      setCountryData(countryInfo)
+      setEnquiryForm(prev => ({ ...prev, destination: countryInfo.name }))
+
+      // Load package count from database
+      const { count } = await supabase
+        .from('packages')
+        .select('*', { count: 'exact', head: true })
+        .eq('country_slug', countrySlug)
+      
+      setPackageCount(count || 0)
+
     } catch (error) {
       console.error('Error loading country data:', error)
       toast({
@@ -238,7 +149,7 @@ const CountryDetail = () => {
   }
 
   const getSectionByName = (name: string) => {
-    return sections.find(section => section.section_name === name)
+    return countryData?.sections?.find(section => section.section_name === name)
   }
 
   const iconMap = {
@@ -248,14 +159,13 @@ const CountryDetail = () => {
   }
 
   // Hero images with fallback
-  const displayHeroImages = heroImages.length > 0 ? heroImages.map(img => ({
-    ...img,
-    image_url: img.image_url.startsWith('/src/') ? img.image_url.replace('/src/', '') : img.image_url
-  })) : [
-    { id: '1', image_url: japanHero1, alt_text: 'Hero Image 1', caption: '', order_index: 1 },
-    { id: '2', image_url: japanHero2, alt_text: 'Hero Image 2', caption: '', order_index: 2 },
-    { id: '3', image_url: japanHero3, alt_text: 'Hero Image 3', caption: '', order_index: 3 }
-  ]
+  const displayHeroImages = countryData?.hero_images && countryData.hero_images.length > 0 
+    ? countryData.hero_images 
+    : [
+        { image_url: japanHero1, alt_text: 'Hero Image 1', caption: '', order_index: 1 },
+        { image_url: japanHero2, alt_text: 'Hero Image 2', caption: '', order_index: 2 },
+        { image_url: japanHero3, alt_text: 'Hero Image 3', caption: '', order_index: 3 }
+      ]
 
   if (loading) {
     return (
@@ -306,6 +216,11 @@ const CountryDetail = () => {
   const foodShoppingSection = getSectionByName('food_shopping')
   const dosDontsSection = getSectionByName('dos_donts')
   const artCultureSection = getSectionByName('art_culture')
+  
+  const essentialTips = countryData?.essential_tips || []
+  const travelPurposes = countryData?.travel_purposes || []
+  const faqs = countryData?.faqs || []
+  const sections = countryData?.sections || []
 
   return (
     <div className="min-h-screen bg-background">
@@ -324,7 +239,7 @@ const CountryDetail = () => {
             <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="w-full h-full">
               <CarouselContent>
                 {displayHeroImages.map((image, index) => (
-                  <CarouselItem key={image.id}>
+                  <CarouselItem key={index}>
                     <div className="relative h-96 lg:h-[500px] w-full">
                       <img 
                         src={image.image_url} 
@@ -392,7 +307,6 @@ const CountryDetail = () => {
                 genderMalePercentage={countryData.gender_male_percentage}
                 genderFemalePercentage={countryData.gender_female_percentage}
                 travelPurposes={travelPurposes}
-                topOriginCities={countryData?.visitor_statistics && typeof countryData.visitor_statistics === 'object' ? (countryData.visitor_statistics as any).topOrigins : undefined}
               />
             </div>
           )}
@@ -406,10 +320,10 @@ const CountryDetail = () => {
               Essential Travel Tips
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {essentialTips.map((tip) => {
+              {essentialTips.map((tip, index) => {
                 const IconComponent = (iconMap as any)[tip.icon] || Info
                 return (
-                  <Card key={tip.id} className="p-4">
+                  <Card key={index} className="p-4">
                     <div className="flex items-start gap-3">
                       <IconComponent className="h-5 w-5 text-primary mt-1" />
                       <div>
@@ -438,19 +352,21 @@ const CountryDetail = () => {
               </p>
               
               {/* Quick Navigation */}
-              <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {sections.filter(s => s.section_name !== 'hero' && s.section_name !== 'overview').map((section) => (
-                  <Button 
-                    key={section.id}
-                    variant="outline" 
-                    className="justify-start"
-                    onClick={() => document.getElementById(section.section_name)?.scrollIntoView({ behavior: 'smooth' })}
-                  >
-                    <ArrowRight className="h-4 w-4 mr-2" />
-                    {section.title}
-                  </Button>
-                ))}
-              </div>
+              {sections.length > 0 && (
+                <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {sections.filter(s => s.section_name !== 'hero' && s.section_name !== 'overview').map((section, index) => (
+                    <Button 
+                      key={index}
+                      variant="outline" 
+                      className="justify-start"
+                      onClick={() => document.getElementById(section.section_name)?.scrollIntoView({ behavior: 'smooth' })}
+                    >
+                      <ArrowRight className="h-4 w-4 mr-2" />
+                      {section.title}
+                    </Button>
+                  ))}
+                </div>
+              )}
             </Card>
           </section>
         )}
@@ -643,7 +559,7 @@ const CountryDetail = () => {
               <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
-                  <AccordionItem key={faq.id} value={`item-${index}`}>
+                  <AccordionItem key={index} value={`item-${index}`}>
                     <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
                     <AccordionContent>{faq.answer}</AccordionContent>
                   </AccordionItem>
@@ -676,13 +592,6 @@ const CountryDetail = () => {
                 )}
               </div>
               
-              {/* Travel Tips */}
-              {countryData.travel_tips && (
-                <div className="mt-6 pt-6 border-t">
-                  <h4 className="font-semibold mb-3">Quick Travel Tips</h4>
-                  <p className="text-sm text-muted-foreground">{countryData.travel_tips}</p>
-                </div>
-              )}
             </Card>
 
             {/* Enquiry Form */}

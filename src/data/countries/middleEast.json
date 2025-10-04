@@ -1,0 +1,104 @@
+{
+  "region": "Middle East",
+  "countries": [
+    {
+      "id": "uae",
+      "name": "United Arab Emirates",
+      "slug": "uae",
+      "region": "Middle East",
+      "capital": "Abu Dhabi",
+      "currency": "UAE Dirham (AED)",
+      "climate": "Desert",
+      "best_season": "November to March",
+      "languages": ["Arabic"],
+      "description": "Luxury, innovation, and Arabian heritage",
+      "is_popular": true,
+      "annual_visitors": 21000000,
+      "gender_male_percentage": 55,
+      "gender_female_percentage": 45,
+      "speciality": "Luxury, Shopping, Architecture",
+      "culture": "Modern luxury blended with Arabian traditions",
+      "hero_images": [
+        {
+          "image_url": "/places/uae/burj-khalifa.jpg",
+          "alt_text": "Burj Khalifa",
+          "caption": "Iconic Burj Khalifa",
+          "order_index": 1
+        },
+        {
+          "image_url": "/places/uae/dubai-marina.jpg",
+          "alt_text": "Dubai Marina",
+          "caption": "Modern Dubai Marina",
+          "order_index": 2
+        },
+        {
+          "image_url": "/places/uae/desert-safari.jpg",
+          "alt_text": "Desert Safari",
+          "caption": "Desert Adventures",
+          "order_index": 3
+        }
+      ],
+      "sections": [
+        {
+          "section_name": "hero",
+          "title": "Discover UAE",
+          "content": {
+            "description": "Experience world-class luxury, stunning architecture, and rich Arabian heritage",
+            "highlights": ["Burj Khalifa", "Luxury Shopping", "Desert Safari", "Modern Marvels"]
+          },
+          "order_index": 1,
+          "is_enabled": true
+        },
+        {
+          "section_name": "overview",
+          "title": "Overview",
+          "content": {
+            "description": "The UAE is a federation of seven emirates known for its ultramodern architecture, luxury shopping, and lively nightlife scene. Dubai and Abu Dhabi are the most prominent emirates."
+          },
+          "order_index": 2,
+          "is_enabled": true
+        }
+      ],
+      "essential_tips": [
+        {
+          "icon": "Info",
+          "title": "Dress Code",
+          "note": "Dress modestly, especially in public areas. Shoulders and knees should be covered."
+        },
+        {
+          "icon": "Sun",
+          "title": "Summer Heat",
+          "note": "Avoid visiting in summer (June-August) as temperatures can exceed 45°C."
+        }
+      ],
+      "travel_purposes": [
+        {
+          "name": "Luxury",
+          "display_name": "Luxury Tourism",
+          "percentage": 45,
+          "color": "#F59E0B"
+        },
+        {
+          "name": "Shopping",
+          "display_name": "Shopping",
+          "percentage": 30,
+          "color": "#EC4899"
+        },
+        {
+          "name": "Business",
+          "display_name": "Business",
+          "percentage": 25,
+          "color": "#10B981"
+        }
+      ],
+      "attractions": [],
+      "faqs": [],
+      "contact_info": {
+        "email": "hello@nymphettetours.com",
+        "phone": "+1 (555) 123-4567",
+        "whatsapp": "",
+        "address": ""
+      }
+    }
+  ]
+}
