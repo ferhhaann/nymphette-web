@@ -17,6 +17,7 @@ import { CountryContentManager } from "./CountryContentManager"
 import { ContentSectionsManager } from "./ContentSectionsManager"
 import { AttractionsContentManager } from "./AttractionsContentManager"
 import { CountrySectionManager } from "./CountrySectionManager"
+import { AICountryGenerator } from "./AICountryGenerator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { GenericFilter } from "./GenericFilter"
 import type { Database } from "@/integrations/supabase/types"
@@ -218,13 +219,20 @@ export const CountryManager = () => {
       {/* Navigation Tabs with Better Design */}
       <Tabs defaultValue="countries" className="space-y-6">
         <div className="bg-white dark:bg-gray-900 rounded-lg border p-1">
-          <TabsList className="grid w-full grid-cols-3 bg-transparent gap-1 h-auto">
+          <TabsList className="grid w-full grid-cols-4 bg-transparent gap-1 h-auto">
             <TabsTrigger 
               value="countries" 
               className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-950 dark:data-[state=active]:text-blue-300"
             >
               <Globe className="h-4 w-4" />
               Countries ({countries.length})
+            </TabsTrigger>
+            <TabsTrigger 
+              value="ai-generator" 
+              className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 dark:data-[state=active]:bg-purple-950 dark:data-[state=active]:text-purple-300"
+            >
+              <Star className="h-4 w-4" />
+              AI Generator
             </TabsTrigger>
             <TabsTrigger 
               value="sections" 
@@ -451,6 +459,10 @@ export const CountryManager = () => {
               ))}
             </div>
           )}
+        </TabsContent>
+        
+        <TabsContent value="ai-generator">
+          <AICountryGenerator />
         </TabsContent>
         
         <TabsContent value="sections">
