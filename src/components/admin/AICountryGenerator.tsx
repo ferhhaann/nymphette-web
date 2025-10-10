@@ -49,11 +49,33 @@ export const AICountryGenerator = () => {
     setGeneratedData(null)
 
     try {
-      const { data, error } = await supabase.functions.invoke('generate-country-data', {
-        body: { countryName, region }
-      })
+      // Use direct fetch with longer timeout for AI generation (90 seconds)
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 90000)
 
-      if (error) throw error
+      const session = (await supabase.auth.getSession()).data.session
+
+      const response = await fetch(
+        `https://duouhbzwivonyssvtiqo.supabase.co/functions/v1/generate-country-data`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token || ''}`,
+          },
+          body: JSON.stringify({ countryName, region }),
+          signal: controller.signal,
+        }
+      )
+
+      clearTimeout(timeoutId)
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to generate country data')
+      }
+
+      const data = await response.json()
 
       if (data.error) {
         toast({
