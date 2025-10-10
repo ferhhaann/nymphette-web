@@ -9,13 +9,20 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
+    console.log('Edge function called - generate-country-data');
     const { countryName, region } = await req.json();
+    console.log('Request data:', { countryName, region });
+    
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+    if (!LOVABLE_API_KEY) {
+      console.error("LOVABLE_API_KEY is not configured");
+      throw new Error("LOVABLE_API_KEY is not configured");
+    }
 
     const systemPrompt = `You are a travel content expert that generates comprehensive country data for a travel website. Generate detailed, accurate, and engaging content.`;
 
+    console.log('Preparing AI request...');
     const userPrompt = `Generate comprehensive data for ${countryName} in the ${region} region. Return a JSON object with the following structure:
 
 {
@@ -67,6 +74,7 @@ Include:
 
 Make the content engaging, informative, and SEO-friendly.`;
 
+    console.log('Calling Lovable AI Gateway...');
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -156,6 +164,8 @@ Make the content engaging, informative, and SEO-friendly.`;
       }),
     });
 
+    console.log('AI Gateway response status:', response.status);
+
     if (!response.ok) {
       if (response.status === 429) {
         return new Response(JSON.stringify({ error: "Rate limits exceeded, please try again later." }), {
@@ -178,13 +188,17 @@ Make the content engaging, informative, and SEO-friendly.`;
     }
 
     const data = await response.json();
+    console.log('AI Gateway response received');
+    
     const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
     
     if (!toolCall) {
+      console.error("No tool call in response:", JSON.stringify(data));
       throw new Error("No tool call in response");
     }
 
     const countryData = JSON.parse(toolCall.function.arguments);
+    console.log('Country data generated successfully');
 
     return new Response(JSON.stringify({ success: true, data: countryData }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
