@@ -313,14 +313,16 @@ export const CountrySectionManager = ({ countryId, countryName }: CountrySection
                   {editingSection?.id ? 'Edit Section' : 'Add New Section'}
                 </DialogTitle>
               </DialogHeader>
-              <SectionForm 
-                section={editingSection!} 
-                onSave={saveSection}
-                onCancel={() => {
-                  setIsDialogOpen(false)
-                  setEditingSection(null)
-                }}
-              />
+              {editingSection && (
+                <SectionForm 
+                  section={editingSection} 
+                  onSave={saveSection}
+                  onCancel={() => {
+                    setIsDialogOpen(false)
+                    setEditingSection(null)
+                  }}
+                />
+              )}
             </DialogContent>
           </Dialog>
         </div>
