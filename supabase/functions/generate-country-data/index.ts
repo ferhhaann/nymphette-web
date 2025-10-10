@@ -23,56 +23,35 @@ serve(async (req) => {
     const systemPrompt = `You are a travel content expert that generates comprehensive country data for a travel website. Generate detailed, accurate, and engaging content.`;
 
     console.log('Preparing AI request...');
-    const userPrompt = `Generate comprehensive data for ${countryName} in the ${region} region. Return a JSON object with the following structure:
+    const userPrompt = `Generate comprehensive travel data for ${countryName} in the ${region} region. 
+
+IMPORTANT: Generate content that will populate a country database entry. Do NOT include image URLs or paths (images will be uploaded manually).
+
+Return a JSON object matching this database structure:
 
 {
-  "name": "Country name",
-  "slug": "country-slug",
-  "capital": "Capital city",
-  "currency": "Currency name and code",
-  "climate": "Brief climate description",
-  "best_season": "Best time to visit",
+  "name": "${countryName}",
+  "slug": "country-slug (lowercase, hyphenated)",
+  "region": "${region}",
+  "capital": "Capital city name",
+  "currency": "Currency name and code (e.g., Japanese Yen - JPY)",
+  "climate": "Climate description (1-2 sentences)",
+  "best_season": "Best time to visit (e.g., March to May, September to November)",
   "languages": ["Language 1", "Language 2"],
-  "speciality": "What the country is famous for",
-  "culture": "Brief cultural overview (2-3 sentences)",
-  "hero_image": "/path/to/hero/image.jpg",
-  "fallback_image": "https://source.unsplash.com/1920x1080/?${countryName.toLowerCase()},landscape",
-  "sections": [
-    {
-      "title": "Section title",
-      "content": "Detailed content (2-3 paragraphs)"
-    }
-  ],
-  "tips": [
-    {
-      "category": "visa" | "health" | "connectivity" | "transport" | "safety" | "currency",
-      "title": "Tip title",
-      "description": "Tip description"
-    }
-  ],
-  "attractions": [
-    {
-      "name": "Attraction name",
-      "description": "Attraction description",
-      "location": "City/region",
-      "image": "https://source.unsplash.com/800x600/?attraction-name"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "Common question",
-      "answer": "Detailed answer"
-    }
-  ]
+  "speciality": "What the country is famous for (1-2 sentences)",
+  "culture": "Cultural overview (2-3 sentences)",
+  "description": "General country description for SEO (2-3 sentences)",
+  "overview_description": "Detailed overview section content (3-4 paragraphs)",
+  "about_content": "About the country - detailed content (3-4 paragraphs)",
+  "best_time_content": "Best time to visit - detailed seasonal information (2-3 paragraphs)",
+  "travel_tips": "General travel tips and advice (2-3 paragraphs)"
 }
 
-Include:
-- 3-4 content sections (About, Best Time to Visit, Culture & Traditions, Travel Tips)
-- 6-8 essential tips across different categories
-- 5-6 top attractions with descriptions
-- 5-6 FAQs covering common traveler questions
-
-Make the content engaging, informative, and SEO-friendly.`;
+Make the content:
+- Engaging and informative
+- SEO-friendly with natural keyword usage
+- Factually accurate
+- Well-structured with proper paragraphs`;
 
     console.log('Calling Lovable AI Gateway...');
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -98,6 +77,7 @@ Make the content engaging, informative, and SEO-friendly.`;
                 properties: {
                   name: { type: "string" },
                   slug: { type: "string" },
+                  region: { type: "string" },
                   capital: { type: "string" },
                   currency: { type: "string" },
                   climate: { type: "string" },
@@ -105,57 +85,13 @@ Make the content engaging, informative, and SEO-friendly.`;
                   languages: { type: "array", items: { type: "string" } },
                   speciality: { type: "string" },
                   culture: { type: "string" },
-                  hero_image: { type: "string" },
-                  fallback_image: { type: "string" },
-                  sections: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        title: { type: "string" },
-                        content: { type: "string" }
-                      },
-                      required: ["title", "content"]
-                    }
-                  },
-                  tips: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        category: { type: "string", enum: ["visa", "health", "connectivity", "transport", "safety", "currency"] },
-                        title: { type: "string" },
-                        description: { type: "string" }
-                      },
-                      required: ["category", "title", "description"]
-                    }
-                  },
-                  attractions: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        name: { type: "string" },
-                        description: { type: "string" },
-                        location: { type: "string" },
-                        image: { type: "string" }
-                      },
-                      required: ["name", "description", "location", "image"]
-                    }
-                  },
-                  faqs: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        question: { type: "string" },
-                        answer: { type: "string" }
-                      },
-                      required: ["question", "answer"]
-                    }
-                  }
+                  description: { type: "string" },
+                  overview_description: { type: "string" },
+                  about_content: { type: "string" },
+                  best_time_content: { type: "string" },
+                  travel_tips: { type: "string" }
                 },
-                required: ["name", "slug", "capital", "currency", "climate", "best_season", "languages", "speciality", "culture", "sections", "tips", "attractions", "faqs"]
+                required: ["name", "slug", "region", "capital", "currency", "climate", "best_season", "languages", "speciality", "culture", "description", "overview_description", "about_content", "best_time_content", "travel_tips"]
               }
             }
           }

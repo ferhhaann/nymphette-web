@@ -462,7 +462,29 @@ export const CountryManager = () => {
         </TabsContent>
         
         <TabsContent value="ai-generator">
-          <AICountryGenerator />
+          <AICountryGenerator 
+            onDataGenerated={(data) => {
+              setEditingCountry({
+                ...createEmptyCountry(),
+                name: data.name || '',
+                slug: data.slug || '',
+                region: data.region || '',
+                capital: data.capital || '',
+                currency: data.currency || '',
+                climate: data.climate || '',
+                best_season: data.best_season || '',
+                languages: data.languages || [],
+                speciality: data.speciality || '',
+                culture: data.culture || '',
+                description: data.description || '',
+                overview_description: data.overview_description || '',
+                about_content: data.about_content || '',
+                best_time_content: data.best_time_content || '',
+                travel_tips: data.travel_tips || ''
+              })
+              setIsDialogOpen(true)
+            }}
+          />
         </TabsContent>
         
         <TabsContent value="sections">
