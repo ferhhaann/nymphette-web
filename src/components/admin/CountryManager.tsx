@@ -84,8 +84,15 @@ export const CountryManager = () => {
     }
   }
 
-  const saveCountry = async (countryData: Partial<Country>) => {
+  const saveCountry = async (countryData: Partial<Country> & { 
+    aiGeneratedSections?: any[], 
+    aiGeneratedTips?: any[], 
+    aiGeneratedAttractions?: any[],
+    aiGeneratedFaqs?: any[]
+  }) => {
     try {
+      let countryId = countryData.id
+      
       if (countryData.id) {
         // Update existing country
         const { error } = await supabase
@@ -98,12 +105,85 @@ export const CountryManager = () => {
         // Create new country — ensure we don't send id (DB will generate UUID)
         const insertData = { ...countryData } as any
         delete insertData.id
+        delete insertData.aiGeneratedSections
+        delete insertData.aiGeneratedTips
+        delete insertData.aiGeneratedAttractions
+        delete insertData.aiGeneratedFaqs
 
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('countries')
           .insert([insertData])
+          .select()
+          .single()
 
         if (error) throw error
+        countryId = data.id
+        
+        // Save AI-generated sections if available
+        if (countryData.aiGeneratedSections?.length) {
+          const sectionsToInsert = countryData.aiGeneratedSections.map((section, index) => ({
+            country_id: countryId,
+            section_name: section.section_name,
+            title: section.title,
+            content: section.content,
+            order_index: index
+          }))
+          
+          const { error: sectionsError } = await supabase
+            .from('country_sections')
+            .insert(sectionsToInsert)
+          
+          if (sectionsError) console.error('Error saving sections:', sectionsError)
+        }
+        
+        // Save AI-generated tips if available
+        if (countryData.aiGeneratedTips?.length) {
+          const tipsToInsert = countryData.aiGeneratedTips.map((tip, index) => ({
+            country_id: countryId,
+            icon: tip.icon,
+            title: tip.title,
+            note: tip.note,
+            order_index: index
+          }))
+          
+          const { error: tipsError } = await supabase
+            .from('country_essential_tips')
+            .insert(tipsToInsert)
+          
+          if (tipsError) console.error('Error saving tips:', tipsError)
+        }
+        
+        // Save AI-generated attractions if available
+        if (countryData.aiGeneratedAttractions?.length) {
+          const attractionsToInsert = countryData.aiGeneratedAttractions.map((attraction, index) => ({
+            country_id: countryId,
+            name: attraction.name,
+            description: attraction.description,
+            type: attraction.type || 'attraction',
+            order_index: index
+          }))
+          
+          const { error: attractionsError } = await supabase
+            .from('country_attractions')
+            .insert(attractionsToInsert)
+          
+          if (attractionsError) console.error('Error saving attractions:', attractionsError)
+        }
+        
+        // Save AI-generated FAQs if available
+        if (countryData.aiGeneratedFaqs?.length) {
+          const faqsToInsert = countryData.aiGeneratedFaqs.map(faq => ({
+            country_id: countryId,
+            question: faq.question,
+            answer: faq.answer
+          }))
+          
+          const { error: faqsError } = await supabase
+            .from('country_faqs')
+            .insert(faqsToInsert)
+          
+          if (faqsError) console.error('Error saving FAQs:', faqsError)
+        }
       }
 
       await loadCountries()
@@ -111,7 +191,7 @@ export const CountryManager = () => {
       setEditingCountry(null)
       toast({
         title: "Success",
-        description: countryData.id ? "Country updated" : "Country created"
+        description: countryData.id ? "Country updated" : "Country and all related content created successfully"
       })
     } catch (error: any) {
       toast({
@@ -480,8 +560,13 @@ export const CountryManager = () => {
                 overview_description: data.overview_description || '',
                 about_content: data.about_content || '',
                 best_time_content: data.best_time_content || '',
-                travel_tips: data.travel_tips || ''
-              })
+                travel_tips: data.travel_tips || '',
+                // Store AI-generated data to be saved when user clicks Save
+                aiGeneratedSections: data.sections || [],
+                aiGeneratedTips: data.tips || [],
+                aiGeneratedAttractions: data.attractions || [],
+                aiGeneratedFaqs: data.faqs || []
+              } as any)
               setIsDialogOpen(true)
             }}
           />

@@ -27,7 +27,7 @@ serve(async (req) => {
 
 IMPORTANT: Generate content that will populate a country database entry. Do NOT include image URLs or paths (images will be uploaded manually).
 
-Return a JSON object matching this database structure:
+Return a JSON object matching this structure:
 
 {
   "name": "${countryName}",
@@ -44,7 +44,23 @@ Return a JSON object matching this database structure:
   "overview_description": "Detailed overview section content (3-4 paragraphs)",
   "about_content": "About the country - detailed content (3-4 paragraphs)",
   "best_time_content": "Best time to visit - detailed seasonal information (2-3 paragraphs)",
-  "travel_tips": "General travel tips and advice (2-3 paragraphs)"
+  "travel_tips": "General travel tips and advice (2-3 paragraphs)",
+  "sections": [
+    { "section_name": "overview", "title": "Overview", "content": { "text": "..." } },
+    { "section_name": "culture", "title": "Culture & Traditions", "content": { "text": "..." } },
+    { "section_name": "food", "title": "Food & Cuisine", "content": { "text": "..." } }
+  ],
+  "tips": [
+    { "icon": "Passport", "title": "Visa Requirements", "note": "..." },
+    { "icon": "Heart", "title": "Health & Safety", "note": "..." },
+    { "icon": "Wifi", "title": "Connectivity", "note": "..." }
+  ],
+  "attractions": [
+    { "name": "Attraction name", "description": "...", "type": "attraction" }
+  ],
+  "faqs": [
+    { "question": "Common question?", "answer": "Detailed answer" }
+  ]
 }
 
 Make the content:
@@ -89,9 +105,56 @@ Make the content:
                   overview_description: { type: "string" },
                   about_content: { type: "string" },
                   best_time_content: { type: "string" },
-                  travel_tips: { type: "string" }
+                  travel_tips: { type: "string" },
+                  sections: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        section_name: { type: "string" },
+                        title: { type: "string" },
+                        content: { type: "object" }
+                      },
+                      required: ["section_name", "title", "content"]
+                    }
+                  },
+                  tips: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        icon: { type: "string" },
+                        title: { type: "string" },
+                        note: { type: "string" }
+                      },
+                      required: ["icon", "title", "note"]
+                    }
+                  },
+                  attractions: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        name: { type: "string" },
+                        description: { type: "string" },
+                        type: { type: "string" }
+                      },
+                      required: ["name", "description", "type"]
+                    }
+                  },
+                  faqs: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        question: { type: "string" },
+                        answer: { type: "string" }
+                      },
+                      required: ["question", "answer"]
+                    }
+                  }
                 },
-                required: ["name", "slug", "region", "capital", "currency", "climate", "best_season", "languages", "speciality", "culture", "description", "overview_description", "about_content", "best_time_content", "travel_tips"]
+                required: ["name", "slug", "region", "capital", "currency", "climate", "best_season", "languages", "speciality", "culture", "description", "sections", "tips", "attractions", "faqs"]
               }
             }
           }
