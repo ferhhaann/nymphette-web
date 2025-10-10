@@ -69,6 +69,7 @@ export interface CountryData {
   gender_female_percentage?: number
   speciality?: string
   culture?: string
+  fallback_image?: string
   hero_images?: CountryHeroImage[]
   sections?: CountrySection[]
   essential_tips?: EssentialTip[]

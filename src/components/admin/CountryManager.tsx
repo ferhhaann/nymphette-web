@@ -13,10 +13,7 @@ import { supabase } from "@/integrations/supabase/client"
 import { useToast } from "@/hooks/use-toast"
 import { Plus, Edit, Trash2, Globe, MapPin, Star } from "lucide-react"
 import { ImageUpload } from "./ImageUpload"
-import { CountryContentManager } from "./CountryContentManager"
-import { ContentSectionsManager } from "./ContentSectionsManager"
-import { AttractionsContentManager } from "./AttractionsContentManager"
-import { CountrySectionManager } from "./CountrySectionManager"
+import { CountryImageManager } from "./CountryImageManager"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { GenericFilter } from "./GenericFilter"
 import type { Database } from "@/integrations/supabase/types"
@@ -216,34 +213,40 @@ export const CountryManager = () => {
       </div>
 
       {/* Navigation Tabs with Better Design */}
-      <Tabs defaultValue="countries" className="space-y-6">
+      <Tabs defaultValue="info" className="space-y-6">
         <div className="bg-white dark:bg-gray-900 rounded-lg border p-1">
-          <TabsList className="grid w-full grid-cols-3 bg-transparent gap-1 h-auto">
+          <TabsList className="grid w-full grid-cols-2 bg-transparent gap-1 h-auto">
             <TabsTrigger 
-              value="countries" 
+              value="info" 
               className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-950 dark:data-[state=active]:text-blue-300"
             >
               <Globe className="h-4 w-4" />
-              Countries ({countries.length})
+              Country Information
             </TabsTrigger>
             <TabsTrigger 
-              value="sections" 
+              value="images" 
               className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-950 dark:data-[state=active]:text-blue-300"
             >
               <Edit className="h-4 w-4" />
-              Content Sections
-            </TabsTrigger>
-            <TabsTrigger 
-              value="content" 
-              className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-950 dark:data-[state=active]:text-blue-300"
-            >
-              <MapPin className="h-4 w-4" />
-              Attractions & Content
+              Images & Media
             </TabsTrigger>
           </TabsList>
         </div>
         
-        <TabsContent value="countries" className="space-y-6">
+        <TabsContent value="info" className="space-y-6">
+          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+            <CardContent className="pt-6">
+              <div className="space-y-2">
+                <h3 className="font-semibold">📝 Note: Country Data in JSON Files</h3>
+                <p className="text-sm text-muted-foreground">
+                  Country information (name, region, descriptions, etc.) is managed in JSON files located at <code className="bg-background px-1 py-0.5 rounded">src/data/countries/</code>.
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Use the <strong>Images & Media</strong> tab to upload and manage hero images for countries.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
           {/* Enhanced Filter Section */}
           <Card className="border-l-4 border-l-blue-500">
             <CardHeader className="pb-4">
@@ -453,13 +456,6 @@ export const CountryManager = () => {
           )}
         </TabsContent>
         
-        <TabsContent value="sections">
-          <ContentSectionsManager />
-        </TabsContent>
-        
-        <TabsContent value="content">
-          <AttractionsContentManager />
-        </TabsContent>
       </Tabs>
     </div>
   )

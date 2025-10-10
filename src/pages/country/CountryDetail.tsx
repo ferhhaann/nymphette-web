@@ -158,14 +158,66 @@ const CountryDetail = () => {
     Camera, Utensils, ShoppingBag, Heart, Palette, Info
   }
 
-  // Hero images with fallback
-  const displayHeroImages = countryData?.hero_images && countryData.hero_images.length > 0 
-    ? countryData.hero_images 
-    : [
-        { image_url: japanHero1, alt_text: 'Hero Image 1', caption: '', order_index: 1 },
-        { image_url: japanHero2, alt_text: 'Hero Image 2', caption: '', order_index: 2 },
-        { image_url: japanHero3, alt_text: 'Hero Image 3', caption: '', order_index: 3 }
-      ]
+  // Hero images with fallback - check database first, then JSON, then fallback image
+  const [dbHeroImages, setDbHeroImages] = useState<any[]>([])
+
+  useEffect(() => {
+    const loadHeroImages = async () => {
+      if (!countryData) return
+      
+      try {
+        const { data: dbCountry } = await supabase
+          .from('countries')
+          .select('id')
+          .eq('slug', countryData.slug)
+          .single()
+
+        if (dbCountry) {
+          const { data } = await supabase
+            .from('country_hero_images')
+            .select('*')
+            .eq('country_id', dbCountry.id)
+            .order('order_index')
+
+          if (data && data.length > 0) {
+            setDbHeroImages(data)
+          }
+        }
+      } catch (error) {
+        console.error('Error loading hero images:', error)
+      }
+    }
+
+    loadHeroImages()
+  }, [countryData])
+
+  // Priority: 1. Database images, 2. JSON images, 3. Fallback image, 4. Default hero images
+  const displayHeroImages = (() => {
+    if (dbHeroImages.length > 0) {
+      return dbHeroImages.map(img => ({
+        image_url: img.image_url,
+        alt_text: img.alt_text || '',
+        caption: img.caption || '',
+        order_index: img.order_index
+      }))
+    }
+    if (countryData?.hero_images && countryData.hero_images.length > 0) {
+      return countryData.hero_images
+    }
+    if (countryData?.fallback_image) {
+      return [{
+        image_url: countryData.fallback_image,
+        alt_text: `${countryData.name} landscape`,
+        caption: `Discover ${countryData.name}`,
+        order_index: 1
+      }]
+    }
+    return [
+      { image_url: japanHero1, alt_text: 'Hero Image 1', caption: '', order_index: 1 },
+      { image_url: japanHero2, alt_text: 'Hero Image 2', caption: '', order_index: 2 },
+      { image_url: japanHero3, alt_text: 'Hero Image 3', caption: '', order_index: 3 }
+    ]
+  })()
 
   if (loading) {
     return (

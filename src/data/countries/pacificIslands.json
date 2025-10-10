@@ -18,6 +18,7 @@
       "gender_female_percentage": 52,
       "speciality": "Luxury Resorts, Diving, Honeymoon",
       "culture": "Island nation with rich maritime heritage",
+      "fallback_image": "/regions/pacific-1.jpg",
       "hero_images": [
         {
           "image_url": "/places/maldives/overwater-villas.jpg",
