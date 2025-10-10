@@ -7,34 +7,35 @@
       "slug": "japan",
       "region": "Asia",
       "capital": "Tokyo",
-      "currency": "Japanese Yen (¥)",
+      "currency": "Japanese Yen (JPY)",
       "climate": "Temperate",
       "best_season": "March to May, September to November",
       "languages": ["Japanese"],
-      "description": "Experience ancient traditions meets modern innovation",
+      "description": "Ancient traditions meet modern innovation",
       "is_popular": true,
-      "annual_visitors": 31880000,
-      "gender_male_percentage": 48,
-      "gender_female_percentage": 52,
-      "speciality": "Technology, Culture, Cuisine",
-      "culture": "Rich blend of ancient traditions and modern lifestyle",
+      "annual_visitors": 32000000,
+      "gender_male_percentage": 52,
+      "gender_female_percentage": 48,
+      "speciality": "Culture, Technology, Cuisine",
+      "culture": "Rich in tradition, honor, and respect",
+      "fallback_image": "/regions/asia-1.jpg",
       "hero_images": [
         {
-          "image_url": "/places/japan/tokyo.webp",
-          "alt_text": "Tokyo skyline",
-          "caption": "Modern Tokyo",
+          "image_url": "/places/japan/mount-fuji.jpg",
+          "alt_text": "Mount Fuji",
+          "caption": "Iconic Mount Fuji",
           "order_index": 1
         },
         {
-          "image_url": "/places/japan/mount-fuji.webp",
-          "alt_text": "Mount Fuji",
-          "caption": "Iconic Mount Fuji",
+          "image_url": "/places/japan/tokyo.jpg",
+          "alt_text": "Tokyo cityscape",
+          "caption": "Modern Tokyo",
           "order_index": 2
         },
         {
           "image_url": "/places/japan/fushimi-inari-shrine.jpg",
           "alt_text": "Fushimi Inari Shrine",
-          "caption": "Traditional shrine",
+          "caption": "Traditional Shrine",
           "order_index": 3
         }
       ],
@@ -44,7 +45,7 @@
           "title": "Discover Japan",
           "content": {
             "description": "Experience the perfect blend of ancient traditions and cutting-edge technology",
-            "highlights": ["Cherry Blossoms", "Mount Fuji", "Ancient Temples", "Modern Cities"]
+            "highlights": ["Mount Fuji", "Cherry Blossoms", "Traditional Temples", "Modern Cities"]
           },
           "order_index": 1,
           "is_enabled": true
@@ -53,170 +54,66 @@
           "section_name": "overview",
           "title": "Overview",
           "content": {
-            "description": "Japan is a fascinating country where ancient traditions seamlessly blend with modern innovation. From the bustling streets of Tokyo to the serene temples of Kyoto, Japan offers a unique travel experience that captivates visitors from around the world."
+            "description": "Japan is a fascinating country where ancient traditions seamlessly blend with modern innovation. From the serene beauty of Mount Fuji to the bustling streets of Tokyo, Japan offers a unique travel experience."
           },
           "order_index": 2,
-          "is_enabled": true
-        },
-        {
-          "section_name": "about",
-          "title": "About Japan",
-          "content": {
-            "description": "Japan is an island nation in East Asia, known for its rich cultural heritage, technological advancements, and stunning natural beauty. With a history spanning thousands of years, Japan has preserved its traditions while becoming one of the world's most modern societies."
-          },
-          "order_index": 3,
-          "is_enabled": true
-        },
-        {
-          "section_name": "fun_facts",
-          "title": "Fun Facts",
-          "content": {
-            "facts": [
-              "Japan has more than 6,800 islands",
-              "The cherry blossom (sakura) is the national flower",
-              "Japan has the world's oldest monarchy",
-              "Tokyo is the world's most populous city",
-              "There are over 200 volcanoes in Japan",
-              "Japanese trains are famously punctual"
-            ]
-          },
-          "order_index": 4,
-          "is_enabled": true
-        },
-        {
-          "section_name": "best_time",
-          "title": "Best Time to Visit",
-          "content": {
-            "description": "The best time to visit Japan is during spring (March-May) for cherry blossoms or autumn (September-November) for fall foliage. Summer can be hot and humid, while winter offers excellent skiing opportunities."
-          },
-          "order_index": 5,
-          "is_enabled": true
-        },
-        {
-          "section_name": "reasons_to_visit",
-          "title": "Reasons to Visit",
-          "content": {
-            "reasons": [
-              "Experience unique culture and traditions",
-              "Enjoy world-class cuisine",
-              "Visit ancient temples and shrines",
-              "Explore modern cities and technology",
-              "See stunning natural landscapes",
-              "Witness cherry blossoms in spring"
-            ]
-          },
-          "order_index": 6,
-          "is_enabled": true
-        },
-        {
-          "section_name": "food_shopping",
-          "title": "Food & Shopping",
-          "content": {
-            "description": "Japan is a paradise for food lovers and shoppers. From Michelin-starred restaurants to street food stalls, Japanese cuisine is world-renowned. Shopping ranges from high-tech electronics in Akihabara to traditional crafts in Kyoto's markets."
-          },
-          "order_index": 7,
-          "is_enabled": true
-        },
-        {
-          "section_name": "dos_donts",
-          "title": "Do's and Don'ts",
-          "content": {
-            "dos": [
-              "Remove shoes when entering homes and some restaurants",
-              "Bow when greeting people",
-              "Be punctual",
-              "Respect quiet zones on trains"
-            ],
-            "donts": [
-              "Don't tip (it's considered rude)",
-              "Don't talk loudly on public transport",
-              "Don't wear shoes on tatami mats",
-              "Don't stick chopsticks upright in rice"
-            ]
-          },
-          "order_index": 8,
-          "is_enabled": true
-        },
-        {
-          "section_name": "art_culture",
-          "title": "Art & Culture",
-          "content": {
-            "description": "Japanese culture is rich with traditional arts including tea ceremony, calligraphy, ikebana (flower arrangement), and origami. Modern Japanese pop culture, including anime and manga, has also gained worldwide popularity."
-          },
-          "order_index": 9,
           "is_enabled": true
         }
       ],
       "essential_tips": [
         {
           "icon": "Info",
-          "title": "Language",
-          "note": "Learn basic Japanese phrases. English is limited outside major cities."
+          "title": "Respect Culture",
+          "note": "Bow when greeting, remove shoes indoors, and be mindful of local customs."
         },
         {
-          "icon": "MapPin",
-          "title": "Transportation",
-          "note": "Get a JR Pass for unlimited train travel. Trains are the best way to explore."
-        },
-        {
-          "icon": "Wallet",
-          "title": "Cash",
-          "note": "Japan is largely cash-based. ATMs may not accept foreign cards."
-        },
-        {
-          "icon": "Calendar",
-          "title": "Timing",
-          "note": "Avoid Golden Week (late April-early May) when everything is crowded."
+          "icon": "Train",
+          "title": "JR Pass",
+          "note": "Get a Japan Rail Pass for unlimited train travel - must be purchased before arrival."
         }
       ],
       "travel_purposes": [
         {
-          "name": "Leisure",
-          "display_name": "Leisure & Sightseeing",
+          "name": "Culture",
+          "display_name": "Cultural Tourism",
           "percentage": 45,
           "color": "#8B5CF6"
         },
         {
-          "name": "Culture",
-          "display_name": "Cultural Experience",
+          "name": "Nature",
+          "display_name": "Nature & Scenery",
           "percentage": 30,
-          "color": "#EC4899"
-        },
-        {
-          "name": "Business",
-          "display_name": "Business",
-          "percentage": 15,
           "color": "#10B981"
         },
         {
-          "name": "Food",
-          "display_name": "Culinary Tourism",
-          "percentage": 10,
+          "name": "Urban",
+          "display_name": "City Experience",
+          "percentage": 25,
           "color": "#F59E0B"
         }
       ],
       "attractions": [
         {
-          "name": "Tokyo Tower",
-          "description": "Iconic landmark offering panoramic city views",
-          "category": "landmark",
-          "type": "attraction",
-          "image_url": "/places/japan/tokyo.webp",
+          "name": "Mount Fuji",
+          "description": "Japan's iconic volcanic mountain, a UNESCO World Heritage site",
+          "category": "Nature",
+          "type": "Mountain",
+          "image_url": "/places/japan/mount-fuji.jpg",
           "order_index": 1
         },
         {
-          "name": "Mount Fuji",
-          "description": "Japan's highest mountain and sacred symbol",
-          "category": "nature",
-          "type": "attraction",
-          "image_url": "/places/japan/mount-fuji.webp",
+          "name": "Tokyo",
+          "description": "Vibrant capital city blending tradition and modernity",
+          "category": "City",
+          "type": "Urban",
+          "image_url": "/places/japan/tokyo.jpg",
           "order_index": 2
         },
         {
           "name": "Fushimi Inari Shrine",
-          "description": "Famous for thousands of red torii gates",
-          "category": "cultural",
-          "type": "attraction",
+          "description": "Famous shrine with thousands of vermillion torii gates",
+          "category": "Culture",
+          "type": "Temple",
           "image_url": "/places/japan/fushimi-inari-shrine.jpg",
           "order_index": 3
         }
@@ -224,19 +121,11 @@
       "faqs": [
         {
           "question": "Do I need a visa to visit Japan?",
-          "answer": "Many countries have visa-free access to Japan for short stays (90 days). Check with the Japanese embassy for your specific country."
+          "answer": "Many countries have visa-free entry for tourism up to 90 days. Check with your local Japanese embassy."
         },
         {
-          "question": "Is Japan expensive?",
-          "answer": "Japan can be expensive, but budget options are available. Convenience stores and local restaurants offer affordable meals."
-        },
-        {
-          "question": "What's the best way to get around?",
-          "answer": "Trains are the most efficient way to travel. Consider getting a JR Pass for unlimited travel on JR trains."
-        },
-        {
-          "question": "When is cherry blossom season?",
-          "answer": "Cherry blossoms typically bloom from late March to early May, depending on the region."
+          "question": "When is the best time to see cherry blossoms?",
+          "answer": "Late March to early April is peak cherry blossom season in most of Japan."
         }
       ],
       "contact_info": {
@@ -252,34 +141,35 @@
       "slug": "thailand",
       "region": "Asia",
       "capital": "Bangkok",
-      "currency": "Thai Baht (฿)",
+      "currency": "Thai Baht (THB)",
       "climate": "Tropical",
       "best_season": "November to February",
       "languages": ["Thai"],
-      "description": "Discover stunning beaches, ancient temples, and vibrant culture",
+      "description": "Land of smiles with stunning beaches and rich culture",
       "is_popular": true,
-      "annual_visitors": 39800000,
-      "gender_male_percentage": 52,
-      "gender_female_percentage": 48,
+      "annual_visitors": 40000000,
+      "gender_male_percentage": 50,
+      "gender_female_percentage": 50,
       "speciality": "Beaches, Temples, Street Food",
-      "culture": "Warm hospitality and rich Buddhist traditions",
+      "culture": "Buddhist traditions with warm hospitality",
+      "fallback_image": "/regions/asia-2.jpg",
       "hero_images": [
         {
-          "image_url": "/places/thailand/bangkok.webp",
-          "alt_text": "Bangkok cityscape",
-          "caption": "Vibrant Bangkok",
+          "image_url": "/places/thailand/bangkok.jpg",
+          "alt_text": "Bangkok temples",
+          "caption": "Grand Palace Bangkok",
           "order_index": 1
         },
         {
-          "image_url": "/places/thailand/phuket.webp",
+          "image_url": "/places/thailand/phuket.jpg",
           "alt_text": "Phuket beaches",
           "caption": "Beautiful Phuket",
           "order_index": 2
         },
         {
-          "image_url": "/places/thailand/chiang-mai.webp",
-          "alt_text": "Chiang Mai temples",
-          "caption": "Historic Chiang Mai",
+          "image_url": "/places/thailand/chiang-mai.jpg",
+          "alt_text": "Chiang Mai",
+          "caption": "Northern Thailand",
           "order_index": 3
         }
       ],
@@ -288,8 +178,8 @@
           "section_name": "hero",
           "title": "Discover Thailand",
           "content": {
-            "description": "Experience the land of smiles with stunning beaches, ancient temples, and delicious cuisine",
-            "highlights": ["Tropical Beaches", "Buddhist Temples", "Street Food", "Island Paradise"]
+            "description": "Experience paradise beaches, golden temples, and world-famous cuisine",
+            "highlights": ["Tropical Islands", "Buddhist Temples", "Street Food", "Nightlife"]
           },
           "order_index": 1,
           "is_enabled": true
@@ -298,7 +188,7 @@
           "section_name": "overview",
           "title": "Overview",
           "content": {
-            "description": "Thailand is a Southeast Asian country known for tropical beaches, opulent royal palaces, ancient ruins and ornate temples. The bustling capital Bangkok features the Chao Phraya River and vibrant street life."
+            "description": "Thailand is known as the Land of Smiles, offering stunning beaches, ornate temples, delicious cuisine, and warm hospitality. From bustling Bangkok to peaceful islands, Thailand has something for everyone."
           },
           "order_index": 2,
           "is_enabled": true
@@ -307,33 +197,473 @@
       "essential_tips": [
         {
           "icon": "Info",
-          "title": "Respect",
-          "note": "Dress modestly when visiting temples. Remove shoes before entering."
+          "title": "Respect Temples",
+          "note": "Dress modestly when visiting temples - cover shoulders and knees."
         },
         {
-          "icon": "Sun",
-          "title": "Weather",
-          "note": "Visit during cool season (Nov-Feb) for best weather."
+          "icon": "Wallet",
+          "title": "Currency",
+          "note": "Carry cash for street food and local markets. Cards accepted in malls and hotels."
         }
       ],
       "travel_purposes": [
         {
           "name": "Beach",
-          "display_name": "Beach & Relaxation",
+          "display_name": "Beach & Islands",
           "percentage": 40,
           "color": "#3B82F6"
         },
         {
           "name": "Culture",
-          "display_name": "Cultural Tourism",
+          "display_name": "Cultural Sites",
           "percentage": 35,
           "color": "#8B5CF6"
         },
         {
-          "name": "Adventure",
-          "display_name": "Adventure",
+          "name": "Food",
+          "display_name": "Food & Nightlife",
           "percentage": 25,
+          "color": "#EC4899"
+        }
+      ],
+      "attractions": [],
+      "faqs": [],
+      "contact_info": {
+        "email": "hello@nymphettetours.com",
+        "phone": "+1 (555) 123-4567",
+        "whatsapp": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "china",
+      "name": "China",
+      "slug": "china",
+      "region": "Asia",
+      "capital": "Beijing",
+      "currency": "Chinese Yuan (CNY)",
+      "climate": "Diverse",
+      "best_season": "April to May, September to October",
+      "languages": ["Mandarin Chinese"],
+      "description": "Ancient civilization with modern megacities",
+      "is_popular": true,
+      "annual_visitors": 65000000,
+      "gender_male_percentage": 51,
+      "gender_female_percentage": 49,
+      "speciality": "History, Culture, Great Wall",
+      "culture": "5000 years of rich history and traditions",
+      "fallback_image": "/regions/asia-3.jpg",
+      "hero_images": [
+        {
+          "image_url": "/places/china/beijing.jpg",
+          "alt_text": "Great Wall of China",
+          "caption": "The Great Wall",
+          "order_index": 1
+        }
+      ],
+      "sections": [
+        {
+          "section_name": "hero",
+          "title": "Discover China",
+          "content": {
+            "description": "Explore ancient wonders and modern marvels in the world's oldest civilization",
+            "highlights": ["Great Wall", "Forbidden City", "Terracotta Warriors", "Modern Cities"]
+          },
+          "order_index": 1,
+          "is_enabled": true
+        },
+        {
+          "section_name": "overview",
+          "title": "Overview",
+          "content": {
+            "description": "China offers an incredible journey through 5000 years of history, from the Great Wall to ultramodern Shanghai. Experience diverse landscapes, rich culture, and amazing cuisine."
+          },
+          "order_index": 2,
+          "is_enabled": true
+        }
+      ],
+      "essential_tips": [
+        {
+          "icon": "Info",
+          "title": "VPN Required",
+          "note": "Install a VPN before arrival to access blocked websites and apps."
+        },
+        {
+          "icon": "MessageSquare",
+          "title": "Language Barrier",
+          "note": "English is not widely spoken. Download translation apps and have addresses in Chinese."
+        }
+      ],
+      "travel_purposes": [
+        {
+          "name": "History",
+          "display_name": "Historical Sites",
+          "percentage": 50,
+          "color": "#8B5CF6"
+        },
+        {
+          "name": "Culture",
+          "display_name": "Cultural Experience",
+          "percentage": 30,
+          "color": "#F59E0B"
+        },
+        {
+          "name": "Urban",
+          "display_name": "Modern Cities",
+          "percentage": 20,
+          "color": "#EC4899"
+        }
+      ],
+      "attractions": [],
+      "faqs": [],
+      "contact_info": {
+        "email": "hello@nymphettetours.com",
+        "phone": "+1 (555) 123-4567",
+        "whatsapp": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "south-korea",
+      "name": "South Korea",
+      "slug": "south-korea",
+      "region": "Asia",
+      "capital": "Seoul",
+      "currency": "South Korean Won (KRW)",
+      "climate": "Temperate",
+      "best_season": "March to May, September to November",
+      "languages": ["Korean"],
+      "description": "K-pop culture meets ancient temples",
+      "is_popular": true,
+      "annual_visitors": 17000000,
+      "gender_male_percentage": 48,
+      "gender_female_percentage": 52,
+      "speciality": "K-Culture, Technology, Food",
+      "culture": "Dynamic blend of tradition and modern pop culture",
+      "fallback_image": "/regions/asia-1.jpg",
+      "hero_images": [
+        {
+          "image_url": "/places/south-korea/seoul.jpg",
+          "alt_text": "Seoul cityscape",
+          "caption": "Modern Seoul",
+          "order_index": 1
+        }
+      ],
+      "sections": [
+        {
+          "section_name": "hero",
+          "title": "Discover South Korea",
+          "content": {
+            "description": "Experience the perfect fusion of ancient traditions and cutting-edge modernity",
+            "highlights": ["K-Pop Culture", "Traditional Palaces", "Korean BBQ", "Tech Innovation"]
+          },
+          "order_index": 1,
+          "is_enabled": true
+        },
+        {
+          "section_name": "overview",
+          "title": "Overview",
+          "content": {
+            "description": "South Korea is a captivating destination where ancient palaces stand alongside futuristic skyscrapers. From the vibrant streets of Seoul to serene temples in the mountains, Korea offers diverse experiences."
+          },
+          "order_index": 2,
+          "is_enabled": true
+        }
+      ],
+      "essential_tips": [
+        {
+          "icon": "Wifi",
+          "title": "Internet",
+          "note": "Korea has the world's fastest internet. Free WiFi is available almost everywhere."
+        },
+        {
+          "icon": "CreditCard",
+          "title": "Cashless Society",
+          "note": "Credit cards are widely accepted. Download KakaoPay or Samsung Pay for convenience."
+        }
+      ],
+      "travel_purposes": [
+        {
+          "name": "Culture",
+          "display_name": "K-Culture & Entertainment",
+          "percentage": 45,
+          "color": "#EC4899"
+        },
+        {
+          "name": "Food",
+          "display_name": "Culinary Experience",
+          "percentage": 30,
+          "color": "#F59E0B"
+        },
+        {
+          "name": "Shopping",
+          "display_name": "Shopping & Beauty",
+          "percentage": 25,
+          "color": "#8B5CF6"
+        }
+      ],
+      "attractions": [],
+      "faqs": [],
+      "contact_info": {
+        "email": "hello@nymphettetours.com",
+        "phone": "+1 (555) 123-4567",
+        "whatsapp": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "indonesia",
+      "name": "Indonesia",
+      "slug": "indonesia",
+      "region": "Asia",
+      "capital": "Jakarta",
+      "currency": "Indonesian Rupiah (IDR)",
+      "climate": "Tropical",
+      "best_season": "April to October",
+      "languages": ["Indonesian"],
+      "description": "Paradise islands with rich cultural diversity",
+      "is_popular": true,
+      "annual_visitors": 16000000,
+      "gender_male_percentage": 50,
+      "gender_female_percentage": 50,
+      "speciality": "Beaches, Diving, Temples",
+      "culture": "Diverse archipelago with unique island cultures",
+      "fallback_image": "/regions/asia-2.jpg",
+      "hero_images": [
+        {
+          "image_url": "/places/indonesia/bali.jpg",
+          "alt_text": "Bali rice terraces",
+          "caption": "Beautiful Bali",
+          "order_index": 1
+        }
+      ],
+      "sections": [
+        {
+          "section_name": "hero",
+          "title": "Discover Indonesia",
+          "content": {
+            "description": "Explore thousands of tropical islands with pristine beaches and ancient temples",
+            "highlights": ["Bali Paradise", "Komodo Dragons", "Volcanic Landscapes", "Diving Spots"]
+          },
+          "order_index": 1,
+          "is_enabled": true
+        },
+        {
+          "section_name": "overview",
+          "title": "Overview",
+          "content": {
+            "description": "Indonesia is the world's largest archipelago with over 17,000 islands. From the cultural heart of Bali to the underwater paradise of Raja Ampat, Indonesia offers endless adventures."
+          },
+          "order_index": 2,
+          "is_enabled": true
+        }
+      ],
+      "essential_tips": [
+        {
+          "icon": "Plane",
+          "title": "Island Hopping",
+          "note": "Book domestic flights in advance. Ferry services connect major islands."
+        },
+        {
+          "icon": "Umbrella",
+          "title": "Rainy Season",
+          "note": "Avoid November to March for beach destinations due to monsoon rains."
+        }
+      ],
+      "travel_purposes": [
+        {
+          "name": "Beach",
+          "display_name": "Beach & Islands",
+          "percentage": 50,
+          "color": "#3B82F6"
+        },
+        {
+          "name": "Culture",
+          "display_name": "Cultural Heritage",
+          "percentage": 30,
+          "color": "#8B5CF6"
+        },
+        {
+          "name": "Adventure",
+          "display_name": "Adventure & Diving",
+          "percentage": 20,
           "color": "#10B981"
+        }
+      ],
+      "attractions": [],
+      "faqs": [],
+      "contact_info": {
+        "email": "hello@nymphettetours.com",
+        "phone": "+1 (555) 123-4567",
+        "whatsapp": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "slug": "singapore",
+      "region": "Asia",
+      "capital": "Singapore",
+      "currency": "Singapore Dollar (SGD)",
+      "climate": "Tropical",
+      "best_season": "February to April",
+      "languages": ["English", "Mandarin", "Malay", "Tamil"],
+      "description": "Modern city-state with world-class attractions",
+      "is_popular": true,
+      "annual_visitors": 19000000,
+      "gender_male_percentage": 49,
+      "gender_female_percentage": 51,
+      "speciality": "Urban Gardens, Shopping, Food",
+      "culture": "Multicultural melting pot of Asian cultures",
+      "fallback_image": "/regions/asia-3.jpg",
+      "hero_images": [
+        {
+          "image_url": "/places/singapore/singapore.jpg",
+          "alt_text": "Singapore skyline",
+          "caption": "Marina Bay Sands",
+          "order_index": 1
+        }
+      ],
+      "sections": [
+        {
+          "section_name": "hero",
+          "title": "Discover Singapore",
+          "content": {
+            "description": "Experience a futuristic city garden with world-class dining and shopping",
+            "highlights": ["Gardens by the Bay", "Marina Bay", "Street Food", "Shopping Paradise"]
+          },
+          "order_index": 1,
+          "is_enabled": true
+        },
+        {
+          "section_name": "overview",
+          "title": "Overview",
+          "content": {
+            "description": "Singapore is a gleaming city-state known for its cleanliness, efficiency, and stunning modern architecture. Despite its small size, it packs in world-class attractions, diverse cuisine, and lush gardens."
+          },
+          "order_index": 2,
+          "is_enabled": true
+        }
+      ],
+      "essential_tips": [
+        {
+          "icon": "AlertCircle",
+          "title": "Strict Laws",
+          "note": "Follow local laws strictly - no chewing gum, littering, or jaywalking."
+        },
+        {
+          "icon": "DollarSign",
+          "title": "Expensive",
+          "note": "Singapore is pricey. Budget for accommodation and meals accordingly."
+        }
+      ],
+      "travel_purposes": [
+        {
+          "name": "Urban",
+          "display_name": "City Experience",
+          "percentage": 40,
+          "color": "#EC4899"
+        },
+        {
+          "name": "Food",
+          "display_name": "Food & Dining",
+          "percentage": 35,
+          "color": "#F59E0B"
+        },
+        {
+          "name": "Shopping",
+          "display_name": "Shopping",
+          "percentage": 25,
+          "color": "#8B5CF6"
+        }
+      ],
+      "attractions": [],
+      "faqs": [],
+      "contact_info": {
+        "email": "hello@nymphettetours.com",
+        "phone": "+1 (555) 123-4567",
+        "whatsapp": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "vietnam",
+      "name": "Vietnam",
+      "slug": "vietnam",
+      "region": "Asia",
+      "capital": "Hanoi",
+      "currency": "Vietnamese Dong (VND)",
+      "climate": "Tropical",
+      "best_season": "February to April, August to October",
+      "languages": ["Vietnamese"],
+      "description": "Rich history with stunning natural beauty",
+      "is_popular": true,
+      "annual_visitors": 18000000,
+      "gender_male_percentage": 51,
+      "gender_female_percentage": 49,
+      "speciality": "History, Nature, Street Food",
+      "culture": "Blend of Chinese, French, and indigenous influences",
+      "fallback_image": "/regions/asia-1.jpg",
+      "hero_images": [
+        {
+          "image_url": "/places/vietnam/ho-chi-minh.jpg",
+          "alt_text": "Ho Chi Minh City",
+          "caption": "Vibrant Saigon",
+          "order_index": 1
+        }
+      ],
+      "sections": [
+        {
+          "section_name": "hero",
+          "title": "Discover Vietnam",
+          "content": {
+            "description": "Journey through ancient cities, emerald waters, and vibrant street life",
+            "highlights": ["Ha Long Bay", "Ancient Towns", "Street Food", "Rice Terraces"]
+          },
+          "order_index": 1,
+          "is_enabled": true
+        },
+        {
+          "section_name": "overview",
+          "title": "Overview",
+          "content": {
+            "description": "Vietnam captivates visitors with its stunning natural beauty, rich history, and incredible cuisine. From the bustling streets of Hanoi to the serene waters of Ha Long Bay, Vietnam offers unforgettable experiences."
+          },
+          "order_index": 2,
+          "is_enabled": true
+        }
+      ],
+      "essential_tips": [
+        {
+          "icon": "Bike",
+          "title": "Motorbike Traffic",
+          "note": "Traffic can be chaotic. Cross streets slowly and steadily - don't stop or run."
+        },
+        {
+          "icon": "Coffee",
+          "title": "Coffee Culture",
+          "note": "Try Vietnamese coffee - it's some of the best in the world!"
+        }
+      ],
+      "travel_purposes": [
+        {
+          "name": "Culture",
+          "display_name": "Cultural Heritage",
+          "percentage": 40,
+          "color": "#8B5CF6"
+        },
+        {
+          "name": "Nature",
+          "display_name": "Natural Beauty",
+          "percentage": 35,
+          "color": "#10B981"
+        },
+        {
+          "name": "Food",
+          "display_name": "Culinary Tours",
+          "percentage": 25,
+          "color": "#F59E0B"
         }
       ],
       "attractions": [],
