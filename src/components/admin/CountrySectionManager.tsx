@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { supabase } from "@/integrations/supabase/client"
 import { useToast } from "@/hooks/use-toast"
-import { Plus, Edit, Trash2, Image, GripVertical } from "lucide-react"
+import { Plus, Edit, Trash2, Image, GripVertical, Sparkles } from "lucide-react"
 import { ImageUpload } from "./ImageUpload"
 import type { Database } from "@/integrations/supabase/types"
 
@@ -441,6 +441,8 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
     highlight: '',
     ...extractContentFields(section.content || {})
   })
+  const [generatingField, setGeneratingField] = useState<string | null>(null)
+  const { toast } = useToast()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -487,6 +489,48 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
       ...prev,
       points: prev.points.map((point, i) => i === index ? value : point)
     }))
+  }
+
+  const generateContentWithAI = async (fieldName: string, fieldType: 'description' | 'subtitle' | 'points' | 'highlight') => {
+    setGeneratingField(fieldName)
+    try {
+      const sectionType = SECTION_TYPES.find(t => t.value === formData.section_name)?.label || formData.section_name
+      
+      const { data, error } = await supabase.functions.invoke('generate-section-content', {
+        body: {
+          sectionType: formData.section_name,
+          sectionTitle: formData.title || sectionType,
+          fieldType,
+          context: {
+            description: contentFields.description,
+            subtitle: contentFields.subtitle,
+            existingPoints: contentFields.points
+          }
+        }
+      })
+
+      if (error) throw error
+
+      if (data.success && data.content) {
+        if (fieldType === 'points') {
+          updateContentField('points', data.content)
+        } else {
+          updateContentField(fieldType, data.content)
+        }
+        toast({
+          title: "Success",
+          description: `AI content generated for ${fieldName}`
+        })
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to generate content",
+        variant: "destructive"
+      })
+    } finally {
+      setGeneratingField(null)
+    }
   }
 
   return (
@@ -557,7 +601,19 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="description">Main Description</Label>
+              <div className="flex items-center justify-between mb-2">
+                <Label htmlFor="description">Main Description</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => generateContentWithAI('description', 'description')}
+                  disabled={generatingField === 'description' || !formData.section_name}
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  {generatingField === 'description' ? 'Generating...' : 'Generate with AI'}
+                </Button>
+              </div>
               <Textarea
                 id="description"
                 value={contentFields.description}
@@ -568,7 +624,19 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
             </div>
 
             <div>
-              <Label htmlFor="subtitle">Subtitle (Optional)</Label>
+              <div className="flex items-center justify-between mb-2">
+                <Label htmlFor="subtitle">Subtitle (Optional)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => generateContentWithAI('subtitle', 'subtitle')}
+                  disabled={generatingField === 'subtitle' || !formData.section_name}
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  {generatingField === 'subtitle' ? 'Generating...' : 'Generate with AI'}
+                </Button>
+              </div>
               <Input
                 id="subtitle"
                 value={contentFields.subtitle}
@@ -578,7 +646,19 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
             </div>
 
             <div>
-              <Label htmlFor="highlight">Highlight Text (Optional)</Label>
+              <div className="flex items-center justify-between mb-2">
+                <Label htmlFor="highlight">Highlight Text (Optional)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => generateContentWithAI('highlight', 'highlight')}
+                  disabled={generatingField === 'highlight' || !formData.section_name}
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  {generatingField === 'highlight' ? 'Generating...' : 'Generate with AI'}
+                </Button>
+              </div>
               <Input
                 id="highlight"
                 value={contentFields.highlight}
@@ -590,10 +670,22 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <Label>Key Points</Label>
-                <Button type="button" variant="outline" size="sm" onClick={addPoint}>
-                  <Plus className="h-4 w-4 mr-1" />
-                  Add Point
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => generateContentWithAI('key points', 'points')}
+                    disabled={generatingField === 'points' || !formData.section_name}
+                  >
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    {generatingField === 'points' ? 'Generating...' : 'Generate with AI'}
+                  </Button>
+                  <Button type="button" variant="outline" size="sm" onClick={addPoint}>
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Point
+                  </Button>
+                </div>
               </div>
               <div className="space-y-2">
                 {contentFields.points.map((point, index) => (
