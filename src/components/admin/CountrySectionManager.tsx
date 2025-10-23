@@ -425,12 +425,29 @@ interface SectionFormProps {
   onCancel: () => void
 }
 
-const extractContentFields = (content: any) => {
+const extractContentFields = (content: any, sectionName?: string) => {
+  // Extract based on section type
+  let points: string[] = ['']
+  
+  if (sectionName === 'fun_facts' && content.facts) {
+    points = content.facts
+  } else if (sectionName === 'before_you_go' && content.tips) {
+    points = content.tips
+  } else if (sectionName === 'reasons_to_visit' && content.reasons) {
+    points = content.reasons
+  } else if (sectionName === 'dos_donts') {
+    points = [...(content.dos || []), ...(content.donts || [])]
+  } else if (content.points) {
+    points = content.points
+  } else if (content.highlights) {
+    points = content.highlights
+  }
+  
   return {
-    description: content.description || '',
+    description: content.description || content.food || '',
     subtitle: content.subtitle || '',
-    points: content.points || [''],
-    highlight: content.highlight || ''
+    points: points.length > 0 ? points : [''],
+    highlight: content.highlight || content.shopping || content.content || ''
   }
 }
 
@@ -441,7 +458,7 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
     subtitle: '',
     points: [''],
     highlight: '',
-    ...extractContentFields(section.content || {})
+    ...extractContentFields(section.content || {}, section.section_name)
   })
   const [generatingField, setGeneratingField] = useState<string | null>(null)
   const { toast } = useToast()
@@ -449,11 +466,64 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    const content = {
-      description: contentFields.description,
-      subtitle: contentFields.subtitle,
-      points: contentFields.points.filter(point => point.trim() !== ''),
-      highlight: contentFields.highlight
+    // Map content fields based on section type
+    let content: any = {}
+    
+    switch (formData.section_name) {
+      case 'fun_facts':
+        content = {
+          description: contentFields.description,
+          facts: contentFields.points.filter(point => point.trim() !== '')
+        }
+        break
+      case 'before_you_go':
+        content = {
+          description: contentFields.description,
+          tips: contentFields.points.filter(point => point.trim() !== '')
+        }
+        break
+      case 'reasons_to_visit':
+        content = {
+          description: contentFields.description,
+          reasons: contentFields.points.filter(point => point.trim() !== '')
+        }
+        break
+      case 'dos_donts':
+        const allPoints = contentFields.points.filter(point => point.trim() !== '')
+        const midPoint = Math.ceil(allPoints.length / 2)
+        content = {
+          dos: allPoints.slice(0, midPoint),
+          donts: allPoints.slice(midPoint)
+        }
+        break
+      case 'food_shopping':
+        content = {
+          food: contentFields.description,
+          shopping: contentFields.highlight
+        }
+        break
+      case 'best_time':
+        content = {
+          content: contentFields.description,
+          subtitle: contentFields.subtitle,
+          highlights: contentFields.points.filter(point => point.trim() !== '')
+        }
+        break
+      case 'hero':
+        content = {
+          description: contentFields.description,
+          subtitle: contentFields.subtitle,
+          highlights: contentFields.points.filter(point => point.trim() !== '')
+        }
+        break
+      default:
+        // For overview, about, art_culture and others
+        content = {
+          description: contentFields.description,
+          subtitle: contentFields.subtitle,
+          points: contentFields.points.filter(point => point.trim() !== ''),
+          highlight: contentFields.highlight
+        }
     }
     
     const dataToSave = {
@@ -535,6 +605,88 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
     }
   }
 
+  // Get field labels based on section type
+  const getFieldLabels = () => {
+    const sectionType = formData.section_name
+    
+    switch (sectionType) {
+      case 'fun_facts':
+        return {
+          description: 'Introduction',
+          descriptionPlaceholder: 'Brief intro about fun facts',
+          points: 'Fun Facts',
+          pointsPlaceholder: 'Add an interesting fact',
+          highlight: 'Additional Note',
+          highlightPlaceholder: 'Any additional information'
+        }
+      case 'before_you_go':
+        return {
+          description: 'Introduction',
+          descriptionPlaceholder: 'Introduction to travel tips',
+          points: 'Travel Tips',
+          pointsPlaceholder: 'Add a helpful travel tip',
+          highlight: 'Important Note',
+          highlightPlaceholder: 'Any critical information'
+        }
+      case 'reasons_to_visit':
+        return {
+          description: 'Introduction',
+          descriptionPlaceholder: 'Why visit this destination',
+          points: 'Reasons',
+          pointsPlaceholder: 'Add a compelling reason to visit',
+          highlight: 'Special Highlight',
+          highlightPlaceholder: 'Unique selling point'
+        }
+      case 'dos_donts':
+        return {
+          description: 'Introduction',
+          descriptionPlaceholder: 'Cultural etiquette intro',
+          points: "Do's & Don'ts",
+          pointsPlaceholder: "Add a do or don't (first half = do's, second half = don'ts)",
+          highlight: 'Important Note',
+          highlightPlaceholder: 'Critical cultural information'
+        }
+      case 'food_shopping':
+        return {
+          description: 'Local Cuisine',
+          descriptionPlaceholder: 'Describe local food and dining',
+          points: 'Highlights',
+          pointsPlaceholder: 'Food or shopping highlight',
+          highlight: 'Shopping Information',
+          highlightPlaceholder: 'Where to shop and what to buy'
+        }
+      case 'best_time':
+        return {
+          description: 'Best Time Information',
+          descriptionPlaceholder: 'When to visit and why',
+          points: 'Seasonal Highlights',
+          pointsPlaceholder: 'Add seasonal information',
+          highlight: 'Weather Note',
+          highlightPlaceholder: 'Weather considerations'
+        }
+      case 'hero':
+        return {
+          description: 'Hero Description',
+          descriptionPlaceholder: 'Compelling intro text for hero section',
+          points: 'Highlights',
+          pointsPlaceholder: 'Key highlight or badge',
+          highlight: 'Tagline',
+          highlightPlaceholder: 'Short catchy tagline'
+        }
+      default:
+        return {
+          description: 'Main Description',
+          descriptionPlaceholder: 'Enter main content description',
+          points: 'Key Points',
+          pointsPlaceholder: 'Add a key point',
+          highlight: 'Highlight (Optional)',
+          highlightPlaceholder: 'Additional highlight or note'
+        }
+    }
+  }
+
+  const fieldLabels = getFieldLabels()
+
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -600,11 +752,20 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Content</CardTitle>
+            {formData.section_name && (
+              <p className="text-sm text-muted-foreground mt-2">
+                {formData.section_name === 'dos_donts' && "Note: Add all items as points. First half will be Do's, second half will be Don'ts."}
+                {formData.section_name === 'food_shopping' && "Note: Use 'Description' for food info and 'Highlight' for shopping info."}
+                {formData.section_name === 'fun_facts' && "Note: Add each fact as a separate point."}
+                {formData.section_name === 'before_you_go' && "Note: Add each travel tip as a separate point."}
+                {formData.section_name === 'reasons_to_visit' && "Note: Add each reason as a separate point."}
+              </p>
+            )}
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <Label htmlFor="description">Main Description</Label>
+                <Label htmlFor="description">{fieldLabels.description}</Label>
                 <Button
                   type="button"
                   variant="outline"
@@ -621,7 +782,7 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
                 value={contentFields.description}
                 onChange={(e) => updateContentField('description', e.target.value)}
                 rows={4}
-                placeholder="Enter main content description"
+                placeholder={fieldLabels.descriptionPlaceholder}
               />
             </div>
 
@@ -649,7 +810,7 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <Label htmlFor="highlight">Highlight Text (Optional)</Label>
+                <Label htmlFor="highlight">{fieldLabels.highlight}</Label>
                 <Button
                   type="button"
                   variant="outline"
@@ -665,13 +826,13 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
                 id="highlight"
                 value={contentFields.highlight}
                 onChange={(e) => updateContentField('highlight', e.target.value)}
-                placeholder="Enter highlight or callout text"
+                placeholder={fieldLabels.highlightPlaceholder}
               />
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <Label>Key Points</Label>
+                <Label>{fieldLabels.points}</Label>
                 <div className="flex gap-2">
                   <Button
                     type="button"
@@ -695,7 +856,7 @@ const SectionForm = ({ section, onSave, onCancel }: SectionFormProps) => {
                     <Input
                       value={point}
                       onChange={(e) => updatePoint(index, e.target.value)}
-                      placeholder={`Point ${index + 1}`}
+                      placeholder={fieldLabels.pointsPlaceholder}
                     />
                     <Button
                       type="button"
