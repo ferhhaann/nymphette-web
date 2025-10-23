@@ -17,7 +17,6 @@ import { CountryContentManager } from "./CountryContentManager"
 import { ContentSectionsManager } from "./ContentSectionsManager"
 import { AttractionsContentManager } from "./AttractionsContentManager"
 import { CountrySectionManager } from "./CountrySectionManager"
-import { AICountryGenerator } from "./AICountryGenerator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { GenericFilter } from "./GenericFilter"
 import type { Database } from "@/integrations/supabase/types"
@@ -84,12 +83,7 @@ export const CountryManager = () => {
     }
   }
 
-  const saveCountry = async (countryData: Partial<Country> & { 
-    aiGeneratedSections?: any[], 
-    aiGeneratedTips?: any[], 
-    aiGeneratedAttractions?: any[],
-    aiGeneratedFaqs?: any[]
-  }) => {
+  const saveCountry = async (countryData: Partial<Country>) => {
     try {
       let countryId = countryData.id
       
@@ -105,10 +99,6 @@ export const CountryManager = () => {
         // Create new country — ensure we don't send id (DB will generate UUID)
         const insertData = { ...countryData } as any
         delete insertData.id
-        delete insertData.aiGeneratedSections
-        delete insertData.aiGeneratedTips
-        delete insertData.aiGeneratedAttractions
-        delete insertData.aiGeneratedFaqs
 
         const { data, error } = await supabase
           .from('countries')
@@ -118,72 +108,6 @@ export const CountryManager = () => {
 
         if (error) throw error
         countryId = data.id
-        
-        // Save AI-generated sections if available
-        if (countryData.aiGeneratedSections?.length) {
-          const sectionsToInsert = countryData.aiGeneratedSections.map((section, index) => ({
-            country_id: countryId,
-            section_name: section.section_name,
-            title: section.title,
-            content: section.content,
-            order_index: index
-          }))
-          
-          const { error: sectionsError } = await supabase
-            .from('country_sections')
-            .insert(sectionsToInsert)
-          
-          if (sectionsError) console.error('Error saving sections:', sectionsError)
-        }
-        
-        // Save AI-generated tips if available
-        if (countryData.aiGeneratedTips?.length) {
-          const tipsToInsert = countryData.aiGeneratedTips.map((tip, index) => ({
-            country_id: countryId,
-            icon: tip.icon,
-            title: tip.title,
-            note: tip.note,
-            order_index: index
-          }))
-          
-          const { error: tipsError } = await supabase
-            .from('country_essential_tips')
-            .insert(tipsToInsert)
-          
-          if (tipsError) console.error('Error saving tips:', tipsError)
-        }
-        
-        // Save AI-generated attractions if available
-        if (countryData.aiGeneratedAttractions?.length) {
-          const attractionsToInsert = countryData.aiGeneratedAttractions.map((attraction, index) => ({
-            country_id: countryId,
-            name: attraction.name,
-            description: attraction.description,
-            type: attraction.type || 'attraction',
-            order_index: index
-          }))
-          
-          const { error: attractionsError } = await supabase
-            .from('country_attractions')
-            .insert(attractionsToInsert)
-          
-          if (attractionsError) console.error('Error saving attractions:', attractionsError)
-        }
-        
-        // Save AI-generated FAQs if available
-        if (countryData.aiGeneratedFaqs?.length) {
-          const faqsToInsert = countryData.aiGeneratedFaqs.map(faq => ({
-            country_id: countryId,
-            question: faq.question,
-            answer: faq.answer
-          }))
-          
-          const { error: faqsError } = await supabase
-            .from('country_faqs')
-            .insert(faqsToInsert)
-          
-          if (faqsError) console.error('Error saving FAQs:', faqsError)
-        }
       }
 
       await loadCountries()
@@ -191,7 +115,7 @@ export const CountryManager = () => {
       setEditingCountry(null)
       toast({
         title: "Success",
-        description: countryData.id ? "Country updated" : "Country and all related content created successfully"
+        description: countryData.id ? "Country updated" : "Country created successfully"
       })
     } catch (error: any) {
       toast({
@@ -299,20 +223,13 @@ export const CountryManager = () => {
       {/* Navigation Tabs with Better Design */}
       <Tabs defaultValue="countries" className="space-y-6">
         <div className="bg-white dark:bg-gray-900 rounded-lg border p-1">
-          <TabsList className="grid w-full grid-cols-4 bg-transparent gap-1 h-auto">
+          <TabsList className="grid w-full grid-cols-3 bg-transparent gap-1 h-auto">
             <TabsTrigger 
               value="countries" 
               className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-950 dark:data-[state=active]:text-blue-300"
             >
               <Globe className="h-4 w-4" />
               Countries ({countries.length})
-            </TabsTrigger>
-            <TabsTrigger 
-              value="ai-generator" 
-              className="flex items-center gap-2 py-3 px-4 text-sm font-medium data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 dark:data-[state=active]:bg-purple-950 dark:data-[state=active]:text-purple-300"
-            >
-              <Star className="h-4 w-4" />
-              AI Generator
             </TabsTrigger>
             <TabsTrigger 
               value="sections" 
@@ -539,37 +456,6 @@ export const CountryManager = () => {
               ))}
             </div>
           )}
-        </TabsContent>
-        
-        <TabsContent value="ai-generator">
-          <AICountryGenerator 
-            onDataGenerated={(data) => {
-              setEditingCountry({
-                ...createEmptyCountry(),
-                name: data.name || '',
-                slug: data.slug || '',
-                region: data.region || '',
-                capital: data.capital || '',
-                currency: data.currency || '',
-                climate: data.climate || '',
-                best_season: data.best_season || '',
-                languages: data.languages || [],
-                speciality: data.speciality || '',
-                culture: data.culture || '',
-                description: data.description || '',
-                overview_description: data.overview_description || '',
-                about_content: data.about_content || '',
-                best_time_content: data.best_time_content || '',
-                travel_tips: data.travel_tips || '',
-                // Store AI-generated data to be saved when user clicks Save
-                aiGeneratedSections: data.sections || [],
-                aiGeneratedTips: data.tips || [],
-                aiGeneratedAttractions: data.attractions || [],
-                aiGeneratedFaqs: data.faqs || []
-              } as any)
-              setIsDialogOpen(true)
-            }}
-          />
         </TabsContent>
         
         <TabsContent value="sections">
