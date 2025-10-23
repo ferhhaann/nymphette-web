@@ -98,9 +98,9 @@ const FeaturedPackages = () => {
                   </div>
                 )}
 
-                {/* Show only first 2 highlights on mobile */}
-                <div className={`flex flex-wrap ${optimizedSettings.gap} ${isMobile ? 'mb-2' : 'mb-4'}`}>
-                  {pkg.highlights.slice(0, isMobile ? 2 : pkg.highlights.length).map((highlight, idx) => (
+                {/* Show only first 2 highlights on mobile, 4 on desktop */}
+                <div className={`flex flex-wrap gap-1 ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                  {pkg.highlights.slice(0, isMobile ? 2 : 4).map((highlight, idx) => (
                     <Badge key={idx} variant="outline" className={`border-soft-blue text-deep-blue ${isMobile ? 'text-xs px-2 py-0.5' : ''}`}>
                       {highlight}
                     </Badge>
