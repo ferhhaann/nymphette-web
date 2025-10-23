@@ -72,7 +72,7 @@ const FeaturedPackages = () => {
                 </div>
               </div>
 
-              <CardContent className={optimizedSettings.cardPadding}>
+              <CardContent className={`${optimizedSettings.cardPadding} pb-0`}>
                 <h3 className={`${optimizedSettings.mobileLayout.titleSizes || 'text-2xl'} font-bold text-primary ${isMobile ? 'mb-1' : 'mb-2'}`}>{pkg.title}</h3>
                 
                 <div className={`flex items-center text-muted-foreground ${isMobile ? 'mb-2' : 'mb-4'}`}>
