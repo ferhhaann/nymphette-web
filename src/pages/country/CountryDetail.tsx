@@ -141,6 +141,97 @@ const CountryDetail = () => {
     }
   }, [country])
 
+  // Set up real-time subscriptions for live updates
+  useEffect(() => {
+    if (!countryData?.id) return
+
+    const channel = supabase
+      .channel(`country-detail-${countryData.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'countries',
+          filter: `id=eq.${countryData.id}`
+        },
+        (payload) => {
+          console.log('Country data changed:', payload)
+          if (country) loadCountryData(country)
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'country_sections',
+          filter: `country_id=eq.${countryData.id}`
+        },
+        (payload) => {
+          console.log('Country sections changed:', payload)
+          if (country) loadCountryData(country)
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'country_essential_tips',
+          filter: `country_id=eq.${countryData.id}`
+        },
+        (payload) => {
+          console.log('Essential tips changed:', payload)
+          if (country) loadCountryData(country)
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'country_hero_images',
+          filter: `country_id=eq.${countryData.id}`
+        },
+        (payload) => {
+          console.log('Hero images changed:', payload)
+          if (country) loadCountryData(country)
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'travel_purposes',
+          filter: `country_id=eq.${countryData.id}`
+        },
+        (payload) => {
+          console.log('Travel purposes changed:', payload)
+          if (country) loadCountryData(country)
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'country_faqs',
+          filter: `country_id=eq.${countryData.id}`
+        },
+        (payload) => {
+          console.log('FAQs changed:', payload)
+          if (country) loadCountryData(country)
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [countryData?.id, country])
+
   // Automatic slideshow effect for hero images
   useEffect(() => {
     if (!carouselApi) return;
