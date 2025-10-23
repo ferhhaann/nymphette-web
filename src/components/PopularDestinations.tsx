@@ -73,10 +73,11 @@ const PopularDestinations = () => {
       // Get package counts for each country and determine best image
       const destinationsWithCounts = await Promise.all(
         (countriesData || []).map(async (country: any) => {
+          // Query by both country_id and country_slug to ensure we catch all packages
           const { count, error: countError } = await supabase
             .from('packages')
             .select('*', { count: 'exact', head: true })
-            .eq('country_id', country.id);
+            .or(`country_id.eq.${country.id},country_slug.eq.${country.slug}`);
 
           if (countError) {
             console.error('Error counting packages for country:', country.name, countError);
