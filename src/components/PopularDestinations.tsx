@@ -31,6 +31,27 @@ const PopularDestinations = () => {
 
   useEffect(() => {
     fetchPopularDestinations();
+
+    // Set up real-time subscription for package changes
+    const channel = supabase
+      .channel('packages-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'packages'
+        },
+        () => {
+          // Refetch destinations when packages are added/updated/deleted
+          fetchPopularDestinations();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchPopularDestinations = async () => {
