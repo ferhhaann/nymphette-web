@@ -19,7 +19,7 @@ export type Database = {
           action: string
           created_at: string | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           record_id: string | null
           table_name: string
           user_agent: string | null
@@ -29,7 +29,7 @@ export type Database = {
           action: string
           created_at?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           record_id?: string | null
           table_name: string
           user_agent?: string | null
@@ -39,7 +39,7 @@ export type Database = {
           action?: string
           created_at?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           record_id?: string | null
           table_name?: string
           user_agent?: string | null
@@ -1376,7 +1376,7 @@ export type Database = {
         Returns: undefined
       }
       check_auth_security_compliance: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           compliant: boolean
           current_value: string
@@ -1428,7 +1428,7 @@ export type Database = {
         }[]
       }
       get_authors_public: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           avatar_url: string
           bio: string
@@ -1466,7 +1466,7 @@ export type Database = {
         Returns: string
       }
       get_security_recommendations: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           action_required: string
           category: string
@@ -1481,10 +1481,7 @@ export type Database = {
         }
         Returns: boolean
       }
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      is_admin: { Args: never; Returns: boolean }
       log_admin_action: {
         Args: { _action: string; _record_id?: string; _table_name: string }
         Returns: undefined
@@ -1498,10 +1495,7 @@ export type Database = {
         }
         Returns: Json
       }
-      validate_admin_access: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      validate_admin_access: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
