@@ -1,3 +1,0 @@
--- Re-enable RLS after migration
-ALTER TABLE packages ENABLE ROW LEVEL SECURITY;
-ALTER TABLE content ENABLE ROW LEVEL SECURITY;

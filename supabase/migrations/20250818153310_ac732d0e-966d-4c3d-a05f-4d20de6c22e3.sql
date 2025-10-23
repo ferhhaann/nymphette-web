@@ -1,3 +1,0 @@
--- Temporarily disable RLS for migration
-ALTER TABLE packages DISABLE ROW LEVEL SECURITY;
-ALTER TABLE content DISABLE ROW LEVEL SECURITY;
