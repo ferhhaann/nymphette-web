@@ -1,41 +1,14 @@
-import { useState, useEffect } from 'react'
-import { supabase } from '@/integrations/supabase/client'
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CountrySectionManager } from './CountrySectionManager'
 import { GenericFilter } from './GenericFilter'
-
-interface Country {
-  id: string
-  name: string
-  region: string
-}
+import { useOptimizedCountries } from '@/hooks/useOptimizedCountries'
 
 export const ContentSectionsManager = () => {
-  const [countries, setCountries] = useState<Country[]>([])
-  const [loading, setLoading] = useState(true)
+  const { data: countries, loading } = useOptimizedCountries()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCountry, setSelectedCountry] = useState<string>("all")
   const [selectedRegion, setSelectedRegion] = useState<string>("all")
-
-  useEffect(() => {
-    loadCountries()
-  }, [])
-
-  const loadCountries = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('countries')
-        .select('id, name, region')
-        .order('name', { ascending: true })
-
-      if (error) throw error
-      setCountries(data || [])
-    } catch (error) {
-      console.error('Error loading countries:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   // Filter countries based on search, country, and region
   const filteredCountries = countries.filter(country => {
