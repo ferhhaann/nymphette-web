@@ -517,48 +517,63 @@ const CountryDetail = () => {
         {/* Overview & Contents */}
         {overviewSection && (
           <section className="my-8">
-            <Card className="p-6">
-              <h2 className="text-2xl font-bold mb-4 flex items-center">
-                <BookOpen className="h-6 w-6 mr-2 text-primary" />
-                {overviewSection.title}
-              </h2>
-              {overviewSection.content?.subtitle && (
-                <p className="text-lg font-semibold text-primary mb-3">
-                  {overviewSection.content.subtitle}
-                </p>
-              )}
-              <p className="text-muted-foreground leading-relaxed">
-                {overviewSection.content?.description}
-              </p>
-              {overviewSection.content?.highlight && (
-                <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
-                  <p className="text-sm font-medium">{overviewSection.content.highlight}</p>
+            <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-card to-card/80">
+              <div className="p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 rounded-xl bg-primary/10">
+                    <BookOpen className="h-7 w-7 text-primary" />
+                  </div>
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                    {overviewSection.title}
+                  </h2>
                 </div>
-              )}
-              {overviewSection.content?.points && overviewSection.content.points.length > 0 && (
-                <ul className="mt-4 space-y-2">
-                  {overviewSection.content.points.map((point: string, index: number) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              
-              {/* Quick Navigation */}
-              <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {sections.filter(s => s.section_name !== 'hero' && s.section_name !== 'overview').map((section) => (
-                  <Button 
-                    key={section.id}
-                    variant="outline" 
-                    className="justify-start"
-                    onClick={() => document.getElementById(section.section_name)?.scrollIntoView({ behavior: 'smooth' })}
-                  >
-                    <ArrowRight className="h-4 w-4 mr-2" />
-                    {section.title}
-                  </Button>
-                ))}
+                
+                {overviewSection.content?.subtitle && (
+                  <p className="text-xl font-semibold text-primary/90 mb-4 pl-1">
+                    {overviewSection.content.subtitle}
+                  </p>
+                )}
+                
+                <p className="text-muted-foreground leading-relaxed text-base mb-6">
+                  {overviewSection.content?.description}
+                </p>
+                
+                {overviewSection.content?.highlight && (
+                  <div className="my-6 p-5 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent rounded-xl border-l-4 border-primary shadow-sm">
+                    <p className="font-medium text-foreground">{overviewSection.content.highlight}</p>
+                  </div>
+                )}
+                
+                {overviewSection.content?.points && overviewSection.content.points.length > 0 && (
+                  <ul className="mt-6 space-y-3">
+                    {overviewSection.content.points.map((point: string, index: number) => (
+                      <li key={index} className="flex items-start gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors">
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="text-sm leading-relaxed">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                
+                {/* Quick Navigation */}
+                <div className="mt-8 pt-6 border-t">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">
+                    Jump to Section
+                  </h3>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {sections.filter(s => s.section_name !== 'hero' && s.section_name !== 'overview').map((section) => (
+                      <Button 
+                        key={section.id}
+                        variant="outline" 
+                        className="justify-start h-auto py-3 px-4 hover:bg-primary/5 hover:border-primary/50 transition-all group"
+                        onClick={() => document.getElementById(section.section_name)?.scrollIntoView({ behavior: 'smooth' })}
+                      >
+                        <ArrowRight className="h-4 w-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                        <span className="text-left">{section.title}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </Card>
           </section>
