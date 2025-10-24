@@ -522,9 +522,29 @@ const CountryDetail = () => {
                 <BookOpen className="h-6 w-6 mr-2 text-primary" />
                 {overviewSection.title}
               </h2>
+              {overviewSection.content?.subtitle && (
+                <p className="text-lg font-semibold text-primary mb-3">
+                  {overviewSection.content.subtitle}
+                </p>
+              )}
               <p className="text-muted-foreground leading-relaxed">
                 {overviewSection.content?.description}
               </p>
+              {overviewSection.content?.highlight && (
+                <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                  <p className="text-sm font-medium">{overviewSection.content.highlight}</p>
+                </div>
+              )}
+              {overviewSection.content?.points && overviewSection.content.points.length > 0 && (
+                <ul className="mt-4 space-y-2">
+                  {overviewSection.content.points.map((point: string, index: number) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
               
               {/* Quick Navigation */}
               <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -554,9 +574,29 @@ const CountryDetail = () => {
                   <Globe className="h-6 w-6 mr-2 text-primary" />
                   {aboutSection.title}
                 </h2>
+                {aboutSection.content?.subtitle && (
+                  <p className="text-lg font-semibold text-primary mb-3">
+                    {aboutSection.content.subtitle}
+                  </p>
+                )}
                 <p className="text-muted-foreground leading-relaxed">
                   {aboutSection.content?.description}
                 </p>
+                {aboutSection.content?.highlight && (
+                  <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                    <p className="text-sm font-medium">{aboutSection.content.highlight}</p>
+                  </div>
+                )}
+                {aboutSection.content?.points && aboutSection.content.points.length > 0 && (
+                  <ul className="mt-4 space-y-2">
+                    {aboutSection.content.points.map((point: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </Card>
             </section>
           )}
@@ -569,6 +609,11 @@ const CountryDetail = () => {
                   <Star className="h-6 w-6 mr-2 text-primary" />
                   {funFactsSection.title}
                 </h2>
+                {funFactsSection.content?.description && (
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    {funFactsSection.content.description}
+                  </p>
+                )}
                 <div className="grid md:grid-cols-2 gap-4">
                   {funFactsSection.content.facts.map((fact: string, index: number) => (
                     <div key={index} className="flex items-start gap-3 p-4 bg-secondary/50 rounded-lg">
@@ -589,6 +634,11 @@ const CountryDetail = () => {
                   <AlertCircle className="h-6 w-6 mr-2 text-primary" />
                   {beforeYouGoSection.title}
                 </h2>
+                {beforeYouGoSection.content?.description && (
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    {beforeYouGoSection.content.description}
+                  </p>
+                )}
                 <div className="grid md:grid-cols-2 gap-4">
                   {beforeYouGoSection.content.tips.map((tip: string, index: number) => (
                     <div key={index} className="flex items-start gap-3 p-4 border rounded-lg">
@@ -614,9 +664,27 @@ const CountryDetail = () => {
                   <Calendar className="h-6 w-6 mr-2 text-primary" />
                   {bestTimeSection.title}
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  {bestTimeSection.content?.content}
+                {bestTimeSection.content?.subtitle && (
+                  <p className="text-lg font-semibold text-primary mb-3">
+                    {bestTimeSection.content.subtitle}
+                  </p>
+                )}
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  {bestTimeSection.content?.content || bestTimeSection.content?.description}
                 </p>
+                {bestTimeSection.content?.highlights && bestTimeSection.content.highlights.length > 0 && (
+                  <div className="mt-4">
+                    <h3 className="font-semibold mb-3">Seasonal Highlights</h3>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {bestTimeSection.content.highlights.map((highlight: string, index: number) => (
+                        <div key={index} className="flex items-start gap-2 p-3 bg-secondary/50 rounded-lg">
+                          <Calendar className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span className="text-sm">{highlight}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </Card>
             </section>
           )}
@@ -629,6 +697,11 @@ const CountryDetail = () => {
                   <Heart className="h-6 w-6 mr-2 text-primary" />
                   {reasonsSection.title}
                 </h2>
+                {reasonsSection.content?.description && (
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    {reasonsSection.content.description}
+                  </p>
+                )}
                 <div className="grid md:grid-cols-2 gap-4">
                   {reasonsSection.content.reasons.map((reason: string, index: number) => (
                     <div key={index} className="flex items-start gap-3 p-4 bg-primary/5 rounded-lg">
@@ -637,6 +710,11 @@ const CountryDetail = () => {
                     </div>
                   ))}
                 </div>
+                {reasonsSection.content?.highlight && (
+                  <div className="mt-4 p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
+                    <p className="text-sm font-medium">{reasonsSection.content.highlight}</p>
+                  </div>
+                )}
               </Card>
             </section>
           )}
@@ -717,9 +795,29 @@ const CountryDetail = () => {
                   <Palette className="h-6 w-6 mr-2 text-primary" />
                   {artCultureSection.title}
                 </h2>
+                {artCultureSection.content?.subtitle && (
+                  <p className="text-lg font-semibold text-primary mb-3">
+                    {artCultureSection.content.subtitle}
+                  </p>
+                )}
                 <p className="text-muted-foreground leading-relaxed">
-                  {artCultureSection.content?.content}
+                  {artCultureSection.content?.content || artCultureSection.content?.description}
                 </p>
+                {artCultureSection.content?.highlight && (
+                  <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                    <p className="text-sm font-medium">{artCultureSection.content.highlight}</p>
+                  </div>
+                )}
+                {artCultureSection.content?.points && artCultureSection.content.points.length > 0 && (
+                  <ul className="mt-4 space-y-2">
+                    {artCultureSection.content.points.map((point: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <Palette className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </Card>
             </section>
           )}
