@@ -66,14 +66,11 @@ export function SearchableSelect({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0" style={{ width: "var(--radix-popover-trigger-width)" }}>
-        <Command 
-          shouldFilter={true}
-          filter={(value, search) => {
-            // Custom filter that allows commas in search
-            if (value.toLowerCase().includes(search.toLowerCase())) return 1
-            return 0
-          }}
-        >
+        <Command filter={(value, search) => {
+          // Custom filter that allows commas in search
+          if (value.toLowerCase().includes(search.toLowerCase())) return 1
+          return 0
+        }}>
           <CommandInput 
             placeholder={searchPlaceholder} 
             className="h-9"
