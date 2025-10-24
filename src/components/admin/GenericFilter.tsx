@@ -44,8 +44,18 @@ export const GenericFilter = ({
   className = ""
 }: GenericFilterProps) => {
   const [countries, setCountries] = useState<Country[]>([])
+  const [localSearch, setLocalSearch] = useState(searchValue)
 
   const regions = ["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"]
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onSearchChange(localSearch)
+    }, 400)
+
+    return () => clearTimeout(timer)
+  }, [localSearch, onSearchChange])
 
   useEffect(() => {
     if (showCountryFilter) {
@@ -81,8 +91,8 @@ export const GenericFilter = ({
           <Input
             id="search"
             placeholder={searchPlaceholder}
-            value={searchValue}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
           />
         </div>
         
