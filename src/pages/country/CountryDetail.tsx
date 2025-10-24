@@ -531,8 +531,10 @@ const CountryDetail = () => {
                 {overviewSection.content?.description}
               </p>
               {overviewSection.content?.highlight && (
-                <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
-                  <p className="text-sm font-medium">{overviewSection.content.highlight}</p>
+                <div className="mt-6 relative overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-background p-6 shadow-lg border border-primary/20 before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-primary/5 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-1000">
+                  <div className="relative z-10">
+                    <p className="text-base font-semibold text-foreground leading-relaxed">{overviewSection.content.highlight}</p>
+                  </div>
                 </div>
               )}
               {overviewSection.content?.points && overviewSection.content.points.length > 0 && (
