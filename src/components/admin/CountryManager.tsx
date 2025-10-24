@@ -54,8 +54,18 @@ export const CountryManager = () => {
   const [editingCountry, setEditingCountry] = useState<Partial<Country> | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedRegion, setSelectedRegion] = useState<string>("all")
+  const [searchInput, setSearchInput] = useState("")
   const [searchTerm, setSearchTerm] = useState("")
   const { toast } = useToast()
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm(searchInput)
+    }, 300) // Wait 300ms after user stops typing
+
+    return () => clearTimeout(timer)
+  }, [searchInput])
 
   const regions = ["Asia", "Europe", "Africa", "Americas", "Pacific Islands", "Middle East"]
 
@@ -259,12 +269,12 @@ export const CountryManager = () => {
                     {filteredCountries.length} of {countries.length} countries
                   </Badge>
                 </div>
-                {(searchTerm || selectedRegion !== "all") && (
+                {(searchInput || selectedRegion !== "all") && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      setSearchTerm("")
+                      setSearchInput("")
                       setSelectedRegion("all")
                     }}
                     className="text-muted-foreground hover:text-foreground"
@@ -276,8 +286,8 @@ export const CountryManager = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <GenericFilter
-                searchValue={searchTerm}
-                onSearchChange={setSearchTerm}
+                searchValue={searchInput}
+                onSearchChange={setSearchInput}
                 selectedCountry=""
                 onCountryChange={() => {}}
                 selectedRegion={selectedRegion}
@@ -285,7 +295,7 @@ export const CountryManager = () => {
                 totalItems={countries.length}
                 filteredItems={filteredCountries.length}
                 onClearFilters={() => {
-                  setSearchTerm("")
+                  setSearchInput("")
                   setSelectedRegion("all")
                 }}
                 searchPlaceholder="Search by country name or capital city..."
