@@ -3,10 +3,14 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, onKeyDown, ...props }, ref) => {
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      // Stop propagation to prevent cmdk from intercepting
+  ({ className, type, onKeyDown, onKeyDownCapture, ...props }, ref) => {
+    const handleKeyDownCapture = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      // Stop propagation in capture phase to prevent cmdk from intercepting
       e.stopPropagation()
+      onKeyDownCapture?.(e)
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       onKeyDown?.(e)
     }
 
@@ -18,6 +22,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           className
         )}
         ref={ref}
+        onKeyDownCapture={handleKeyDownCapture}
         onKeyDown={handleKeyDown}
         {...props}
       />

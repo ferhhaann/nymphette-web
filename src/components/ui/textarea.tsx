@@ -6,10 +6,14 @@ export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, onKeyDown, ...props }, ref) => {
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      // Stop propagation to prevent cmdk from intercepting
+  ({ className, onKeyDown, onKeyDownCapture, ...props }, ref) => {
+    const handleKeyDownCapture = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      // Stop propagation in capture phase to prevent cmdk from intercepting
       e.stopPropagation()
+      onKeyDownCapture?.(e)
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       onKeyDown?.(e)
     }
 
@@ -20,6 +24,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           className
         )}
         ref={ref}
+        onKeyDownCapture={handleKeyDownCapture}
         onKeyDown={handleKeyDown}
         {...props}
       />
