@@ -226,7 +226,7 @@ const PopularDestinations = () => {
                   style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
                 >
                   {/* Card with modern design */}
-                  <div className="relative overflow-hidden rounded-2xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                  <div className="relative overflow-hidden rounded-2xl bg-card border border-border/50 transition-all duration-300">
                     
                     {/* Image Section */}
                     <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl">
@@ -234,7 +234,7 @@ const PopularDestinations = () => {
                         <OptimizedImage
                           src={destination.display_image}
                           alt={`${destination.name} destination`}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          className="w-full h-full object-cover transition-transform duration-700"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         />
                       ) : (
@@ -244,7 +244,7 @@ const PopularDestinations = () => {
                       )}
                       
                       {/* Modern overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 group-hover:from-black/70 transition-all duration-300 rounded-t-2xl" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 transition-all duration-300 rounded-t-2xl" />
                       
                       {/* Package count with modern badge */}
                       <div className="absolute top-4 right-4">
@@ -255,18 +255,13 @@ const PopularDestinations = () => {
 
                       {/* Bottom content overlay */}
                       <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 className="text-xl font-bold text-white mb-1 group-hover:text-primary-foreground transition-colors duration-200">
+                        <h3 className="text-xl font-bold text-white mb-1 transition-colors duration-200">
                           {destination.name}
                         </h3>
                         <p className="text-white/80 text-sm font-medium capitalize">
                           {destination.region}
                         </p>
                       </div>
-                    </div>
-
-                    {/* Hover effect indicator */}
-                    <div className="absolute bottom-4 right-4 w-10 h-10 bg-primary/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                      <ArrowRight className="h-5 w-5 text-primary-foreground" />
                     </div>
                   </div>
                 </div>
