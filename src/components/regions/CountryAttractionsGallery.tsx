@@ -65,7 +65,7 @@ export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAtt
                       <img
                         src={attraction.image_url || '/placeholder.svg'}
                         alt={`${attraction.name} in ${countryName}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'
                         }}
