@@ -20,6 +20,7 @@ import { CountryBreadcrumb } from '@/components/regions/CountryBreadcrumb'
 import { CountryStats } from '@/components/regions/CountryStats'
 import { CountryQuickInfo } from '@/components/regions/CountryQuickInfo'
 import { CountryPackagesList } from '@/components/regions/CountryPackagesList'
+import { CountryAttractionsGallery } from '@/components/regions/CountryAttractionsGallery'
 import {
   Accordion,
   AccordionContent,
@@ -822,6 +823,9 @@ const CountryDetail = () => {
             </section>
           )}
         </div>
+
+        {/* Attractions Gallery */}
+        <CountryAttractionsGallery countryId={countryData.id} countryName={countryData.name} />
 
         {/* FAQs */}
         {faqs.length > 0 && (
