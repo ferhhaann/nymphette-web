@@ -229,7 +229,7 @@ const PopularDestinations = () => {
                   <div className="relative overflow-hidden rounded-2xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
                     
                     {/* Image Section */}
-                    <div className="relative aspect-[4/3] overflow-hidden">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl">
                       {destination.display_image ? (
                         <OptimizedImage
                           src={destination.display_image}
