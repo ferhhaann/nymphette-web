@@ -61,7 +61,7 @@ export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAtt
               <CarouselItem key={attraction.id} className="basis-full sm:basis-1/2 lg:basis-1/3">
                 <Card className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20">
                   <CardContent className="p-0">
-                    <AspectRatio ratio={16 / 9}>
+                    <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-t-lg">
                       <img
                         src={attraction.image_url || '/placeholder.svg'}
                         alt={`${attraction.name} in ${countryName}`}
