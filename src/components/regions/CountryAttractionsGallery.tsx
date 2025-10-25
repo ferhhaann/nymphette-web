@@ -61,11 +61,11 @@ export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAtt
               <CarouselItem key={attraction.id} className="basis-full sm:basis-1/2 lg:basis-1/3">
                 <Card className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20">
                   <CardContent className="p-0">
-                    <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-t-lg">
+                    <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg">
                       <img
                         src={attraction.image_url || '/placeholder.svg'}
                         alt={`${attraction.name} in ${countryName}`}
-                        className="w-full h-full object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'
                         }}
