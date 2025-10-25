@@ -4,6 +4,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Card, CardContent } from '@/components/ui/card'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Badge } from '@/components/ui/badge'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { MapPin } from 'lucide-react'
 
 interface Attraction {
@@ -23,6 +24,7 @@ interface CountryAttractionsGalleryProps {
 export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAttractionsGalleryProps) => {
   const [attractions, setAttractions] = useState<Attraction[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedAttraction, setSelectedAttraction] = useState<Attraction | null>(null)
 
   useEffect(() => {
     loadAttractions()
@@ -59,7 +61,10 @@ export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAtt
           <CarouselContent>
             {attractionsList.map((attraction) => (
               <CarouselItem key={attraction.id} className="basis-full sm:basis-1/2 lg:basis-1/3">
-                <Card className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20">
+                <Card 
+                  className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20"
+                  onClick={() => setSelectedAttraction(attraction)}
+                >
                   <CardContent className="p-0">
                     <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg">
                       <img
@@ -127,6 +132,42 @@ export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAtt
         title={`Most Attractive Places in ${countryName}`}
         attractionsList={getAttractionsByType('most_attractive')}
       />
+
+      <Dialog open={!!selectedAttraction} onOpenChange={() => setSelectedAttraction(null)}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-semibold text-foreground">
+              {selectedAttraction?.name}
+            </DialogTitle>
+          </DialogHeader>
+          {selectedAttraction && (
+            <div className="space-y-4">
+              <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg">
+                <img
+                  src={selectedAttraction.image_url || '/placeholder.svg'}
+                  alt={`${selectedAttraction.name} in ${countryName}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'
+                  }}
+                />
+              </AspectRatio>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">{selectedAttraction.category}</Badge>
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  <span>{countryName}</span>
+                </div>
+              </div>
+              {selectedAttraction.description && (
+                <p className="text-muted-foreground leading-relaxed">
+                  {selectedAttraction.description}
+                </p>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
