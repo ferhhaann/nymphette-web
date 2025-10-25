@@ -244,7 +244,7 @@ const PopularDestinations = () => {
                       )}
                       
                       {/* Modern overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 group-hover:from-black/70 transition-all duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 group-hover:from-black/70 transition-all duration-300 rounded-t-2xl" />
                       
                       {/* Package count with modern badge */}
                       <div className="absolute top-4 right-4">
