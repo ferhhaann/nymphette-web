@@ -403,27 +403,29 @@ const CountryDetail = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-12">
         {/* Breadcrumb */}
-        <CountryBreadcrumb 
-          region={countryData.region} 
-          countryName={countryData.name} 
-        />
+        <div className="mb-4">
+          <CountryBreadcrumb 
+            region={countryData.region} 
+            countryName={countryData.name} 
+          />
+        </div>
 
         {/* Hero Section */}
-        <section className="relative overflow-hidden rounded-lg md:rounded-2xl mb-6 md:mb-8 mt-2">
-          <div className="relative h-64 sm:h-80 md:h-96 lg:h-[500px]">
+        <section className="relative overflow-hidden rounded-xl mb-8 md:mb-12">
+          <div className="relative h-64 sm:h-80 md:h-96 lg:h-[480px]">
             <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="w-full h-full">
               <CarouselContent>
                 {displayHeroImages.map((image, index) => (
                   <CarouselItem key={image.id}>
-                    <div className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] w-full">
+                    <div className="relative h-64 sm:h-80 md:h-96 lg:h-[480px] w-full">
                       <img 
                         src={image.image_url} 
                         alt={image.alt_text || countryData.name}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/20" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                     </div>
                   </CarouselItem>
                 ))}
@@ -431,31 +433,22 @@ const CountryDetail = () => {
             </Carousel>
             
             {/* Hero Content Overlay */}
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full px-4 sm:px-6 md:px-8 lg:px-16">
-                <div className="max-w-2xl">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4">
+            <div className="absolute inset-0 flex items-end">
+              <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 pb-6 md:pb-10">
+                <div className="max-w-3xl">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4">
                     {heroSection?.title || `Discover ${countryData.name}`}
                   </h1>
-                  <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-4 md:mb-6 line-clamp-3 md:line-clamp-none">
+                  <p className="text-sm sm:text-base md:text-lg text-white/90 mb-4 md:mb-6 max-w-2xl">
                     {heroSection?.content?.description || countryData.description || `Experience the best of ${countryData.name}`}
                   </p>
-                  {heroSection?.content?.highlights && (
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 md:mb-6">
-                      {heroSection.content.highlights.map((highlight: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="bg-white/10 text-white border-white/20 text-xs sm:text-sm">
-                          {highlight}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                    <Button size="default" className="w-full sm:w-auto" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
+                    <Button size="lg" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
                       Plan Your Trip
                     </Button>
-                    <Button size="default" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/20 text-white hover:bg-white/20">
+                    <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm">
                       <Package className="h-4 w-4 mr-2" />
-                      <span className="truncate">{packageCount} Packages</span>
+                      {packageCount} Packages
                     </Button>
                   </div>
                 </div>
@@ -465,7 +458,7 @@ const CountryDetail = () => {
         </section>
 
         {/* Country Info & Stats */}
-        <section className="grid lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 my-6 md:my-8">
+        <section className="grid lg:grid-cols-3 gap-6 mb-10 md:mb-14">
           {/* Essential Information - Left Side */}
           <div className="lg:col-span-2">
             <CountryQuickInfo
@@ -492,24 +485,25 @@ const CountryDetail = () => {
 
         {/* Essential Tips */}
         {essentialTips.length > 0 && (
-          <section className="my-6 md:my-8">
-            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-              <Lightbulb className="h-5 w-5 md:h-6 md:w-6 mr-2 text-primary" />
+          <section className="mb-10 md:mb-14">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6">
               Essential Travel Tips
             </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {essentialTips.map((tip) => {
                 const IconComponent = (iconMap as any)[tip.icon] || Info
                 return (
-                  <Card key={tip.id} className="p-4">
+                  <div key={tip.id} className="group p-5 rounded-lg border bg-card hover:shadow-md transition-shadow">
                     <div className="flex items-start gap-3">
-                      <IconComponent className="h-5 w-5 text-primary mt-1" />
-                      <div>
-                        <h4 className="font-semibold">{tip.title}</h4>
-                        <p className="text-sm text-muted-foreground mt-1">{tip.note}</p>
+                      <div className="p-2 rounded-lg bg-primary/10">
+                        <IconComponent className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold mb-1">{tip.title}</h4>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{tip.note}</p>
                       </div>
                     </div>
-                  </Card>
+                  </div>
                 )
               })}
             </div>
@@ -519,36 +513,30 @@ const CountryDetail = () => {
 
         {/* Overview Section - Always Visible */}
         {overviewSection && (
-          <section className="my-6 md:my-8">
-            <Card className="p-4 md:p-6">
-              <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                <BookOpen className="h-6 w-6 mr-2 text-primary" />
+          <section className="mb-10 md:mb-14">
+            <div className="border-l-2 border-primary pl-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">
                 {overviewSection.title}
               </h2>
               {overviewSection.content?.subtitle && (
-                <p className="text-lg font-semibold text-primary mb-3">
+                <p className="text-lg font-medium mb-3">
                   {overviewSection.content.subtitle}
                 </p>
               )}
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed text-base">
                 {overviewSection.content?.description}
               </p>
-              {overviewSection.content?.highlight && (
-                <div className="mt-4 p-4 bg-secondary rounded-lg border-l-4 border-primary">
-                  <p className="text-sm font-medium text-foreground">{overviewSection.content.highlight}</p>
-                </div>
-              )}
               {overviewSection.content?.points && overviewSection.content.points.length > 0 && (
-                <ul className="mt-4 space-y-2">
+                <ul className="mt-6 space-y-3">
                   {overviewSection.content.points.map((point: string, index: number) => (
-                    <li key={index} className="flex items-start gap-2">
+                    <li key={index} className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       <span className="text-sm">{point}</span>
                     </li>
                   ))}
                 </ul>
               )}
-            </Card>
+            </div>
           </section>
         )}
 
@@ -560,57 +548,58 @@ const CountryDetail = () => {
 
         {/* Additional Information Tabs - Maximum 4 Tabs */}
         {(beforeYouGoSection || dosDontsSection || bestTimeSection || reasonsSection || foodShoppingSection || artCultureSection || funFactsSection || aboutSection) && (
-          <section className="my-6 md:my-8">
+          <section className="mb-10 md:mb-14">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="w-full justify-start overflow-x-auto flex-nowrap md:flex-wrap h-auto gap-1 md:gap-2 bg-muted/50 p-1.5 md:p-2 scrollbar-hide">
-                {(beforeYouGoSection || dosDontsSection) && <TabsTrigger value="travel-guide" className="text-xs md:text-sm whitespace-nowrap">Travel Guide</TabsTrigger>}
-                {(bestTimeSection || reasonsSection) && <TabsTrigger value="planning" className="text-xs md:text-sm whitespace-nowrap">Planning</TabsTrigger>}
-                {(foodShoppingSection || artCultureSection) && <TabsTrigger value="experiences" className="text-xs md:text-sm whitespace-nowrap">Experiences</TabsTrigger>}
-                {(funFactsSection || aboutSection) && <TabsTrigger value="discover" className="text-xs md:text-sm whitespace-nowrap">Discover</TabsTrigger>}
+              <TabsList className="w-full justify-start overflow-x-auto flex-nowrap md:flex-wrap h-auto gap-1 md:gap-2 p-1 scrollbar-hide border-b bg-transparent rounded-none">
+                {(beforeYouGoSection || dosDontsSection) && <TabsTrigger value="travel-guide" className="text-sm whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">Travel Guide</TabsTrigger>}
+                {(bestTimeSection || reasonsSection) && <TabsTrigger value="planning" className="text-sm whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">Planning</TabsTrigger>}
+                {(foodShoppingSection || artCultureSection) && <TabsTrigger value="experiences" className="text-sm whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">Experiences</TabsTrigger>}
+                {(funFactsSection || aboutSection) && <TabsTrigger value="discover" className="text-sm whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">Discover</TabsTrigger>}
               </TabsList>
 
               {/* Travel Guide Tab (Before You Go + Do's & Don'ts) */}
               {(beforeYouGoSection || dosDontsSection) && (
-                <TabsContent value="travel-guide" className="mt-4 md:mt-6 space-y-6">
+                <TabsContent value="travel-guide" className="mt-8 space-y-8">
                   {/* Before You Go Section */}
                   {beforeYouGoSection && beforeYouGoSection.content?.tips && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                        <AlertCircle className="h-6 w-6 mr-2 text-primary" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">
                         {beforeYouGoSection.title}
-                      </h2>
+                      </h3>
                       {beforeYouGoSection.content?.description && (
                         <p className="text-muted-foreground leading-relaxed mb-6">
                           {beforeYouGoSection.content.description}
                         </p>
                       )}
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid md:grid-cols-2 gap-3">
                         {beforeYouGoSection.content.tips.map((tip: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-4 border rounded-lg">
-                            <Lightbulb className="h-5 w-5 text-primary mt-0.5" />
+                          <div key={index} className="flex items-start gap-3 p-4 rounded-lg border bg-card">
+                            <Lightbulb className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <p className="text-sm">{tip}</p>
                           </div>
                         ))}
                       </div>
-                    </Card>
+                    </div>
                   )}
 
                   {/* Dos and Don'ts Section */}
                   {dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                        <CheckCircle className="h-6 w-6 mr-2 text-primary" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-6">
                         {dosDontsSection.title}
-                      </h2>
-                      <div className="grid lg:grid-cols-2 gap-6">
+                      </h3>
+                      <div className="grid lg:grid-cols-2 gap-8">
                         {dosDontsSection.content?.dos && (
                           <div>
-                            <h3 className="text-lg font-semibold mb-4 text-green-600">Do's</h3>
+                            <h4 className="text-base font-semibold mb-4 flex items-center gap-2">
+                              <CheckCircle className="h-5 w-5 text-primary" />
+                              Do's
+                            </h4>
                             <div className="space-y-3">
                               {dosDontsSection.content.dos.map((item: string, index: number) => (
-                                <div key={index} className="flex items-start gap-3">
-                                  <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
-                                  <p className="text-sm">{item}</p>
+                                <div key={index} className="flex items-start gap-3 text-sm">
+                                  <span className="text-primary mt-0.5">•</span>
+                                  <p>{item}</p>
                                 </div>
                               ))}
                             </div>
@@ -619,207 +608,187 @@ const CountryDetail = () => {
                         
                         {dosDontsSection.content?.donts && (
                           <div>
-                            <h3 className="text-lg font-semibold mb-4 text-red-600">Don'ts</h3>
+                            <h4 className="text-base font-semibold mb-4 flex items-center gap-2">
+                              <AlertCircle className="h-5 w-5 text-muted-foreground" />
+                              Don'ts
+                            </h4>
                             <div className="space-y-3">
                               {dosDontsSection.content.donts.map((item: string, index: number) => (
-                                <div key={index} className="flex items-start gap-3">
-                                  <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
-                                  <p className="text-sm">{item}</p>
+                                <div key={index} className="flex items-start gap-3 text-sm">
+                                  <span className="text-muted-foreground mt-0.5">•</span>
+                                  <p>{item}</p>
                                 </div>
                               ))}
                             </div>
                           </div>
                         )}
                       </div>
-                    </Card>
+                    </div>
                   )}
                 </TabsContent>
               )}
 
               {/* Planning Your Visit Tab (Best Time + Why Visit) */}
               {(bestTimeSection || reasonsSection) && (
-                <TabsContent value="planning" className="mt-4 md:mt-6 space-y-6">
+                <TabsContent value="planning" className="mt-8 space-y-8">
                   {/* Best Time to Visit Section */}
                   {bestTimeSection && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                        <Calendar className="h-6 w-6 mr-2 text-primary" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">
                         {bestTimeSection.title}
-                      </h2>
+                      </h3>
                       {bestTimeSection.content?.subtitle && (
-                        <p className="text-lg font-semibold text-primary mb-3">
+                        <p className="text-base font-medium mb-3">
                           {bestTimeSection.content.subtitle}
                         </p>
                       )}
-                      <p className="text-muted-foreground leading-relaxed mb-4">
+                      <p className="text-muted-foreground leading-relaxed mb-6">
                         {bestTimeSection.content?.content || bestTimeSection.content?.description}
                       </p>
                       {bestTimeSection.content?.highlights && bestTimeSection.content.highlights.length > 0 && (
-                        <div className="mt-4">
-                          <h3 className="font-semibold mb-3">Seasonal Highlights</h3>
-                          <div className="grid md:grid-cols-2 gap-3">
-                            {bestTimeSection.content.highlights.map((highlight: string, index: number) => (
-                              <div key={index} className="flex items-start gap-2 p-3 bg-secondary/50 rounded-lg">
-                                <Calendar className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                                <span className="text-sm">{highlight}</span>
-                              </div>
-                            ))}
-                          </div>
+                        <div className="grid sm:grid-cols-2 gap-3">
+                          {bestTimeSection.content.highlights.map((highlight: string, index: number) => (
+                            <div key={index} className="flex items-start gap-3 p-4 rounded-lg border bg-card">
+                              <Calendar className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                              <span className="text-sm">{highlight}</span>
+                            </div>
+                          ))}
                         </div>
                       )}
-                    </Card>
+                    </div>
                   )}
 
                   {/* Reasons to Visit Section */}
                   {reasonsSection && reasonsSection.content?.reasons && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                        <Heart className="h-6 w-6 mr-2 text-primary" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">
                         {reasonsSection.title}
-                      </h2>
+                      </h3>
                       {reasonsSection.content?.description && (
                         <p className="text-muted-foreground leading-relaxed mb-6">
                           {reasonsSection.content.description}
                         </p>
                       )}
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid sm:grid-cols-2 gap-3">
                         {reasonsSection.content.reasons.map((reason: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-4 bg-primary/5 rounded-lg">
-                            <Heart className="h-5 w-5 text-primary mt-0.5" />
+                          <div key={index} className="flex items-start gap-3 p-4 rounded-lg border bg-card">
+                            <Heart className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <p className="text-sm">{reason}</p>
                           </div>
                         ))}
                       </div>
-                      {reasonsSection.content?.highlight && (
-                        <div className="mt-4 p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
-                          <p className="text-sm font-medium">{reasonsSection.content.highlight}</p>
-                        </div>
-                      )}
-                    </Card>
+                    </div>
                   )}
                 </TabsContent>
               )}
 
               {/* Local Experiences Tab (Food & Shopping + Art & Culture) */}
               {(foodShoppingSection || artCultureSection) && (
-                <TabsContent value="experiences" className="mt-4 md:mt-6 space-y-6">
+                <TabsContent value="experiences" className="mt-8 space-y-8">
                   {/* Food & Shopping Section */}
                   {foodShoppingSection && (
-                    <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-                      <Card className="p-6">
-                        <h3 className="text-xl font-bold mb-4 flex items-center">
-                          <Utensils className="h-5 w-5 mr-2 text-primary" />
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                          <Utensils className="h-5 w-5 text-primary" />
                           Local Cuisine
                         </h3>
                         <p className="text-muted-foreground leading-relaxed">
                           {foodShoppingSection.content?.food}
                         </p>
-                      </Card>
+                      </div>
                       
-                      <Card className="p-6">
-                        <h3 className="text-xl font-bold mb-4 flex items-center">
-                          <ShoppingBag className="h-5 w-5 mr-2 text-primary" />
+                      <div>
+                        <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                          <ShoppingBag className="h-5 w-5 text-primary" />
                           Shopping
                         </h3>
                         <p className="text-muted-foreground leading-relaxed">
                           {foodShoppingSection.content?.shopping}
                         </p>
-                      </Card>
+                      </div>
                     </div>
                   )}
 
                   {/* Art & Culture Section */}
                   {artCultureSection && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                        <Palette className="h-6 w-6 mr-2 text-primary" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">
                         {artCultureSection.title}
-                      </h2>
+                      </h3>
                       {artCultureSection.content?.subtitle && (
-                        <p className="text-lg font-semibold text-primary mb-3">
+                        <p className="text-base font-medium mb-3">
                           {artCultureSection.content.subtitle}
                         </p>
                       )}
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="text-muted-foreground leading-relaxed mb-6">
                         {artCultureSection.content?.content || artCultureSection.content?.description}
                       </p>
-                      {artCultureSection.content?.highlight && (
-                        <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
-                          <p className="text-sm font-medium">{artCultureSection.content.highlight}</p>
+                      {artCultureSection.content?.points && artCultureSection.content.points.length > 0 && (
+                        <div className="space-y-2">
+                          {artCultureSection.content.points.map((point: string, index: number) => (
+                            <div key={index} className="flex items-start gap-3">
+                              <span className="text-primary mt-0.5">•</span>
+                              <span className="text-sm">{point}</span>
+                            </div>
+                          ))}
                         </div>
                       )}
-                      {artCultureSection.content?.points && artCultureSection.content.points.length > 0 && (
-                        <ul className="mt-4 space-y-2">
-                          {artCultureSection.content.points.map((point: string, index: number) => (
-                            <li key={index} className="flex items-start gap-2">
-                              <Palette className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                              <span className="text-sm">{point}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </Card>
+                    </div>
                   )}
                 </TabsContent>
               )}
 
               {/* Discover More Tab (Fun Facts + About) */}
               {(funFactsSection || aboutSection) && (
-                <TabsContent value="discover" className="mt-4 md:mt-6 space-y-6">
+                <TabsContent value="discover" className="mt-8 space-y-8">
                   {/* Fun Facts Section */}
                   {funFactsSection && funFactsSection.content?.facts && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                        <Star className="h-6 w-6 mr-2 text-primary" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">
                         {funFactsSection.title}
-                      </h2>
+                      </h3>
                       {funFactsSection.content?.description && (
                         <p className="text-muted-foreground leading-relaxed mb-6">
                           {funFactsSection.content.description}
                         </p>
                       )}
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid sm:grid-cols-2 gap-3">
                         {funFactsSection.content.facts.map((fact: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-4 bg-secondary/50 rounded-lg">
-                            <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
+                          <div key={index} className="flex items-start gap-3 p-4 rounded-lg border bg-card">
+                            <Star className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                             <p className="text-sm">{fact}</p>
                           </div>
                         ))}
                       </div>
-                    </Card>
+                    </div>
                   )}
 
                   {/* About Section */}
                   {aboutSection && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                        <Globe className="h-6 w-6 mr-2 text-primary" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">
                         {aboutSection.title}
-                      </h2>
+                      </h3>
                       {aboutSection.content?.subtitle && (
-                        <p className="text-lg font-semibold text-primary mb-3">
+                        <p className="text-base font-medium mb-3">
                           {aboutSection.content.subtitle}
                         </p>
                       )}
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="text-muted-foreground leading-relaxed mb-6">
                         {aboutSection.content?.description}
                       </p>
-                      {aboutSection.content?.highlight && (
-                        <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
-                          <p className="text-sm font-medium">{aboutSection.content.highlight}</p>
+                      {aboutSection.content?.points && aboutSection.content.points.length > 0 && (
+                        <div className="space-y-2">
+                          {aboutSection.content.points.map((point: string, index: number) => (
+                            <div key={index} className="flex items-start gap-3">
+                              <span className="text-primary mt-0.5">•</span>
+                              <span className="text-sm">{point}</span>
+                            </div>
+                          ))}
                         </div>
                       )}
-                      {aboutSection.content?.points && aboutSection.content.points.length > 0 && (
-                        <ul className="mt-4 space-y-2">
-                          {aboutSection.content.points.map((point: string, index: number) => (
-                            <li key={index} className="flex items-start gap-2">
-                              <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                              <span className="text-sm">{point}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </Card>
+                    </div>
                   )}
                 </TabsContent>
               )}
@@ -832,40 +801,49 @@ const CountryDetail = () => {
 
         {/* FAQs */}
         {faqs.length > 0 && (
-          <section className="my-6 md:my-8">
-            <Card className="p-4 md:p-6">
-              <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Frequently Asked Questions</h2>
-              <Accordion type="single" collapsible className="w-full">
-                {faqs.map((faq, index) => (
-                  <AccordionItem key={faq.id} value={`item-${index}`}>
-                    <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
-                    <AccordionContent>{faq.answer}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </Card>
+          <section className="mb-10 md:mb-14">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6">Frequently Asked Questions</h2>
+            <Accordion type="single" collapsible className="w-full space-y-2">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={faq.id} value={`item-${index}`} className="border rounded-lg px-6 bg-card">
+                  <AccordionTrigger className="text-left hover:no-underline py-4">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground pb-4">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </section>
         )}
 
         {/* Contact & Enquiry */}
-        <section id="enquiry" className="my-6 md:my-8">
-          <div className="grid lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+        <section id="enquiry" className="mb-10 md:mb-14">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Get in Touch</h2>
+          <div className="grid lg:grid-cols-2 gap-6">
             {/* Contact Information */}
-            <Card className="p-6">
-              <h3 className="text-xl font-bold mb-6">Contact Information</h3>
+            <div className="p-6 rounded-lg border bg-card">
+              <h3 className="text-lg font-semibold mb-6">Contact Information</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-primary" />
-                  <span>{countryData.contact_info?.phone || '+1 (555) 123-4567'}</span>
+                  <div className="p-2 rounded-lg bg-muted">
+                    <Phone className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                  <span className="text-sm">{countryData.contact_info?.phone || '+1 (555) 123-4567'}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-primary" />
-                  <span>{countryData.contact_info?.email || 'hello@nymphettetours.com'}</span>
+                  <div className="p-2 rounded-lg bg-muted">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                  <span className="text-sm">{countryData.contact_info?.email || 'hello@nymphettetours.com'}</span>
                 </div>
                 {countryData.contact_info?.address && (
                   <div className="flex items-start gap-3">
-                    <MapPin className="h-5 w-5 text-primary mt-1" />
-                    <span>{countryData.contact_info.address}</span>
+                    <div className="p-2 rounded-lg bg-muted">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="text-sm">{countryData.contact_info.address}</span>
                   </div>
                 )}
               </div>
@@ -873,77 +851,83 @@ const CountryDetail = () => {
               {/* Travel Tips */}
               {countryData.travel_tips && (
                 <div className="mt-6 pt-6 border-t">
-                  <h4 className="font-semibold mb-3">Quick Travel Tips</h4>
-                  <p className="text-sm text-muted-foreground">{countryData.travel_tips}</p>
+                  <h4 className="font-semibold mb-3 text-sm">Quick Travel Tips</h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{countryData.travel_tips}</p>
                 </div>
               )}
-            </Card>
+            </div>
 
             {/* Enquiry Form */}
-            <Card className="p-6">
-              <h3 className="text-xl font-bold mb-6">Plan Your {countryData.name} Trip</h3>
+            <div className="p-6 rounded-lg border bg-card">
+              <h3 className="text-lg font-semibold mb-6">Plan Your {countryData.name} Trip</h3>
               <form onSubmit={handleEnquirySubmit} className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Full Name *</Label>
+                    <Label htmlFor="name" className="text-sm">Full Name *</Label>
                     <Input
                       id="name"
                       value={enquiryForm.name}
                       onChange={(e) => setEnquiryForm(prev => ({ ...prev, name: e.target.value }))}
                       required
+                      className="mt-1.5"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email" className="text-sm">Email *</Label>
                     <Input
                       id="email"
                       type="email"
                       value={enquiryForm.email}
                       onChange={(e) => setEnquiryForm(prev => ({ ...prev, email: e.target.value }))}
                       required
+                      className="mt-1.5"
                     />
                   </div>
                 </div>
                 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="phone">Phone *</Label>
+                    <Label htmlFor="phone" className="text-sm">Phone *</Label>
                     <Input
                       id="phone"
                       value={enquiryForm.phone}
                       onChange={(e) => setEnquiryForm(prev => ({ ...prev, phone: e.target.value }))}
                       required
+                      className="mt-1.5"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="travelers">Number of Travelers</Label>
+                    <Label htmlFor="travelers" className="text-sm">Number of Travelers</Label>
                     <Input
                       id="travelers"
                       type="number"
                       min="1"
                       value={enquiryForm.travelers}
                       onChange={(e) => setEnquiryForm(prev => ({ ...prev, travelers: parseInt(e.target.value) || 1 }))}
+                      className="mt-1.5"
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <Label htmlFor="travel_date">Preferred Travel Date</Label>
+                  <Label htmlFor="travel_date" className="text-sm">Preferred Travel Date</Label>
                   <Input
                     id="travel_date"
                     type="date"
                     value={enquiryForm.travel_date}
                     onChange={(e) => setEnquiryForm(prev => ({ ...prev, travel_date: e.target.value }))}
+                    className="mt-1.5"
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="message">Message</Label>
+                  <Label htmlFor="message" className="text-sm">Message</Label>
                   <Textarea
                     id="message"
                     placeholder="Tell us about your travel preferences, special requirements, or any questions..."
                     value={enquiryForm.message}
                     onChange={(e) => setEnquiryForm(prev => ({ ...prev, message: e.target.value }))}
+                    className="mt-1.5 min-h-[100px]"
                   />
                 </div>
                 
@@ -951,7 +935,7 @@ const CountryDetail = () => {
                   Send Enquiry
                 </Button>
               </form>
-            </Card>
+            </div>
           </div>
         </section>
       </main>
