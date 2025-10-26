@@ -562,29 +562,12 @@ const CountryDetail = () => {
         {(beforeYouGoSection || dosDontsSection || bestTimeSection || reasonsSection || foodShoppingSection || artCultureSection || funFactsSection || aboutSection) && (
           <section className="my-6 md:my-8">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              {/* Mobile/Tablet: Dropdown Select */}
-              <div className="md:hidden mb-4">
-                <select
-                  className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                  value={activeTab}
-                  onChange={(e) => setActiveTab(e.target.value)}
-                >
-                  {(beforeYouGoSection || dosDontsSection) && <option value="travel-guide">🧭 Travel Guide</option>}
-                  {(bestTimeSection || reasonsSection) && <option value="planning">📅 Planning Your Visit</option>}
-                  {(foodShoppingSection || artCultureSection) && <option value="experiences">🎨 Local Experiences</option>}
-                  {(funFactsSection || aboutSection) && <option value="discover">⭐ Discover More</option>}
-                </select>
-              </div>
-
-              {/* Desktop: Tabs */}
-              <div className="hidden md:block">
-                <TabsList className="w-full justify-start flex-wrap h-auto gap-2 bg-muted/50 p-2">
-                  {(beforeYouGoSection || dosDontsSection) && <TabsTrigger value="travel-guide">Travel Guide</TabsTrigger>}
-                  {(bestTimeSection || reasonsSection) && <TabsTrigger value="planning">Planning Your Visit</TabsTrigger>}
-                  {(foodShoppingSection || artCultureSection) && <TabsTrigger value="experiences">Local Experiences</TabsTrigger>}
-                  {(funFactsSection || aboutSection) && <TabsTrigger value="discover">Discover More</TabsTrigger>}
-                </TabsList>
-              </div>
+              <TabsList className="w-full justify-start overflow-x-auto flex-nowrap md:flex-wrap h-auto gap-1 md:gap-2 bg-muted/50 p-1.5 md:p-2 scrollbar-hide">
+                {(beforeYouGoSection || dosDontsSection) && <TabsTrigger value="travel-guide" className="text-xs md:text-sm whitespace-nowrap">Travel Guide</TabsTrigger>}
+                {(bestTimeSection || reasonsSection) && <TabsTrigger value="planning" className="text-xs md:text-sm whitespace-nowrap">Planning</TabsTrigger>}
+                {(foodShoppingSection || artCultureSection) && <TabsTrigger value="experiences" className="text-xs md:text-sm whitespace-nowrap">Experiences</TabsTrigger>}
+                {(funFactsSection || aboutSection) && <TabsTrigger value="discover" className="text-xs md:text-sm whitespace-nowrap">Discover</TabsTrigger>}
+              </TabsList>
 
               {/* Travel Guide Tab (Before You Go + Do's & Don'ts) */}
               {(beforeYouGoSection || dosDontsSection) && (
