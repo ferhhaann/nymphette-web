@@ -410,13 +410,13 @@ const CountryDetail = () => {
         />
 
         {/* Hero Section */}
-        <section className="relative overflow-hidden rounded-2xl mb-8 mt-2">
-          <div className="relative h-96 lg:h-[500px]">
+        <section className="relative overflow-hidden rounded-lg md:rounded-2xl mb-6 md:mb-8 mt-2">
+          <div className="relative h-64 sm:h-80 md:h-96 lg:h-[500px]">
             <Carousel setApi={setCarouselApi} opts={{ loop: true }} className="w-full h-full">
               <CarouselContent>
                 {displayHeroImages.map((image, index) => (
                   <CarouselItem key={image.id}>
-                    <div className="relative h-96 lg:h-[500px] w-full">
+                    <div className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] w-full">
                       <img 
                         src={image.image_url} 
                         alt={image.alt_text || countryData.name}
@@ -431,30 +431,30 @@ const CountryDetail = () => {
             
             {/* Hero Content Overlay */}
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full px-8 lg:px-16">
+              <div className="w-full px-4 sm:px-6 md:px-8 lg:px-16">
                 <div className="max-w-2xl">
-                  <h1 className="text-4xl lg:text-6xl font-bold text-white mb-4">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4">
                     {heroSection?.title || `Discover ${countryData.name}`}
                   </h1>
-                  <p className="text-lg lg:text-xl text-white/90 mb-6">
+                  <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-4 md:mb-6 line-clamp-3 md:line-clamp-none">
                     {heroSection?.content?.description || countryData.description || `Experience the best of ${countryData.name}`}
                   </p>
                   {heroSection?.content?.highlights && (
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 md:mb-6">
                       {heroSection.content.highlights.map((highlight: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="bg-white/10 text-white border-white/20">
+                        <Badge key={index} variant="secondary" className="bg-white/10 text-white border-white/20 text-xs sm:text-sm">
                           {highlight}
                         </Badge>
                       ))}
                     </div>
                   )}
-                  <div className="flex gap-4">
-                    <Button size="lg" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                    <Button size="default" className="w-full sm:w-auto" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
                       Plan Your Trip
                     </Button>
-                    <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                    <Button size="default" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/20 text-white hover:bg-white/20">
                       <Package className="h-4 w-4 mr-2" />
-                      {packageCount} Packages Available
+                      <span className="truncate">{packageCount} Packages</span>
                     </Button>
                   </div>
                 </div>
@@ -464,7 +464,7 @@ const CountryDetail = () => {
         </section>
 
         {/* Country Info & Stats */}
-        <section className="grid lg:grid-cols-3 gap-8 my-8">
+        <section className="grid lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 my-6 md:my-8">
           {/* Essential Information - Left Side */}
           <div className="lg:col-span-2">
             <CountryQuickInfo
@@ -491,12 +491,12 @@ const CountryDetail = () => {
 
         {/* Essential Tips */}
         {essentialTips.length > 0 && (
-          <section className="my-8">
-            <h2 className="text-2xl font-bold mb-6 flex items-center">
-              <Lightbulb className="h-6 w-6 mr-2 text-primary" />
+          <section className="my-6 md:my-8">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+              <Lightbulb className="h-5 w-5 md:h-6 md:w-6 mr-2 text-primary" />
               Essential Travel Tips
             </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {essentialTips.map((tip) => {
                 const IconComponent = (iconMap as any)[tip.icon] || Info
                 return (
@@ -517,25 +517,27 @@ const CountryDetail = () => {
 
 
         {/* Content Tabs */}
-        <section className="my-8">
+        <section className="my-6 md:my-8">
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="w-full justify-start flex-wrap h-auto gap-2 bg-muted/50 p-2">
-              {overviewSection && <TabsTrigger value="overview">Overview</TabsTrigger>}
-              {aboutSection && <TabsTrigger value="about">About</TabsTrigger>}
-              {funFactsSection && <TabsTrigger value="fun-facts">Fun Facts</TabsTrigger>}
-              {beforeYouGoSection && <TabsTrigger value="before-you-go">Before You Go</TabsTrigger>}
-              {bestTimeSection && <TabsTrigger value="best-time">Best Time to Visit</TabsTrigger>}
-              {reasonsSection && <TabsTrigger value="reasons">Why Visit</TabsTrigger>}
-              {foodShoppingSection && <TabsTrigger value="food-shopping">Food & Shopping</TabsTrigger>}
-              {dosDontsSection && <TabsTrigger value="dos-donts">Do's & Don'ts</TabsTrigger>}
-              {artCultureSection && <TabsTrigger value="art-culture">Art & Culture</TabsTrigger>}
-            </TabsList>
+            <div className="relative -mx-4 px-4 md:mx-0 md:px-0">
+              <TabsList className="inline-flex w-auto min-w-full md:w-full justify-start overflow-x-auto flex-nowrap md:flex-wrap h-auto gap-1 md:gap-2 bg-muted/50 p-1.5 md:p-2 scrollbar-hide">
+                {overviewSection && <TabsTrigger value="overview" className="text-xs md:text-sm whitespace-nowrap">Overview</TabsTrigger>}
+                {aboutSection && <TabsTrigger value="about" className="text-xs md:text-sm whitespace-nowrap">About</TabsTrigger>}
+                {funFactsSection && <TabsTrigger value="fun-facts" className="text-xs md:text-sm whitespace-nowrap">Fun Facts</TabsTrigger>}
+                {beforeYouGoSection && <TabsTrigger value="before-you-go" className="text-xs md:text-sm whitespace-nowrap">Before You Go</TabsTrigger>}
+                {bestTimeSection && <TabsTrigger value="best-time" className="text-xs md:text-sm whitespace-nowrap">Best Time</TabsTrigger>}
+                {reasonsSection && <TabsTrigger value="reasons" className="text-xs md:text-sm whitespace-nowrap">Why Visit</TabsTrigger>}
+                {foodShoppingSection && <TabsTrigger value="food-shopping" className="text-xs md:text-sm whitespace-nowrap">Food & Shopping</TabsTrigger>}
+                {dosDontsSection && <TabsTrigger value="dos-donts" className="text-xs md:text-sm whitespace-nowrap">Do's & Don'ts</TabsTrigger>}
+                {artCultureSection && <TabsTrigger value="art-culture" className="text-xs md:text-sm whitespace-nowrap">Art & Culture</TabsTrigger>}
+              </TabsList>
+            </div>
 
             {/* Overview Tab */}
             {overviewSection && (
-              <TabsContent value="overview" className="mt-6">
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-4 flex items-center">
+              <TabsContent value="overview" className="mt-4 md:mt-6">
+                <Card className="p-4 md:p-6">
+                  <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
                     <BookOpen className="h-6 w-6 mr-2 text-primary" />
                     {overviewSection.title}
                   </h2>
@@ -568,9 +570,9 @@ const CountryDetail = () => {
 
             {/* About Tab */}
             {aboutSection && (
-              <TabsContent value="about" className="mt-6">
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-4 flex items-center">
+              <TabsContent value="about" className="mt-4 md:mt-6">
+                <Card className="p-4 md:p-6">
+                  <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
                     <Globe className="h-6 w-6 mr-2 text-primary" />
                     {aboutSection.title}
                   </h2>
@@ -603,9 +605,9 @@ const CountryDetail = () => {
 
             {/* Fun Facts Tab */}
             {funFactsSection && funFactsSection.content?.facts && (
-              <TabsContent value="fun-facts" className="mt-6">
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <TabsContent value="fun-facts" className="mt-4 md:mt-6">
+                <Card className="p-4 md:p-6">
+                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
                     <Star className="h-6 w-6 mr-2 text-primary" />
                     {funFactsSection.title}
                   </h2>
@@ -628,9 +630,9 @@ const CountryDetail = () => {
 
             {/* Before You Go Tab */}
             {beforeYouGoSection && beforeYouGoSection.content?.tips && (
-              <TabsContent value="before-you-go" className="mt-6">
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <TabsContent value="before-you-go" className="mt-4 md:mt-6">
+                <Card className="p-4 md:p-6">
+                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
                     <AlertCircle className="h-6 w-6 mr-2 text-primary" />
                     {beforeYouGoSection.title}
                   </h2>
@@ -653,9 +655,9 @@ const CountryDetail = () => {
 
             {/* Best Time to Visit Tab */}
             {bestTimeSection && (
-              <TabsContent value="best-time" className="mt-6">
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-4 flex items-center">
+              <TabsContent value="best-time" className="mt-4 md:mt-6">
+                <Card className="p-4 md:p-6">
+                  <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
                     <Calendar className="h-6 w-6 mr-2 text-primary" />
                     {bestTimeSection.title}
                   </h2>
@@ -686,9 +688,9 @@ const CountryDetail = () => {
 
             {/* Reasons to Visit Tab */}
             {reasonsSection && reasonsSection.content?.reasons && (
-              <TabsContent value="reasons" className="mt-6">
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <TabsContent value="reasons" className="mt-4 md:mt-6">
+                <Card className="p-4 md:p-6">
+                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
                     <Heart className="h-6 w-6 mr-2 text-primary" />
                     {reasonsSection.title}
                   </h2>
@@ -716,8 +718,8 @@ const CountryDetail = () => {
 
             {/* Food & Shopping Tab */}
             {foodShoppingSection && (
-              <TabsContent value="food-shopping" className="mt-6">
-                <div className="grid lg:grid-cols-2 gap-6">
+              <TabsContent value="food-shopping" className="mt-4 md:mt-6">
+                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                   <Card className="p-6">
                     <h3 className="text-xl font-bold mb-4 flex items-center">
                       <Utensils className="h-5 w-5 mr-2 text-primary" />
@@ -743,9 +745,9 @@ const CountryDetail = () => {
 
             {/* Dos and Don'ts Tab */}
             {dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
-              <TabsContent value="dos-donts" className="mt-6">
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <TabsContent value="dos-donts" className="mt-4 md:mt-6">
+                <Card className="p-4 md:p-6">
+                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
                     <CheckCircle className="h-6 w-6 mr-2 text-primary" />
                     {dosDontsSection.title}
                   </h2>
@@ -784,9 +786,9 @@ const CountryDetail = () => {
 
             {/* Art & Culture Tab */}
             {artCultureSection && (
-              <TabsContent value="art-culture" className="mt-6">
-                <Card className="p-6">
-                  <h2 className="text-2xl font-bold mb-4 flex items-center">
+              <TabsContent value="art-culture" className="mt-4 md:mt-6">
+                <Card className="p-4 md:p-6">
+                  <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
                     <Palette className="h-6 w-6 mr-2 text-primary" />
                     {artCultureSection.title}
                   </h2>
@@ -820,7 +822,7 @@ const CountryDetail = () => {
         </section>
 
         {/* Best Packages */}
-        <section id="packages" className="my-8">
+        <section id="packages" className="my-6 md:my-8">
           <CountryPackagesList countrySlug={country || ''} countryName={countryData.name} />
         </section>
 
@@ -829,9 +831,9 @@ const CountryDetail = () => {
 
         {/* FAQs */}
         {faqs.length > 0 && (
-          <section className="my-8">
-            <Card className="p-6">
-              <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <section className="my-6 md:my-8">
+            <Card className="p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Frequently Asked Questions</h2>
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
                   <AccordionItem key={faq.id} value={`item-${index}`}>
@@ -845,8 +847,8 @@ const CountryDetail = () => {
         )}
 
         {/* Contact & Enquiry */}
-        <section id="enquiry" className="my-8">
-          <div className="grid lg:grid-cols-2 gap-8">
+        <section id="enquiry" className="my-6 md:my-8">
+          <div className="grid lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
             {/* Contact Information */}
             <Card className="p-6">
               <h3 className="text-xl font-bold mb-6">Contact Information</h3>

@@ -265,6 +265,18 @@ All colors MUST be HSL.
   }
 }
 
+/* Hide scrollbar utility */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Improved focus states for accessibility */
 @layer base {
   *:focus-visible {
