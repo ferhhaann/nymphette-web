@@ -400,7 +400,7 @@ const CountryDetail = () => {
   const artCultureSection = getSectionByName('art_culture')
 
   return (
-    <div className="min-h-screen bg-[hsl(var(--luxury-cream))]">
+    <div className="min-h-screen bg-background">
       <Navigation />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
@@ -450,10 +450,10 @@ const CountryDetail = () => {
                     </div>
                   )}
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                    <Button size="lg" className="bg-[hsl(var(--luxury-gold))] hover:bg-[hsl(var(--luxury-gold-light))] text-[hsl(var(--luxury-navy))] font-semibold shadow-lg w-full sm:w-auto" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
+                    <Button size="default" className="w-full sm:w-auto" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
                       Plan Your Trip
                     </Button>
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm">
+                    <Button size="default" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/20 text-white hover:bg-white/20">
                       <Package className="h-4 w-4 mr-2" />
                       <span className="truncate">{packageCount} Packages</span>
                     </Button>
@@ -492,21 +492,21 @@ const CountryDetail = () => {
 
         {/* Essential Tips */}
         {essentialTips.length > 0 && (
-          <section className="my-8 md:my-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 flex items-center text-[hsl(var(--luxury-navy))]">
-              <Lightbulb className="h-6 w-6 md:h-7 md:w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+          <section className="my-6 md:my-8">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+              <Lightbulb className="h-5 w-5 md:h-6 md:w-6 mr-2 text-primary" />
               Essential Travel Tips
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {essentialTips.map((tip) => {
                 const IconComponent = (iconMap as any)[tip.icon] || Info
                 return (
-                  <Card key={tip.id} className="p-6 bg-white border-none shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-[hsl(var(--luxury-gold))]">
+                  <Card key={tip.id} className="p-4">
                     <div className="flex items-start gap-3">
-                      <IconComponent className="h-6 w-6 text-[hsl(var(--luxury-gold))] mt-1 flex-shrink-0" />
+                      <IconComponent className="h-5 w-5 text-primary mt-1" />
                       <div>
-                        <h4 className="font-semibold text-[hsl(var(--luxury-navy))] text-lg mb-2">{tip.title}</h4>
-                        <p className="text-sm text-[hsl(var(--luxury-accent))] leading-relaxed">{tip.note}</p>
+                        <h4 className="font-semibold">{tip.title}</h4>
+                        <p className="text-sm text-muted-foreground mt-1">{tip.note}</p>
                       </div>
                     </div>
                   </Card>
@@ -519,31 +519,31 @@ const CountryDetail = () => {
 
         {/* Overview Section - Always Visible */}
         {overviewSection && (
-          <section className="my-8 md:my-12">
-            <Card className="p-6 md:p-10 bg-white border-none shadow-xl">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--luxury-navy))]">
-                <BookOpen className="h-7 w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+          <section className="my-6 md:my-8">
+            <Card className="p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                <BookOpen className="h-6 w-6 mr-2 text-primary" />
                 {overviewSection.title}
               </h2>
               {overviewSection.content?.subtitle && (
-                <p className="text-xl font-semibold text-[hsl(var(--luxury-gold))] mb-4">
+                <p className="text-lg font-semibold text-primary mb-3">
                   {overviewSection.content.subtitle}
                 </p>
               )}
-              <p className="text-[hsl(var(--luxury-accent))] leading-relaxed text-base md:text-lg">
+              <p className="text-muted-foreground leading-relaxed">
                 {overviewSection.content?.description}
               </p>
               {overviewSection.content?.highlight && (
-                <div className="mt-6 p-5 bg-gradient-to-r from-[hsl(var(--luxury-gold))]/10 to-transparent rounded-lg border-l-4 border-[hsl(var(--luxury-gold))]">
-                  <p className="text-base font-medium text-[hsl(var(--luxury-navy))]">{overviewSection.content.highlight}</p>
+                <div className="mt-4 p-4 bg-secondary rounded-lg border-l-4 border-primary">
+                  <p className="text-sm font-medium text-foreground">{overviewSection.content.highlight}</p>
                 </div>
               )}
               {overviewSection.content?.points && overviewSection.content.points.length > 0 && (
-                <ul className="mt-6 space-y-3">
+                <ul className="mt-4 space-y-2">
                   {overviewSection.content.points.map((point: string, index: number) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-[hsl(var(--luxury-gold))] mt-0.5 flex-shrink-0" />
-                      <span className="text-base text-[hsl(var(--luxury-accent))]">{point}</span>
+                    <li key={index} className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">{point}</span>
                     </li>
                   ))}
                 </ul>
@@ -560,35 +560,35 @@ const CountryDetail = () => {
 
         {/* Additional Information Tabs - Maximum 4 Tabs */}
         {(beforeYouGoSection || dosDontsSection || bestTimeSection || reasonsSection || foodShoppingSection || artCultureSection || funFactsSection || aboutSection) && (
-          <section className="my-8 md:my-12">
+          <section className="my-6 md:my-8">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="w-full justify-start overflow-x-auto flex-nowrap md:flex-wrap h-auto gap-2 md:gap-3 bg-white p-2 md:p-3 scrollbar-hide shadow-md rounded-xl border-none">
-                {(beforeYouGoSection || dosDontsSection) && <TabsTrigger value="travel-guide" className="text-sm md:text-base whitespace-nowrap data-[state=active]:bg-[hsl(var(--luxury-navy))] data-[state=active]:text-white data-[state=inactive]:text-[hsl(var(--luxury-accent))] px-4 md:px-6 py-2 md:py-3 font-medium rounded-lg transition-all">Travel Guide</TabsTrigger>}
-                {(bestTimeSection || reasonsSection) && <TabsTrigger value="planning" className="text-sm md:text-base whitespace-nowrap data-[state=active]:bg-[hsl(var(--luxury-navy))] data-[state=active]:text-white data-[state=inactive]:text-[hsl(var(--luxury-accent))] px-4 md:px-6 py-2 md:py-3 font-medium rounded-lg transition-all">Planning</TabsTrigger>}
-                {(foodShoppingSection || artCultureSection) && <TabsTrigger value="experiences" className="text-sm md:text-base whitespace-nowrap data-[state=active]:bg-[hsl(var(--luxury-navy))] data-[state=active]:text-white data-[state=inactive]:text-[hsl(var(--luxury-accent))] px-4 md:px-6 py-2 md:py-3 font-medium rounded-lg transition-all">Experiences</TabsTrigger>}
-                {(funFactsSection || aboutSection) && <TabsTrigger value="discover" className="text-sm md:text-base whitespace-nowrap data-[state=active]:bg-[hsl(var(--luxury-navy))] data-[state=active]:text-white data-[state=inactive]:text-[hsl(var(--luxury-accent))] px-4 md:px-6 py-2 md:py-3 font-medium rounded-lg transition-all">Discover</TabsTrigger>}
+              <TabsList className="w-full justify-start overflow-x-auto flex-nowrap md:flex-wrap h-auto gap-1 md:gap-2 bg-muted/50 p-1.5 md:p-2 scrollbar-hide">
+                {(beforeYouGoSection || dosDontsSection) && <TabsTrigger value="travel-guide" className="text-xs md:text-sm whitespace-nowrap">Travel Guide</TabsTrigger>}
+                {(bestTimeSection || reasonsSection) && <TabsTrigger value="planning" className="text-xs md:text-sm whitespace-nowrap">Planning</TabsTrigger>}
+                {(foodShoppingSection || artCultureSection) && <TabsTrigger value="experiences" className="text-xs md:text-sm whitespace-nowrap">Experiences</TabsTrigger>}
+                {(funFactsSection || aboutSection) && <TabsTrigger value="discover" className="text-xs md:text-sm whitespace-nowrap">Discover</TabsTrigger>}
               </TabsList>
 
               {/* Travel Guide Tab (Before You Go + Do's & Don'ts) */}
               {(beforeYouGoSection || dosDontsSection) && (
-                <TabsContent value="travel-guide" className="mt-6 md:mt-8 space-y-6">
+                <TabsContent value="travel-guide" className="mt-4 md:mt-6 space-y-6">
                   {/* Before You Go Section */}
                   {beforeYouGoSection && beforeYouGoSection.content?.tips && (
-                    <Card className="p-6 md:p-8 bg-white border-none shadow-lg">
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--luxury-navy))]">
-                        <AlertCircle className="h-7 w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                        <AlertCircle className="h-6 w-6 mr-2 text-primary" />
                         {beforeYouGoSection.title}
                       </h2>
                       {beforeYouGoSection.content?.description && (
-                        <p className="text-[hsl(var(--luxury-accent))] leading-relaxed mb-6 text-base">
+                        <p className="text-muted-foreground leading-relaxed mb-6">
                           {beforeYouGoSection.content.description}
                         </p>
                       )}
                       <div className="grid md:grid-cols-2 gap-4">
                         {beforeYouGoSection.content.tips.map((tip: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-5 border rounded-lg border-[hsl(var(--luxury-gold))]/20 bg-gradient-to-br from-[hsl(var(--luxury-cream))] to-white hover:shadow-md transition-all">
-                            <Lightbulb className="h-5 w-5 text-[hsl(var(--luxury-gold))] mt-0.5 flex-shrink-0" />
-                            <p className="text-sm text-[hsl(var(--luxury-accent))]">{tip}</p>
+                          <div key={index} className="flex items-start gap-3 p-4 border rounded-lg">
+                            <Lightbulb className="h-5 w-5 text-primary mt-0.5" />
+                            <p className="text-sm">{tip}</p>
                           </div>
                         ))}
                       </div>
@@ -597,20 +597,20 @@ const CountryDetail = () => {
 
                   {/* Dos and Don'ts Section */}
                   {dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
-                    <Card className="p-6 md:p-8 bg-white border-none shadow-lg">
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--luxury-navy))]">
-                        <CheckCircle className="h-7 w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                        <CheckCircle className="h-6 w-6 mr-2 text-primary" />
                         {dosDontsSection.title}
                       </h2>
                       <div className="grid lg:grid-cols-2 gap-6">
                         {dosDontsSection.content?.dos && (
                           <div>
-                            <h3 className="text-xl font-semibold mb-4 text-[hsl(var(--luxury-gold))]">Do's</h3>
+                            <h3 className="text-lg font-semibold mb-4 text-green-600">Do's</h3>
                             <div className="space-y-3">
                               {dosDontsSection.content.dos.map((item: string, index: number) => (
-                                <div key={index} className="flex items-start gap-3 p-3 bg-[hsl(var(--luxury-cream))] rounded-lg">
-                                  <CheckCircle className="h-5 w-5 text-[hsl(var(--luxury-gold))] mt-0.5 flex-shrink-0" />
-                                  <p className="text-sm text-[hsl(var(--luxury-accent))]">{item}</p>
+                                <div key={index} className="flex items-start gap-3">
+                                  <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
+                                  <p className="text-sm">{item}</p>
                                 </div>
                               ))}
                             </div>
@@ -619,12 +619,12 @@ const CountryDetail = () => {
                         
                         {dosDontsSection.content?.donts && (
                           <div>
-                            <h3 className="text-xl font-semibold mb-4 text-[hsl(var(--luxury-navy))]">Don'ts</h3>
+                            <h3 className="text-lg font-semibold mb-4 text-red-600">Don'ts</h3>
                             <div className="space-y-3">
                               {dosDontsSection.content.donts.map((item: string, index: number) => (
-                                <div key={index} className="flex items-start gap-3 p-3 bg-[hsl(var(--luxury-cream))] rounded-lg">
-                                  <AlertCircle className="h-5 w-5 text-[hsl(var(--luxury-navy))] mt-0.5 flex-shrink-0" />
-                                  <p className="text-sm text-[hsl(var(--luxury-accent))]">{item}</p>
+                                <div key={index} className="flex items-start gap-3">
+                                  <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+                                  <p className="text-sm">{item}</p>
                                 </div>
                               ))}
                             </div>
@@ -638,30 +638,30 @@ const CountryDetail = () => {
 
               {/* Planning Your Visit Tab (Best Time + Why Visit) */}
               {(bestTimeSection || reasonsSection) && (
-                <TabsContent value="planning" className="mt-6 md:mt-8 space-y-6">
+                <TabsContent value="planning" className="mt-4 md:mt-6 space-y-6">
                   {/* Best Time to Visit Section */}
                   {bestTimeSection && (
-                    <Card className="p-6 md:p-8 bg-white border-none shadow-lg">
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--luxury-navy))]">
-                        <Calendar className="h-7 w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                        <Calendar className="h-6 w-6 mr-2 text-primary" />
                         {bestTimeSection.title}
                       </h2>
                       {bestTimeSection.content?.subtitle && (
-                        <p className="text-xl font-semibold text-[hsl(var(--luxury-gold))] mb-4">
+                        <p className="text-lg font-semibold text-primary mb-3">
                           {bestTimeSection.content.subtitle}
                         </p>
                       )}
-                      <p className="text-[hsl(var(--luxury-accent))] leading-relaxed mb-4 text-base">
+                      <p className="text-muted-foreground leading-relaxed mb-4">
                         {bestTimeSection.content?.content || bestTimeSection.content?.description}
                       </p>
                       {bestTimeSection.content?.highlights && bestTimeSection.content.highlights.length > 0 && (
-                        <div className="mt-6">
-                          <h3 className="font-semibold mb-4 text-[hsl(var(--luxury-navy))] text-lg">Seasonal Highlights</h3>
+                        <div className="mt-4">
+                          <h3 className="font-semibold mb-3">Seasonal Highlights</h3>
                           <div className="grid md:grid-cols-2 gap-3">
                             {bestTimeSection.content.highlights.map((highlight: string, index: number) => (
-                              <div key={index} className="flex items-start gap-3 p-4 bg-gradient-to-br from-[hsl(var(--luxury-cream))] to-white rounded-lg border border-[hsl(var(--luxury-gold))]/20 hover:shadow-md transition-all">
-                                <Calendar className="h-5 w-5 text-[hsl(var(--luxury-gold))] mt-0.5 flex-shrink-0" />
-                                <span className="text-sm text-[hsl(var(--luxury-accent))]">{highlight}</span>
+                              <div key={index} className="flex items-start gap-2 p-3 bg-secondary/50 rounded-lg">
+                                <Calendar className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                                <span className="text-sm">{highlight}</span>
                               </div>
                             ))}
                           </div>
@@ -672,27 +672,27 @@ const CountryDetail = () => {
 
                   {/* Reasons to Visit Section */}
                   {reasonsSection && reasonsSection.content?.reasons && (
-                    <Card className="p-6 md:p-8 bg-white border-none shadow-lg">
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--luxury-navy))]">
-                        <Heart className="h-7 w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                        <Heart className="h-6 w-6 mr-2 text-primary" />
                         {reasonsSection.title}
                       </h2>
                       {reasonsSection.content?.description && (
-                        <p className="text-[hsl(var(--luxury-accent))] leading-relaxed mb-6 text-base">
+                        <p className="text-muted-foreground leading-relaxed mb-6">
                           {reasonsSection.content.description}
                         </p>
                       )}
                       <div className="grid md:grid-cols-2 gap-4">
                         {reasonsSection.content.reasons.map((reason: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-5 bg-gradient-to-br from-[hsl(var(--luxury-cream))] to-white rounded-lg border border-[hsl(var(--luxury-gold))]/20 hover:shadow-md transition-all">
-                            <Heart className="h-5 w-5 text-[hsl(var(--luxury-gold))] mt-0.5 flex-shrink-0" />
-                            <p className="text-sm text-[hsl(var(--luxury-accent))]">{reason}</p>
+                          <div key={index} className="flex items-start gap-3 p-4 bg-primary/5 rounded-lg">
+                            <Heart className="h-5 w-5 text-primary mt-0.5" />
+                            <p className="text-sm">{reason}</p>
                           </div>
                         ))}
                       </div>
                       {reasonsSection.content?.highlight && (
-                        <div className="mt-6 p-5 bg-gradient-to-r from-[hsl(var(--luxury-gold))]/10 to-transparent rounded-lg border-l-4 border-[hsl(var(--luxury-gold))]">
-                          <p className="text-base font-medium text-[hsl(var(--luxury-navy))]">{reasonsSection.content.highlight}</p>
+                        <div className="mt-4 p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
+                          <p className="text-sm font-medium">{reasonsSection.content.highlight}</p>
                         </div>
                       )}
                     </Card>
@@ -702,26 +702,26 @@ const CountryDetail = () => {
 
               {/* Local Experiences Tab (Food & Shopping + Art & Culture) */}
               {(foodShoppingSection || artCultureSection) && (
-                <TabsContent value="experiences" className="mt-6 md:mt-8 space-y-6">
+                <TabsContent value="experiences" className="mt-4 md:mt-6 space-y-6">
                   {/* Food & Shopping Section */}
                   {foodShoppingSection && (
                     <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-                      <Card className="p-6 md:p-8 bg-white border-none shadow-lg hover:shadow-xl transition-all">
-                        <h3 className="text-xl md:text-2xl font-bold mb-4 flex items-center text-[hsl(var(--luxury-navy))]">
-                          <Utensils className="h-6 w-6 mr-3 text-[hsl(var(--luxury-gold))]" />
+                      <Card className="p-6">
+                        <h3 className="text-xl font-bold mb-4 flex items-center">
+                          <Utensils className="h-5 w-5 mr-2 text-primary" />
                           Local Cuisine
                         </h3>
-                        <p className="text-[hsl(var(--luxury-accent))] leading-relaxed text-base">
+                        <p className="text-muted-foreground leading-relaxed">
                           {foodShoppingSection.content?.food}
                         </p>
                       </Card>
                       
-                      <Card className="p-6 md:p-8 bg-white border-none shadow-lg hover:shadow-xl transition-all">
-                        <h3 className="text-xl md:text-2xl font-bold mb-4 flex items-center text-[hsl(var(--luxury-navy))]">
-                          <ShoppingBag className="h-6 w-6 mr-3 text-[hsl(var(--luxury-gold))]" />
+                      <Card className="p-6">
+                        <h3 className="text-xl font-bold mb-4 flex items-center">
+                          <ShoppingBag className="h-5 w-5 mr-2 text-primary" />
                           Shopping
                         </h3>
-                        <p className="text-[hsl(var(--luxury-accent))] leading-relaxed text-base">
+                        <p className="text-muted-foreground leading-relaxed">
                           {foodShoppingSection.content?.shopping}
                         </p>
                       </Card>
@@ -730,30 +730,30 @@ const CountryDetail = () => {
 
                   {/* Art & Culture Section */}
                   {artCultureSection && (
-                    <Card className="p-6 md:p-8 bg-white border-none shadow-lg">
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--luxury-navy))]">
-                        <Palette className="h-7 w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                        <Palette className="h-6 w-6 mr-2 text-primary" />
                         {artCultureSection.title}
                       </h2>
                       {artCultureSection.content?.subtitle && (
-                        <p className="text-xl font-semibold text-[hsl(var(--luxury-gold))] mb-4">
+                        <p className="text-lg font-semibold text-primary mb-3">
                           {artCultureSection.content.subtitle}
                         </p>
                       )}
-                      <p className="text-[hsl(var(--luxury-accent))] leading-relaxed text-base">
+                      <p className="text-muted-foreground leading-relaxed">
                         {artCultureSection.content?.content || artCultureSection.content?.description}
                       </p>
                       {artCultureSection.content?.highlight && (
-                        <div className="mt-6 p-5 bg-gradient-to-r from-[hsl(var(--luxury-gold))]/10 to-transparent rounded-lg border-l-4 border-[hsl(var(--luxury-gold))]">
-                          <p className="text-base font-medium text-[hsl(var(--luxury-navy))]">{artCultureSection.content.highlight}</p>
+                        <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                          <p className="text-sm font-medium">{artCultureSection.content.highlight}</p>
                         </div>
                       )}
                       {artCultureSection.content?.points && artCultureSection.content.points.length > 0 && (
-                        <ul className="mt-6 space-y-3">
+                        <ul className="mt-4 space-y-2">
                           {artCultureSection.content.points.map((point: string, index: number) => (
-                            <li key={index} className="flex items-start gap-3">
-                              <Palette className="h-5 w-5 text-[hsl(var(--luxury-gold))] mt-0.5 flex-shrink-0" />
-                              <span className="text-base text-[hsl(var(--luxury-accent))]">{point}</span>
+                            <li key={index} className="flex items-start gap-2">
+                              <Palette className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-sm">{point}</span>
                             </li>
                           ))}
                         </ul>
@@ -765,24 +765,24 @@ const CountryDetail = () => {
 
               {/* Discover More Tab (Fun Facts + About) */}
               {(funFactsSection || aboutSection) && (
-                <TabsContent value="discover" className="mt-6 md:mt-8 space-y-6">
+                <TabsContent value="discover" className="mt-4 md:mt-6 space-y-6">
                   {/* Fun Facts Section */}
                   {funFactsSection && funFactsSection.content?.facts && (
-                    <Card className="p-6 md:p-8 bg-white border-none shadow-lg">
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--luxury-navy))]">
-                        <Star className="h-7 w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                        <Star className="h-6 w-6 mr-2 text-primary" />
                         {funFactsSection.title}
                       </h2>
                       {funFactsSection.content?.description && (
-                        <p className="text-[hsl(var(--luxury-accent))] leading-relaxed mb-6 text-base">
+                        <p className="text-muted-foreground leading-relaxed mb-6">
                           {funFactsSection.content.description}
                         </p>
                       )}
                       <div className="grid md:grid-cols-2 gap-4">
                         {funFactsSection.content.facts.map((fact: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-5 bg-gradient-to-br from-[hsl(var(--luxury-cream))] to-white rounded-lg border border-[hsl(var(--luxury-gold))]/20 hover:shadow-md transition-all">
-                            <CheckCircle className="h-5 w-5 text-[hsl(var(--luxury-gold))] mt-0.5 flex-shrink-0" />
-                            <p className="text-sm text-[hsl(var(--luxury-accent))]">{fact}</p>
+                          <div key={index} className="flex items-start gap-3 p-4 bg-secondary/50 rounded-lg">
+                            <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
+                            <p className="text-sm">{fact}</p>
                           </div>
                         ))}
                       </div>
@@ -791,30 +791,30 @@ const CountryDetail = () => {
 
                   {/* About Section */}
                   {aboutSection && (
-                    <Card className="p-6 md:p-8 bg-white border-none shadow-lg">
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--luxury-navy))]">
-                        <Globe className="h-7 w-7 mr-3 text-[hsl(var(--luxury-gold))]" />
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                        <Globe className="h-6 w-6 mr-2 text-primary" />
                         {aboutSection.title}
                       </h2>
                       {aboutSection.content?.subtitle && (
-                        <p className="text-xl font-semibold text-[hsl(var(--luxury-gold))] mb-4">
+                        <p className="text-lg font-semibold text-primary mb-3">
                           {aboutSection.content.subtitle}
                         </p>
                       )}
-                      <p className="text-[hsl(var(--luxury-accent))] leading-relaxed text-base">
+                      <p className="text-muted-foreground leading-relaxed">
                         {aboutSection.content?.description}
                       </p>
                       {aboutSection.content?.highlight && (
-                        <div className="mt-6 p-5 bg-gradient-to-r from-[hsl(var(--luxury-gold))]/10 to-transparent rounded-lg border-l-4 border-[hsl(var(--luxury-gold))]">
-                          <p className="text-base font-medium text-[hsl(var(--luxury-navy))]">{aboutSection.content.highlight}</p>
+                        <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                          <p className="text-sm font-medium">{aboutSection.content.highlight}</p>
                         </div>
                       )}
                       {aboutSection.content?.points && aboutSection.content.points.length > 0 && (
-                        <ul className="mt-6 space-y-3">
+                        <ul className="mt-4 space-y-2">
                           {aboutSection.content.points.map((point: string, index: number) => (
-                            <li key={index} className="flex items-start gap-3">
-                              <CheckCircle className="h-5 w-5 text-[hsl(var(--luxury-gold))] mt-0.5 flex-shrink-0" />
-                              <span className="text-base text-[hsl(var(--luxury-accent))]">{point}</span>
+                            <li key={index} className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-sm">{point}</span>
                             </li>
                           ))}
                         </ul>
@@ -832,14 +832,14 @@ const CountryDetail = () => {
 
         {/* FAQs */}
         {faqs.length > 0 && (
-          <section className="my-8 md:my-12">
-            <Card className="p-6 md:p-10 bg-white border-none shadow-xl">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-[hsl(var(--luxury-navy))]">Frequently Asked Questions</h2>
-              <Accordion type="single" collapsible className="w-full space-y-4">
+          <section className="my-6 md:my-8">
+            <Card className="p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Frequently Asked Questions</h2>
+              <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
-                  <AccordionItem key={faq.id} value={`item-${index}`} className="border border-[hsl(var(--luxury-gold))]/20 rounded-lg px-6 py-2 bg-gradient-to-r from-[hsl(var(--luxury-cream))] to-white">
-                    <AccordionTrigger className="text-left font-semibold text-[hsl(var(--luxury-navy))] hover:text-[hsl(var(--luxury-gold))] transition-colors">{faq.question}</AccordionTrigger>
-                    <AccordionContent className="text-[hsl(var(--luxury-accent))] leading-relaxed">{faq.answer}</AccordionContent>
+                  <AccordionItem key={faq.id} value={`item-${index}`}>
+                    <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
+                    <AccordionContent>{faq.answer}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
@@ -848,58 +848,56 @@ const CountryDetail = () => {
         )}
 
         {/* Contact & Enquiry */}
-        <section id="enquiry" className="my-8 md:my-12">
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
+        <section id="enquiry" className="my-6 md:my-8">
+          <div className="grid lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
             {/* Contact Information */}
-            <Card className="p-6 md:p-8 bg-white border-none shadow-xl">
-              <h3 className="text-2xl font-bold mb-6 text-[hsl(var(--luxury-navy))]">Contact Information</h3>
-              <div className="space-y-5">
-                <div className="flex items-center gap-4 p-4 bg-[hsl(var(--luxury-cream))] rounded-lg">
-                  <Phone className="h-6 w-6 text-[hsl(var(--luxury-gold))]" />
-                  <span className="text-[hsl(var(--luxury-accent))] font-medium">{countryData.contact_info?.phone || '+1 (555) 123-4567'}</span>
+            <Card className="p-6">
+              <h3 className="text-xl font-bold mb-6">Contact Information</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 w-5 text-primary" />
+                  <span>{countryData.contact_info?.phone || '+1 (555) 123-4567'}</span>
                 </div>
-                <div className="flex items-center gap-4 p-4 bg-[hsl(var(--luxury-cream))] rounded-lg">
-                  <Mail className="h-6 w-6 text-[hsl(var(--luxury-gold))]" />
-                  <span className="text-[hsl(var(--luxury-accent))] font-medium">{countryData.contact_info?.email || 'hello@nymphettetours.com'}</span>
+                <div className="flex items-center gap-3">
+                  <Mail className="h-5 w-5 text-primary" />
+                  <span>{countryData.contact_info?.email || 'hello@nymphettetours.com'}</span>
                 </div>
                 {countryData.contact_info?.address && (
-                  <div className="flex items-start gap-4 p-4 bg-[hsl(var(--luxury-cream))] rounded-lg">
-                    <MapPin className="h-6 w-6 text-[hsl(var(--luxury-gold))] mt-1" />
-                    <span className="text-[hsl(var(--luxury-accent))] font-medium">{countryData.contact_info.address}</span>
+                  <div className="flex items-start gap-3">
+                    <MapPin className="h-5 w-5 text-primary mt-1" />
+                    <span>{countryData.contact_info.address}</span>
                   </div>
                 )}
               </div>
               
               {/* Travel Tips */}
               {countryData.travel_tips && (
-                <div className="mt-8 pt-6 border-t border-[hsl(var(--luxury-gold))]/20">
-                  <h4 className="font-semibold mb-3 text-[hsl(var(--luxury-navy))] text-lg">Quick Travel Tips</h4>
-                  <p className="text-base text-[hsl(var(--luxury-accent))] leading-relaxed">{countryData.travel_tips}</p>
+                <div className="mt-6 pt-6 border-t">
+                  <h4 className="font-semibold mb-3">Quick Travel Tips</h4>
+                  <p className="text-sm text-muted-foreground">{countryData.travel_tips}</p>
                 </div>
               )}
             </Card>
 
             {/* Enquiry Form */}
-            <Card className="p-6 md:p-8 bg-white border-none shadow-xl">
-              <h3 className="text-2xl font-bold mb-6 text-[hsl(var(--luxury-navy))]">Plan Your {countryData.name} Trip</h3>
-              <form onSubmit={handleEnquirySubmit} className="space-y-5">
+            <Card className="p-6">
+              <h3 className="text-xl font-bold mb-6">Plan Your {countryData.name} Trip</h3>
+              <form onSubmit={handleEnquirySubmit} className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name" className="text-[hsl(var(--luxury-navy))] font-medium">Full Name *</Label>
+                    <Label htmlFor="name">Full Name *</Label>
                     <Input
                       id="name"
-                      className="border-[hsl(var(--luxury-gold))]/30 focus:border-[hsl(var(--luxury-gold))] focus:ring-[hsl(var(--luxury-gold))]"
                       value={enquiryForm.name}
                       onChange={(e) => setEnquiryForm(prev => ({ ...prev, name: e.target.value }))}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email" className="text-[hsl(var(--luxury-navy))] font-medium">Email *</Label>
+                    <Label htmlFor="email">Email *</Label>
                     <Input
                       id="email"
                       type="email"
-                      className="border-[hsl(var(--luxury-gold))]/30 focus:border-[hsl(var(--luxury-gold))] focus:ring-[hsl(var(--luxury-gold))]"
                       value={enquiryForm.email}
                       onChange={(e) => setEnquiryForm(prev => ({ ...prev, email: e.target.value }))}
                       required
@@ -909,22 +907,20 @@ const CountryDetail = () => {
                 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="phone" className="text-[hsl(var(--luxury-navy))] font-medium">Phone *</Label>
+                    <Label htmlFor="phone">Phone *</Label>
                     <Input
                       id="phone"
-                      className="border-[hsl(var(--luxury-gold))]/30 focus:border-[hsl(var(--luxury-gold))] focus:ring-[hsl(var(--luxury-gold))]"
                       value={enquiryForm.phone}
                       onChange={(e) => setEnquiryForm(prev => ({ ...prev, phone: e.target.value }))}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor="travelers" className="text-[hsl(var(--luxury-navy))] font-medium">Number of Travelers</Label>
+                    <Label htmlFor="travelers">Number of Travelers</Label>
                     <Input
                       id="travelers"
                       type="number"
                       min="1"
-                      className="border-[hsl(var(--luxury-gold))]/30 focus:border-[hsl(var(--luxury-gold))] focus:ring-[hsl(var(--luxury-gold))]"
                       value={enquiryForm.travelers}
                       onChange={(e) => setEnquiryForm(prev => ({ ...prev, travelers: parseInt(e.target.value) || 1 }))}
                     />
@@ -932,28 +928,26 @@ const CountryDetail = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="travel_date" className="text-[hsl(var(--luxury-navy))] font-medium">Preferred Travel Date</Label>
+                  <Label htmlFor="travel_date">Preferred Travel Date</Label>
                   <Input
                     id="travel_date"
                     type="date"
-                    className="border-[hsl(var(--luxury-gold))]/30 focus:border-[hsl(var(--luxury-gold))] focus:ring-[hsl(var(--luxury-gold))]"
                     value={enquiryForm.travel_date}
                     onChange={(e) => setEnquiryForm(prev => ({ ...prev, travel_date: e.target.value }))}
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="message" className="text-[hsl(var(--luxury-navy))] font-medium">Message</Label>
+                  <Label htmlFor="message">Message</Label>
                   <Textarea
                     id="message"
                     placeholder="Tell us about your travel preferences, special requirements, or any questions..."
-                    className="border-[hsl(var(--luxury-gold))]/30 focus:border-[hsl(var(--luxury-gold))] focus:ring-[hsl(var(--luxury-gold))] min-h-[120px]"
                     value={enquiryForm.message}
                     onChange={(e) => setEnquiryForm(prev => ({ ...prev, message: e.target.value }))}
                   />
                 </div>
                 
-                <Button type="submit" className="w-full bg-[hsl(var(--luxury-gold))] hover:bg-[hsl(var(--luxury-gold-light))] text-[hsl(var(--luxury-navy))] font-semibold text-base py-6 shadow-lg">
+                <Button type="submit" className="w-full">
                   Send Enquiry
                 </Button>
               </form>
