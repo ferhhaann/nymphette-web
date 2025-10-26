@@ -519,17 +519,41 @@ const CountryDetail = () => {
         {/* Content Tabs */}
         <section className="my-6 md:my-8">
           <Tabs defaultValue="overview" className="w-full">
-            <div className="relative -mx-4 px-4 md:mx-0 md:px-0">
-              <TabsList className="inline-flex w-auto min-w-full md:w-full justify-start overflow-x-auto flex-nowrap md:flex-wrap h-auto gap-1 md:gap-2 bg-muted/50 p-1.5 md:p-2 scrollbar-hide">
-                {overviewSection && <TabsTrigger value="overview" className="text-xs md:text-sm whitespace-nowrap">Overview</TabsTrigger>}
-                {aboutSection && <TabsTrigger value="about" className="text-xs md:text-sm whitespace-nowrap">About</TabsTrigger>}
-                {funFactsSection && <TabsTrigger value="fun-facts" className="text-xs md:text-sm whitespace-nowrap">Fun Facts</TabsTrigger>}
-                {beforeYouGoSection && <TabsTrigger value="before-you-go" className="text-xs md:text-sm whitespace-nowrap">Before You Go</TabsTrigger>}
-                {bestTimeSection && <TabsTrigger value="best-time" className="text-xs md:text-sm whitespace-nowrap">Best Time</TabsTrigger>}
-                {reasonsSection && <TabsTrigger value="reasons" className="text-xs md:text-sm whitespace-nowrap">Why Visit</TabsTrigger>}
-                {foodShoppingSection && <TabsTrigger value="food-shopping" className="text-xs md:text-sm whitespace-nowrap">Food & Shopping</TabsTrigger>}
-                {dosDontsSection && <TabsTrigger value="dos-donts" className="text-xs md:text-sm whitespace-nowrap">Do's & Don'ts</TabsTrigger>}
-                {artCultureSection && <TabsTrigger value="art-culture" className="text-xs md:text-sm whitespace-nowrap">Art & Culture</TabsTrigger>}
+            {/* Mobile/Tablet: Dropdown Select */}
+            <div className="md:hidden mb-4">
+              <select
+                className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                onChange={(e) => {
+                  const tabs = document.querySelectorAll('[role="tab"]');
+                  const targetTab = Array.from(tabs).find(tab => tab.getAttribute('value') === e.target.value) as HTMLElement;
+                  targetTab?.click();
+                }}
+                defaultValue="overview"
+              >
+                {overviewSection && <option value="overview">📖 Overview</option>}
+                {aboutSection && <option value="about">🌍 About</option>}
+                {funFactsSection && <option value="fun-facts">⭐ Fun Facts</option>}
+                {beforeYouGoSection && <option value="before-you-go">⚠️ Before You Go</option>}
+                {bestTimeSection && <option value="best-time">📅 Best Time to Visit</option>}
+                {reasonsSection && <option value="reasons">❤️ Why Visit</option>}
+                {foodShoppingSection && <option value="food-shopping">🍽️ Food & Shopping</option>}
+                {dosDontsSection && <option value="dos-donts">✓✗ Do's & Don'ts</option>}
+                {artCultureSection && <option value="art-culture">🎨 Art & Culture</option>}
+              </select>
+            </div>
+
+            {/* Desktop: Tabs */}
+            <div className="hidden md:block">
+              <TabsList className="w-full justify-start flex-wrap h-auto gap-2 bg-muted/50 p-2">
+                {overviewSection && <TabsTrigger value="overview">Overview</TabsTrigger>}
+                {aboutSection && <TabsTrigger value="about">About</TabsTrigger>}
+                {funFactsSection && <TabsTrigger value="fun-facts">Fun Facts</TabsTrigger>}
+                {beforeYouGoSection && <TabsTrigger value="before-you-go">Before You Go</TabsTrigger>}
+                {bestTimeSection && <TabsTrigger value="best-time">Best Time to Visit</TabsTrigger>}
+                {reasonsSection && <TabsTrigger value="reasons">Why Visit</TabsTrigger>}
+                {foodShoppingSection && <TabsTrigger value="food-shopping">Food & Shopping</TabsTrigger>}
+                {dosDontsSection && <TabsTrigger value="dos-donts">Do's & Don'ts</TabsTrigger>}
+                {artCultureSection && <TabsTrigger value="art-culture">Art & Culture</TabsTrigger>}
               </TabsList>
             </div>
 
