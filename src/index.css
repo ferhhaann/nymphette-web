@@ -28,11 +28,14 @@ All colors MUST be HSL.
     --primary: 168 18% 10%;            /* Dark interactive */
     --primary-foreground: 0 0% 100%;    /* White text on dark */
     
-    /* Country Detail Blue Theme */
-    --country-blue: 197 100% 37%;
-    --country-blue-light: 197 100% 45%;
-    --country-blue-dark: 197 100% 30%;
-    --country-blue-glow: 197 100% 50%;
+    /* Luxury Travel Theme */
+    --luxury-navy: 210 100% 12%;           /* Deep navy #001F3F */
+    --luxury-navy-light: 210 80% 20%;      /* Lighter navy */
+    --luxury-navy-dark: 210 100% 8%;       /* Darker navy */
+    --luxury-gold: 43 74% 49%;             /* Rich gold #C5A572 */
+    --luxury-gold-light: 43 74% 65%;       /* Light gold */
+    --luxury-cream: 40 40% 97%;            /* Cream background #FAF8F5 */
+    --luxury-accent: 210 20% 25%;          /* Muted blue-gray */
     
     --secondary: 0 0% 98%;             /* Pale gray blocks */
     --secondary-foreground: 168 18% 10%;
