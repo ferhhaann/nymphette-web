@@ -450,7 +450,7 @@ const CountryDetail = () => {
                     </div>
                   )}
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                    <Button size="default" className="w-full sm:w-auto" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
+                    <Button size="default" className="bg-[hsl(var(--country-blue))] hover:bg-[hsl(var(--country-blue-dark))] text-white w-full sm:w-auto" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
                       Plan Your Trip
                     </Button>
                     <Button size="default" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/20 text-white hover:bg-white/20">
@@ -494,16 +494,16 @@ const CountryDetail = () => {
         {essentialTips.length > 0 && (
           <section className="my-6 md:my-8">
             <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-              <Lightbulb className="h-5 w-5 md:h-6 md:w-6 mr-2 text-primary" />
+              <Lightbulb className="h-5 w-5 md:h-6 md:w-6 mr-2 text-[hsl(var(--country-blue))]" />
               Essential Travel Tips
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {essentialTips.map((tip) => {
                 const IconComponent = (iconMap as any)[tip.icon] || Info
                 return (
-                  <Card key={tip.id} className="p-4">
+                  <Card key={tip.id} className="p-4 border-l-4 border-[hsl(var(--country-blue))]">
                     <div className="flex items-start gap-3">
-                      <IconComponent className="h-5 w-5 text-primary mt-1" />
+                      <IconComponent className="h-5 w-5 text-[hsl(var(--country-blue))] mt-1" />
                       <div>
                         <h4 className="font-semibold">{tip.title}</h4>
                         <p className="text-sm text-muted-foreground mt-1">{tip.note}</p>
@@ -522,11 +522,11 @@ const CountryDetail = () => {
           <section className="my-6 md:my-8">
             <Card className="p-4 md:p-6">
               <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                <BookOpen className="h-6 w-6 mr-2 text-primary" />
+                <BookOpen className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                 {overviewSection.title}
               </h2>
               {overviewSection.content?.subtitle && (
-                <p className="text-lg font-semibold text-primary mb-3">
+                <p className="text-lg font-semibold text-[hsl(var(--country-blue))] mb-3">
                   {overviewSection.content.subtitle}
                 </p>
               )}
@@ -534,7 +534,7 @@ const CountryDetail = () => {
                 {overviewSection.content?.description}
               </p>
               {overviewSection.content?.highlight && (
-                <div className="mt-4 p-4 bg-secondary rounded-lg border-l-4 border-primary">
+                <div className="mt-4 p-4 bg-[hsl(var(--country-blue))]/10 rounded-lg border-l-4 border-[hsl(var(--country-blue))]">
                   <p className="text-sm font-medium text-foreground">{overviewSection.content.highlight}</p>
                 </div>
               )}
@@ -542,7 +542,7 @@ const CountryDetail = () => {
                 <ul className="mt-4 space-y-2">
                   {overviewSection.content.points.map((point: string, index: number) => (
                     <li key={index} className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="h-5 w-5 text-[hsl(var(--country-blue))] mt-0.5 flex-shrink-0" />
                       <span className="text-sm">{point}</span>
                     </li>
                   ))}
@@ -576,7 +576,7 @@ const CountryDetail = () => {
                   {beforeYouGoSection && beforeYouGoSection.content?.tips && (
                     <Card className="p-4 md:p-6">
                       <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                        <AlertCircle className="h-6 w-6 mr-2 text-primary" />
+                        <AlertCircle className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {beforeYouGoSection.title}
                       </h2>
                       {beforeYouGoSection.content?.description && (
@@ -586,8 +586,8 @@ const CountryDetail = () => {
                       )}
                       <div className="grid md:grid-cols-2 gap-4">
                         {beforeYouGoSection.content.tips.map((tip: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-4 border rounded-lg">
-                            <Lightbulb className="h-5 w-5 text-primary mt-0.5" />
+                          <div key={index} className="flex items-start gap-3 p-4 border rounded-lg border-[hsl(var(--country-blue))]/20 bg-[hsl(var(--country-blue))]/5">
+                            <Lightbulb className="h-5 w-5 text-[hsl(var(--country-blue))] mt-0.5" />
                             <p className="text-sm">{tip}</p>
                           </div>
                         ))}
@@ -599,7 +599,7 @@ const CountryDetail = () => {
                   {dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
                     <Card className="p-4 md:p-6">
                       <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                        <CheckCircle className="h-6 w-6 mr-2 text-primary" />
+                        <CheckCircle className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {dosDontsSection.title}
                       </h2>
                       <div className="grid lg:grid-cols-2 gap-6">
@@ -643,11 +643,11 @@ const CountryDetail = () => {
                   {bestTimeSection && (
                     <Card className="p-4 md:p-6">
                       <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                        <Calendar className="h-6 w-6 mr-2 text-primary" />
+                        <Calendar className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {bestTimeSection.title}
                       </h2>
                       {bestTimeSection.content?.subtitle && (
-                        <p className="text-lg font-semibold text-primary mb-3">
+                        <p className="text-lg font-semibold text-[hsl(var(--country-blue))] mb-3">
                           {bestTimeSection.content.subtitle}
                         </p>
                       )}
@@ -659,8 +659,8 @@ const CountryDetail = () => {
                           <h3 className="font-semibold mb-3">Seasonal Highlights</h3>
                           <div className="grid md:grid-cols-2 gap-3">
                             {bestTimeSection.content.highlights.map((highlight: string, index: number) => (
-                              <div key={index} className="flex items-start gap-2 p-3 bg-secondary/50 rounded-lg">
-                                <Calendar className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                              <div key={index} className="flex items-start gap-2 p-3 bg-[hsl(var(--country-blue))]/10 rounded-lg">
+                                <Calendar className="h-4 w-4 text-[hsl(var(--country-blue))] mt-0.5 flex-shrink-0" />
                                 <span className="text-sm">{highlight}</span>
                               </div>
                             ))}
@@ -674,7 +674,7 @@ const CountryDetail = () => {
                   {reasonsSection && reasonsSection.content?.reasons && (
                     <Card className="p-4 md:p-6">
                       <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                        <Heart className="h-6 w-6 mr-2 text-primary" />
+                        <Heart className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {reasonsSection.title}
                       </h2>
                       {reasonsSection.content?.description && (
@@ -684,14 +684,14 @@ const CountryDetail = () => {
                       )}
                       <div className="grid md:grid-cols-2 gap-4">
                         {reasonsSection.content.reasons.map((reason: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-4 bg-primary/5 rounded-lg">
-                            <Heart className="h-5 w-5 text-primary mt-0.5" />
+                          <div key={index} className="flex items-start gap-3 p-4 bg-[hsl(var(--country-blue))]/5 rounded-lg">
+                            <Heart className="h-5 w-5 text-[hsl(var(--country-blue))] mt-0.5" />
                             <p className="text-sm">{reason}</p>
                           </div>
                         ))}
                       </div>
                       {reasonsSection.content?.highlight && (
-                        <div className="mt-4 p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
+                        <div className="mt-4 p-4 bg-[hsl(var(--country-blue))]/10 rounded-lg border-l-4 border-[hsl(var(--country-blue))]">
                           <p className="text-sm font-medium">{reasonsSection.content.highlight}</p>
                         </div>
                       )}
@@ -708,7 +708,7 @@ const CountryDetail = () => {
                     <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                       <Card className="p-6">
                         <h3 className="text-xl font-bold mb-4 flex items-center">
-                          <Utensils className="h-5 w-5 mr-2 text-primary" />
+                          <Utensils className="h-5 w-5 mr-2 text-[hsl(var(--country-blue))]" />
                           Local Cuisine
                         </h3>
                         <p className="text-muted-foreground leading-relaxed">
@@ -718,7 +718,7 @@ const CountryDetail = () => {
                       
                       <Card className="p-6">
                         <h3 className="text-xl font-bold mb-4 flex items-center">
-                          <ShoppingBag className="h-5 w-5 mr-2 text-primary" />
+                          <ShoppingBag className="h-5 w-5 mr-2 text-[hsl(var(--country-blue))]" />
                           Shopping
                         </h3>
                         <p className="text-muted-foreground leading-relaxed">
@@ -732,11 +732,11 @@ const CountryDetail = () => {
                   {artCultureSection && (
                     <Card className="p-4 md:p-6">
                       <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                        <Palette className="h-6 w-6 mr-2 text-primary" />
+                        <Palette className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {artCultureSection.title}
                       </h2>
                       {artCultureSection.content?.subtitle && (
-                        <p className="text-lg font-semibold text-primary mb-3">
+                        <p className="text-lg font-semibold text-[hsl(var(--country-blue))] mb-3">
                           {artCultureSection.content.subtitle}
                         </p>
                       )}
@@ -744,7 +744,7 @@ const CountryDetail = () => {
                         {artCultureSection.content?.content || artCultureSection.content?.description}
                       </p>
                       {artCultureSection.content?.highlight && (
-                        <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                        <div className="mt-4 p-4 bg-[hsl(var(--country-blue))]/5 rounded-lg border-l-4 border-[hsl(var(--country-blue))]">
                           <p className="text-sm font-medium">{artCultureSection.content.highlight}</p>
                         </div>
                       )}
@@ -752,7 +752,7 @@ const CountryDetail = () => {
                         <ul className="mt-4 space-y-2">
                           {artCultureSection.content.points.map((point: string, index: number) => (
                             <li key={index} className="flex items-start gap-2">
-                              <Palette className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                              <Palette className="h-5 w-5 text-[hsl(var(--country-blue))] mt-0.5 flex-shrink-0" />
                               <span className="text-sm">{point}</span>
                             </li>
                           ))}
@@ -770,7 +770,7 @@ const CountryDetail = () => {
                   {funFactsSection && funFactsSection.content?.facts && (
                     <Card className="p-4 md:p-6">
                       <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                        <Star className="h-6 w-6 mr-2 text-primary" />
+                        <Star className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {funFactsSection.title}
                       </h2>
                       {funFactsSection.content?.description && (
@@ -780,8 +780,8 @@ const CountryDetail = () => {
                       )}
                       <div className="grid md:grid-cols-2 gap-4">
                         {funFactsSection.content.facts.map((fact: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-4 bg-secondary/50 rounded-lg">
-                            <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
+                          <div key={index} className="flex items-start gap-3 p-4 bg-[hsl(var(--country-blue))]/10 rounded-lg">
+                            <CheckCircle className="h-5 w-5 text-[hsl(var(--country-blue))] mt-0.5" />
                             <p className="text-sm">{fact}</p>
                           </div>
                         ))}
@@ -793,11 +793,11 @@ const CountryDetail = () => {
                   {aboutSection && (
                     <Card className="p-4 md:p-6">
                       <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                        <Globe className="h-6 w-6 mr-2 text-primary" />
+                        <Globe className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {aboutSection.title}
                       </h2>
                       {aboutSection.content?.subtitle && (
-                        <p className="text-lg font-semibold text-primary mb-3">
+                        <p className="text-lg font-semibold text-[hsl(var(--country-blue))] mb-3">
                           {aboutSection.content.subtitle}
                         </p>
                       )}
@@ -805,7 +805,7 @@ const CountryDetail = () => {
                         {aboutSection.content?.description}
                       </p>
                       {aboutSection.content?.highlight && (
-                        <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                        <div className="mt-4 p-4 bg-[hsl(var(--country-blue))]/5 rounded-lg border-l-4 border-[hsl(var(--country-blue))]">
                           <p className="text-sm font-medium">{aboutSection.content.highlight}</p>
                         </div>
                       )}
@@ -813,7 +813,7 @@ const CountryDetail = () => {
                         <ul className="mt-4 space-y-2">
                           {aboutSection.content.points.map((point: string, index: number) => (
                             <li key={index} className="flex items-start gap-2">
-                              <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                              <CheckCircle className="h-5 w-5 text-[hsl(var(--country-blue))] mt-0.5 flex-shrink-0" />
                               <span className="text-sm">{point}</span>
                             </li>
                           ))}
