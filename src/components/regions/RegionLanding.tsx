@@ -357,9 +357,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-xl font-bold text-primary">
-                        {typeof pkg.price === 'string' ? 
-                          pkg.price.replace(/\$/g, '₹') : 
-                          `₹${pkg.price}`}
+                        {pkg.price}
                       </div>
                       <p className="text-xs text-muted-foreground">per person</p>
                     </div>

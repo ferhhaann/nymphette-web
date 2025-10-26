@@ -59,7 +59,12 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
         {pkg.originalPrice && (
           <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 md:bottom-4 md:right-4">
             <Badge className="bg-destructive text-destructive-foreground text-xs">
-              Save ₹{parseInt(pkg.originalPrice.replace('₹', '').replace(',', '')) - parseInt(pkg.price.replace('₹', '').replace(',', ''))}
+              Save {(() => {
+                const original = parseInt(pkg.originalPrice.replace(/[^\d]/g, ''));
+                const current = parseInt(pkg.price.replace(/[^\d]/g, ''));
+                const currency = pkg.price.match(/[$₹€£¥]/)?.[0] || '';
+                return `${currency}${(original - current).toLocaleString()}`;
+              })()}
             </Badge>
           </div>
         )}

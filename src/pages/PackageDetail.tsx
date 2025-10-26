@@ -441,15 +441,11 @@ const PackageDetail = () => {
                   <div>
                     {pkg.originalPrice && (
                       <span className="text-lg text-white/70 line-through">
-                        {typeof pkg.originalPrice === 'string' ? 
-                            pkg.originalPrice.replace(/\$/g, '₹') : 
-                            `₹${pkg.originalPrice}`}
+                        {pkg.originalPrice}
                       </span>
                     )}
                     <div className="text-3xl font-bold">
-                      {typeof pkg.price === 'string' ? 
-                          pkg.price.replace(/\$/g, '₹') : 
-                          `₹${pkg.price}`}
+                      {pkg.price}
                     </div>
                   </div>
                 </div>
@@ -636,9 +632,7 @@ const PackageDetail = () => {
               <CardHeader>
                 <CardTitle>Book This Package</CardTitle>
                 <div className="text-3xl font-bold text-primary">
-                  {typeof pkg.price === 'string' ? 
-                      pkg.price.replace(/\$/g, '₹') : 
-                      `₹${pkg.price}`}
+                  {pkg.price}
                 </div>
                 <p className="text-sm text-muted-foreground">per person</p>
               </CardHeader>
