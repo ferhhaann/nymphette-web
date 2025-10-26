@@ -400,7 +400,7 @@ const CountryDetail = () => {
   const artCultureSection = getSectionByName('art_culture')
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[hsl(var(--country-blue-bg))]">
       <Navigation />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
@@ -450,7 +450,7 @@ const CountryDetail = () => {
                     </div>
                   )}
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                    <Button size="default" className="bg-[hsl(var(--country-blue))] hover:bg-[hsl(var(--country-blue-dark))] text-white w-full sm:w-auto" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
+                    <Button size="default" className="bg-[hsl(var(--country-blue))] hover:bg-[hsl(var(--country-blue-dark))] text-white shadow-lg w-full sm:w-auto" onClick={() => document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })}>
                       Plan Your Trip
                     </Button>
                     <Button size="default" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/20 text-white hover:bg-white/20">
@@ -493,7 +493,7 @@ const CountryDetail = () => {
         {/* Essential Tips */}
         {essentialTips.length > 0 && (
           <section className="my-6 md:my-8">
-            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--country-blue-dark))]">
               <Lightbulb className="h-5 w-5 md:h-6 md:w-6 mr-2 text-[hsl(var(--country-blue))]" />
               Essential Travel Tips
             </h2>
@@ -501,7 +501,7 @@ const CountryDetail = () => {
               {essentialTips.map((tip) => {
                 const IconComponent = (iconMap as any)[tip.icon] || Info
                 return (
-                  <Card key={tip.id} className="p-4 border-l-4 border-[hsl(var(--country-blue))]">
+                  <Card key={tip.id} className="p-4 border-l-4 border-[hsl(var(--country-blue))] bg-white shadow-sm">
                     <div className="flex items-start gap-3">
                       <IconComponent className="h-5 w-5 text-[hsl(var(--country-blue))] mt-1" />
                       <div>
@@ -520,8 +520,8 @@ const CountryDetail = () => {
         {/* Overview Section - Always Visible */}
         {overviewSection && (
           <section className="my-6 md:my-8">
-            <Card className="p-4 md:p-6">
-              <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+            <Card className="p-4 md:p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+              <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center text-[hsl(var(--country-blue-dark))]">
                 <BookOpen className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                 {overviewSection.title}
               </h2>
@@ -574,8 +574,8 @@ const CountryDetail = () => {
                 <TabsContent value="travel-guide" className="mt-4 md:mt-6 space-y-6">
                   {/* Before You Go Section */}
                   {beforeYouGoSection && beforeYouGoSection.content?.tips && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                    <Card className="p-4 md:p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--country-blue-dark))]">
                         <AlertCircle className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {beforeYouGoSection.title}
                       </h2>
@@ -597,8 +597,8 @@ const CountryDetail = () => {
 
                   {/* Dos and Don'ts Section */}
                   {dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                    <Card className="p-4 md:p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--country-blue-dark))]">
                         <CheckCircle className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {dosDontsSection.title}
                       </h2>
@@ -641,8 +641,8 @@ const CountryDetail = () => {
                 <TabsContent value="planning" className="mt-4 md:mt-6 space-y-6">
                   {/* Best Time to Visit Section */}
                   {bestTimeSection && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                    <Card className="p-4 md:p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center text-[hsl(var(--country-blue-dark))]">
                         <Calendar className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {bestTimeSection.title}
                       </h2>
@@ -672,8 +672,8 @@ const CountryDetail = () => {
 
                   {/* Reasons to Visit Section */}
                   {reasonsSection && reasonsSection.content?.reasons && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                    <Card className="p-4 md:p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--country-blue-dark))]">
                         <Heart className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {reasonsSection.title}
                       </h2>
@@ -706,8 +706,8 @@ const CountryDetail = () => {
                   {/* Food & Shopping Section */}
                   {foodShoppingSection && (
                     <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-                      <Card className="p-6">
-                        <h3 className="text-xl font-bold mb-4 flex items-center">
+                      <Card className="p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                        <h3 className="text-xl font-bold mb-4 flex items-center text-[hsl(var(--country-blue-dark))]">
                           <Utensils className="h-5 w-5 mr-2 text-[hsl(var(--country-blue))]" />
                           Local Cuisine
                         </h3>
@@ -716,8 +716,8 @@ const CountryDetail = () => {
                         </p>
                       </Card>
                       
-                      <Card className="p-6">
-                        <h3 className="text-xl font-bold mb-4 flex items-center">
+                      <Card className="p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                        <h3 className="text-xl font-bold mb-4 flex items-center text-[hsl(var(--country-blue-dark))]">
                           <ShoppingBag className="h-5 w-5 mr-2 text-[hsl(var(--country-blue))]" />
                           Shopping
                         </h3>
@@ -730,8 +730,8 @@ const CountryDetail = () => {
 
                   {/* Art & Culture Section */}
                   {artCultureSection && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                    <Card className="p-4 md:p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center text-[hsl(var(--country-blue-dark))]">
                         <Palette className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {artCultureSection.title}
                       </h2>
@@ -768,8 +768,8 @@ const CountryDetail = () => {
                 <TabsContent value="discover" className="mt-4 md:mt-6 space-y-6">
                   {/* Fun Facts Section */}
                   {funFactsSection && funFactsSection.content?.facts && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                    <Card className="p-4 md:p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center text-[hsl(var(--country-blue-dark))]">
                         <Star className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {funFactsSection.title}
                       </h2>
@@ -791,8 +791,8 @@ const CountryDetail = () => {
 
                   {/* About Section */}
                   {aboutSection && (
-                    <Card className="p-4 md:p-6">
-                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                    <Card className="p-4 md:p-6 bg-white border-[hsl(var(--country-blue))]/30 shadow-md">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center text-[hsl(var(--country-blue-dark))]">
                         <Globe className="h-6 w-6 mr-2 text-[hsl(var(--country-blue))]" />
                         {aboutSection.title}
                       </h2>

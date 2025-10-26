@@ -29,10 +29,11 @@ All colors MUST be HSL.
     --primary-foreground: 0 0% 100%;    /* White text on dark */
     
     /* Country Detail Blue Theme */
-    --country-blue: 197 100% 37%;
-    --country-blue-light: 197 100% 45%;
-    --country-blue-dark: 197 100% 30%;
-    --country-blue-glow: 197 100% 50%;
+    --country-blue-bg: 210 100% 96%;       /* #E9F5FF - Light blue background */
+    --country-blue: 207 90% 54%;           /* #2196F3 - Primary blue for buttons/headers */
+    --country-blue-light: 207 90% 65%;     /* Lighter variant */
+    --country-blue-dark: 212 80% 42%;      /* #1565C0 - Darker blue */
+    --country-blue-glow: 207 90% 70%;      /* Glow effect */
     
     --secondary: 0 0% 98%;             /* Pale gray blocks */
     --secondary-foreground: 168 18% 10%;
