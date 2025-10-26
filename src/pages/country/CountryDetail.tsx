@@ -136,7 +136,7 @@ const CountryDetail = () => {
     travel_date: '',
     travelers: 2
   })
-  const [activeTab, setActiveTab] = useState("overview")
+  const [activeTab, setActiveTab] = useState("travel-guide")
 
   useEffect(() => {
     if (country) {
@@ -517,335 +517,332 @@ const CountryDetail = () => {
         )}
 
 
-        {/* Content Tabs */}
-        <section className="my-6 md:my-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            {/* Mobile/Tablet: Dropdown Select */}
-            <div className="md:hidden mb-4">
-              <select
-                className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value)}
-              >
-                {overviewSection && <option value="overview">📖 Overview</option>}
-                {aboutSection && <option value="about">🌍 About</option>}
-                {funFactsSection && <option value="fun-facts">⭐ Fun Facts</option>}
-                {beforeYouGoSection && <option value="before-you-go">⚠️ Before You Go</option>}
-                {bestTimeSection && <option value="best-time">📅 Best Time to Visit</option>}
-                {reasonsSection && <option value="reasons">❤️ Why Visit</option>}
-                {foodShoppingSection && <option value="food-shopping">🍽️ Food & Shopping</option>}
-                {dosDontsSection && <option value="dos-donts">✓✗ Do's & Don'ts</option>}
-                {artCultureSection && <option value="art-culture">🎨 Art & Culture</option>}
-              </select>
-            </div>
+        {/* Overview Section - Always Visible */}
+        {overviewSection && (
+          <section className="my-6 md:my-8">
+            <Card className="p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                <BookOpen className="h-6 w-6 mr-2 text-primary" />
+                {overviewSection.title}
+              </h2>
+              {overviewSection.content?.subtitle && (
+                <p className="text-lg font-semibold text-primary mb-3">
+                  {overviewSection.content.subtitle}
+                </p>
+              )}
+              <p className="text-muted-foreground leading-relaxed">
+                {overviewSection.content?.description}
+              </p>
+              {overviewSection.content?.highlight && (
+                <div className="mt-4 p-4 bg-secondary rounded-lg border-l-4 border-primary">
+                  <p className="text-sm font-medium text-foreground">{overviewSection.content.highlight}</p>
+                </div>
+              )}
+              {overviewSection.content?.points && overviewSection.content.points.length > 0 && (
+                <ul className="mt-4 space-y-2">
+                  {overviewSection.content.points.map((point: string, index: number) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+          </section>
+        )}
 
-            {/* Desktop: Tabs */}
-            <div className="hidden md:block">
-              <TabsList className="w-full justify-start flex-wrap h-auto gap-2 bg-muted/50 p-2">
-                {overviewSection && <TabsTrigger value="overview">Overview</TabsTrigger>}
-                {aboutSection && <TabsTrigger value="about">About</TabsTrigger>}
-                {funFactsSection && <TabsTrigger value="fun-facts">Fun Facts</TabsTrigger>}
-                {beforeYouGoSection && <TabsTrigger value="before-you-go">Before You Go</TabsTrigger>}
-                {bestTimeSection && <TabsTrigger value="best-time">Best Time to Visit</TabsTrigger>}
-                {reasonsSection && <TabsTrigger value="reasons">Why Visit</TabsTrigger>}
-                {foodShoppingSection && <TabsTrigger value="food-shopping">Food & Shopping</TabsTrigger>}
-                {dosDontsSection && <TabsTrigger value="dos-donts">Do's & Don'ts</TabsTrigger>}
-                {artCultureSection && <TabsTrigger value="art-culture">Art & Culture</TabsTrigger>}
-              </TabsList>
-            </div>
+        {/* Packages Section - Always Visible */}
+        <CountryPackagesList 
+          countrySlug={country} 
+          countryName={countryData.name}
+        />
 
-            {/* Overview Tab */}
-            {overviewSection && (
-              <TabsContent value="overview" className="mt-4 md:mt-6">
-                <Card className="p-4 md:p-6">
-                  <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                    <BookOpen className="h-6 w-6 mr-2 text-primary" />
-                    {overviewSection.title}
-                  </h2>
-                  {overviewSection.content?.subtitle && (
-                    <p className="text-lg font-semibold text-primary mb-3">
-                      {overviewSection.content.subtitle}
-                    </p>
-                  )}
-                  <p className="text-muted-foreground leading-relaxed">
-                    {overviewSection.content?.description}
-                  </p>
-                  {overviewSection.content?.highlight && (
-                    <div className="mt-4 p-4 bg-secondary rounded-lg border-l-4 border-primary">
-                      <p className="text-sm font-medium text-foreground">{overviewSection.content.highlight}</p>
-                    </div>
-                  )}
-                  {overviewSection.content?.points && overviewSection.content.points.length > 0 && (
-                    <ul className="mt-4 space-y-2">
-                      {overviewSection.content.points.map((point: string, index: number) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </Card>
-              </TabsContent>
-            )}
+        {/* Additional Information Tabs - Maximum 4 Tabs */}
+        {(beforeYouGoSection || dosDontsSection || bestTimeSection || reasonsSection || foodShoppingSection || artCultureSection || funFactsSection || aboutSection) && (
+          <section className="my-6 md:my-8">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              {/* Mobile/Tablet: Dropdown Select */}
+              <div className="md:hidden mb-4">
+                <select
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                  value={activeTab}
+                  onChange={(e) => setActiveTab(e.target.value)}
+                >
+                  {(beforeYouGoSection || dosDontsSection) && <option value="travel-guide">🧭 Travel Guide</option>}
+                  {(bestTimeSection || reasonsSection) && <option value="planning">📅 Planning Your Visit</option>}
+                  {(foodShoppingSection || artCultureSection) && <option value="experiences">🎨 Local Experiences</option>}
+                  {(funFactsSection || aboutSection) && <option value="discover">⭐ Discover More</option>}
+                </select>
+              </div>
 
-            {/* About Tab */}
-            {aboutSection && (
-              <TabsContent value="about" className="mt-4 md:mt-6">
-                <Card className="p-4 md:p-6">
-                  <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                    <Globe className="h-6 w-6 mr-2 text-primary" />
-                    {aboutSection.title}
-                  </h2>
-                  {aboutSection.content?.subtitle && (
-                    <p className="text-lg font-semibold text-primary mb-3">
-                      {aboutSection.content.subtitle}
-                    </p>
-                  )}
-                  <p className="text-muted-foreground leading-relaxed">
-                    {aboutSection.content?.description}
-                  </p>
-                  {aboutSection.content?.highlight && (
-                    <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
-                      <p className="text-sm font-medium">{aboutSection.content.highlight}</p>
-                    </div>
-                  )}
-                  {aboutSection.content?.points && aboutSection.content.points.length > 0 && (
-                    <ul className="mt-4 space-y-2">
-                      {aboutSection.content.points.map((point: string, index: number) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </Card>
-              </TabsContent>
-            )}
+              {/* Desktop: Tabs */}
+              <div className="hidden md:block">
+                <TabsList className="w-full justify-start flex-wrap h-auto gap-2 bg-muted/50 p-2">
+                  {(beforeYouGoSection || dosDontsSection) && <TabsTrigger value="travel-guide">Travel Guide</TabsTrigger>}
+                  {(bestTimeSection || reasonsSection) && <TabsTrigger value="planning">Planning Your Visit</TabsTrigger>}
+                  {(foodShoppingSection || artCultureSection) && <TabsTrigger value="experiences">Local Experiences</TabsTrigger>}
+                  {(funFactsSection || aboutSection) && <TabsTrigger value="discover">Discover More</TabsTrigger>}
+                </TabsList>
+              </div>
 
-            {/* Fun Facts Tab */}
-            {funFactsSection && funFactsSection.content?.facts && (
-              <TabsContent value="fun-facts" className="mt-4 md:mt-6">
-                <Card className="p-4 md:p-6">
-                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                    <Star className="h-6 w-6 mr-2 text-primary" />
-                    {funFactsSection.title}
-                  </h2>
-                  {funFactsSection.content?.description && (
-                    <p className="text-muted-foreground leading-relaxed mb-6">
-                      {funFactsSection.content.description}
-                    </p>
-                  )}
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {funFactsSection.content.facts.map((fact: string, index: number) => (
-                      <div key={index} className="flex items-start gap-3 p-4 bg-secondary/50 rounded-lg">
-                        <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
-                        <p className="text-sm">{fact}</p>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              </TabsContent>
-            )}
-
-            {/* Before You Go Tab */}
-            {beforeYouGoSection && beforeYouGoSection.content?.tips && (
-              <TabsContent value="before-you-go" className="mt-4 md:mt-6">
-                <Card className="p-4 md:p-6">
-                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                    <AlertCircle className="h-6 w-6 mr-2 text-primary" />
-                    {beforeYouGoSection.title}
-                  </h2>
-                  {beforeYouGoSection.content?.description && (
-                    <p className="text-muted-foreground leading-relaxed mb-6">
-                      {beforeYouGoSection.content.description}
-                    </p>
-                  )}
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {beforeYouGoSection.content.tips.map((tip: string, index: number) => (
-                      <div key={index} className="flex items-start gap-3 p-4 border rounded-lg">
-                        <Lightbulb className="h-5 w-5 text-primary mt-0.5" />
-                        <p className="text-sm">{tip}</p>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              </TabsContent>
-            )}
-
-            {/* Best Time to Visit Tab */}
-            {bestTimeSection && (
-              <TabsContent value="best-time" className="mt-4 md:mt-6">
-                <Card className="p-4 md:p-6">
-                  <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                    <Calendar className="h-6 w-6 mr-2 text-primary" />
-                    {bestTimeSection.title}
-                  </h2>
-                  {bestTimeSection.content?.subtitle && (
-                    <p className="text-lg font-semibold text-primary mb-3">
-                      {bestTimeSection.content.subtitle}
-                    </p>
-                  )}
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    {bestTimeSection.content?.content || bestTimeSection.content?.description}
-                  </p>
-                  {bestTimeSection.content?.highlights && bestTimeSection.content.highlights.length > 0 && (
-                    <div className="mt-4">
-                      <h3 className="font-semibold mb-3">Seasonal Highlights</h3>
-                      <div className="grid md:grid-cols-2 gap-3">
-                        {bestTimeSection.content.highlights.map((highlight: string, index: number) => (
-                          <div key={index} className="flex items-start gap-2 p-3 bg-secondary/50 rounded-lg">
-                            <Calendar className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">{highlight}</span>
+              {/* Travel Guide Tab (Before You Go + Do's & Don'ts) */}
+              {(beforeYouGoSection || dosDontsSection) && (
+                <TabsContent value="travel-guide" className="mt-4 md:mt-6 space-y-6">
+                  {/* Before You Go Section */}
+                  {beforeYouGoSection && beforeYouGoSection.content?.tips && (
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                        <AlertCircle className="h-6 w-6 mr-2 text-primary" />
+                        {beforeYouGoSection.title}
+                      </h2>
+                      {beforeYouGoSection.content?.description && (
+                        <p className="text-muted-foreground leading-relaxed mb-6">
+                          {beforeYouGoSection.content.description}
+                        </p>
+                      )}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {beforeYouGoSection.content.tips.map((tip: string, index: number) => (
+                          <div key={index} className="flex items-start gap-3 p-4 border rounded-lg">
+                            <Lightbulb className="h-5 w-5 text-primary mt-0.5" />
+                            <p className="text-sm">{tip}</p>
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </Card>
                   )}
-                </Card>
-              </TabsContent>
-            )}
 
-            {/* Reasons to Visit Tab */}
-            {reasonsSection && reasonsSection.content?.reasons && (
-              <TabsContent value="reasons" className="mt-4 md:mt-6">
-                <Card className="p-4 md:p-6">
-                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                    <Heart className="h-6 w-6 mr-2 text-primary" />
-                    {reasonsSection.title}
-                  </h2>
-                  {reasonsSection.content?.description && (
-                    <p className="text-muted-foreground leading-relaxed mb-6">
-                      {reasonsSection.content.description}
-                    </p>
-                  )}
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {reasonsSection.content.reasons.map((reason: string, index: number) => (
-                      <div key={index} className="flex items-start gap-3 p-4 bg-primary/5 rounded-lg">
-                        <Heart className="h-5 w-5 text-primary mt-0.5" />
-                        <p className="text-sm">{reason}</p>
-                      </div>
-                    ))}
-                  </div>
-                  {reasonsSection.content?.highlight && (
-                    <div className="mt-4 p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
-                      <p className="text-sm font-medium">{reasonsSection.content.highlight}</p>
-                    </div>
-                  )}
-                </Card>
-              </TabsContent>
-            )}
-
-            {/* Food & Shopping Tab */}
-            {foodShoppingSection && (
-              <TabsContent value="food-shopping" className="mt-4 md:mt-6">
-                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-                  <Card className="p-6">
-                    <h3 className="text-xl font-bold mb-4 flex items-center">
-                      <Utensils className="h-5 w-5 mr-2 text-primary" />
-                      Local Cuisine
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {foodShoppingSection.content?.food}
-                    </p>
-                  </Card>
-                  
-                  <Card className="p-6">
-                    <h3 className="text-xl font-bold mb-4 flex items-center">
-                      <ShoppingBag className="h-5 w-5 mr-2 text-primary" />
-                      Shopping
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {foodShoppingSection.content?.shopping}
-                    </p>
-                  </Card>
-                </div>
-              </TabsContent>
-            )}
-
-            {/* Dos and Don'ts Tab */}
-            {dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
-              <TabsContent value="dos-donts" className="mt-4 md:mt-6">
-                <Card className="p-4 md:p-6">
-                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-                    <CheckCircle className="h-6 w-6 mr-2 text-primary" />
-                    {dosDontsSection.title}
-                  </h2>
-                  <div className="grid lg:grid-cols-2 gap-6">
-                    {dosDontsSection.content?.dos && (
-                      <div>
-                        <h3 className="text-lg font-semibold mb-4 text-green-600">Do's</h3>
-                        <div className="space-y-3">
-                          {dosDontsSection.content.dos.map((item: string, index: number) => (
-                            <div key={index} className="flex items-start gap-3">
-                              <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
-                              <p className="text-sm">{item}</p>
+                  {/* Dos and Don'ts Section */}
+                  {dosDontsSection && (dosDontsSection.content?.dos || dosDontsSection.content?.donts) && (
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                        <CheckCircle className="h-6 w-6 mr-2 text-primary" />
+                        {dosDontsSection.title}
+                      </h2>
+                      <div className="grid lg:grid-cols-2 gap-6">
+                        {dosDontsSection.content?.dos && (
+                          <div>
+                            <h3 className="text-lg font-semibold mb-4 text-green-600">Do's</h3>
+                            <div className="space-y-3">
+                              {dosDontsSection.content.dos.map((item: string, index: number) => (
+                                <div key={index} className="flex items-start gap-3">
+                                  <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
+                                  <p className="text-sm">{item}</p>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {dosDontsSection.content?.donts && (
-                      <div>
-                        <h3 className="text-lg font-semibold mb-4 text-red-600">Don'ts</h3>
-                        <div className="space-y-3">
-                          {dosDontsSection.content.donts.map((item: string, index: number) => (
-                            <div key={index} className="flex items-start gap-3">
-                              <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
-                              <p className="text-sm">{item}</p>
+                          </div>
+                        )}
+                        
+                        {dosDontsSection.content?.donts && (
+                          <div>
+                            <h3 className="text-lg font-semibold mb-4 text-red-600">Don'ts</h3>
+                            <div className="space-y-3">
+                              {dosDontsSection.content.donts.map((item: string, index: number) => (
+                                <div key={index} className="flex items-start gap-3">
+                                  <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+                                  <p className="text-sm">{item}</p>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </Card>
-              </TabsContent>
-            )}
-
-            {/* Art & Culture Tab */}
-            {artCultureSection && (
-              <TabsContent value="art-culture" className="mt-4 md:mt-6">
-                <Card className="p-4 md:p-6">
-                  <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
-                    <Palette className="h-6 w-6 mr-2 text-primary" />
-                    {artCultureSection.title}
-                  </h2>
-                  {artCultureSection.content?.subtitle && (
-                    <p className="text-lg font-semibold text-primary mb-3">
-                      {artCultureSection.content.subtitle}
-                    </p>
+                    </Card>
                   )}
-                  <p className="text-muted-foreground leading-relaxed">
-                    {artCultureSection.content?.content || artCultureSection.content?.description}
-                  </p>
-                  {artCultureSection.content?.highlight && (
-                    <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
-                      <p className="text-sm font-medium">{artCultureSection.content.highlight}</p>
+                </TabsContent>
+              )}
+
+              {/* Planning Your Visit Tab (Best Time + Why Visit) */}
+              {(bestTimeSection || reasonsSection) && (
+                <TabsContent value="planning" className="mt-4 md:mt-6 space-y-6">
+                  {/* Best Time to Visit Section */}
+                  {bestTimeSection && (
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                        <Calendar className="h-6 w-6 mr-2 text-primary" />
+                        {bestTimeSection.title}
+                      </h2>
+                      {bestTimeSection.content?.subtitle && (
+                        <p className="text-lg font-semibold text-primary mb-3">
+                          {bestTimeSection.content.subtitle}
+                        </p>
+                      )}
+                      <p className="text-muted-foreground leading-relaxed mb-4">
+                        {bestTimeSection.content?.content || bestTimeSection.content?.description}
+                      </p>
+                      {bestTimeSection.content?.highlights && bestTimeSection.content.highlights.length > 0 && (
+                        <div className="mt-4">
+                          <h3 className="font-semibold mb-3">Seasonal Highlights</h3>
+                          <div className="grid md:grid-cols-2 gap-3">
+                            {bestTimeSection.content.highlights.map((highlight: string, index: number) => (
+                              <div key={index} className="flex items-start gap-2 p-3 bg-secondary/50 rounded-lg">
+                                <Calendar className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                                <span className="text-sm">{highlight}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </Card>
+                  )}
+
+                  {/* Reasons to Visit Section */}
+                  {reasonsSection && reasonsSection.content?.reasons && (
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                        <Heart className="h-6 w-6 mr-2 text-primary" />
+                        {reasonsSection.title}
+                      </h2>
+                      {reasonsSection.content?.description && (
+                        <p className="text-muted-foreground leading-relaxed mb-6">
+                          {reasonsSection.content.description}
+                        </p>
+                      )}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {reasonsSection.content.reasons.map((reason: string, index: number) => (
+                          <div key={index} className="flex items-start gap-3 p-4 bg-primary/5 rounded-lg">
+                            <Heart className="h-5 w-5 text-primary mt-0.5" />
+                            <p className="text-sm">{reason}</p>
+                          </div>
+                        ))}
+                      </div>
+                      {reasonsSection.content?.highlight && (
+                        <div className="mt-4 p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
+                          <p className="text-sm font-medium">{reasonsSection.content.highlight}</p>
+                        </div>
+                      )}
+                    </Card>
+                  )}
+                </TabsContent>
+              )}
+
+              {/* Local Experiences Tab (Food & Shopping + Art & Culture) */}
+              {(foodShoppingSection || artCultureSection) && (
+                <TabsContent value="experiences" className="mt-4 md:mt-6 space-y-6">
+                  {/* Food & Shopping Section */}
+                  {foodShoppingSection && (
+                    <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                      <Card className="p-6">
+                        <h3 className="text-xl font-bold mb-4 flex items-center">
+                          <Utensils className="h-5 w-5 mr-2 text-primary" />
+                          Local Cuisine
+                        </h3>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {foodShoppingSection.content?.food}
+                        </p>
+                      </Card>
+                      
+                      <Card className="p-6">
+                        <h3 className="text-xl font-bold mb-4 flex items-center">
+                          <ShoppingBag className="h-5 w-5 mr-2 text-primary" />
+                          Shopping
+                        </h3>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {foodShoppingSection.content?.shopping}
+                        </p>
+                      </Card>
                     </div>
                   )}
-                  {artCultureSection.content?.points && artCultureSection.content.points.length > 0 && (
-                    <ul className="mt-4 space-y-2">
-                      {artCultureSection.content.points.map((point: string, index: number) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <Palette className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </Card>
-              </TabsContent>
-            )}
-          </Tabs>
-        </section>
 
-        {/* Best Packages */}
-        <section id="packages" className="my-6 md:my-8">
-          <CountryPackagesList countrySlug={country || ''} countryName={countryData.name} />
-        </section>
+                  {/* Art & Culture Section */}
+                  {artCultureSection && (
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                        <Palette className="h-6 w-6 mr-2 text-primary" />
+                        {artCultureSection.title}
+                      </h2>
+                      {artCultureSection.content?.subtitle && (
+                        <p className="text-lg font-semibold text-primary mb-3">
+                          {artCultureSection.content.subtitle}
+                        </p>
+                      )}
+                      <p className="text-muted-foreground leading-relaxed">
+                        {artCultureSection.content?.content || artCultureSection.content?.description}
+                      </p>
+                      {artCultureSection.content?.highlight && (
+                        <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                          <p className="text-sm font-medium">{artCultureSection.content.highlight}</p>
+                        </div>
+                      )}
+                      {artCultureSection.content?.points && artCultureSection.content.points.length > 0 && (
+                        <ul className="mt-4 space-y-2">
+                          {artCultureSection.content.points.map((point: string, index: number) => (
+                            <li key={index} className="flex items-start gap-2">
+                              <Palette className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-sm">{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </Card>
+                  )}
+                </TabsContent>
+              )}
+
+              {/* Discover More Tab (Fun Facts + About) */}
+              {(funFactsSection || aboutSection) && (
+                <TabsContent value="discover" className="mt-4 md:mt-6 space-y-6">
+                  {/* Fun Facts Section */}
+                  {funFactsSection && funFactsSection.content?.facts && (
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+                        <Star className="h-6 w-6 mr-2 text-primary" />
+                        {funFactsSection.title}
+                      </h2>
+                      {funFactsSection.content?.description && (
+                        <p className="text-muted-foreground leading-relaxed mb-6">
+                          {funFactsSection.content.description}
+                        </p>
+                      )}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {funFactsSection.content.facts.map((fact: string, index: number) => (
+                          <div key={index} className="flex items-start gap-3 p-4 bg-secondary/50 rounded-lg">
+                            <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
+                            <p className="text-sm">{fact}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </Card>
+                  )}
+
+                  {/* About Section */}
+                  {aboutSection && (
+                    <Card className="p-4 md:p-6">
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 flex items-center">
+                        <Globe className="h-6 w-6 mr-2 text-primary" />
+                        {aboutSection.title}
+                      </h2>
+                      {aboutSection.content?.subtitle && (
+                        <p className="text-lg font-semibold text-primary mb-3">
+                          {aboutSection.content.subtitle}
+                        </p>
+                      )}
+                      <p className="text-muted-foreground leading-relaxed">
+                        {aboutSection.content?.description}
+                      </p>
+                      {aboutSection.content?.highlight && (
+                        <div className="mt-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                          <p className="text-sm font-medium">{aboutSection.content.highlight}</p>
+                        </div>
+                      )}
+                      {aboutSection.content?.points && aboutSection.content.points.length > 0 && (
+                        <ul className="mt-4 space-y-2">
+                          {aboutSection.content.points.map((point: string, index: number) => (
+                            <li key={index} className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-sm">{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </Card>
+                  )}
+                </TabsContent>
+              )}
+            </Tabs>
+          </section>
+        )}
 
         {/* Attractions Gallery */}
         <CountryAttractionsGallery countryId={countryData.id} countryName={countryData.name} />
