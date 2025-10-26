@@ -136,6 +136,7 @@ const CountryDetail = () => {
     travel_date: '',
     travelers: 2
   })
+  const [activeTab, setActiveTab] = useState("overview")
 
   useEffect(() => {
     if (country) {
@@ -518,17 +519,13 @@ const CountryDetail = () => {
 
         {/* Content Tabs */}
         <section className="my-6 md:my-8">
-          <Tabs defaultValue="overview" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             {/* Mobile/Tablet: Dropdown Select */}
             <div className="md:hidden mb-4">
               <select
                 className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                onChange={(e) => {
-                  const tabs = document.querySelectorAll('[role="tab"]');
-                  const targetTab = Array.from(tabs).find(tab => tab.getAttribute('value') === e.target.value) as HTMLElement;
-                  targetTab?.click();
-                }}
-                defaultValue="overview"
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value)}
               >
                 {overviewSection && <option value="overview">📖 Overview</option>}
                 {aboutSection && <option value="about">🌍 About</option>}
