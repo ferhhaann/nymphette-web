@@ -114,9 +114,7 @@ const FeaturedPackages = () => {
                     {isMobile ? 'From' : 'Starting from'}
                   </span>
                   <div className={`${isMobile ? 'text-lg' : 'text-2xl'} font-bold text-accent`}>
-                    {typeof pkg.price === 'string' ? 
-                        pkg.price.replace(/[\$,]/g, '') : 
-                        pkg.price}
+                    {pkg.price}
                   </div>
                 </div>
                 <Button 
