@@ -332,14 +332,57 @@ const SEOManager = () => {
 
   const getSEOScore = (setting: SEOSettings) => {
     let score = 0;
-    if (setting.meta_title && setting.meta_title.length >= 30 && setting.meta_title.length <= 60) score += 20;
-    if (setting.meta_description && setting.meta_description.length >= 120 && setting.meta_description.length <= 160) score += 20;
-    if (setting.meta_keywords) score += 10;
-    if (setting.canonical_url) score += 10;
+    
+    // Meta title (0-25 points) - Modern SEO best practices
+    const titleLength = setting.meta_title?.length || 0;
+    if (titleLength >= 50 && titleLength <= 60) {
+      score += 25; // Optimal length
+    } else if ((titleLength >= 45 && titleLength <= 49) || (titleLength >= 61 && titleLength <= 65)) {
+      score += 15; // Acceptable but not optimal
+    } else if ((titleLength >= 40 && titleLength <= 44) || (titleLength >= 66 && titleLength <= 70)) {
+      score += 10; // Too short or too long
+    }
+    // Under 40 or over 70 = 0 points
+    
+    // Meta description (0-25 points) - Industry standard lengths
+    const descLength = setting.meta_description?.length || 0;
+    if (descLength >= 150 && descLength <= 160) {
+      score += 25; // Optimal length
+    } else if (descLength >= 140 && descLength <= 149) {
+      score += 20; // Good length
+    } else if (descLength >= 120 && descLength <= 139) {
+      score += 15; // Acceptable
+    }
+    // Under 120 or over 160 = 0 points
+    
+    // Canonical URL (0-10 points)
+    if (setting.canonical_url) {
+      score += 10;
+    }
+    
+    // Open Graph tags (0-25 points)
     if (setting.og_title) score += 10;
     if (setting.og_description) score += 10;
-    if (setting.og_image) score += 10;
-    if (setting.structured_data && Object.keys(setting.structured_data).length > 0) score += 10;
+    if (setting.og_image) score += 5;
+    
+    // Structured data (0-10 points)
+    if (setting.structured_data && Object.keys(setting.structured_data).length > 0) {
+      score += 10;
+    }
+    
+    // Robots meta (0-5 points) - Check for proper directives
+    if (setting.robots_meta) {
+      const validDirectives = ['index', 'noindex', 'follow', 'nofollow', 'noarchive', 'nosnippet'];
+      const hasValidDirective = validDirectives.some(directive => 
+        setting.robots_meta?.toLowerCase().includes(directive)
+      );
+      if (hasValidDirective) {
+        score += 5;
+      }
+    }
+    
+    // Meta keywords removed from scoring (obsolete since 2009)
+    
     return score;
   };
 
