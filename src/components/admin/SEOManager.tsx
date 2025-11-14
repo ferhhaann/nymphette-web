@@ -150,10 +150,17 @@ const SEOManager = () => {
   };
 
   const [formData, setFormData] = useState<SEOSettings>(initialFormData);
+  const formRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchSEOSettings();
   }, []);
+
+  useEffect(() => {
+    if (showForm && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [showForm]);
 
   const fetchSEOSettings = async () => {
     try {
@@ -296,6 +303,7 @@ const SEOManager = () => {
     setEditingItem(item);
     setFormData(item);
     setShowForm(true);
+    // Scroll will happen in useEffect after showForm updates
   };
 
   const handleDelete = async (id: string) => {
@@ -373,7 +381,7 @@ const SEOManager = () => {
       </div>
 
       {showForm && (
-        <Card>
+        <Card ref={formRef}>
           <CardHeader>
             <CardTitle>
               {editingItem ? 'Edit SEO Settings' : 'Add New SEO Settings'}
