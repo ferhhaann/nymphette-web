@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <main className="container mx-auto px-4 py-16 pt-32 lg:pt-36">
+      <main className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <Shield className="w-16 h-16 mx-auto mb-4 text-primary" />
