@@ -337,7 +337,7 @@ const PackageDetail = () => {
       <Navigation />
       
       {/* Mobile Back Button - Hidden on desktop */}
-      <div className="max-w-6xl mx-auto px-4 pt-20 lg:pt-24 pb-4 md:hidden">
+      <div className="max-w-6xl mx-auto px-4 pt-6 pb-4 md:hidden">
         <Button 
           variant="outline" 
           onClick={() => navigate(-1)}
