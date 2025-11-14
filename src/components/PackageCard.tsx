@@ -39,13 +39,13 @@ const PackageCard = ({ package: pkg, onViewDetails }: PackageCardProps) => {
   const packageImage = getPackageImage();
   
   return (
-    <Card className="group overflow-hidden hover:shadow-card-soft transition-all duration-300 cursor-pointer"
+    <Card className="group overflow-hidden hover:shadow-card-soft transition-all duration-300 cursor-pointer hover:scale-105"
           onClick={() => onViewDetails(pkg.id)}>
       <div className="relative overflow-hidden rounded-lg">
         <OptimizedImage
           src={packageImage}
           alt={pkg.title}
-          className="w-full h-32 sm:h-40 md:h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-32 sm:h-40 md:h-48 object-cover"
         />
         <div className="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4">
           <Badge className="bg-foreground text-background text-xs">{pkg.category}</Badge>

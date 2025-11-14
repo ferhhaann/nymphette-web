@@ -94,7 +94,7 @@ export const CountryPackagesList = ({ countrySlug, countryName }: CountryPackage
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {packages?.map((pkg, index) => (
-          <Card key={pkg.id} className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20">
+          <Card key={pkg.id} className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20 hover:scale-105">
             <CardHeader className="p-0">
               <div className="relative overflow-hidden rounded-t-lg">
                 <OptimizedImage
@@ -102,7 +102,7 @@ export const CountryPackagesList = ({ countrySlug, countryName }: CountryPackage
                   alt={pkg.title}
                   priority={index < 3}
                   preloadSources={packages?.slice(index + 1, index + 2).map(p => p.image) || []}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-48 object-cover"
                 />
                 {pkg.original_price && (
                   <Badge className="absolute top-3 left-3 bg-destructive text-destructive-foreground">
