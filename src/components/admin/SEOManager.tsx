@@ -8,6 +8,7 @@ import { Search, Edit, Trash2, Plus, Globe, AlertTriangle, CheckCircle } from 'l
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 interface SEOSettings {
   id?: string;
@@ -540,12 +541,15 @@ const SEOManager = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium">OG Image URL</label>
-                <Input
-                  value={formData.og_image || ''}
-                  onChange={(e) => setFormData({...formData, og_image: e.target.value})}
-                  placeholder="https://example.com/image.jpg"
+                <ImageUpload
+                  label="OG Image"
+                  currentImageUrl={formData.og_image}
+                  onImageUploaded={(url) => setFormData({...formData, og_image: url})}
+                  folder="seo"
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Recommended size: 1200x630 pixels for optimal social media display
+                </p>
               </div>
 
               <div>
