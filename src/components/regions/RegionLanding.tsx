@@ -314,7 +314,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
             const packageImage = pkg.image || getPackageImage(pkg.countrySlug, pkg.title);
             
             return (
-              <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300 hover:scale-105" 
+              <Card key={pkg.id} className="group overflow-hidden animate-fade-in cursor-pointer hover:shadow-card-soft transition-all duration-300" 
                     style={{animationDelay:`${index*60}ms`}}
                      onClick={() => navigate(`/package/${pkg.id}`)}>
                  <div className={`relative overflow-hidden rounded-lg ${optimizedSettings.cardHeight}`}>
@@ -323,7 +323,7 @@ const RegionLanding: React.FC<RegionLandingProps> = ({ region }) => {
                      alt={pkg.title} 
                      priority={index < optimizedSettings.priorityImageCount} 
                      preloadSources={optimizedSettings.shouldPreload ? filtered.slice(index + 1, index + optimizedSettings.preloadCount).map(p => p.image || getPackageImage(p.countrySlug, p.title)) : []}
-                     className="w-full h-full object-cover"
+                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                      fallback="/placeholder.svg"
                    />
                   <div className="absolute top-2 left-2">

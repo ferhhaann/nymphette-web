@@ -256,7 +256,7 @@ const Packages = () => {
                 {filteredRegions.map((region, index) => (
               <Card 
                 key={region.name}
-                className="group overflow-hidden hover:shadow-travel transition-all duration-500 cursor-pointer animate-fade-in hover:scale-105"
+                className="group overflow-hidden hover:shadow-travel transition-all duration-500 cursor-pointer animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
                 onClick={() => handleRegionClick(region.name)}
               >
@@ -266,7 +266,7 @@ const Packages = () => {
                     alt={`${region.name} travel destinations and highlights`}
                     width="400"
                     height="192"
-                    className="w-full h-40 sm:h-48"
+                    className="w-full h-40 sm:h-48 group-hover:scale-110 transition-transform duration-500"
                     hoverToPlay={false}
                   />
                   <div className="absolute inset-0 bg-primary-dark/40 group-hover:bg-primary-dark/30 transition-colors pointer-events-none"></div>
@@ -281,7 +281,7 @@ const Packages = () => {
                   </div>
                 </div>
 
-                <CardContent className="p-6 transition-transform duration-300 hover:scale-105">
+                <CardContent className="p-6">
                   <div className="flex flex-wrap gap-2 mb-4">
                     {region.highlights.map((highlight, idx) => (
                       <Badge key={idx} variant="outline" className="border-soft-blue text-deep-blue">
