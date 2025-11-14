@@ -91,7 +91,7 @@ const Hero = () => {
   ];
 
   return (
-    <div className="relative pt-16 lg:pt-20">
+    <div className="relative">
       {/* Hero Image Section */}
       <section className={`relative h-[80vh] sm:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden`}>
         {/* Background Video */}
