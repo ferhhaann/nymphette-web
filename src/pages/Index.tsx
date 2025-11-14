@@ -45,11 +45,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header>
-        <div className="animate-fade-in">
-          <Navigation />
-        </div>
-      </header>
+      <Navigation />
       <main>
         <div className="animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
           <Hero />
