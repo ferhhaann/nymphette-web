@@ -146,7 +146,7 @@ export default function Contact() {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-16 pt-32 lg:pt-36">
           <div className="text-center">Loading contact information...</div>
         </div>
         <Footer />
@@ -160,7 +160,7 @@ export default function Contact() {
         <Navigation />
       </header>
       
-      <main>
+      <main className="pt-16 lg:pt-20">
         {/* Hero Section */}
         <section className="relative h-64 sm:h-[70vh] md:h-[80vh] lg:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden mt-4 sm:mt-0">
           <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
