@@ -44,6 +44,8 @@ All colors MUST be HSL.
     --input: 0 0% 90%;
     --ring: 0 0% 10%;
     
+    --nav-active: 196 99% 41%;         /* #0196ce - Active nav link color */
+    
     --radius: 0.75rem;
     
     /* Visual tokens */

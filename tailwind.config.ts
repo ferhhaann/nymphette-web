@@ -64,11 +64,12 @@ export default {
 						DEFAULT: 'hsl(var(--card))',
 						foreground: 'hsl(var(--card-foreground))'
 					},
-					// Travel brand colors
-					'deep-blue': 'hsl(var(--deep-blue))',
-					'bright-blue': 'hsl(var(--bright-blue))',
-					'soft-blue': 'hsl(var(--soft-blue))',
-					'pale-blue': 'hsl(var(--pale-blue))'
+				// Travel brand colors
+				'deep-blue': 'hsl(var(--deep-blue))',
+				'bright-blue': 'hsl(var(--bright-blue))',
+				'soft-blue': 'hsl(var(--soft-blue))',
+				'pale-blue': 'hsl(var(--pale-blue))',
+				'nav-active': 'hsl(var(--nav-active))'
 				},
 				backgroundImage: {
 					'hero-gradient': 'var(--hero-gradient)',
