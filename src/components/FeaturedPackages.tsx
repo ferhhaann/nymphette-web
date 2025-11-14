@@ -48,7 +48,7 @@ const FeaturedPackages = () => {
           {packages?.map((pkg, index) => (
             <Card 
               key={pkg.id}
-              className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
+              className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border hover:scale-105"
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <div className={`relative overflow-hidden ${isMobile ? 'rounded-lg' : 'rounded-lg'} ${optimizedSettings.cardHeight || 'h-48 sm:h-56 md:h-64'}`}>
