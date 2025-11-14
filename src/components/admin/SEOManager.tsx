@@ -4,14 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Search, Edit, Trash2, Plus, Eye, BarChart3, TrendingUp, Globe, Target, Link as LinkIcon, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Search, Edit, Trash2, Plus, Globe, AlertTriangle, CheckCircle } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
-import { validateSEOSettings } from "@/utils/seoValidator";
 
 interface SEOSettings {
   id?: string;
@@ -25,29 +21,118 @@ interface SEOSettings {
   og_image?: string;
   structured_data?: any;
   robots_meta?: string;
-  page_type: 'homepage' | 'packages' | 'blog' | 'about' | 'contact' | 'group-tours' | 'country' | 'custom';
+  page_type: 'homepage' | 'packages' | 'package-detail' | 'blog' | 'blog-post' | 'about' | 'contact' | 'group-tours' | 'group-tour-detail' | 'country' | 'region' | 'privacy-policy' | 'terms-of-service' | 'cookie-policy' | 'custom';
   is_active: boolean;
 }
 
-
-interface SecurityRecommendation {
-  category: string;
-  recommendation: string;
-  priority: string;
-  action_required: string;
-}
+const PAGE_TEMPLATES = {
+  homepage: {
+    page_url: '/',
+    meta_title: 'Premium Travel Packages & Group Tours | Nymphette Tours',
+    meta_description: 'Explore premium travel packages across Asia, Europe, Africa & more. Expert-guided group tours, custom trips, authentic experiences. 50+ destinations worldwide.',
+    meta_keywords: 'travel packages, group tours, custom trips, vacation packages, travel agency, international tours',
+    robots_meta: 'index,follow'
+  },
+  packages: {
+    page_url: '/packages',
+    meta_title: 'Travel Packages - Curated Tours & Custom Trips | Nymphette Tours',
+    meta_description: 'Explore our handpicked travel packages across Asia, Europe, Africa & more. Customizable itineraries, expert guides, and unforgettable experiences.',
+    meta_keywords: 'travel packages, tour packages, vacation packages, custom tours, holiday packages',
+    robots_meta: 'index,follow'
+  },
+  'package-detail': {
+    page_url: '/package/{slug}',
+    meta_title: '{Package Name} - Premium Travel Package | Nymphette Tours',
+    meta_description: 'Discover {Package Name} with expert guides, curated itinerary, and authentic experiences. Book your dream vacation today.',
+    meta_keywords: 'travel package, vacation, tour, holiday',
+    robots_meta: 'index,follow'
+  },
+  blog: {
+    page_url: '/blog',
+    meta_title: 'Travel Blog - Tips, Guides & Destination Insights | Nymphette Tours',
+    meta_description: 'Expert travel tips, destination guides, and insider insights from our travel experts. Discover inspiration for your next adventure.',
+    meta_keywords: 'travel blog, travel tips, destination guides, travel advice',
+    robots_meta: 'index,follow'
+  },
+  'blog-post': {
+    page_url: '/blog/{slug}',
+    meta_title: '{Post Title} | Nymphette Tours Blog',
+    meta_description: '{Post excerpt or description}',
+    meta_keywords: 'travel blog, travel tips, destination guide',
+    robots_meta: 'index,follow'
+  },
+  about: {
+    page_url: '/about',
+    meta_title: 'About Us - Our Story & Mission | Nymphette Tours',
+    meta_description: 'Learn about Nymphette Tours\' commitment to authentic travel experiences. Meet our expert team and discover our passion for crafting unforgettable journeys.',
+    meta_keywords: 'about us, travel agency, our story, our mission, travel experts',
+    robots_meta: 'index,follow'
+  },
+  contact: {
+    page_url: '/contact',
+    meta_title: 'Contact Us - Get in Touch | Nymphette Tours',
+    meta_description: 'Contact Nymphette Tours for personalized travel planning. Available 24/7 to help you plan your perfect trip.',
+    meta_keywords: 'contact, get in touch, customer service, travel inquiry',
+    robots_meta: 'index,follow'
+  },
+  'group-tours': {
+    page_url: '/group-tours',
+    meta_title: 'Group Tours - Join Like-Minded Travelers | Nymphette Tours',
+    meta_description: 'Join our expertly guided group tours. Small groups, authentic experiences, and hassle-free travel across the world\'s most exciting destinations.',
+    meta_keywords: 'group tours, guided tours, travel groups, group travel packages',
+    robots_meta: 'index,follow'
+  },
+  'group-tour-detail': {
+    page_url: '/group-tour/{slug}',
+    meta_title: '{Tour Name} - Group Tour | Nymphette Tours',
+    meta_description: 'Join {Tour Name} with expert guides and like-minded travelers. Limited spots available. Book your group tour adventure today.',
+    meta_keywords: 'group tour, guided tour, travel group',
+    robots_meta: 'index,follow'
+  },
+  country: {
+    page_url: '/country/{slug}',
+    meta_title: 'Travel to {Country Name} - Packages & Tours | Nymphette Tours',
+    meta_description: 'Discover {Country Name} with our curated travel packages and expert guides. Explore top attractions, hidden gems, and authentic experiences.',
+    meta_keywords: '{country name} travel, {country name} tours, {country name} packages',
+    robots_meta: 'index,follow'
+  },
+  region: {
+    page_url: '/regions/{region}',
+    meta_title: '{Region Name} Travel Packages & Tours | Nymphette Tours',
+    meta_description: 'Explore {Region Name} with our premium travel packages. Discover diverse cultures, stunning landscapes, and unforgettable experiences.',
+    meta_keywords: '{region} travel, {region} tours, {region} packages',
+    robots_meta: 'index,follow'
+  },
+  'privacy-policy': {
+    page_url: '/privacy-policy',
+    meta_title: 'Privacy Policy | Nymphette Tours',
+    meta_description: 'Read our privacy policy to understand how we collect, use, and protect your personal information.',
+    meta_keywords: 'privacy policy, data protection, privacy',
+    robots_meta: 'noindex,follow'
+  },
+  'terms-of-service': {
+    page_url: '/terms-of-service',
+    meta_title: 'Terms of Service | Nymphette Tours',
+    meta_description: 'Read our terms of service to understand the terms and conditions for using our services.',
+    meta_keywords: 'terms of service, terms and conditions, user agreement',
+    robots_meta: 'noindex,follow'
+  },
+  'cookie-policy': {
+    page_url: '/cookie-policy',
+    meta_title: 'Cookie Policy | Nymphette Tours',
+    meta_description: 'Learn about how we use cookies and similar technologies on our website.',
+    meta_keywords: 'cookie policy, cookies, tracking',
+    robots_meta: 'noindex,follow'
+  }
+};
 
 const SEOManager = () => {
   const { isAdmin, logAdminAction } = useAdminAccess();
   const [seoSettings, setSeoSettings] = useState<SEOSettings[]>([]);
-  const [securityRecommendations, setSecurityRecommendations] = useState<SecurityRecommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<SEOSettings | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [previewStructuredData, setPreviewStructuredData] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState('settings');
 
   const initialFormData: SEOSettings = {
     page_url: '',
@@ -75,7 +160,7 @@ const SEOManager = () => {
       const { data, error } = await supabase
         .from('seo_settings')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false});
 
       if (error) {
         console.error('Error fetching SEO settings:', error);
@@ -108,214 +193,127 @@ const SEOManager = () => {
     }
   };
 
+  const handleQuickSetup = async () => {
+    try {
+      setLoading(true);
+      const templatesToCreate = Object.entries(PAGE_TEMPLATES).filter(([key]) => 
+        !['package-detail', 'blog-post', 'group-tour-detail', 'country', 'region'].includes(key)
+      );
+
+      for (const [pageType, template] of templatesToCreate) {
+        const exists = seoSettings.find(s => s.page_url === template.page_url);
+        if (!exists) {
+          await supabase.from('seo_settings').insert({
+            ...template,
+            page_type: pageType,
+            is_active: true
+          });
+        }
+      }
+
+      await logAdminAction('QUICK_SETUP_SEO', 'seo_settings');
+      toast.success('Quick setup completed! Default SEO settings added for all main pages.');
+      fetchSEOSettings();
+    } catch (error) {
+      console.error('Error during quick setup:', error);
+      toast.error('Failed to complete quick setup');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTemplateSelect = (pageType: string) => {
+    const template = PAGE_TEMPLATES[pageType as keyof typeof PAGE_TEMPLATES];
+    if (template) {
+      setFormData({
+        ...formData,
+        ...template,
+        page_type: pageType as any
+      });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
-      // Validate SEO settings
-      const validationResults = validateSEOSettings(formData);
-      
-      // Check for errors
-      const errors = validationResults.filter(result => result.status === 'error');
-      if (errors.length > 0) {
-        errors.forEach(error => {
-          toast.error(`${error.field}: ${error.message}`);
-        });
-        return;
-      }
-
-      // Show warnings
-      const warnings = validationResults.filter(result => result.status === 'warning');
-      if (warnings.length > 0) {
-        warnings.forEach(warning => {
-          toast.warning(`${warning.field}: ${warning.message}`);
-        });
-      }
-
-      const seoData = {
-        page_url: formData.page_url,
-        meta_title: formData.meta_title,
-        meta_description: formData.meta_description,
-        meta_keywords: formData.meta_keywords,
-        canonical_url: formData.canonical_url,
-        og_title: formData.og_title,
-        og_description: formData.og_description,
-        og_image: formData.og_image,
-        structured_data: formData.structured_data || generateStructuredData(formData.page_type),
-        robots_meta: formData.robots_meta,
-        page_type: formData.page_type,
-        is_active: formData.is_active
-      };
-
       if (editingItem?.id) {
         const { error } = await supabase
           .from('seo_settings')
-          .update(seoData)
+          .update({
+            page_url: formData.page_url,
+            meta_title: formData.meta_title,
+            meta_description: formData.meta_description,
+            meta_keywords: formData.meta_keywords,
+            canonical_url: formData.canonical_url,
+            og_title: formData.og_title,
+            og_description: formData.og_description,
+            og_image: formData.og_image,
+            structured_data: formData.structured_data,
+            robots_meta: formData.robots_meta,
+            page_type: formData.page_type,
+            is_active: formData.is_active
+          })
           .eq('id', editingItem.id);
-        
+
         if (error) throw error;
+        await logAdminAction('UPDATE', 'seo_settings', editingItem.id);
         toast.success('SEO settings updated successfully');
       } else {
         const { error } = await supabase
           .from('seo_settings')
-          .insert([seoData]);
-        
+          .insert({
+            page_url: formData.page_url,
+            meta_title: formData.meta_title,
+            meta_description: formData.meta_description,
+            meta_keywords: formData.meta_keywords,
+            canonical_url: formData.canonical_url,
+            og_title: formData.og_title,
+            og_description: formData.og_description,
+            og_image: formData.og_image,
+            structured_data: formData.structured_data,
+            robots_meta: formData.robots_meta,
+            page_type: formData.page_type,
+            is_active: formData.is_active
+          });
+
         if (error) throw error;
+        await logAdminAction('INSERT', 'seo_settings');
         toast.success('SEO settings created successfully');
       }
-      
+
       fetchSEOSettings();
-      resetForm();
+      setShowForm(false);
+      setEditingItem(null);
+      setFormData(initialFormData);
     } catch (error: any) {
       console.error('Error saving SEO settings:', error);
-      if (error.code === '23505') {
-        toast.error('Page URL already exists. Please use a different URL or edit the existing entry.');
-      } else {
-        toast.error('Failed to save SEO settings: ' + error.message);
-      }
+      toast.error(error.message || 'Failed to save SEO settings');
     }
   };
 
   const handleEdit = (item: SEOSettings) => {
     setEditingItem(item);
     setFormData(item);
-    setShowEditDialog(true);
+    setShowForm(true);
   };
 
   const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this SEO setting?')) return;
+
     try {
       const { error } = await supabase
         .from('seo_settings')
         .delete()
         .eq('id', id);
-      
+
       if (error) throw error;
+      await logAdminAction('DELETE', 'seo_settings', id);
       toast.success('SEO settings deleted successfully');
       fetchSEOSettings();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting SEO settings:', error);
-      toast.error('Failed to delete SEO settings');
-    }
-  };
-
-  const resetForm = () => {
-    setFormData(initialFormData);
-    setEditingItem(null);
-    setShowForm(false);
-    setShowEditDialog(false);
-    setPreviewStructuredData(null);
-  };
-
-  const generateStructuredData = (pageType: string) => {
-    // Import schema generation functions directly (ES6 imports are handled at build time)
-    const generateOrganizationSchema = () => ({
-      "@type": "TravelAgency",
-      "name": "Nymphette Tours",
-      "url": window.location.origin,
-      "logo": `${window.location.origin}/logo.png`,
-      "sameAs": [
-        "https://www.facebook.com/nymphettetours",
-        "https://www.instagram.com/nymphettetours",
-        "https://www.twitter.com/nymphettetours"
-      ]
-    });
-
-    const generatePackageSchema = (tourPackage: any) => ({
-      "@type": "TouristTrip",
-      "name": tourPackage.title,
-      "description": tourPackage.description,
-      "offers": {
-        "@type": "Offer",
-        "price": tourPackage.price || "0",
-        "priceCurrency": "INR"
-      }
-    });
-
-    const generateArticleSchema = (article: any) => ({
-      "@type": "Article",
-      "headline": article.title,
-      "description": article.description,
-      "author": {
-        "@type": "Organization",
-        "name": "Nymphette Tours"
-      },
-      "publisher": generateOrganizationSchema()
-    });
-
-    const generateBreadcrumbSchema = (breadcrumbs: Array<{ name: string; url: string }>) => ({
-      "@type": "BreadcrumbList",
-      "itemListElement": breadcrumbs.map((item, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "name": item.name,
-        "item": item.url
-      }))
-    });
-
-    const baseStructuredData = {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": formData.meta_title,
-      "description": formData.meta_description,
-      "url": formData.canonical_url || formData.page_url,
-      "breadcrumb": generateBreadcrumbSchema([
-        { name: "Home", url: "/" },
-        { name: formData.meta_title, url: formData.page_url }
-      ])
-    };
-
-    switch (pageType) {
-      case 'homepage':
-        return {
-          ...baseStructuredData,
-          "@type": "WebSite",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "/?search={search_term_string}",
-            "query-input": "required name=search_term_string"
-          },
-          "publisher": generateOrganizationSchema()
-        };
-      case 'packages':
-        return {
-          ...baseStructuredData,
-          "@type": "CollectionPage",
-          "mainEntity": {
-            "@type": "ItemList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "item": generatePackageSchema({
-                  title: formData.meta_title,
-                  description: formData.meta_description,
-                  images: [formData.og_image],
-                  price: "0",
-                  startDate: new Date().toISOString(),
-                  endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-                })
-              }
-            ]
-          }
-        };
-      case 'blog':
-        return {
-          ...baseStructuredData,
-          ...generateArticleSchema({
-            title: formData.meta_title,
-            description: formData.meta_description,
-            image: formData.og_image,
-            author: "Nymphette Tours",
-            publishDate: new Date().toISOString(),
-            modifiedDate: new Date().toISOString()
-          })
-        };
-      default:
-        return {
-          ...baseStructuredData,
-          "publisher": generateOrganizationSchema()
-        };
+      toast.error(error.message || 'Failed to delete SEO settings');
     }
   };
 
@@ -323,6 +321,19 @@ const SEOManager = () => {
     setting.page_url.toLowerCase().includes(searchTerm.toLowerCase()) ||
     setting.meta_title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const getSEOScore = (setting: SEOSettings) => {
+    let score = 0;
+    if (setting.meta_title && setting.meta_title.length >= 30 && setting.meta_title.length <= 60) score += 20;
+    if (setting.meta_description && setting.meta_description.length >= 120 && setting.meta_description.length <= 160) score += 20;
+    if (setting.meta_keywords) score += 10;
+    if (setting.canonical_url) score += 10;
+    if (setting.og_title) score += 10;
+    if (setting.og_description) score += 10;
+    if (setting.og_image) score += 10;
+    if (setting.structured_data && Object.keys(setting.structured_data).length > 0) score += 10;
+    return score;
+  };
 
   return (
     <div className="space-y-6">
@@ -333,731 +344,290 @@ const SEOManager = () => {
             Manage meta tags, structured data, and SEO optimization for all pages
           </p>
         </div>
-        <Button onClick={() => setShowForm(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add SEO Settings
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleQuickSetup} disabled={loading}>
+            <Globe className="h-4 w-4 mr-2" />
+            Quick Setup All Pages
+          </Button>
+          <Button onClick={() => {
+            setShowForm(true);
+            setEditingItem(null);
+            setFormData(initialFormData);
+          }}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add SEO Settings
+          </Button>
+        </div>
       </div>
 
-      <Tabs defaultValue="settings" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="settings">General SEO</TabsTrigger>
-          <TabsTrigger value="countries">Country Pages</TabsTrigger>
-          <TabsTrigger value="categories">Categories</TabsTrigger>
-          <TabsTrigger value="tools">SEO Tools</TabsTrigger>
-        </TabsList>
+      <div className="flex items-center space-x-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by URL or title..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-8"
+          />
+        </div>
+      </div>
 
-        <TabsContent value="settings" className="space-y-4">
-          {/* Search Bar */}
-          <div className="flex items-center space-x-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search by URL or title..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8"
-              />
-            </div>
-          </div>
+      {showForm && (
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              {editingItem ? 'Edit SEO Settings' : 'Add New SEO Settings'}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Page URL</label>
+                  <Input
+                    value={formData.page_url}
+                    onChange={(e) => setFormData({...formData, page_url: e.target.value})}
+                    placeholder="/example-page"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Page Type</label>
+                  <select
+                    value={formData.page_type}
+                    onChange={(e) => {
+                      const pageType = e.target.value as any;
+                      setFormData({...formData, page_type: pageType});
+                      handleTemplateSelect(pageType);
+                    }}
+                    className="w-full p-2 border rounded-md bg-background"
+                  >
+                    <option value="homepage">Homepage</option>
+                    <option value="packages">Packages</option>
+                    <option value="package-detail">Package Detail (Dynamic)</option>
+                    <option value="blog">Blog</option>
+                    <option value="blog-post">Blog Post (Dynamic)</option>
+                    <option value="about">About</option>
+                    <option value="contact">Contact</option>
+                    <option value="group-tours">Group Tours</option>
+                    <option value="group-tour-detail">Group Tour Detail (Dynamic)</option>
+                    <option value="country">Country Pages (Dynamic)</option>
+                    <option value="region">Region Pages</option>
+                    <option value="privacy-policy">Privacy Policy</option>
+                    <option value="terms-of-service">Terms of Service</option>
+                    <option value="cookie-policy">Cookie Policy</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Selecting a page type will auto-fill the fields with recommended values
+                  </p>
+                </div>
+              </div>
 
-          {/* SEO Settings Form */}
-          {showForm && (
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  {editingItem ? 'Edit SEO Settings' : 'Add New SEO Settings'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium">Page URL</label>
-                      <Input
-                        value={formData.page_url}
-                        onChange={(e) => setFormData({...formData, page_url: e.target.value})}
-                        placeholder="/example-page"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium">Page Type</label>
-                      <select
-                        value={formData.page_type}
-                        onChange={(e) => setFormData({...formData, page_type: e.target.value as any})}
-                        className="w-full p-2 border rounded-md"
-                       >
-                         <option value="homepage">Homepage</option>
-                         <option value="packages">Packages</option>
-                         <option value="country">Country Pages</option>
-                         <option value="blog">Blog</option>
-                         <option value="about">About</option>
-                         <option value="contact">Contact</option>
-                         <option value="group-tours">Group Tours</option>
-                         <option value="custom">Custom</option>
-                       </select>
-                    </div>
-                  </div>
+              <div>
+                <label className="text-sm font-medium">Meta Title</label>
+                <Input
+                  value={formData.meta_title}
+                  onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
+                  placeholder="Page title for search engines"
+                  required
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  {formData.meta_title.length}/60 characters (recommended: 30-60)
+                </p>
+              </div>
 
-                  <div>
-                    <label className="text-sm font-medium">Meta Title (60 chars max)</label>
-                    <Input
-                      value={formData.meta_title}
-                      onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
-                      placeholder="Optimized page title"
-                      maxLength={60}
-                      required
-                    />
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {formData.meta_title.length}/60 characters
-                    </div>
-                  </div>
+              <div>
+                <label className="text-sm font-medium">Meta Description</label>
+                <Textarea
+                  value={formData.meta_description}
+                  onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
+                  placeholder="Brief description for search results"
+                  required
+                  rows={3}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  {formData.meta_description.length}/160 characters (recommended: 120-160)
+                </p>
+              </div>
 
-                  <div>
-                    <label className="text-sm font-medium">Meta Description (160 chars max)</label>
-                    <Textarea
-                      value={formData.meta_description}
-                      onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
-                      placeholder="Compelling page description"
-                      maxLength={160}
-                      rows={3}
-                      required
-                    />
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {formData.meta_description.length}/160 characters
-                    </div>
-                  </div>
+              <div>
+                <label className="text-sm font-medium">Meta Keywords</label>
+                <Input
+                  value={formData.meta_keywords}
+                  onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
+                  placeholder="keyword1, keyword2, keyword3"
+                />
+              </div>
 
-                  <div>
-                    <label className="text-sm font-medium">Keywords (comma separated)</label>
-                    <Input
-                      value={formData.meta_keywords}
-                      onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
-                      placeholder="keyword1, keyword2, keyword3"
-                    />
-                  </div>
+              <div>
+                <label className="text-sm font-medium">Canonical URL</label>
+                <Input
+                  value={formData.canonical_url || ''}
+                  onChange={(e) => setFormData({...formData, canonical_url: e.target.value})}
+                  placeholder="https://example.com/canonical-url"
+                />
+              </div>
 
-                  <Accordion type="single" collapsible>
-                    <AccordionItem value="advanced">
-                      <AccordionTrigger>Advanced SEO Settings</AccordionTrigger>
-                      <AccordionContent className="space-y-4">
-                        <div>
-                          <label className="text-sm font-medium">Canonical URL</label>
-                          <Input
-                            value={formData.canonical_url || ''}
-                            onChange={(e) => setFormData({...formData, canonical_url: e.target.value})}
-                            placeholder="https://example.com/canonical-url"
-                          />
-                        </div>
+              <div>
+                <label className="text-sm font-medium">OG Title</label>
+                <Input
+                  value={formData.og_title || ''}
+                  onChange={(e) => setFormData({...formData, og_title: e.target.value})}
+                  placeholder="Social media title"
+                />
+              </div>
 
-                        <div>
-                          <label className="text-sm font-medium">OG Title</label>
-                          <Input
-                            value={formData.og_title || ''}
-                            onChange={(e) => setFormData({...formData, og_title: e.target.value})}
-                            placeholder="Social media title"
-                          />
-                        </div>
+              <div>
+                <label className="text-sm font-medium">OG Description</label>
+                <Textarea
+                  value={formData.og_description || ''}
+                  onChange={(e) => setFormData({...formData, og_description: e.target.value})}
+                  placeholder="Social media description"
+                  rows={2}
+                />
+              </div>
 
-                        <div>
-                          <label className="text-sm font-medium">OG Description</label>
-                          <Textarea
-                            value={formData.og_description || ''}
-                            onChange={(e) => setFormData({...formData, og_description: e.target.value})}
-                            placeholder="Social media description"
-                            rows={2}
-                          />
-                        </div>
+              <div>
+                <label className="text-sm font-medium">OG Image URL</label>
+                <Input
+                  value={formData.og_image || ''}
+                  onChange={(e) => setFormData({...formData, og_image: e.target.value})}
+                  placeholder="https://example.com/image.jpg"
+                />
+              </div>
 
-                        <div>
-                          <label className="text-sm font-medium">OG Image URL</label>
-                          <Input
-                            value={formData.og_image || ''}
-                            onChange={(e) => setFormData({...formData, og_image: e.target.value})}
-                            placeholder="https://example.com/image.jpg"
-                          />
-                        </div>
+              <div>
+                <label className="text-sm font-medium">Robots Meta</label>
+                <select
+                  value={formData.robots_meta || 'index,follow'}
+                  onChange={(e) => setFormData({...formData, robots_meta: e.target.value})}
+                  className="w-full p-2 border rounded-md bg-background"
+                >
+                  <option value="index,follow">Index, Follow</option>
+                  <option value="index,nofollow">Index, No Follow</option>
+                  <option value="noindex,follow">No Index, Follow</option>
+                  <option value="noindex,nofollow">No Index, No Follow</option>
+                </select>
+              </div>
 
-                        <div>
-                          <label className="text-sm font-medium">Robots Meta</label>
-                          <select
-                            value={formData.robots_meta || 'index,follow'}
-                            onChange={(e) => setFormData({...formData, robots_meta: e.target.value})}
-                            className="w-full p-2 border rounded-md"
-                          >
-                            <option value="index,follow">Index, Follow</option>
-                            <option value="index,nofollow">Index, No Follow</option>
-                            <option value="noindex,follow">No Index, Follow</option>
-                            <option value="noindex,nofollow">No Index, No Follow</option>
-                          </select>
-                        </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={formData.is_active}
+                  onChange={(e) => setFormData({...formData, is_active: e.target.checked})}
+                  id="is-active"
+                />
+                <label htmlFor="is-active" className="text-sm font-medium">
+                  Active
+                </label>
+              </div>
 
-                         <div>
-                           <label className="text-sm font-medium">Generate Structured Data</label>
-                           <Button
-                             type="button"
-                             variant="outline"
-                             onClick={() => {
-                               const structuredData = generateStructuredData(formData.page_type);
-                               setFormData({...formData, structured_data: structuredData});
-                               setPreviewStructuredData(structuredData);
-                               toast.success('Structured data generated successfully');
-                             }}
-                             className="w-full mt-2"
-                           >
-                             Generate for {formData.page_type}
-                           </Button>
-                           
-                           {(previewStructuredData || formData.structured_data) && (
-                             <div className="mt-4 p-4 bg-muted rounded-lg">
-                               <label className="text-sm font-medium mb-2 block">Structured Data Preview:</label>
-                               <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-60">
-                                 {JSON.stringify(previewStructuredData || formData.structured_data, null, 2)}
-                               </pre>
-                             </div>
-                           )}
+              <div className="flex justify-end space-x-2 pt-4 border-t">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => {
+                    setShowForm(false);
+                    setEditingItem(null);
+                    setFormData(initialFormData);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  {editingItem ? 'Update' : 'Create'} SEO Settings
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      )}
 
-                           <div className="mt-4">
-                             <label className="text-sm font-medium">Custom Structured Data (JSON)</label>
-                             <Textarea
-                               value={formData.structured_data ? JSON.stringify(formData.structured_data, null, 2) : ''}
-                               onChange={(e) => {
-                                 try {
-                                   const parsed = JSON.parse(e.target.value);
-                                   setFormData({...formData, structured_data: parsed});
-                                 } catch (err) {
-                                   // Keep the text as is for editing
-                                   setFormData({...formData, structured_data: e.target.value});
-                                 }
-                               }}
-                               placeholder="Enter custom JSON-LD structured data..."
-                               rows={8}
-                               className="font-mono text-xs"
-                             />
-                           </div>
-                         </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-
-                  <div className="flex space-x-2">
-                    <Button type="submit">
-                      {editingItem ? 'Update' : 'Create'} SEO Settings
-                    </Button>
-                    <Button type="button" variant="outline" onClick={resetForm}>
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* SEO Settings List */}
-          <div className="grid gap-4">
-            {filteredSettings.map((setting) => (
-              <Card key={setting.id}>
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge variant={setting.is_active ? 'default' : 'secondary'}>
-                          {setting.page_type}
-                        </Badge>
-                        <span className="text-sm text-muted-foreground">
-                          {setting.page_url}
-                        </span>
-                      </div>
-                      <h3 className="font-semibold text-lg">{setting.meta_title}</h3>
-                      <p className="text-muted-foreground text-sm mt-1">
-                        {setting.meta_description}
-                      </p>
-                      {setting.meta_keywords && (
-                        <div className="flex flex-wrap gap-1 mt-2">
-                          {setting.meta_keywords.split(',').map((keyword, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs">
-                              {keyword.trim()}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => window.open(setting.page_url, '_blank')}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleEdit(setting)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => setting.id && handleDelete(setting.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-
-        <TabsContent value="countries" className="space-y-4">
-          {/* Search Bar for Countries */}
-          <div className="flex items-center space-x-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search country SEO settings..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8"
-              />
-            </div>
-            <Button onClick={() => {
-              setFormData({...initialFormData, page_type: 'country'});
-              setShowForm(true);
-            }}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Country SEO
-            </Button>
-          </div>
-
-          {/* Country SEO Form */}
-          {showForm && formData.page_type === 'country' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  {editingItem ? 'Edit Country SEO Settings' : 'Add New Country SEO Settings'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium">Country Page URL</label>
-                      <Input
-                        value={formData.page_url}
-                        onChange={(e) => setFormData({...formData, page_url: e.target.value})}
-                        placeholder="/regions/asia/country/japan"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium">Page Type</label>
-                      <select
-                        value={formData.page_type}
-                        onChange={(e) => setFormData({...formData, page_type: e.target.value as any})}
-                        className="w-full p-2 border rounded-md"
-                        disabled
-                      >
-                        <option value="country">Country Page</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Meta Title (60 chars max)</label>
-                    <Input
-                      value={formData.meta_title}
-                      onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
-                      placeholder="Japan Travel Guide - Best Japan Tours | Nymphette Tours"
-                      maxLength={60}
-                      required
-                    />
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {formData.meta_title.length}/60 characters
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Meta Description (160 chars max)</label>
-                    <Textarea
-                      value={formData.meta_description}
-                      onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
-                      placeholder="Explore Japan with our comprehensive travel packages. From Tokyo to Kyoto, discover the best of Japanese culture, food, and destinations."
-                      maxLength={160}
-                      rows={3}
-                      required
-                    />
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {formData.meta_description.length}/160 characters
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Keywords (comma separated)</label>
-                    <Input
-                      value={formData.meta_keywords}
-                      onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
-                      placeholder="japan travel, japan tours, tokyo travel, kyoto tours"
-                    />
-                  </div>
-
-                  <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={resetForm}>
-                      Cancel
-                    </Button>
-                    <Button type="submit">
-                      {editingItem ? 'Update' : 'Create'} Country SEO
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Country SEO Settings List */}
-          <div className="grid gap-4">
-            {filteredSettings.filter(setting => setting.page_type === 'country').map((setting) => (
+      <div className="space-y-4">
+        {loading ? (
+          <Card>
+            <CardContent className="p-6">
+              <p className="text-center text-muted-foreground">Loading...</p>
+            </CardContent>
+          </Card>
+        ) : filteredSettings.length === 0 ? (
+          <Card>
+            <CardContent className="p-6">
+              <p className="text-center text-muted-foreground">
+                {searchTerm ? 'No SEO settings found matching your search.' : 'No SEO settings yet. Click "Quick Setup All Pages" or "Add SEO Settings" to get started.'}
+              </p>
+            </CardContent>
+          </Card>
+        ) : (
+          filteredSettings.map((setting) => {
+            const score = getSEOScore(setting);
+            return (
               <Card key={setting.id}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg">{setting.page_url}</CardTitle>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {setting.meta_title}
-                      </p>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <CardTitle className="text-lg">{setting.page_url}</CardTitle>
+                        <Badge variant={setting.is_active ? 'default' : 'secondary'}>
+                          {setting.is_active ? 'Active' : 'Inactive'}
+                        </Badge>
+                        <Badge variant="outline">{setting.page_type}</Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-1">{setting.meta_title}</p>
                     </div>
-                    <div className="flex space-x-2">
-                      <Badge variant={setting.is_active ? "default" : "secondary"}>
-                        {setting.is_active ? "Active" : "Inactive"}
-                      </Badge>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(setting)}
-                      >
+                    <div className="flex items-center gap-2">
+                      <div className="text-right mr-4">
+                        <p className="text-sm font-medium">SEO Score</p>
+                        <div className="flex items-center gap-2">
+                          <div className="text-2xl font-bold">{score}%</div>
+                          {score >= 80 ? (
+                            <CheckCircle className="h-5 w-5 text-green-500" />
+                          ) : score >= 50 ? (
+                            <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                          ) : (
+                            <AlertTriangle className="h-5 w-5 text-red-500" />
+                          )}
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={() => handleEdit(setting)}>
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setting.id && handleDelete(setting.id)}
-                      >
+                      <Button variant="destructive" size="sm" onClick={() => setting.id && handleDelete(setting.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {setting.meta_description}
-                  </p>
-                  {setting.meta_keywords && (
-                    <div className="flex flex-wrap gap-1">
-                      {setting.meta_keywords.split(',').map((keyword, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          {keyword.trim()}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="categories" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Category SEO Management</CardTitle>
-              <p className="text-muted-foreground">
-                Manage SEO settings for package categories, blog categories, and tour categories.
-              </p>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-8">
-                <div className="text-muted-foreground mb-4">
-                  Category SEO management coming soon. This will include:
-                </div>
-                <ul className="text-sm text-muted-foreground space-y-2">
-                  <li>• Package category SEO optimization</li>
-                  <li>• Blog category meta tags</li>
-                  <li>• Tour category descriptions</li>
-                  <li>• Automatic category page generation</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="tools" className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Globe className="h-5 w-5" />
-                  Site Health Check
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Check your site's SEO health and get recommendations.
-                </p>
-                <Button className="w-full">Run SEO Audit</Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5" />
-                  Keyword Research
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Find new keyword opportunities for your content.
-                </p>
-                <Button className="w-full">Research Keywords</Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <LinkIcon className="h-5 w-5" />
-                  Sitemap Generator
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Generate and submit XML sitemaps to search engines.
-                </p>
-                <Button className="w-full">Generate Sitemap</Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
-                  Performance Monitor
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Monitor page speed and Core Web Vitals.
-                </p>
-                <Button className="w-full">Check Performance</Button>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      {/* Edit Dialog */}
-      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] overflow-hidden flex flex-col">
-          <DialogHeader className="flex-shrink-0">
-            <DialogTitle>Edit SEO Settings - {formData.page_url}</DialogTitle>
-          </DialogHeader>
-          
-          <div className="flex-1 overflow-y-auto">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Tabs defaultValue="basic" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="basic">Basic SEO</TabsTrigger>
-                  <TabsTrigger value="social">Social & Meta</TabsTrigger>
-                  <TabsTrigger value="structured">Structured Data</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="basic" className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2 text-sm">
                     <div>
-                      <label className="text-sm font-medium">Page URL</label>
-                      <Input
-                        value={formData.page_url}
-                        onChange={(e) => setFormData({...formData, page_url: e.target.value})}
-                        placeholder="/example-page"
-                        required
-                      />
+                      <span className="font-medium">Description:</span>{' '}
+                      <span className="text-muted-foreground">{setting.meta_description}</span>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium">Page Type</label>
-                      <select
-                        value={formData.page_type}
-                        onChange={(e) => setFormData({...formData, page_type: e.target.value as any})}
-                        className="w-full p-2 border rounded-md"
-                      >
-                        <option value="homepage">Homepage</option>
-                        <option value="packages">Packages</option>
-                        <option value="country">Country Pages</option>
-                        <option value="blog">Blog</option>
-                        <option value="about">About</option>
-                        <option value="contact">Contact</option>
-                        <option value="group-tours">Group Tours</option>
-                        <option value="custom">Custom</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Meta Title (60 chars max)</label>
-                    <Input
-                      value={formData.meta_title}
-                      onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
-                      placeholder="Optimized page title"
-                      maxLength={60}
-                      required
-                    />
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {formData.meta_title.length}/60 characters
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Meta Description (160 chars max)</label>
-                    <Textarea
-                      value={formData.meta_description}
-                      onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
-                      placeholder="Compelling page description"
-                      maxLength={160}
-                      rows={3}
-                      required
-                    />
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {formData.meta_description.length}/160 characters
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Keywords (comma separated)</label>
-                    <Input
-                      value={formData.meta_keywords}
-                      onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
-                      placeholder="keyword1, keyword2, keyword3"
-                    />
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="social" className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Canonical URL</label>
-                    <Input
-                      value={formData.canonical_url || ''}
-                      onChange={(e) => setFormData({...formData, canonical_url: e.target.value})}
-                      placeholder="https://example.com/canonical-url"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">OG Title</label>
-                    <Input
-                      value={formData.og_title || ''}
-                      onChange={(e) => setFormData({...formData, og_title: e.target.value})}
-                      placeholder="Social media title"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">OG Description</label>
-                    <Textarea
-                      value={formData.og_description || ''}
-                      onChange={(e) => setFormData({...formData, og_description: e.target.value})}
-                      placeholder="Social media description"
-                      rows={3}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">OG Image URL</label>
-                    <Input
-                      value={formData.og_image || ''}
-                      onChange={(e) => setFormData({...formData, og_image: e.target.value})}
-                      placeholder="https://example.com/image.jpg"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Robots Meta</label>
-                    <select
-                      value={formData.robots_meta || 'index,follow'}
-                      onChange={(e) => setFormData({...formData, robots_meta: e.target.value})}
-                      className="w-full p-2 border rounded-md"
-                    >
-                      <option value="index,follow">Index, Follow</option>
-                      <option value="index,nofollow">Index, No Follow</option>
-                      <option value="noindex,follow">No Index, Follow</option>
-                      <option value="noindex,nofollow">No Index, No Follow</option>
-                    </select>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="structured" className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Generate Structured Data</label>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        const structuredData = generateStructuredData(formData.page_type);
-                        setFormData({...formData, structured_data: structuredData});
-                        setPreviewStructuredData(structuredData);
-                        toast.success('Structured data generated successfully');
-                      }}
-                      className="w-full mt-2"
-                    >
-                      Generate for {formData.page_type}
-                    </Button>
-                    
-                    {(previewStructuredData || formData.structured_data) && (
-                      <div className="mt-4 p-4 bg-muted rounded-lg">
-                        <label className="text-sm font-medium mb-2 block">Structured Data Preview:</label>
-                        <pre className="text-xs bg-background p-3 rounded border overflow-auto max-h-96">
-                          {JSON.stringify(previewStructuredData || formData.structured_data, null, 2)}
-                        </pre>
+                    {setting.meta_keywords && (
+                      <div>
+                        <span className="font-medium">Keywords:</span>{' '}
+                        <span className="text-muted-foreground">{setting.meta_keywords}</span>
                       </div>
                     )}
-
-                    <div className="mt-4">
-                      <label className="text-sm font-medium">Custom Structured Data (JSON)</label>
-                      <Textarea
-                        value={formData.structured_data ? JSON.stringify(formData.structured_data, null, 2) : ''}
-                        onChange={(e) => {
-                          try {
-                            const parsed = JSON.parse(e.target.value);
-                            setFormData({...formData, structured_data: parsed});
-                          } catch (err) {
-                            // Keep the text as is for editing
-                            setFormData({...formData, structured_data: e.target.value});
-                          }
-                        }}
-                        placeholder="Enter custom JSON-LD structured data..."
-                        rows={12}
-                        className="font-mono text-xs"
-                      />
+                    {setting.canonical_url && (
+                      <div>
+                        <span className="font-medium">Canonical:</span>{' '}
+                        <span className="text-muted-foreground">{setting.canonical_url}</span>
+                      </div>
+                    )}
+                    <div>
+                      <span className="font-medium">Robots:</span>{' '}
+                      <span className="text-muted-foreground">{setting.robots_meta}</span>
                     </div>
                   </div>
-                </TabsContent>
-              </Tabs>
-
-              <div className="flex justify-end space-x-2 pt-4 border-t">
-                <Button type="button" variant="outline" onClick={() => setShowEditDialog(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit">
-                  Update SEO Settings
-                </Button>
-              </div>
-            </form>
-          </div>
-        </DialogContent>
-      </Dialog>
+                </CardContent>
+              </Card>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 };

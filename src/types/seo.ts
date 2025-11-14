@@ -1,4 +1,4 @@
-export type PageType = 'homepage' | 'packages' | 'blog' | 'about' | 'contact' | 'group-tours' | 'custom';
+export type PageType = 'homepage' | 'packages' | 'package-detail' | 'blog' | 'blog-post' | 'about' | 'contact' | 'group-tours' | 'group-tour-detail' | 'country' | 'region' | 'privacy-policy' | 'terms-of-service' | 'cookie-policy' | 'custom';
 
 export interface SEOSettings {
   id?: string;
