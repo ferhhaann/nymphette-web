@@ -226,7 +226,7 @@ const PopularDestinations = () => {
                   style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
                 >
                   {/* Card with modern design */}
-                  <div className="relative overflow-hidden rounded-2xl bg-card border border-border/50 transition-all duration-300">
+                  <div className="relative overflow-hidden rounded-2xl bg-card border border-border/50 transition-all duration-300 hover:scale-105 hover:shadow-card-soft">
                     
                     {/* Image Section */}
                     <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl">
@@ -234,7 +234,7 @@ const PopularDestinations = () => {
                         <OptimizedImage
                           src={destination.display_image}
                           alt={`${destination.name} destination`}
-                          className="w-full h-full object-cover transition-transform duration-700"
+                          className="w-full h-full object-cover"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         />
                       ) : (

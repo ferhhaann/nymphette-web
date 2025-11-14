@@ -256,7 +256,7 @@ const Packages = () => {
                 {filteredRegions.map((region, index) => (
               <Card 
                 key={region.name}
-                className="group overflow-hidden hover:shadow-travel transition-all duration-500 cursor-pointer animate-fade-in"
+                className="group overflow-hidden hover:shadow-travel transition-all duration-500 cursor-pointer animate-fade-in hover:scale-105"
                 style={{ animationDelay: `${index * 100}ms` }}
                 onClick={() => handleRegionClick(region.name)}
               >
@@ -266,7 +266,7 @@ const Packages = () => {
                     alt={`${region.name} travel destinations and highlights`}
                     width="400"
                     height="192"
-                    className="w-full h-40 sm:h-48 group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-40 sm:h-48"
                     hoverToPlay={false}
                   />
                   <div className="absolute inset-0 bg-primary-dark/40 group-hover:bg-primary-dark/30 transition-colors pointer-events-none"></div>
