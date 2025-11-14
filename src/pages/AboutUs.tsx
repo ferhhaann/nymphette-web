@@ -87,7 +87,7 @@ const AboutUs = () => {
         <Navigation />
       </header>
       
-      <main>
+      <main className="pt-16 lg:pt-20">
         {/* Hero Section - Matching dimensions from other pages */}
         <section className="relative h-64 sm:h-[70vh] md:h-[80vh] lg:h-[calc(100vh-3rem)] flex items-center justify-center overflow-hidden mt-4 sm:mt-0">
           <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">

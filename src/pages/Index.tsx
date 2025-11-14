@@ -50,7 +50,7 @@ const Index = () => {
           <Navigation />
         </div>
       </header>
-      <main>
+      <main className="pt-16 lg:pt-20">
         <div className="animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
           <Hero />
         </div>

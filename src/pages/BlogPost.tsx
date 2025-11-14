@@ -184,7 +184,7 @@ export default function BlogPost() {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-16 pt-32 lg:pt-36">
           <div className="text-center">Loading article...</div>
         </div>
         <Footer />
@@ -224,7 +224,7 @@ export default function BlogPost() {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
-        <div className="container mx-auto px-4 py-16 text-center">
+        <div className="container mx-auto px-4 py-16 pt-32 lg:pt-36 text-center">
           <h1 className="text-2xl font-bold mb-4">Article Not Found</h1>
           <Link to="/blog">
             <Button variant="outline">
@@ -244,7 +244,7 @@ export default function BlogPost() {
         <Navigation />
       </header>
       
-      <main>
+      <main className="pt-16 lg:pt-20">
         {/* Article Header */}
         <article className="py-8">
         <div className="container mx-auto px-4">
