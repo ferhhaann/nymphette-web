@@ -62,7 +62,7 @@ export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAtt
             {attractionsList.map((attraction) => (
               <CarouselItem key={attraction.id} className="basis-full sm:basis-1/2 lg:basis-1/3">
                 <Card 
-                  className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20"
+                  className="group cursor-pointer hover:shadow-card-soft transition-all duration-300 border-muted hover:border-primary/20 hover:scale-105"
                   onClick={() => setSelectedAttraction(attraction)}
                 >
                   <CardContent className="p-0">
@@ -70,7 +70,7 @@ export const CountryAttractionsGallery = ({ countryId, countryName }: CountryAtt
                       <img
                         src={attraction.image_url || '/placeholder.svg'}
                         alt={`${attraction.name} in ${countryName}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'
                         }}
