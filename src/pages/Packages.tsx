@@ -281,7 +281,7 @@ const Packages = () => {
                   </div>
                 </div>
 
-                <CardContent className="p-6">
+                <CardContent className="p-6 transition-transform duration-300 hover:scale-105">
                   <div className="flex flex-wrap gap-2 mb-4">
                     {region.highlights.map((highlight, idx) => (
                       <Badge key={idx} variant="outline" className="border-soft-blue text-deep-blue">
