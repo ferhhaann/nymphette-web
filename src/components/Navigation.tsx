@@ -89,14 +89,11 @@ const Navigation = () => {
                   onClick={() => handleNavigation(item.href)}
                   className={`font-medium transition-all duration-300 relative py-2 px-1 ${
                     isActive(item.href)
-                      ? "text-primary"
-                      : "text-foreground hover:text-primary"
+                      ? "text-nav-active"
+                      : "text-foreground hover:text-nav-active"
                   }`}
                 >
                   {item.name}
-                  {isActive(item.href) && (
-                    <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></div>
-                  )}
                 </button>
               ))}
             </div>
