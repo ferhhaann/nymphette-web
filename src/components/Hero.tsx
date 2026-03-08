@@ -52,18 +52,18 @@ const Hero = () => {
   return (
     <div className="relative">
       {/* Hero Section with Particles */}
-      <section className="relative min-h-[85vh] sm:min-h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[85vh] sm:min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-secondary/50 via-background to-secondary/30">
         {/* Video Background */}
         <div className="absolute inset-0">
-          <video autoPlay muted loop playsInline preload="metadata" className="w-full h-full object-cover opacity-30">
+          <video autoPlay muted loop playsInline preload="metadata" className="w-full h-full object-cover opacity-20">
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-background/70" />
+          <div className="absolute inset-0 bg-background/60" />
         </div>
 
         {/* 3D Particles */}
         <Suspense fallback={null}>
-          <ParticleField className="z-[1]" />
+          <ParticleField className="z-[1] opacity-60" />
         </Suspense>
 
         {/* Grid pattern overlay */}

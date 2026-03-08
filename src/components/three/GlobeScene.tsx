@@ -38,7 +38,7 @@ function Globe() {
       {/* Wireframe globe */}
       <lineSegments ref={wireRef}>
         <edgesGeometry args={[new THREE.IcosahedronGeometry(1.5, 2)]} />
-        <lineBasicMaterial color="#00aaaa" transparent opacity={0.15} />
+        <lineBasicMaterial color="#0d9488" transparent opacity={0.25} />
       </lineSegments>
       
       {/* Dots on surface */}
@@ -53,9 +53,9 @@ function Globe() {
         </bufferGeometry>
         <pointsMaterial
           size={0.03}
-          color="#00dddd"
+          color="#14b8a6"
           transparent
-          opacity={0.7}
+          opacity={0.6}
           sizeAttenuation
           blending={THREE.AdditiveBlending}
         />
@@ -64,7 +64,7 @@ function Globe() {
       {/* Glow ring */}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <ringGeometry args={[1.7, 1.75, 64]} />
-        <meshBasicMaterial color="#00aaaa" transparent opacity={0.1} side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#0d9488" transparent opacity={0.15} side={THREE.DoubleSide} />
       </mesh>
     </group>
   )

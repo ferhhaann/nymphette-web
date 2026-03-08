@@ -14,11 +14,11 @@ function Particles({ count = 500 }) {
       positions[i * 3 + 1] = (Math.random() - 0.5) * 20
       positions[i * 3 + 2] = (Math.random() - 0.5) * 20
       
-      // Cyan to purple gradient
+      // Teal to purple gradient for light theme
       const t = Math.random()
-      colors[i * 3] = 0.0 + t * 0.5     // R
-      colors[i * 3 + 1] = 0.8 - t * 0.4  // G
-      colors[i * 3 + 2] = 0.8 + t * 0.2   // B
+      colors[i * 3] = 0.0 + t * 0.4     // R
+      colors[i * 3 + 1] = 0.6 - t * 0.2  // G
+      colors[i * 3 + 2] = 0.6 + t * 0.2   // B
     }
     
     return [positions, colors]
