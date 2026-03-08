@@ -19,9 +19,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'display': ['"Space Grotesk"', 'sans-serif'],
-				'sans': ['"Inter"', 'sans-serif'],
-				'geo': ['"Space Grotesk"', 'sans-serif'],
+				'display': ['"Montserrat"', 'sans-serif'],
+				'sans': ['"Montserrat"', 'sans-serif'],
+				'geo': ['"Montserrat"', 'sans-serif'],
 			},
 			fontWeight: {
 				normal: '400',
