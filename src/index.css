@@ -2,58 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    /* Clean Futuristic — Dark Contrast with Cyan/Teal Accents */
-    --background: 220 20% 4%;
-    --foreground: 210 20% 95%;
+    /* Clean Futuristic Light Theme with Teal Accents */
+    --background: 0 0% 100%;
+    --foreground: 220 20% 10%;
     
-    --card: 220 18% 8%;
-    --card-foreground: 210 20% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
     
-    --popover: 220 18% 8%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
     
-    --primary: 180 70% 50%;
-    --primary-foreground: 220 20% 4%;
+    --primary: 175 70% 40%;
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: 220 15% 12%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 220 20% 20%;
     
-    --muted: 220 15% 15%;
-    --muted-foreground: 210 10% 55%;
+    --muted: 210 15% 94%;
+    --muted-foreground: 220 10% 45%;
     
-    --accent: 260 60% 60%;
-    --accent-foreground: 210 20% 95%;
+    --accent: 260 55% 55%;
+    --accent-foreground: 0 0% 100%;
     
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 220 15% 16%;
-    --input: 220 15% 16%;
-    --ring: 180 70% 50%;
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 175 70% 40%;
     
-    --nav-active: 180 70% 50%;
+    --nav-active: 175 70% 40%;
     
     --radius: 0.75rem;
     
-    /* Glow effects */
-    --glow-primary: 0 0 20px hsl(180 70% 50% / 0.3);
-    --glow-accent: 0 0 20px hsl(260 60% 60% / 0.3);
-    --glow-subtle: 0 0 40px hsl(180 70% 50% / 0.1);
+    /* Subtle shadows for light theme */
+    --glow-primary: 0 4px 20px hsl(175 70% 40% / 0.15);
+    --glow-accent: 0 4px 20px hsl(260 55% 55% / 0.15);
+    --glow-subtle: 0 8px 30px hsl(220 20% 10% / 0.06);
     
-    /* Glass effect */
-    --glass-bg: hsl(220 18% 8% / 0.6);
-    --glass-border: hsl(210 20% 95% / 0.08);
+    /* Glass effect - light */
+    --glass-bg: hsl(0 0% 100% / 0.8);
+    --glass-border: hsl(220 20% 10% / 0.06);
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(180 70% 50%), hsl(200 80% 45%));
-    --gradient-accent: linear-gradient(135deg, hsl(260 60% 60%), hsl(300 50% 50%));
-    --gradient-dark: linear-gradient(180deg, hsl(220 20% 4%), hsl(220 18% 8%));
-    --gradient-mesh: radial-gradient(at 20% 80%, hsl(180 70% 50% / 0.08) 0%, transparent 50%),
-                     radial-gradient(at 80% 20%, hsl(260 60% 60% / 0.08) 0%, transparent 50%);
+    --gradient-primary: linear-gradient(135deg, hsl(175 70% 40%), hsl(190 75% 45%));
+    --gradient-accent: linear-gradient(135deg, hsl(260 55% 55%), hsl(290 50% 55%));
+    --gradient-dark: linear-gradient(180deg, hsl(210 20% 98%), hsl(210 15% 96%));
+    --gradient-mesh: radial-gradient(at 20% 80%, hsl(175 70% 40% / 0.05) 0%, transparent 50%),
+                     radial-gradient(at 80% 20%, hsl(260 55% 55% / 0.05) 0%, transparent 50%);
     
     /* Spacing */
     --section-padding: 5rem;
@@ -65,7 +65,24 @@
   }
 
   .dark {
-    /* Already dark by default */
+    --background: 220 20% 6%;
+    --foreground: 210 20% 95%;
+    --card: 220 18% 10%;
+    --card-foreground: 210 20% 95%;
+    --popover: 220 18% 10%;
+    --popover-foreground: 210 20% 95%;
+    --primary: 175 70% 45%;
+    --primary-foreground: 220 20% 6%;
+    --secondary: 220 15% 15%;
+    --secondary-foreground: 210 20% 90%;
+    --muted: 220 15% 18%;
+    --muted-foreground: 210 10% 55%;
+    --accent: 260 55% 60%;
+    --accent-foreground: 210 20% 95%;
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --glass-bg: hsl(220 18% 10% / 0.8);
+    --glass-border: hsl(210 20% 95% / 0.08);
   }
 }
 
@@ -76,7 +93,7 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -85,7 +102,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
   }
 }
 
@@ -93,25 +111,27 @@
 @layer components {
   .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px hsl(220 20% 10% / 0.04);
   }
 
   .glass-strong {
-    background: hsl(220 18% 8% / 0.8);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid hsl(210 20% 95% / 0.1);
+    background: hsl(0 0% 100% / 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(220 20% 10% / 0.08);
+    box-shadow: 0 4px 30px hsl(220 20% 10% / 0.08);
   }
 
   .glow-border {
-    border: 1px solid hsl(180 70% 50% / 0.2);
-    box-shadow: var(--glow-subtle), inset 0 0 20px hsl(180 70% 50% / 0.03);
+    border: 1px solid hsl(175 70% 40% / 0.15);
+    box-shadow: 0 8px 30px hsl(175 70% 40% / 0.08);
   }
 
   .glow-text {
-    text-shadow: 0 0 20px hsl(180 70% 50% / 0.5);
+    text-shadow: none;
   }
 
   .gradient-text {
@@ -163,14 +183,15 @@
   /* Futuristic card hover */
   .futuristic-card {
     @apply relative overflow-hidden transition-all duration-500;
-    background: hsl(220 18% 8% / 0.6);
-    border: 1px solid hsl(210 20% 95% / 0.06);
+    background: hsl(0 0% 100%);
+    border: 1px solid hsl(220 15% 90%);
+    box-shadow: 0 2px 12px hsl(220 20% 10% / 0.04);
   }
 
   .futuristic-card::before {
     content: '';
     @apply absolute inset-0 opacity-0 transition-opacity duration-500;
-    background: linear-gradient(135deg, hsl(180 70% 50% / 0.05), transparent 50%);
+    background: linear-gradient(135deg, hsl(175 70% 40% / 0.03), transparent 50%);
   }
 
   .futuristic-card:hover::before {
@@ -178,24 +199,16 @@
   }
 
   .futuristic-card:hover {
-    border-color: hsl(180 70% 50% / 0.2);
-    box-shadow: 0 0 30px hsl(180 70% 50% / 0.08);
-    transform: translateY(-2px);
+    border-color: hsl(175 70% 40% / 0.2);
+    box-shadow: 0 12px 40px hsl(220 20% 10% / 0.1);
+    transform: translateY(-4px);
   }
 }
 
 /* Scan line effect */
 @layer utilities {
   .scanline::after {
-    content: '';
-    @apply absolute inset-0 pointer-events-none;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      hsl(180 70% 50% / 0.02) 2px,
-      hsl(180 70% 50% / 0.02) 4px
-    );
+    display: none;
   }
 
   .text-balance {
@@ -232,8 +245,8 @@
 }
 
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 20px hsl(180 70% 50% / 0.2); }
-  50% { box-shadow: 0 0 40px hsl(180 70% 50% / 0.4); }
+  0%, 100% { box-shadow: 0 8px 30px hsl(175 70% 40% / 0.1); }
+  50% { box-shadow: 0 12px 40px hsl(175 70% 40% / 0.15); }
 }
 
 @keyframes shimmer {
@@ -270,8 +283,8 @@
 /* Grid pattern background */
 .grid-pattern {
   background-image: 
-    linear-gradient(hsl(210 20% 95% / 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(210 20% 95% / 0.03) 1px, transparent 1px);
+    linear-gradient(hsl(220 20% 10% / 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(220 20% 10% / 0.02) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -280,11 +293,11 @@
 }
 
 .shadow-travel {
-  box-shadow: 0 10px 40px -10px hsl(180 70% 50% / 0.15);
+  box-shadow: 0 10px 40px -10px hsl(220 20% 10% / 0.1);
 }
 
 .shadow-card-soft {
-  box-shadow: 0 4px 20px -2px hsl(180 70% 50% / 0.1);
+  box-shadow: 0 4px 20px -2px hsl(220 20% 10% / 0.06);
 }
 
 /* Mobile-specific */
@@ -329,22 +342,22 @@
   }
 }
 
-/* Custom scrollbar for futuristic feel */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(220 20% 4%);
+  background: hsl(210 15% 96%);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(180 70% 50% / 0.3);
-  border-radius: 3px;
+  background: hsl(175 70% 40% / 0.3);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(180 70% 50% / 0.5);
+  background: hsl(175 70% 40% / 0.5);
 }
 
 /* Focus states */
