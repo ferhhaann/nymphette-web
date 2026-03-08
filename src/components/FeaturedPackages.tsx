@@ -1,29 +1,24 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { OptimizedImage } from "@/components/ui/optimized-image";
-import { Star, Clock, Users, MapPin } from "lucide-react";
+import { Star, Clock, Users, MapPin, ArrowRight } from "lucide-react";
 import { useOptimizedFeaturedPackages } from "@/hooks/useOptimizedPackages";
 import { useOptimizedContent } from "@/hooks/useOptimizedContent";
 import { useNavigate } from "react-router-dom";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/animations/ScrollReveal";
 
 const FeaturedPackages = () => {
   const { data: packages, loading } = useOptimizedFeaturedPackages();
   const { getContentValue } = useOptimizedContent('featured-packages');
   const navigate = useNavigate();
-  const { isMobile, optimizedSettings } = useMobileOptimization({ mobileLayoutMode: 'compact' });
-  
-  // Already filtered to featured packages from hook
-
+  const { isMobile } = useMobileOptimization({ mobileLayoutMode: 'compact' });
 
   if (loading) {
     return (
-      <section className={`${optimizedSettings.mobileLayout.sectionPadding || 'py-20'} bg-background`}>
-        <div className={`max-w-7xl mx-auto ${optimizedSettings.containerPadding}`}>
-          <h2 className={`${optimizedSettings.sectionTitle} font-bold text-center mb-4 text-foreground`}>
-            {isMobile ? 'Featured Packages' : 'Featured Travel Packages'}
-          </h2>
+      <section className="section-padding bg-background">
+        <div className="container">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 text-foreground">Featured Packages</h2>
           <div className="flex justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
@@ -33,112 +28,112 @@ const FeaturedPackages = () => {
   }
 
   return (
-    <section className={`${optimizedSettings.mobileLayout.sectionPadding || 'pt-6 sm:pt-8 md:pt-10'} bg-background`}>
-      <div className={`max-w-7xl mx-auto ${optimizedSettings.containerPadding}`}>
-        <div className={`text-center ${isMobile ? 'mb-4' : 'mb-6 sm:mb-8'}`}>
-          <h2 className={`${optimizedSettings.sectionTitle} font-bold font-sans text-foreground ${isMobile ? 'mb-2' : 'mb-4'}`}>
-            {getContentValue('title', isMobile ? 'Featured Packages' : 'Featured Travel Packages')}
+    <section className="section-padding bg-background relative overflow-hidden">
+      {/* Subtle background effects */}
+      <div className="absolute inset-0 mesh-background" />
+      
+      <div className="container relative z-10">
+        <ScrollReveal className="text-center mb-12 sm:mb-16">
+          <Badge className="bg-primary/10 text-primary border border-primary/30 mb-4 px-4 py-1">
+            Curated Experiences
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+            {getContentValue('title', 'Featured Travel Packages')}
           </h2>
-          <p className={`${optimizedSettings.bodyText} text-muted-foreground max-w-2xl mx-auto`}>
-            {getContentValue('subtitle', isMobile ? 'Handpicked destinations for unforgettable journeys' : 'Handpicked destinations and experiences crafted for unforgettable journeys')}
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            {getContentValue('subtitle', 'Handpicked destinations and experiences crafted for unforgettable journeys')}
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className={`grid ${optimizedSettings.gridCols} ${optimizedSettings.gap}`}>
-          {packages?.map((pkg, index) => (
-            <Card 
-              key={pkg.id}
-              className="group overflow-hidden bg-card hover:shadow-card-soft transition-all duration-300 border border-border"
-              style={{ animationDelay: `${index * 200}ms` }}
-            >
-              <div className={`relative overflow-hidden ${isMobile ? 'rounded-lg' : 'rounded-lg'} ${optimizedSettings.cardHeight || 'h-48 sm:h-56 md:h-64'}`}>
-                <OptimizedImage
-                  src={pkg.image}
-                  alt={`${pkg.title} - ${pkg.country} travel package`}
-                  priority={index < 3}
-                  preloadSources={packages?.slice(index + 1, index + 3).map(p => p.image) || []}
-                  className="w-full h-full object-cover"
-                />
-                <div className={`absolute ${isMobile ? 'top-2 left-2' : 'top-4 left-4'}`}>
-                  <Badge variant="secondary" className={`bg-foreground text-background ${isMobile ? 'text-xs px-2 py-0.5' : ''}`}>
-                    {pkg.category}
-                  </Badge>
+        <StaggerContainer className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8`}>
+          {packages?.map((pkg) => (
+            <StaggerItem key={pkg.id}>
+              <div className="futuristic-card rounded-2xl overflow-hidden group cursor-pointer" onClick={() => navigate(`/package/${pkg.id}`)}>
+                {/* Image */}
+                <div className="relative h-52 sm:h-64 overflow-hidden">
+                  <OptimizedImage
+                    src={pkg.image}
+                    alt={`${pkg.title} - ${pkg.country}`}
+                    priority
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+                  
+                  <div className="absolute top-4 left-4">
+                    <Badge className="bg-primary/90 text-primary-foreground text-xs backdrop-blur-sm">
+                      {pkg.category}
+                    </Badge>
+                  </div>
+                  <div className="absolute top-4 right-4 glass rounded-full px-3 py-1">
+                    <div className="flex items-center space-x-1">
+                      <Star className="h-3.5 w-3.5 text-primary fill-primary" />
+                      <span className="text-xs font-medium text-foreground">{pkg.rating}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className={`absolute ${isMobile ? 'top-2 right-2' : 'top-4 right-4'} bg-background/90 backdrop-blur-sm rounded-full ${isMobile ? 'px-2 py-0.5' : 'px-3 py-1'}`}>
-                  <div className="flex items-center space-x-1">
-                    <Star className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
-                    <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium`}>{pkg.rating}</span>
+
+                {/* Content */}
+                <div className="p-5 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {pkg.title}
+                  </h3>
+                  
+                  <div className="flex items-center text-muted-foreground mb-3 text-sm">
+                    <MapPin className="h-3.5 w-3.5 mr-1.5 text-primary" />
+                    <span>{pkg.country}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                    <div className="flex items-center">
+                      <Clock className="h-3.5 w-3.5 mr-1" />
+                      {pkg.duration}
+                    </div>
+                    <div className="flex items-center">
+                      <Users className="h-3.5 w-3.5 mr-1" />
+                      {isMobile ? 'Flexible' : pkg.groupSize || 'Flexible'}
+                    </div>
+                  </div>
+
+                  {/* Highlights */}
+                  <div className="flex flex-wrap gap-1.5 mb-5">
+                    {pkg.highlights.slice(0, 3).map((highlight, idx) => (
+                      <Badge key={idx} variant="outline" className="border-border/50 text-muted-foreground text-xs bg-secondary/30">
+                        {highlight}
+                      </Badge>
+                    ))}
+                  </div>
+
+                  {/* Price & CTA */}
+                  <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                    <div>
+                      <span className="text-xs text-muted-foreground">From</span>
+                      <div className="text-xl font-bold gradient-text">{pkg.price}</div>
+                    </div>
+                    <Button 
+                      size="sm"
+                      className="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/30 rounded-lg transition-all duration-300"
+                    >
+                      View Details
+                      <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                    </Button>
                   </div>
                 </div>
               </div>
-
-              <CardContent className={`${optimizedSettings.cardPadding} pb-0`}>
-                <h3 className={`${optimizedSettings.mobileLayout.titleSizes || 'text-2xl'} font-bold text-primary ${isMobile ? 'mb-1' : 'mb-2'}`}>{pkg.title}</h3>
-                
-                <div className={`flex items-center text-muted-foreground ${isMobile ? 'mb-2' : 'mb-4'}`}>
-                  <MapPin className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
-                  <span className={optimizedSettings.mobileLayout.textSizes}>{pkg.country}</span>
-                </div>
-
-                <div className={`flex items-center justify-between ${optimizedSettings.mobileLayout.textSizes || 'text-sm'} text-muted-foreground ${isMobile ? 'mb-1' : 'mb-2'}`}>
-                  <div className="flex items-center">
-                    <Clock className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
-                    {pkg.duration}
-                  </div>
-                  <div className="flex items-center">
-                    <Users className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
-                    {isMobile ? 'Flexible' : pkg.groupSize || 'Flexible group size'}
-                  </div>
-                </div>
-
-                {!isMobile && (
-                  <div className="flex items-center text-sm text-muted-foreground mb-4">
-                    <Star className="h-4 w-4 mr-1" />
-                    {pkg.rating} ({pkg.reviews} reviews)
-                  </div>
-                )}
-
-                {/* Show only first 2 highlights on mobile, 4 on desktop */}
-                <div className={`flex flex-wrap gap-1 ${isMobile ? 'mb-2' : 'mb-4'}`}>
-                  {pkg.highlights.slice(0, isMobile ? 2 : 4).map((highlight, idx) => (
-                    <Badge key={idx} variant="outline" className={`border-soft-blue text-deep-blue ${isMobile ? 'text-xs px-2 py-0.5' : ''}`}>
-                      {highlight}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-
-              <CardFooter className={`${optimizedSettings.cardPadding} pt-0 flex items-center justify-between`}>
-                <div>
-                  <span className={`${optimizedSettings.mobileLayout.textSizes || 'text-sm'} text-muted-foreground`}>
-                    {isMobile ? 'From' : 'Starting from'}
-                  </span>
-                  <div className={`${isMobile ? 'text-lg' : 'text-2xl'} font-bold text-accent`}>
-                    {pkg.price}
-                  </div>
-                </div>
-                <Button 
-                  size={isMobile ? "sm" : "default"}
-                  className={`bg-foreground hover:bg-foreground/90 text-background ${optimizedSettings.minTouchTarget}`}
-                  onClick={() => navigate(`/package/${pkg.id}`)}
-                >
-                  {isMobile ? 'View' : 'View Details'}
-                </Button>
-              </CardFooter>
-            </Card>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
-        <div className={`text-center ${isMobile ? 'mt-6' : 'mt-12'}`}>
+        <ScrollReveal className="text-center mt-12" delay={0.3}>
           <Button 
-            size={isMobile ? "default" : "lg"}
+            size="lg"
             variant="outline" 
-            className={`border-foreground text-foreground hover:bg-foreground hover:text-background ${optimizedSettings.minTouchTarget}`}
+            className="border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground rounded-xl font-semibold transition-all duration-300 px-8"
             onClick={() => navigate('/packages')}
           >
-            {isMobile ? 'All Packages' : 'Explore All Packages'}
+            Explore All Packages
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
