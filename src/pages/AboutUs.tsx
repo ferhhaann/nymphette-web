@@ -49,18 +49,18 @@ const AboutUs = () => {
       experience: "25+ years",
       specialization: "Executive Management & Operations"
     },
-    {
-      name: "Ajees",
-      position: "Head of Operations",
-      experience: "15+ years",
-      specialization: "Operations Management & Logistics"
-    },
-    {
-      name: "Antony",
-      position: "Head of Sales",
-      experience: "15+ years", 
-      specialization: "Sales Strategy & Customer Relations"
-    }
+    // {
+    //   name: "Ajees",
+    //   position: "Head of Operations",
+    //   experience: "15+ years",
+    //   specialization: "Operations Management & Logistics"
+    // },
+    // {
+    //   name: "Antony",
+    //   position: "Head of Sales",
+    //   experience: "15+ years", 
+    //   specialization: "Sales Strategy & Customer Relations"
+    // }
   ];
 
   const achievements = [
@@ -227,7 +227,7 @@ const AboutUs = () => {
               <p className="text-sm sm:text-lg text-muted-foreground">Expert travel professionals</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
               {teamMembers.map((member, index) => (
                 <Card 
                   key={member.name}
