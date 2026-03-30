@@ -3,6 +3,7 @@ import { Search, Clock, Tag, Eye, Calendar, ChevronRight } from 'lucide-react'
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
 import { useStaticSEO } from "@/hooks/useStaticSEO"
+import blogHeroImage from "@/assets/blog-hero.jpg"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -150,7 +151,7 @@ export default function Blog() {
         <section className="relative h-64 sm:h-[70vh] md:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden mt-4 sm:mt-0">
           <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
             <img 
-              src="/src/assets/blog-hero.jpg" 
+              src={blogHeroImage} 
               alt="Travel Blog Hero"
               className="w-full h-full object-cover"
             />

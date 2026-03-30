@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Plus, Edit, Trash2, Save, X, Upload, Star, Users, Calendar, MapPin, DollarSign } from "lucide-react";
+import { Plus, Edit, Trash2, Save, X, Upload, Users, Calendar, MapPin, DollarSign } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface GroupTour {
@@ -918,29 +918,8 @@ const GroupTourManager = () => {
                 
                 <Separator />
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="rating">Rating</Label>
-                    <Input
-                      id="rating"
-                      type="number"
-                      step="0.1"
-                      min="0"
-                      max="5"
-                      value={formData.rating || ''}
-                      onChange={(e) => setFormData({ ...formData, rating: parseFloat(e.target.value) })}
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="reviews-count">Reviews Count</Label>
-                    <Input
-                      id="reviews-count"
-                      type="number"
-                      value={formData.reviews_count || ''}
-                      onChange={(e) => setFormData({ ...formData, reviews_count: parseInt(e.target.value) })}
-                    />
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                  {/* Removed rating and reviews fields */}
                 </div>
               </TabsContent>
             </Tabs>
@@ -987,10 +966,6 @@ const GroupTourManager = () => {
                             Featured
                           </Badge>
                         )}
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <Star className="h-3 w-3 mr-1 fill-yellow-400 text-yellow-400" />
-                          {tour.rating} ({tour.reviews_count})
-                        </div>
                       </div>
                     </div>
                   </div>

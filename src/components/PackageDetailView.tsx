@@ -196,11 +196,7 @@ const PackageDetailView = ({ package: pkg, onClose }: PackageDetailViewProps) =>
                   )}
                   <div className="text-3xl font-bold text-accent">{pkg.price}</div>
                   <span className="text-sm text-muted-foreground">per person</span>
-                  <div className="flex items-center mt-2">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                    <span className="font-medium">{pkg.rating}</span>
-                    <span className="text-muted-foreground ml-1">({pkg.reviews} reviews)</span>
-                  </div>
+                  {/* Removed rating display */}
                 </div>
               </div>
 

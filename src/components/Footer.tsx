@@ -60,12 +60,12 @@ const Footer = () => {
           </div>
 
           {/* Contact & Newsletter */}
-          <div className="space-y-5">
-            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">Stay Connected</h3>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3 text-muted-foreground text-sm">
-                <Phone className="h-4 w-4 text-primary flex-shrink-0" />
-                <span>044-49579403</span>
+          <div className="space-y-3 md:space-y-4">
+            <h3 className="text-lg font-semibold mb-3 md:mb-4 text-black">Stay Connected</h3>
+            <div className="space-y-3 md:space-y-4">
+              <div className="flex items-center space-x-2 text-black/70 text-sm md:text-base">
+                <Phone className="h-4 w-4" />
+                <span>044-49579403, 9840109014</span>
               </div>
               <div className="flex items-center space-x-3 text-muted-foreground text-sm">
                 <Mail className="h-4 w-4 text-primary flex-shrink-0" />

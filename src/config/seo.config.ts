@@ -39,8 +39,8 @@ export const routeSEO = {
       areaServed: ['Asia', 'Europe', 'Africa', 'Americas', 'Pacific Islands', 'Middle East'],
       openingHours: 'Mo-Su 00:00-24:00',
       hasMap: 'https://nymphettetours.com/contact',
-      telephone: '+1-800-TRAVEL',
-      email: 'info@nymphettetours.com'
+      telephone: '044-49579403, 9840109014',
+      email: 'tours.maa@nymphetteindia.com'
     }
   },
   '/packages': {

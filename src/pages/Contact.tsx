@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Globe, Users } from 'l
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
 import { useStaticSEO } from "@/hooks/useStaticSEO"
+import contactHeroImage from "@/assets/contact-hero.jpg"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -136,9 +137,9 @@ export default function Contact() {
     "mainEntity": {
       "@type": "TravelAgency",
       "name": "Nymphette Tours",
-      "telephone": contactInfo?.general?.phone || "+1-800-NYMPHETTE",
-      "email": contactInfo?.general?.email || "info@nymphettetours.com",
-      "address": contactInfo?.general?.address || "Global Travel Services"
+      "telephone": contactInfo?.general?.phone || "044-49579403, 9840109014",
+      "email": contactInfo?.general?.email || "tours.maa@nymphetteindia.com",
+      "address": contactInfo?.general?.address || "No 81, Y Block, 6th Street, 1st Floor, Anna Nagar, West Chennai 600040"
     }
   };
 
@@ -165,7 +166,7 @@ export default function Contact() {
         <section className="relative h-64 sm:h-[70vh] md:h-[80vh] lg:h-[calc(100vh-3rem)] w-full flex items-center justify-center overflow-hidden mt-4 sm:mt-0">
           <div className="absolute inset-x-3 sm:inset-x-6 md:inset-x-8 bottom-3 sm:bottom-6 md:bottom-8 top-3 sm:top-6 md:top-8 rounded-2xl sm:rounded-3xl overflow-hidden">
             <img 
-              src="/src/assets/contact-hero.jpg" 
+              src={contactHeroImage} 
               alt="Contact Us Hero"
               className="w-full h-full object-cover"
             />
@@ -278,7 +279,7 @@ export default function Contact() {
                   <div>
                     <div className="font-medium">Phone</div>
                     <div className="text-muted-foreground">
-                      {contactInfo?.general?.phone || "+1 (555) 123-4567"}
+                      {contactInfo?.general?.phone || "044-49579403, 9840109014"}
                     </div>
                   </div>
                 </div>
@@ -288,7 +289,7 @@ export default function Contact() {
                   <div>
                     <div className="font-medium">Email</div>
                     <div className="text-muted-foreground">
-                      {contactInfo?.general?.email || "hello@nymphettetours.com"}
+                      {contactInfo?.general?.email || "tours.maa@nymphetteindia.com"}
                     </div>
                   </div>
                 </div>
@@ -298,7 +299,7 @@ export default function Contact() {
                   <div>
                     <div className="font-medium">Address</div>
                     <div className="text-muted-foreground">
-                      {contactInfo?.general?.address || "123 Travel Street, Adventure City, AC 12345"}
+                      {contactInfo?.general?.address || "No 81, Y Block, 6th Street, 1st Floor, Anna Nagar, West Chennai 600040"}
                     </div>
                   </div>
                 </div>
@@ -308,7 +309,7 @@ export default function Contact() {
                   <div>
                     <div className="font-medium">WhatsApp</div>
                     <div className="text-muted-foreground">
-                      {contactInfo?.general?.whatsapp || "+1 (555) 123-4567"}
+                      {contactInfo?.general?.whatsapp || "9840109014"}
                     </div>
                   </div>
                 </div>
@@ -400,7 +401,7 @@ export default function Contact() {
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">Visit Our Office</h2>
           <div className="bg-white rounded-lg overflow-hidden shadow-lg h-64 sm:h-80 md:h-96">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2219901290355!2d-74.00369368400567!3d40.71312937933185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316e18a7df%3A0xb9df1f7387a94119!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.8684470153943!2d80.20898897507714!3d13.087409108618827!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a526f446a1c3187%3A0x89a52c37ac9dd6c9!2sAnna%20Nagar%20West%2C%20Chennai%2C%20Tamil%20Nadu%20600040%2C%20India!5e0!3m2!1sen!2s!4v1711814400000!5m2!1sen!2s"
               width="100%"
               height="100%"
               style={{ border: 0 }}

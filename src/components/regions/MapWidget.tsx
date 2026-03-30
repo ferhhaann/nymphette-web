@@ -17,7 +17,7 @@ const MapWidget: React.FC<Props> = ({ regionKey, compact }) => {
         container: container.current!,
         style: 'mapbox://styles/mapbox/light-v11',
         zoom: 1.8,
-        center: [10, 50],
+        center: [80.21150542704042, 13.087409108618827],
         projection: 'globe',
       });
       map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), 'top-right');

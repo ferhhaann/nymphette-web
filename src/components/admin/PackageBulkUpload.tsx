@@ -40,8 +40,6 @@ export const PackageBulkUpload = () => {
         category: 'Cultural',
         best_time: 'Spring (March-May) & Fall (September-November)',
         group_size: '2-8 people',
-        rating: '4.8',
-        reviews: '156',
         featured: 'TRUE',
         highlights: 'Visit Tokyo Skytree|Explore Mount Fuji|Cherry blossom viewing|Traditional tea ceremony|Bullet train experience',
         inclusions: '6 nights hotel accommodation|Daily breakfast|Airport transfers|English-speaking guide|All entrance fees|Bullet train tickets',
@@ -91,8 +89,6 @@ export const PackageBulkUpload = () => {
         category: 'Beach',
         best_time: 'April-October (Dry Season)',
         group_size: '2-12 people',
-        rating: '4.6',
-        reviews: '89',
         featured: 'FALSE',
         highlights: 'Beach relaxation|Temple tours|Rice terrace visit|Water sports|Balinese massage',
         inclusions: '4 nights beach resort|Daily breakfast|Airport transfers|Temple entrance fees|Cultural dance show',
@@ -142,8 +138,6 @@ export const PackageBulkUpload = () => {
       { Field: 'original_price', Description: 'Price before discount', Example: '$3,499', Notes: 'Shows savings to customers' },
       { Field: 'best_time', Description: 'Best travel season', Example: 'Spring (March-May)', Notes: 'When to visit' },
       { Field: 'group_size', Description: 'Group capacity', Example: '2-8 people', Notes: 'Min-max or "Private tour"' },
-      { Field: 'rating', Description: 'Package rating', Example: '4.5', Notes: 'Number between 0-5. Default: 4.5' },
-      { Field: 'reviews', Description: 'Number of reviews', Example: '128', Notes: 'Positive integer. Default: 0' },
       { Field: 'featured', Description: 'Featured on homepage', Example: 'TRUE or FALSE', Notes: 'Case-insensitive. Default: FALSE' },
       { Field: '', Description: '', Example: '', Notes: '' },
       { Field: 'ARRAY FIELDS', Description: '', Example: '', Notes: 'Use pipe (|) to separate items' },
@@ -234,7 +228,6 @@ export const PackageBulkUpload = () => {
       { Category: 'Categories', Valid_Values: 'Adventure, Cultural, Beach, Luxury, Family, Honeymoon, Group, Wildlife, Pilgrimage', Notes: 'Choose most relevant' },
       { Category: 'Badge Variants', Valid_Values: 'default, secondary, destructive, outline', Notes: 'For overview_badge_variant' },
       { Category: 'Boolean Fields', Valid_Values: 'TRUE, FALSE', Notes: 'Case-insensitive' },
-      { Category: 'Rating Range', Valid_Values: '0.0 to 5.0', Notes: 'Decimal numbers allowed' },
       { Category: 'Array Separator', Valid_Values: '| (pipe character)', Notes: 'For highlights, inclusions, exclusions' },
       { Category: 'Slug Format', Valid_Values: 'lowercase-with-hyphens', Notes: 'No spaces, special chars, or uppercase' },
       { Category: 'Image URLs', Valid_Values: 'https://example.com/image.jpg', Notes: 'Must be accessible, preferably HTTPS' },
@@ -309,15 +302,8 @@ export const PackageBulkUpload = () => {
       }
     }
 
-    // Validate rating if provided
-    if (packageData.rating && (isNaN(packageData.rating) || packageData.rating < 0 || packageData.rating > 5)) {
-      errors.push('Rating must be a number between 0 and 5');
-    }
-
     // Validate reviews if provided
-    if (packageData.reviews && (isNaN(packageData.reviews) || packageData.reviews < 0)) {
-      errors.push('Reviews must be a positive number');
-    }
+    // Removed rating validation as ratings are no longer used
 
     // Validate region
     const validRegions = ['Asia', 'Europe', 'Africa', 'Americas', 'Middle East', 'Pacific Islands'];
@@ -349,8 +335,6 @@ export const PackageBulkUpload = () => {
       price: rawData.price?.toString().trim(),
       image: rawData.image?.toString().trim(),
       category: rawData.category?.toString().trim(),
-      rating: rawData.rating ? parseFloat(rawData.rating) : 4.5,
-      reviews: rawData.reviews ? parseInt(rawData.reviews) : 0,
       featured: rawData.featured?.toString().toLowerCase() === 'true',
     };
 

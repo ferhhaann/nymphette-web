@@ -19,7 +19,6 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { 
   ArrowLeft,
-  Star, 
   MapPin, 
   Clock, 
   Users, 
@@ -32,7 +31,6 @@ import {
   Globe,
   Phone,
   Mail,
-  StarHalf,
   ZoomIn,
   Heart,
   ChevronRight as ChevronRightIcon,
@@ -314,23 +312,7 @@ const PackageDetail = () => {
     terrible: 0
   };
 
-  const renderStars = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-    return (
-      <div className="flex items-center">
-        {[...Array(fullStars)].map((_, i) => (
-          <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-        ))}
-        {hasHalfStar && <StarHalf className="h-4 w-4 fill-yellow-400 text-yellow-400" />}
-        {[...Array(emptyStars)].map((_, i) => (
-          <Star key={i} className="h-4 w-4 text-gray-300" />
-        ))}
-      </div>
-    );
-  };
+  // Removed renderStars function as ratings are no longer displayed
 
   return (
     <div className="min-h-screen bg-background">
@@ -510,12 +492,15 @@ const PackageDetail = () => {
               </div>
             </div>
 
-            {/* Rating */}
-            <div className="flex items-center space-x-4">
-              {renderStars(pkg.rating)}
-              <span className="font-medium text-lg">{pkg.rating}</span>
-              <span className="text-muted-foreground">({pkg.reviews} reviews)</span>
+            {/* Category and Price Section */}
+            <div className="flex items-center justify-between">
               <Badge>{pkg.category}</Badge>
+              <div className="text-right">
+                {pkg.originalPrice && (
+                  <div className="text-sm text-muted-foreground line-through">{pkg.originalPrice}</div>
+                )}
+                <div className="text-2xl font-bold text-primary">{pkg.price}</div>
+              </div>
             </div>
 
             {/* Overview Section */}
@@ -712,7 +697,7 @@ const PackageDetail = () => {
                   <div className="text-center text-sm text-muted-foreground">
                     <div className="flex items-center justify-center space-x-1 mb-2">
                       <Phone className="h-3 w-3" />
-                      <span>+1-800-TRAVEL</span>
+                      <span>044-49579403, 9840109014</span>
                     </div>
                     <div className="flex items-center justify-center space-x-1">
                       <Mail className="h-3 w-3" />

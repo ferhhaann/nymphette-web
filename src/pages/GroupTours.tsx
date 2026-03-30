@@ -253,13 +253,7 @@ const GroupTours = () => {
                           </Badge>
                         )}
 
-                        <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 bg-white/90 backdrop-blur-sm rounded-full px-2 sm:px-3 py-0.5 sm:py-1">
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-3 w-3 sm:h-4 sm:w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-xs sm:text-sm font-medium">{tour.rating}</span>
-                            <span className="text-xs text-muted-foreground hidden sm:inline">({tour.reviews_count})</span>
-                          </div>
-                        </div>
+                        {/* Removed rating display */}
                       </div>
 
                       <CardContent className="p-3 sm:p-6">

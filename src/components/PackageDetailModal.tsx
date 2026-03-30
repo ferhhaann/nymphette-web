@@ -14,7 +14,6 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { 
   X, 
-  Star, 
   MapPin, 
   Clock, 
   Users, 
@@ -27,7 +26,6 @@ import {
   Globe,
   Phone,
   Mail,
-  StarHalf,
   ZoomIn
 } from "lucide-react";
 
@@ -179,23 +177,7 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
     terrible: 0
   };
 
-  const renderStars = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-    return (
-      <div className="flex items-center">
-        {[...Array(fullStars)].map((_, i) => (
-          <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-        ))}
-        {hasHalfStar && <StarHalf className="h-4 w-4 fill-yellow-400 text-yellow-400" />}
-        {[...Array(emptyStars)].map((_, i) => (
-          <Star key={i} className="h-4 w-4 text-gray-300" />
-        ))}
-      </div>
-    );
-  };
+  // Removed renderStars function as ratings are no longer displayed
 
   return (
     <>
@@ -325,12 +307,15 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                 </div>
               </div>
 
-              {/* Rating */}
-              <div className="flex items-center space-x-4">
-                {renderStars(pkg.rating)}
-                <span className="font-medium text-lg">{pkg.rating}</span>
-                <span className="text-muted-foreground">({pkg.reviews} reviews)</span>
+              {/* Category and Pricing */}
+              <div className="flex items-center justify-between">
                 <Badge>{pkg.category}</Badge>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-primary">{pkg.price}</div>
+                  {pkg.originalPrice && (
+                    <div className="text-sm text-muted-foreground line-through">{pkg.originalPrice}</div>
+                  )}
+                </div>
               </div>
 
               {/* Overview Section */}
@@ -453,45 +438,7 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                 </div>
               </div>
 
-              {/* Reviews Section */}
-              <div>
-                <h2 className="text-2xl font-semibold mb-4">Reviews & Ratings</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <div className="flex items-center space-x-4 mb-4">
-                      {renderStars(pkg.rating)}
-                      <span className="text-2xl font-bold">{pkg.rating}</span>
-                      <span className="text-muted-foreground">({pkg.reviews} reviews)</span>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      {Object.entries(reviewsBreakdown).map(([key, value]) => (
-                        <div key={key} className="flex items-center space-x-3">
-                          <span className="w-16 text-sm capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
-                          <Progress value={value} className="flex-1" />
-                          <span className="text-sm text-muted-foreground w-8">{value}%</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-semibold mb-3">Leave a Review</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm">Your Rating:</span>
-                        <div className="flex space-x-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star key={star} className="h-4 w-4 text-gray-300 hover:text-yellow-400 cursor-pointer" />
-                          ))}
-                        </div>
-                      </div>
-                      <Textarea placeholder="Share your experience..." />
-                      <Button size="sm">Submit Review</Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Removed Reviews & Ratings Section */}
 
               {/* Enquiry Form */}
               <Card>
@@ -580,7 +527,7 @@ const PackageDetailModal = ({ package: pkg, onClose, onBook }: PackageDetailModa
                       <Button type="submit" className="flex-1">Send Enquiry</Button>
                       <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                         <Phone className="h-4 w-4" />
-                        <span>+1-800-TRAVEL</span>
+                        <span>044-49579403, 9840109014</span>
                       </div>
                       <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                         <Mail className="h-4 w-4" />

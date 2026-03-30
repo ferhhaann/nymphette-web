@@ -856,11 +856,11 @@ const CountryDetail = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Phone className="h-5 w-5 text-primary" />
-                  <span>{countryData.contact_info?.phone || '+1 (555) 123-4567'}</span>
+                  <span>{countryData.contact_info?.phone || '044-49579403, 9840109014'}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="h-5 w-5 text-primary" />
-                  <span>{countryData.contact_info?.email || 'hello@nymphettetours.com'}</span>
+                  <span>{countryData.contact_info?.email || 'tours.maa@nymphetteindia.com'}</span>
                 </div>
                 {countryData.contact_info?.address && (
                   <div className="flex items-start gap-3">

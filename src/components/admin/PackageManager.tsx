@@ -422,9 +422,6 @@ export const PackageManager = () => {
                         <div className="flex gap-2 mt-2">
                           <Badge variant="secondary">{pkg.category}</Badge>
                           {pkg.featured && <Badge variant="default">Featured</Badge>}
-                          <Badge variant="outline">
-                            ⭐ {pkg.rating} ({pkg.reviews} reviews)
-                          </Badge>
                         </div>
                       </div>
                       <div className="flex gap-2">
@@ -682,27 +679,14 @@ const PackageForm = ({ package: pkg, onSave, regions, categories }: PackageFormP
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="rating">Rating</Label>
+              <Label htmlFor="group_size">Group Size</Label>
               <Input
-                id="rating"
-                type="number"
-                min="1"
-                max="5"
-                step="0.1"
-                value={formData.rating}
-                onChange={(e) => updateField('rating', parseFloat(e.target.value) || 4.5)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="reviews">Reviews Count</Label>
-              <Input
-                id="reviews"
-                type="number"
-                min="0"
-                value={formData.reviews}
-                onChange={(e) => updateField('reviews', parseInt(e.target.value) || 0)}
+                id="group_size"
+                value={formData.group_size || ''}
+                onChange={(e) => updateField('group_size', e.target.value || null)}
+                placeholder="e.g., 2-8 people"
               />
             </div>
             <div>

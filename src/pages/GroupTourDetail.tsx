@@ -144,10 +144,7 @@ const GroupTourDetail = () => {
                   <MapPin className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 mr-1 sm:mr-2" />
                   <span className="text-sm sm:text-lg md:text-xl">{tour.destination}</span>
                 </div>
-                <div className="flex items-center">
-                  <Star className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-yellow-400 mr-1" />
-                  <span className="text-xs sm:text-sm md:text-base">{tour.rating} ({tour.reviews_count} reviews)</span>
-                </div>
+                {/* Removed rating display */}
               </div>
             </div>
           </div>
